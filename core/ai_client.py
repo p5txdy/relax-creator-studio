@@ -144,15 +144,19 @@ class OpenAICompatibleClient:
                 {"role": "system", "content": system},
                 {"role": "user", "content": user},
             ],
-            "temperature": temperature,
         }
+        # Kimi's current model families constrain temperature to model-specific
+        # fixed values. Omitting it lets the API select the valid default for
+        # both thinking and non-thinking modes.
+        if self.config.provider != "kimi":
+            payload["temperature"] = temperature
         request = urllib.request.Request(
             self._endpoint(),
             data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
             headers={
                 "Authorization": f"Bearer {self.config.api_key.strip()}",
                 "Content-Type": "application/json",
-                "User-Agent": "RelaxCreatorStudio/0.2.0",
+                "User-Agent": "RelaxCreatorStudio/0.2.1",
             },
             method="POST",
         )

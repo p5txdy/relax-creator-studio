@@ -2,7 +2,7 @@
 
 一个本地 Windows/macOS 桌面应用，包含“视频混剪”和“小说改文”两个工作台。
 
-当前版本：`v0.2.0`
+当前版本：`v0.2.1`
 
 ## 当前功能
 
@@ -45,7 +45,7 @@
 双击仓库根目录下的 `启动解压创作工坊.cmd`，或直接运行打包后的单文件程序：
 
 ```text
-dist\解压创作工坊-v0.2.0.exe
+dist\解压创作工坊-v0.2.1.exe
 ```
 
 开发模式可在本目录执行：
@@ -73,8 +73,8 @@ API Key 只保存在应用运行内存中，不会写入这个文件。
 Mac 版使用相同的项目文件和功能，最终生成原生应用与安装镜像：
 
 ```text
-dist-macos/解压创作工坊-v0.2.0.app
-dist-macos/解压创作工坊-v0.2.0-macOS.dmg
+dist-macos/解压创作工坊-v0.2.1.app
+dist-macos/解压创作工坊-v0.2.1-macOS.dmg
 ```
 
 在 Mac 上准备 Python 3.11 与 Homebrew，然后双击 `打包Mac版.command`。脚本会创建独立环境、安装 Mac 原生依赖、打包 `.app`、执行自检并生成 `.dmg`。第一次运行脚本时，系统若提示没有执行权限，可在终端执行：
@@ -146,7 +146,7 @@ python -m unittest discover -s tests -v
 .\打包Windows版.cmd
 ```
 
-Windows 打包脚本会自动安装 PyInstaller，并在缺少 `vendor` 目录时准备剪映草稿与 MediaInfo 依赖。打包产物位于 `dist\解压创作工坊-v0.2.0.exe`，是可独立运行的单个 EXE。不同版本使用不同文件名，不会覆盖旧版本。
+Windows 打包脚本会自动安装 PyInstaller，并在缺少 `vendor` 目录时准备剪映草稿与 MediaInfo 依赖。打包产物位于 `dist\解压创作工坊-v0.2.1.exe`，是可独立运行的单个 EXE。不同版本使用不同文件名，不会覆盖旧版本。
 
 Mac 打包需在 macOS 上双击 `打包Mac版.command`；PyInstaller 不支持在 Windows 上交叉生成 macOS `.app`。
 

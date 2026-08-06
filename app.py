@@ -61,7 +61,7 @@ from core.video_engine import (
 
 
 APP_NAME = "解压创作工坊"
-APP_VERSION = "0.2.0"
+APP_VERSION = "0.2.1"
 BG = "#F2F4F1"
 SURFACE = "#FFFFFF"
 SURFACE_ALT = "#E9EFEA"

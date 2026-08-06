@@ -76,8 +76,18 @@ class AIClientTests(unittest.TestCase):
         self.assertEqual(request.full_url, "https://api.moonshot.cn/v1/chat/completions")
         self.assertEqual(payload["model"], "kimi-k3")
         self.assertEqual(payload["messages"][1]["content"], "用户提示")
+        self.assertNotIn("temperature", payload)
         self.assertEqual(request.get_header("Authorization"), "Bearer test-key")
         self.assertEqual(result, "连接成功")
+
+    def test_non_kimi_provider_keeps_requested_temperature(self) -> None:
+        config = AIConfig("https://api.deepseek.com", "deepseek-v4-flash", "test-key", provider="deepseek")
+        client = OpenAICompatibleClient(config)
+        response = _FakeResponse({"choices": [{"message": {"content": "完成"}}]})
+        with patch("core.ai_client.urllib.request.urlopen", return_value=response) as urlopen:
+            client.complete("系统提示", "用户提示", temperature=0.72)
+        payload = json.loads(urlopen.call_args.args[0].data.decode("utf-8"))
+        self.assertEqual(payload["temperature"], 0.72)
 
 
 class NovelEngineTests(unittest.TestCase):
