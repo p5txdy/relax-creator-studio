@@ -1384,8 +1384,8 @@ def packaged_self_test() -> None:
 
     if jianying_engine.draft is None:
         raise RuntimeError(str(jianying_engine.DRAFT_IMPORT_ERROR))
-    if not MediaInfo.can_parse():
-        raise RuntimeError("MediaInfo native library unavailable")
+    if not callable(getattr(MediaInfo, "parse", None)):
+        raise RuntimeError("MediaInfo parser unavailable")
     script = jianying_engine.draft.ScriptFile(1080, 1920, 30, True)
     if script.width != 1080 or script.height != 1920:
         raise RuntimeError("draft template unavailable")

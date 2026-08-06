@@ -54,7 +54,13 @@ dist\解压创作工坊-v0.2.0.exe
 python .\app.py
 ```
 
-应用只依赖 Python 3.10+ 自带模块。项目状态保存在：
+开发运行需要 Python 3.10+；首次准备环境可执行：
+
+```powershell
+python -m pip install -r requirements-windows.txt
+```
+
+项目状态保存在：
 
 ```text
 %APPDATA%\RelaxCreatorStudio\state.json
@@ -140,7 +146,7 @@ python -m unittest discover -s tests -v
 .\打包Windows版.cmd
 ```
 
-打包产物位于 `creator_studio\dist\解压创作工坊-v0.2.0.exe`，是可独立运行的单个 EXE。不同版本使用不同文件名，不会覆盖旧版本。
+Windows 打包脚本会自动安装 PyInstaller，并在缺少 `vendor` 目录时准备剪映草稿与 MediaInfo 依赖。打包产物位于 `dist\解压创作工坊-v0.2.0.exe`，是可独立运行的单个 EXE。不同版本使用不同文件名，不会覆盖旧版本。
 
 Mac 打包需在 macOS 上双击 `打包Mac版.command`；PyInstaller 不支持在 Windows 上交叉生成 macOS `.app`。
 
