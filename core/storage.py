@@ -14,6 +14,7 @@ DEFAULT_STATE: dict[str, Any] = {
         "provider": "openai",
         "base_url": "https://api.openai.com/v1",
         "model": "gpt-4.1-mini",
+        "remember_api_key": True,
         "ffmpeg_path": "",
         "ffprobe_path": "",
         "jianying_exe": "",

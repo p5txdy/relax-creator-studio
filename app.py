@@ -49,6 +49,7 @@ from core.jianying_engine import (
     probe_audio_duration,
 )
 from core.novel_engine import build_post_prompt, build_rewrite_prompt, chapter_records
+from core.secret_store import SecretStoreError, delete_api_key, load_api_key, save_api_key
 from core.storage import StateStore
 from core.video_engine import (
     VideoClip,
@@ -61,7 +62,7 @@ from core.video_engine import (
 
 
 APP_NAME = "解压创作工坊"
-APP_VERSION = "0.2.1"
+APP_VERSION = "0.2.2"
 BG = "#F2F4F1"
 SURFACE = "#FFFFFF"
 SURFACE_ALT = "#E9EFEA"
@@ -107,7 +108,8 @@ class StudioApp:
         initial_provider = settings.get("provider") or infer_provider(settings.get("base_url", ""), settings.get("model", ""))
         self.active_api_provider = initial_provider if initial_provider in {item.id for item in PROVIDER_PRESETS} else "custom"
         self.api_keys: dict[str, str] = {}
-        self.api_key = StringVar(value=api_key_from_environment(self.active_api_provider))
+        self.remember_api_key = BooleanVar(value=bool(settings.get("remember_api_key", True)))
+        self.api_key = StringVar(value=self._load_provider_api_key(self.active_api_provider))
         self.current_page = "dashboard"
         self.nav_buttons: dict[str, object] = {}
         self.bus: queue.Queue[tuple[str, object]] = queue.Queue()
@@ -1131,7 +1133,7 @@ class StudioApp:
     def show_settings(self) -> None:
         self._clear_main()
         self.navigate_highlight("settings")
-        self._page_header("模型与工具", "可直接选择 DeepSeek、千问、智谱 GLM、Kimi；API Key 不会写入磁盘。")
+        self._page_header("模型与工具", "可直接选择 DeepSeek、千问、智谱 GLM、Kimi；API Key 由系统安全保管。")
         body = Frame(self.main, bg=BG)
         body.pack(fill=BOTH, expand=True, padx=34, pady=(0, 28))
         body.grid_columnconfigure(0, weight=1)
@@ -1148,7 +1150,7 @@ class StudioApp:
             provider_id = "custom"
         self.active_api_provider = provider_id
         if not self.api_key.get().strip():
-            self.api_key.set(self.api_keys.get(provider_id, "") or api_key_from_environment(provider_id))
+            self.api_key.set(self._load_provider_api_key(provider_id))
         self.provider_ids_by_label = {item.label: item.id for item in PROVIDER_PRESETS}
         self.provider_labels_by_id = {item.id: item.label for item in PROVIDER_PRESETS}
         self.provider_var = StringVar(value=self.provider_labels_by_id[provider_id])
@@ -1168,17 +1170,23 @@ class StudioApp:
         self.provider_help.pack(anchor="w", pady=(6, 0))
         self._settings_entry(model, "Base URL", self.base_url_var)
         self._settings_entry(model, "模型名称", self.model_name_var)
-        self._field_label(model, "API Key（仅本次运行有效）").pack(anchor="w", pady=(13, 5))
+        self._field_label(model, "API Key").pack(anchor="w", pady=(13, 5))
         key_entry = self._entry(model, self.api_key)
         key_entry.configure(show="•")
         key_entry.pack(fill=X, ipady=7)
         self.api_key_hint = Label(model, bg=SURFACE, fg=MUTED, wraplength=430, justify=LEFT, font=("Microsoft YaHei UI", 8))
         self.api_key_hint.pack(anchor="w", pady=(5, 0))
+        ttk.Checkbutton(
+            model,
+            text="安全记住 API Key（Windows 凭据管理器 / macOS 钥匙串）",
+            variable=self.remember_api_key,
+        ).pack(anchor="w", pady=(10, 0))
         self.ai_test_status = Label(model, text="尚未测试连接", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 8))
         self.ai_test_status.pack(anchor="w", pady=(12, 0))
         model_actions = Frame(model, bg=SURFACE)
         model_actions.pack(fill=X, pady=(14, 0))
         self._button(model_actions, "测试连接", self.test_ai_connection, kind="ghost").pack(side=LEFT)
+        self._button(model_actions, "清除已保存 Key", self.clear_saved_api_key, kind="ghost").pack(side=LEFT, padx=(7, 0))
         self._button(model_actions, "保存模型设置", self.save_settings, kind="primary").pack(side=RIGHT)
         self._update_provider_help()
         self.bus_handler = self._handle_settings_event
@@ -1229,7 +1237,7 @@ class StudioApp:
         if selected != "custom":
             self.base_url_var.set(preset.base_url)
             self.model_name_var.set(preset.model)
-        self.api_key.set(self.api_keys.get(selected, "") or api_key_from_environment(selected))
+        self.api_key.set(self._load_provider_api_key(selected))
         self._update_provider_help()
         if hasattr(self, "ai_test_status"):
             self.ai_test_status.configure(text="切换服务商后请重新测试连接", fg=MUTED)
@@ -1239,6 +1247,39 @@ class StudioApp:
         self.provider_help.configure(text=preset.description)
         names = " / ".join(preset.environment_keys)
         self.api_key_hint.configure(text=f"也可在启动前设置环境变量：{names}")
+
+    def _load_provider_api_key(self, provider_id: str) -> str:
+        if provider_id in self.api_keys:
+            return self.api_keys[provider_id]
+        value = ""
+        if self.remember_api_key.get():
+            try:
+                value = load_api_key(provider_id)
+            except SecretStoreError:
+                value = ""
+        value = value or api_key_from_environment(provider_id)
+        self.api_keys[provider_id] = value
+        return value
+
+    def _persist_current_api_key(self) -> None:
+        provider_id = self.active_api_provider
+        value = self.api_key.get().strip()
+        self.api_keys[provider_id] = value
+        if self.remember_api_key.get() and value:
+            save_api_key(provider_id, value)
+        else:
+            delete_api_key(provider_id)
+
+    def clear_saved_api_key(self) -> None:
+        provider_id = self.active_api_provider
+        try:
+            delete_api_key(provider_id)
+        except SecretStoreError as exc:
+            messagebox.showerror("清除失败", str(exc))
+            return
+        self.api_keys[provider_id] = ""
+        self.api_key.set("")
+        messagebox.showinfo("已清除", f"{provider_preset(provider_id).label} 的已保存 API Key 已从系统凭据中删除。")
 
     def _path_field(self, parent, label: str, variable: StringVar, executable_name: str) -> None:
         self._field_label(parent, label).pack(anchor="w", pady=(13, 5))
@@ -1277,11 +1318,16 @@ class StudioApp:
 
     def save_settings(self) -> None:
         settings = self.state["settings"]
+        secret_error = ""
         if hasattr(self, "base_url_var"):
             settings["provider"] = self.active_api_provider
             settings["base_url"] = self.base_url_var.get().strip().rstrip("/")
             settings["model"] = self.model_name_var.get().strip()
-            self.api_keys[self.active_api_provider] = self.api_key.get().strip()
+            settings["remember_api_key"] = self.remember_api_key.get()
+            try:
+                self._persist_current_api_key()
+            except SecretStoreError as exc:
+                secret_error = str(exc)
             settings["ffmpeg_path"] = self.ffmpeg_var.get().strip()
             settings["ffprobe_path"] = self.ffprobe_var.get().strip()
             settings["jianying_exe"] = self.jianying_exe_var.get().strip()
@@ -1291,7 +1337,12 @@ class StudioApp:
         if hasattr(self, "ffmpeg_status"):
             detected = find_executable(settings["ffmpeg_path"], "ffmpeg")
             self.ffmpeg_status.configure(text=(f"已找到：{detected}" if detected else "尚未找到 FFmpeg；视频编辑可保存，但不能生成成片。"), fg=ACCENT_DARK if detected else WARM)
-        messagebox.showinfo("已保存", "模型、剪映和视频工具路径已保存。API Key 仅保留在内存中。")
+        if secret_error:
+            messagebox.showwarning("设置已保存", f"模型和工具设置已保存，但 API Key 未能安全保存：\n{secret_error}")
+        elif self.remember_api_key.get():
+            messagebox.showinfo("已保存", "模型、剪映和视频工具路径已保存。API Key 已由系统安全保管，下次打开会自动填入。")
+        else:
+            messagebox.showinfo("已保存", "模型、剪映和视频工具路径已保存。API Key 未被记住。")
 
     def _ai_client(self, use_form: bool = False) -> OpenAICompatibleClient:
         settings = self.state["settings"]
@@ -1334,7 +1385,18 @@ class StudioApp:
         if event == "ai_test_complete":
             self.is_busy = False
             self.ai_test_status.configure(text=f"连接成功：{str(payload)[:50]}", fg=ACCENT_DARK)
-            messagebox.showinfo("连接成功", f"{provider_preset(self.active_api_provider).label} 接口可以正常使用。")
+            secret_error = ""
+            if self.remember_api_key.get():
+                try:
+                    self._persist_current_api_key()
+                except SecretStoreError as exc:
+                    secret_error = str(exc)
+            message = f"{provider_preset(self.active_api_provider).label} 接口可以正常使用。"
+            if self.remember_api_key.get() and not secret_error:
+                message += "\nAPI Key 已安全记住。"
+            elif secret_error:
+                message += f"\n但 API Key 保存失败：{secret_error}"
+            messagebox.showinfo("连接成功", message)
         elif event == "ai_test_error":
             self.is_busy = False
             self.ai_test_status.configure(text="连接失败，请检查 Key、模型名和网络", fg=ERROR)
@@ -1367,6 +1429,12 @@ class StudioApp:
         if self.is_busy and not messagebox.askyesno("任务仍在进行", "关闭应用会中断当前任务，确定退出吗？"):
             return
         self._save_current_editors()
+        if hasattr(self, "remember_api_key"):
+            self.state["settings"]["remember_api_key"] = self.remember_api_key.get()
+            try:
+                self._persist_current_api_key()
+            except SecretStoreError:
+                pass
         self.store.save(self.state)
         self.root.destroy()
 

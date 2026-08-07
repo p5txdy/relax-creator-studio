@@ -1,5 +1,12 @@
 # 更新记录
 
+## v0.2.2（2026-08-07）
+
+- 新增 API Key 安全记忆：Windows 使用系统凭据管理器，macOS 使用系统钥匙串。
+- 再次打开应用或切换服务商时，会自动回填对应服务商的 API Key。
+- 新增“安全记住 API Key”开关和“清除已保存 Key”按钮。
+- API Key 仍不会写入 `state.json`、项目源码或 GitHub 仓库。
+
 ## v0.2.1（2026-08-06）
 
 - 修复 Kimi 测试连接时报 `invalid temperature` 的问题。

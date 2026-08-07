@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -23,6 +24,7 @@ from core.jianying_engine import (
     unique_draft_name,
 )
 from core.storage import DEFAULT_STATE, StateStore
+from core.secret_store import SecretStoreError, delete_api_key, load_api_key, save_api_key
 from core.video_engine import VideoClip, VideoProject, build_export_command, fit_clips_to_duration
 
 
@@ -180,6 +182,40 @@ class StorageTests(unittest.TestCase):
             raw = store.path.read_text(encoding="utf-8")
             self.assertNotIn("secret", raw)
             self.assertEqual(store.load()["video"]["project_name"], "测试项目")
+            self.assertTrue(store.load()["settings"]["remember_api_key"])
+
+
+class SecretStoreTests(unittest.TestCase):
+    def test_windows_routes_to_credential_manager(self) -> None:
+        with patch("core.secret_store.sys.platform", "win32"):
+            with patch("core.secret_store._windows_read", return_value="saved-key") as read:
+                self.assertEqual(load_api_key("kimi"), "saved-key")
+                read.assert_called_once_with("kimi")
+            with patch("core.secret_store._windows_write") as write:
+                save_api_key("kimi", "  new-key  ")
+                write.assert_called_once_with("kimi", "new-key")
+            with patch("core.secret_store._windows_delete") as delete:
+                delete_api_key("kimi")
+                delete.assert_called_once_with("kimi")
+
+    def test_macos_keychain_read_trims_only_line_break(self) -> None:
+        result = subprocess.CompletedProcess([], 0, " key-with-spaces \n", "")
+        with patch("core.secret_store.sys.platform", "darwin"):
+            with patch("core.secret_store._run_security", return_value=result) as security:
+                self.assertEqual(load_api_key("deepseek"), " key-with-spaces ")
+        security.assert_called_once_with(
+            ["find-generic-password", "-s", "RelaxCreatorStudio", "-a", "deepseek", "-w"]
+        )
+
+    def test_invalid_provider_id_is_rejected(self) -> None:
+        with self.assertRaises(SecretStoreError):
+            load_api_key("../unsafe")
+
+    def test_unsupported_platform_does_not_fake_secure_storage(self) -> None:
+        with patch("core.secret_store.sys.platform", "linux"):
+            self.assertEqual(load_api_key("qwen"), "")
+            with self.assertRaises(SecretStoreError):
+                save_api_key("qwen", "secret")
 
 
 class JianyingEngineTests(unittest.TestCase):

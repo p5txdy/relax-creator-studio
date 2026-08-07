@@ -52,7 +52,7 @@ python -m PyInstaller \
   --workpath "build-macos" \
   "解压创作工坊-mac.spec"
 
-APP_PATH="$SCRIPT_DIR/dist-macos/解压创作工坊-v0.2.1.app"
+APP_PATH="$SCRIPT_DIR/dist-macos/解压创作工坊-v0.2.2.app"
 echo "[5/6] 验证应用资源"
 "$APP_PATH/Contents/MacOS/解压创作工坊" --self-test
 codesign --force --deep --sign - "$APP_PATH"
@@ -63,15 +63,15 @@ trap 'rm -rf "$DMG_STAGE"' EXIT
 cp -R "$APP_PATH" "$DMG_STAGE/"
 ln -s /Applications "$DMG_STAGE/Applications"
 hdiutil create \
-  -volname "解压创作工坊 v0.2.1" \
+  -volname "解压创作工坊 v0.2.2" \
   -srcfolder "$DMG_STAGE" \
   -ov \
   -format UDZO \
-  "$SCRIPT_DIR/dist-macos/解压创作工坊-v0.2.1-macOS.dmg"
+  "$SCRIPT_DIR/dist-macos/解压创作工坊-v0.2.2-macOS.dmg"
 
 echo ""
 echo "打包完成："
 echo "  $APP_PATH"
-echo "  $SCRIPT_DIR/dist-macos/解压创作工坊-v0.2.1-macOS.dmg"
+echo "  $SCRIPT_DIR/dist-macos/解压创作工坊-v0.2.2-macOS.dmg"
 echo "首次打开若被系统拦截，请在 Finder 中右键应用并选择“打开”。"
 read -k 1 "?按任意键结束..."

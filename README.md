@@ -2,7 +2,7 @@
 
 一个本地 Windows/macOS 桌面应用，包含“视频混剪”和“小说改文”两个工作台。
 
-当前版本：`v0.2.1`
+当前版本：`v0.2.2`
 
 ## 当前功能
 
@@ -38,14 +38,14 @@
 - 智谱 GLM：官方接口，默认 `glm-5.2`
 - Kimi：官方接口，默认 `kimi-k3`
 - OpenAI 与其他自定义 Chat Completions 兼容接口
-- 一键切换服务商、自动填写接口地址、单独暂存各服务商 API Key、测试连接
+- 一键切换服务商、自动填写接口地址、为各服务商安全记住 API Key、测试连接
 
 ## Windows 运行
 
 双击仓库根目录下的 `启动解压创作工坊.cmd`，或直接运行打包后的单文件程序：
 
 ```text
-dist\解压创作工坊-v0.2.1.exe
+dist\解压创作工坊-v0.2.2.exe
 ```
 
 开发模式可在本目录执行：
@@ -66,15 +66,15 @@ python -m pip install -r requirements-windows.txt
 %APPDATA%\RelaxCreatorStudio\state.json
 ```
 
-API Key 只保存在应用运行内存中，不会写入这个文件。
+API Key 不会写入这个文件；启用“安全记住”后，Windows 版存入系统凭据管理器。
 
 ## macOS 运行与打包
 
 Mac 版使用相同的项目文件和功能，最终生成原生应用与安装镜像：
 
 ```text
-dist-macos/解压创作工坊-v0.2.1.app
-dist-macos/解压创作工坊-v0.2.1-macOS.dmg
+dist-macos/解压创作工坊-v0.2.2.app
+dist-macos/解压创作工坊-v0.2.2-macOS.dmg
 ```
 
 在 Mac 上准备 Python 3.11 与 Homebrew，然后双击 `打包Mac版.command`。脚本会创建独立环境、安装 Mac 原生依赖、打包 `.app`、执行自检并生成 `.dmg`。第一次运行脚本时，系统若提示没有执行权限，可在终端执行：
@@ -103,7 +103,9 @@ Mac 版会识别 `/Applications` 中的剪映 `.app`，并检查以下常见草�
 
 打开“模型与工具”，在“模型服务商”中选择 DeepSeek、千问、智谱 GLM 或 Kimi。应用会自动填写官方 Base URL 和默认模型，也允许手动修改模型名称。
 
-API Key 仅在本次运行的内存中使用，不会写入 `state.json`。也可以在启动应用前设置对应环境变量：
+默认勾选“安全记住 API Key”。点击“保存模型设置”或成功完成“测试连接”后，Windows 会将 Key 存入系统凭据管理器，macOS 会存入系统钥匙串；下次打开应用会自动回填。Key 不会写入 `state.json`、源码或 GitHub，也可以随时点击“清除已保存 Key”。
+
+如果不想保存，可取消勾选；也可以在启动应用前设置对应环境变量：
 
 | 服务商 | 环境变量 | 默认模型 |
 | --- | --- | --- |
@@ -146,7 +148,7 @@ python -m unittest discover -s tests -v
 .\打包Windows版.cmd
 ```
 
-Windows 打包脚本会自动安装 PyInstaller，并在缺少 `vendor` 目录时准备剪映草稿与 MediaInfo 依赖。打包产物位于 `dist\解压创作工坊-v0.2.1.exe`，是可独立运行的单个 EXE。不同版本使用不同文件名，不会覆盖旧版本。
+Windows 打包脚本会自动安装 PyInstaller，并在缺少 `vendor` 目录时准备剪映草稿与 MediaInfo 依赖。打包产物位于 `dist\解压创作工坊-v0.2.2.exe`，是可独立运行的单个 EXE。不同版本使用不同文件名，不会覆盖旧版本。
 
 Mac 打包需在 macOS 上双击 `打包Mac版.command`；PyInstaller 不支持在 Windows 上交叉生成 macOS `.app`。
 
