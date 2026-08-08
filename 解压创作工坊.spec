@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='解压创作工坊-v0.2.4',
+    name='解压创作工坊-v0.2.5',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

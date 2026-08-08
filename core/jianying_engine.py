@@ -267,6 +267,7 @@ def create_jianying_draft(project: VideoProject, drafts_root: str, requested_nam
         script.append_track(draft.TrackSpec(draft.TrackType.video, "主视频"))
 
         cursor = 0
+        speed = min(max(float(project.playback_speed), 0.25), 4.0)
         transition = _transition_type(project.transition)
         prepared_segments: list[tuple[object, int]] = []
         material_cache: dict[str, object] = {}
@@ -282,7 +283,7 @@ def create_jianying_draft(project: VideoProject, drafts_root: str, requested_nam
             if requested <= 0:
                 raise JianyingEngineError(f"素材截取起点超过文件时长：{Path(clip.path).name}")
             available_clips.append(
-                VideoClip(clip.path, clip.start, requested / draft.SEC, material.duration / draft.SEC)
+                VideoClip(clip.path, clip.start, requested / draft.SEC / speed, material.duration / draft.SEC)
             )
 
         timeline_clips = fit_clips_to_duration(
@@ -295,15 +296,17 @@ def create_jianying_draft(project: VideoProject, drafts_root: str, requested_nam
             material = material_cache[clip.path]
             start = max(0, round(clip.start * draft.SEC))
             available = max(0, material.duration - start)
-            requested = min(max(round(clip.duration * draft.SEC), 200_000), available)
+            requested = max(round(clip.duration * draft.SEC), 1)
             remaining = target_duration - cursor if target_duration is not None else requested
-            duration = min(requested, available, remaining)
-            if duration <= 0:
+            duration = min(requested, remaining)
+            source_duration = min(max(round(duration * speed), 1), available)
+            duration = min(duration, max(1, round(source_duration / speed)))
+            if duration <= 0 or source_duration <= 0:
                 raise JianyingEngineError(f"素材截取起点超过文件时长：{Path(clip.path).name}")
             segment = draft.VideoSegment(
                 material,
                 draft.Timerange(cursor, duration),
-                source_timerange=draft.Timerange(start, duration),
+                source_timerange=draft.Timerange(start, source_duration),
                 # Imported clips are visual material only. Their embedded audio
                 # must never leak into the voice-over/background-music mix.
                 volume=SOURCE_VIDEO_VOLUME,

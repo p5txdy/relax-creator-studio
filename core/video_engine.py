@@ -16,6 +16,7 @@ ASPECT_SIZES = {
     "1:1": (1080, 1080),
     "4:5": (1080, 1350),
 }
+DEFAULT_PLAYBACK_SPEED = 1.5
 
 
 @dataclass
@@ -41,6 +42,7 @@ class VideoProject:
     subtitles_path: str = ""
     target_duration: float = 0.0
     mix_strategy: str = "balanced"
+    playback_speed: float = DEFAULT_PLAYBACK_SPEED
     music_path: str = ""
     music_volume: float = 0.28
 
@@ -48,9 +50,11 @@ class VideoProject:
     def output_duration(self) -> float:
         if self.target_duration > 0:
             return self.target_duration
-        total = sum(max(0.2, clip.duration) for clip in self.clips)
+        speed = min(max(float(self.playback_speed), 0.25), 4.0)
+        timeline_durations = [max(0.2, clip.duration / speed) for clip in self.clips]
+        total = sum(timeline_durations)
         if len(self.clips) > 1 and self.transition != "none":
-            shortest = min(max(0.2, clip.duration) for clip in self.clips)
+            shortest = min(timeline_durations)
             transition = min(max(self.transition_duration, 0.0), 2.0, shortest / 2)
             total -= transition * (len(self.clips) - 1)
         return max(0.0, total)
@@ -206,10 +210,20 @@ def probe_duration(path: str, ffprobe_path: str | None) -> float | None:
 def build_export_command(project: VideoProject, ffmpeg_path: str, output_path: str) -> list[str]:
     if not project.clips:
         raise ValueError("请至少添加一个视频素材。")
+    speed = min(max(float(project.playback_speed), 0.25), 4.0)
+    timeline_sources = [
+        VideoClip(
+            clip.path,
+            clip.start,
+            max(0.2, float(clip.duration) / speed),
+            clip.source_duration,
+        )
+        for clip in project.clips
+    ]
     requested_transition = min(max(float(project.transition_duration), 0.1), 2.0)
-    shortest_clip = min(max(0.2, float(clip.duration)) for clip in project.clips)
+    shortest_clip = min(clip.duration for clip in timeline_sources)
     overlap = min(requested_transition, shortest_clip / 2) if project.transition != "none" else 0.0
-    clips = fit_clips_to_duration(project.clips, project.target_duration, overlap, project.mix_strategy)
+    clips = fit_clips_to_duration(timeline_sources, project.target_duration, overlap, project.mix_strategy)
     missing = [clip.path for clip in clips if not Path(clip.path).is_file()]
     if missing:
         raise ValueError(f"找不到素材：{Path(missing[0]).name}")
@@ -223,7 +237,8 @@ def build_export_command(project: VideoProject, ffmpeg_path: str, output_path: s
     transition_duration = overlap
     command: list[str] = [ffmpeg_path, "-hide_banner", "-y"]
     for clip in clips:
-        command.extend(["-ss", f"{max(0.0, clip.start):.3f}", "-t", f"{max(0.2, clip.duration):.3f}", "-i", clip.path])
+        source_duration = max(0.2, clip.duration * speed)
+        command.extend(["-ss", f"{max(0.0, clip.start):.3f}", "-t", f"{source_duration:.3f}", "-i", clip.path])
     voice_index = None
     if project.voice_path:
         voice_index = len(clips)
@@ -237,7 +252,8 @@ def build_export_command(project: VideoProject, ffmpeg_path: str, output_path: s
     for index, _clip in enumerate(clips):
         filters.append(
             f"[{index}:v]scale={width}:{height}:force_original_aspect_ratio=increase,"
-            f"crop={width}:{height},setsar=1,fps={fps},format=yuv420p,setpts=PTS-STARTPTS[v{index}]"
+            f"crop={width}:{height},setsar=1,fps={fps},format=yuv420p,"
+            f"setpts=(PTS-STARTPTS)/{speed:.6f}[v{index}]"
         )
 
     if len(clips) == 1:

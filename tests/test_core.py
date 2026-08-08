@@ -191,9 +191,37 @@ class VideoEngineTests(unittest.TestCase):
             command = build_export_command(project, "ffmpeg", str(root / "out.mp4"))
             joined = " ".join(command)
             self.assertIn("scale=1080:1920", joined)
+            self.assertIn("setpts=(PTS-STARTPTS)/1.500000", joined)
             self.assertIn("xfade=transition=fade", joined)
             self.assertIn("volume=0.28", joined)
-            self.assertAlmostEqual(project.output_duration, 10.5)
+            self.assertAlmostEqual(project.output_duration, 5.0 / 1.5 + 6.0 / 1.5 - 0.5)
+
+    def test_default_playback_speed_shortens_visual_timeline(self) -> None:
+        project = VideoProject(
+            clips=[VideoClip("a.mp4", duration=15.0)],
+            transition="none",
+        )
+        self.assertEqual(project.playback_speed, 1.5)
+        self.assertAlmostEqual(project.output_duration, 10.0)
+
+    def test_voice_audio_keeps_exact_output_duration_at_normal_speed(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            video = root / "video.mp4"
+            voice = root / "voice.mp3"
+            video.write_bytes(b"placeholder")
+            voice.write_bytes(b"placeholder")
+            project = VideoProject(
+                clips=[VideoClip(str(video), duration=15.0)],
+                voice_path=str(voice),
+                target_duration=12.0,
+                transition="none",
+            )
+            joined = " ".join(build_export_command(project, "ffmpeg", str(root / "out.mp4")))
+            self.assertAlmostEqual(project.output_duration, 12.0)
+            self.assertIn("setpts=(PTS-STARTPTS)/1.500000", joined)
+            self.assertIn("atrim=duration=12.000", joined)
+            self.assertIn("trim=duration=12.000", joined)
 
     def test_concat_without_transition(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

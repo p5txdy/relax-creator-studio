@@ -53,6 +53,7 @@ from core.novel_engine import build_post_prompt, build_rewrite_prompt, chapter_r
 from core.secret_store import SecretStoreError, delete_api_key, load_api_key, save_api_key
 from core.storage import StateStore
 from core.video_engine import (
+    DEFAULT_PLAYBACK_SPEED,
     VideoClip,
     VideoProject,
     build_export_command,
@@ -63,7 +64,7 @@ from core.video_engine import (
 
 
 APP_NAME = "解压创作工坊"
-APP_VERSION = "0.2.4"
+APP_VERSION = "0.2.5"
 MIX_STRATEGIES = {
     "均衡混剪（推荐）": "balanced",
     "顺序完整播放": "sequential",
@@ -428,7 +429,7 @@ class StudioApp:
         settings_outer.grid(row=0, column=1, sticky="nsew", padx=(9, 0))
         settings = settings_outer.winfo_children()[0]
         Label(settings, text="成片参数", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 13, "bold")).pack(anchor="w")
-        Label(settings, text="素材自动铺满目标画幅，视频原声始终静音", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w", pady=(4, 18))
+        Label(settings, text="素材画面固定 1.5 倍速，视频原声始终静音", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w", pady=(4, 18))
 
         video = self.state["video"]
         self.aspect_var = StringVar(value=video["aspect"])
@@ -521,7 +522,8 @@ class StudioApp:
         if video.get("voice_path") and float(video.get("voice_duration", 0.0)) > 0:
             return float(video["voice_duration"])
         clips = video.get("clips", [])
-        total = sum(float(clip.get("duration", 0)) for clip in clips)
+        speed = float(video.get("playback_speed", DEFAULT_PLAYBACK_SPEED))
+        total = sum(float(clip.get("duration", 0)) / speed for clip in clips)
         if len(clips) > 1 and video.get("transition") != "none":
             total -= float(video.get("transition_duration", 0.35)) * (len(clips) - 1)
         return max(0.0, total)
@@ -536,6 +538,7 @@ class StudioApp:
         video["transition"] = self.transition_var.get()
         video["transition_duration"] = max(0.1, min(float(self.transition_duration_var.get()), 2.0))
         video["mix_strategy"] = MIX_STRATEGIES.get(self.mix_strategy_var.get(), "balanced")
+        video["playback_speed"] = DEFAULT_PLAYBACK_SPEED
         video["voice_path"] = self.voice_var.get().strip()
         video["subtitles_path"] = self.subtitles_var.get().strip()
         video["music_path"] = self.music_var.get().strip()
@@ -731,6 +734,7 @@ class StudioApp:
             subtitles_path=video.get("subtitles_path", ""),
             target_duration=float(video.get("voice_duration", 0.0)) if video.get("voice_path") else 0.0,
             mix_strategy=video.get("mix_strategy", "balanced"),
+            playback_speed=float(video.get("playback_speed", DEFAULT_PLAYBACK_SPEED)),
             music_path=video["music_path"],
             music_volume=float(video["music_volume"]),
         )

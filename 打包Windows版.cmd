@@ -12,7 +12,7 @@ if not exist ".\vendor\pymediainfo\MediaInfo.dll" (
   echo 未找到 vendor\pymediainfo\MediaInfo.dll，请重新运行本脚本安装 Windows 媒体组件。
   exit /b 1
 )
-python -m PyInstaller --noconfirm --clean --windowed --onefile --paths ".\vendor" --add-data ".\vendor\pyJianYingDraft\assets;pyJianYingDraft\assets" --add-binary ".\vendor\pymediainfo\MediaInfo.dll;pymediainfo" --exclude-module "uiautomation" --exclude-module "comtypes" --exclude-module "imageio" --exclude-module "numpy" --name "解压创作工坊-v0.2.4" --distpath "dist" --workpath "build-v0.2.4" --specpath "." "app.py"
+python -m PyInstaller --noconfirm --clean --windowed --onefile --paths ".\vendor" --add-data ".\vendor\pyJianYingDraft\assets;pyJianYingDraft\assets" --add-binary ".\vendor\pymediainfo\MediaInfo.dll;pymediainfo" --exclude-module "uiautomation" --exclude-module "comtypes" --exclude-module "imageio" --exclude-module "numpy" --name "解压创作工坊-v0.2.5" --distpath "dist" --workpath "build-v0.2.5" --specpath "." "app.py"
 if errorlevel 1 (
   echo.
   echo 打包失败，请检查上面的错误信息。
@@ -20,5 +20,5 @@ if errorlevel 1 (
   exit /b 1
 )
 echo.
-echo 打包完成：%CD%\dist\解压创作工坊-v0.2.4.exe
+echo 打包完成：%CD%\dist\解压创作工坊-v0.2.5.exe
 pause

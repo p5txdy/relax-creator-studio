@@ -28,6 +28,7 @@ DEFAULT_STATE: dict[str, Any] = {
         "transition": "fade",
         "transition_duration": 0.35,
         "mix_strategy": "balanced",
+        "playback_speed": 1.5,
         "voice_path": "",
         "voice_duration": 0.0,
         "subtitles_path": "",
