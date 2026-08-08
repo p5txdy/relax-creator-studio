@@ -139,6 +139,39 @@ class VideoEngineTests(unittest.TestCase):
         self.assertEqual([clip.path for clip in fitted], ["a.mp4", "b.mp4", "a.mp4", "b.mp4"])
         self.assertAlmostEqual(sum(clip.duration for clip in fitted), 7.25)
 
+    def test_balanced_mix_uses_every_source_instead_of_only_the_first(self) -> None:
+        clips = [
+            VideoClip("a.mp4", duration=60.0, source_duration=60.0),
+            VideoClip("b.mp4", duration=60.0, source_duration=60.0),
+            VideoClip("c.mp4", duration=60.0, source_duration=60.0),
+        ]
+        fitted = fit_clips_to_duration(clips, 30.0, overlap=0.35, strategy="balanced")
+        self.assertEqual([clip.path for clip in fitted], ["a.mp4", "b.mp4", "c.mp4"])
+        self.assertAlmostEqual(sum(clip.duration for clip in fitted) - 0.35 * 2, 30.0)
+        self.assertTrue(all(clip.source_duration == 60.0 for clip in fitted))
+
+    def test_sequential_mix_can_keep_a_long_clip_intact(self) -> None:
+        clips = [VideoClip("a.mp4", duration=60.0), VideoClip("b.mp4", duration=60.0)]
+        fitted = fit_clips_to_duration(clips, 30.0, strategy="sequential")
+        self.assertEqual(len(fitted), 1)
+        self.assertEqual(fitted[0].path, "a.mp4")
+        self.assertAlmostEqual(fitted[0].duration, 30.0)
+
+    def test_balanced_timeline_hits_target_across_short_and_long_sources(self) -> None:
+        cases = [
+            ([60.0, 60.0, 60.0], 30.0, 0.35),
+            ([2.0, 3.0], 7.25, 0.35),
+            ([1.0, 4.0, 9.0, 2.0], 12.0, 0.5),
+            ([0.4, 0.6, 1.2], 5.0, 0.1),
+            ([120.0], 45.0, 0.35),
+        ]
+        for durations, target, requested_overlap in cases:
+            clips = [VideoClip(str(index), duration=duration) for index, duration in enumerate(durations)]
+            fitted = fit_clips_to_duration(clips, target, requested_overlap, "balanced")
+            overlap = min(requested_overlap, min(durations) / 2)
+            effective = sum(clip.duration for clip in fitted) - overlap * max(0, len(fitted) - 1)
+            self.assertAlmostEqual(effective, target, places=3)
+
     def test_build_command_with_transition_and_music(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

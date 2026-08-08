@@ -22,7 +22,8 @@ ASPECT_SIZES = {
 class VideoClip:
     path: str
     start: float = 0.0
-    duration: float = 5.0
+    duration: float = 0.0
+    source_duration: float = 0.0
 
     @property
     def name(self) -> str:
@@ -39,6 +40,7 @@ class VideoProject:
     voice_path: str = ""
     subtitles_path: str = ""
     target_duration: float = 0.0
+    mix_strategy: str = "balanced"
     music_path: str = ""
     music_volume: float = 0.28
 
@@ -48,29 +50,115 @@ class VideoProject:
             return self.target_duration
         total = sum(max(0.2, clip.duration) for clip in self.clips)
         if len(self.clips) > 1 and self.transition != "none":
-            total -= min(max(self.transition_duration, 0.0), 2.0) * (len(self.clips) - 1)
+            shortest = min(max(0.2, clip.duration) for clip in self.clips)
+            transition = min(max(self.transition_duration, 0.0), 2.0, shortest / 2)
+            total -= transition * (len(self.clips) - 1)
         return max(0.0, total)
 
 
-def fit_clips_to_duration(clips: list[VideoClip], target_duration: float, overlap: float = 0.0) -> list[VideoClip]:
-    """Repeat clips in order and trim the tail to hit an exact effective duration."""
+def _copy_clip(clip: VideoClip, duration: float | None = None) -> VideoClip:
+    return VideoClip(
+        clip.path,
+        float(clip.start),
+        max(0.2, float(clip.duration if duration is None else duration)),
+        float(clip.source_duration),
+    )
+
+
+def _waterfill_durations(maximums: list[float], budget: float) -> list[float]:
+    """Distribute a duration budget evenly without exceeding any source range."""
+    allocations = [0.0] * len(maximums)
+    active = set(range(len(maximums)))
+    remaining = max(0.0, budget)
+    while active and remaining > 0.000001:
+        share = remaining / len(active)
+        capped = [index for index in active if maximums[index] <= share + 0.000001]
+        if not capped:
+            for index in active:
+                allocations[index] = share
+            remaining = 0.0
+            break
+        for index in capped:
+            allocations[index] = maximums[index]
+            remaining -= maximums[index]
+            active.remove(index)
+    return allocations
+
+
+def _evenly_spaced_clips(clips: list[VideoClip], count: int) -> list[VideoClip]:
+    if count >= len(clips):
+        return clips
+    if count <= 1:
+        return [clips[0]]
+    indexes = [round(index * (len(clips) - 1) / (count - 1)) for index in range(count)]
+    return [clips[index] for index in indexes]
+
+
+def _balanced_partial_cycle(
+    clips: list[VideoClip], effective_budget: float, overlap: float, leading_overlap: bool
+) -> list[VideoClip]:
+    """Use as many source clips as practical and share the remaining timeline evenly."""
+    minimum_segment = max(0.5, overlap + 0.1)
+    for count in range(len(clips), 0, -1):
+        selected = _evenly_spaced_clips(clips, count)
+        overlap_count = count - 1 + (1 if leading_overlap else 0)
+        raw_budget = effective_budget + overlap * overlap_count
+        maximums = [max(0.2, float(clip.duration)) for clip in selected]
+        allocations = _waterfill_durations(maximums, raw_budget)
+        if count == 1 or all(
+            duration + 0.000001 >= min(minimum_segment, maximum)
+            for duration, maximum in zip(allocations, maximums)
+        ):
+            return [_copy_clip(clip, duration) for clip, duration in zip(selected, allocations) if duration >= 0.2]
+    return [_copy_clip(clips[0], effective_budget)]
+
+
+def fit_clips_to_duration(
+    clips: list[VideoClip],
+    target_duration: float,
+    overlap: float = 0.0,
+    strategy: str = "balanced",
+) -> list[VideoClip]:
+    """Build an exact-length timeline using balanced or sequential source allocation."""
     if target_duration <= 0 or not clips:
-        return [VideoClip(clip.path, clip.start, clip.duration) for clip in clips]
+        return [_copy_clip(clip) for clip in clips]
+    normalized = [_copy_clip(clip) for clip in clips]
+    overlap = min(max(0.0, float(overlap)), min(clip.duration for clip in normalized) / 2)
+    if strategy == "sequential":
+        result: list[VideoClip] = []
+        effective = 0.0
+        index = 0
+        while effective < target_duration - 0.001:
+            source = normalized[index % len(normalized)]
+            segment_overlap = overlap if result else 0.0
+            needed = target_duration - effective + segment_overlap
+            duration = min(source.duration, needed)
+            if duration <= segment_overlap and result:
+                duration = min(source.duration, segment_overlap + 0.05)
+            result.append(_copy_clip(source, duration))
+            effective += duration - segment_overlap
+            index += 1
+            if index > 10000:
+                raise ValueError("素材片段过短，无法安全铺满主音频时长。")
+        return result
+
     result: list[VideoClip] = []
     effective = 0.0
-    index = 0
     while effective < target_duration - 0.001:
-        source = clips[index % len(clips)]
-        source_duration = max(0.2, float(source.duration))
-        segment_overlap = overlap if result else 0.0
-        needed = target_duration - effective + segment_overlap
-        duration = min(source_duration, needed)
-        if duration <= segment_overlap and result:
-            duration = min(source_duration, segment_overlap + 0.05)
-        result.append(VideoClip(source.path, float(source.start), duration))
-        effective += duration - segment_overlap
-        index += 1
-        if index > 10000:
+        leading_overlap = bool(result)
+        cycle_overlap_count = len(normalized) - 1 + (1 if leading_overlap else 0)
+        cycle_overlap = overlap * cycle_overlap_count
+        cycle_effective = sum(clip.duration for clip in normalized) - cycle_overlap
+        remaining = target_duration - effective
+        if cycle_effective > 0 and remaining >= cycle_effective - 0.001:
+            result.extend(_copy_clip(clip) for clip in normalized)
+            effective += cycle_effective
+        else:
+            partial = _balanced_partial_cycle(normalized, remaining, overlap, leading_overlap)
+            result.extend(partial)
+            partial_overlap_count = len(partial) - 1 + (1 if leading_overlap else 0)
+            effective += sum(clip.duration for clip in partial) - overlap * max(0, partial_overlap_count)
+        if len(result) > 10000:
             raise ValueError("素材片段过短，无法安全铺满主音频时长。")
     return result
 
@@ -94,7 +182,9 @@ def find_executable(configured: str, name: str) -> str | None:
     return str(next((path for path in candidates if path.is_file()), "")) or None
 
 
-def probe_duration(path: str, ffprobe_path: str) -> float | None:
+def probe_duration(path: str, ffprobe_path: str | None) -> float | None:
+    if not ffprobe_path:
+        return None
     command = [
         ffprobe_path,
         "-v",
@@ -116,8 +206,10 @@ def probe_duration(path: str, ffprobe_path: str) -> float | None:
 def build_export_command(project: VideoProject, ffmpeg_path: str, output_path: str) -> list[str]:
     if not project.clips:
         raise ValueError("请至少添加一个视频素材。")
-    overlap = project.transition_duration if project.transition != "none" else 0.0
-    clips = fit_clips_to_duration(project.clips, project.target_duration, overlap)
+    requested_transition = min(max(float(project.transition_duration), 0.1), 2.0)
+    shortest_clip = min(max(0.2, float(clip.duration)) for clip in project.clips)
+    overlap = min(requested_transition, shortest_clip / 2) if project.transition != "none" else 0.0
+    clips = fit_clips_to_duration(project.clips, project.target_duration, overlap, project.mix_strategy)
     missing = [clip.path for clip in clips if not Path(clip.path).is_file()]
     if missing:
         raise ValueError(f"找不到素材：{Path(missing[0]).name}")
@@ -128,7 +220,7 @@ def build_export_command(project: VideoProject, ffmpeg_path: str, output_path: s
 
     width, height = ASPECT_SIZES.get(project.aspect, ASPECT_SIZES["9:16"])
     fps = min(max(int(project.fps), 15), 60)
-    transition_duration = min(max(float(project.transition_duration), 0.1), 2.0)
+    transition_duration = overlap
     command: list[str] = [ffmpeg_path, "-hide_banner", "-y"]
     for clip in clips:
         command.extend(["-ss", f"{max(0.0, clip.start):.3f}", "-t", f"{max(0.2, clip.duration):.3f}", "-i", clip.path])

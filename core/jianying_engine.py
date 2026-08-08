@@ -12,7 +12,7 @@ from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 
-from .video_engine import ASPECT_SIZES, VideoProject
+from .video_engine import ASPECT_SIZES, VideoClip, VideoProject, fit_clips_to_duration
 
 
 # The checked-in vendor folder contains Windows native wheels.  A macOS build
@@ -167,6 +167,17 @@ def probe_audio_duration(path: str) -> float | None:
         return None
 
 
+def probe_video_duration(path: str) -> float | None:
+    """Read the real material duration without requiring a separate FFprobe install."""
+    if draft is None or not Path(path).is_file():
+        return None
+    try:
+        duration = draft.VideoMaterial(path).duration / draft.SEC
+        return float(duration) if duration > 0 else None
+    except Exception:
+        return None
+
+
 SRT_BLOCK = re.compile(
     r"(?ms)^\s*\d+\s*\n"
     r"(\d{1,2}:\d{2}:\d{2}[,.]\d{3})\s*-->\s*(\d{1,2}:\d{2}:\d{2}[,.]\d{3})[^\n]*\n"
@@ -258,16 +269,32 @@ def create_jianying_draft(project: VideoProject, drafts_root: str, requested_nam
         transition = _transition_type(project.transition)
         prepared_segments: list[tuple[object, int]] = []
         material_cache: dict[str, object] = {}
-        index = 0
-        while target_duration is None and index < len(project.clips) or target_duration is not None and cursor < target_duration:
-            clip = project.clips[index % len(project.clips)]
+        available_clips: list[VideoClip] = []
+        for clip in project.clips:
             material = material_cache.get(clip.path)
             if material is None:
                 material = draft.VideoMaterial(clip.path)
                 material_cache[clip.path] = material
             start = max(0, round(clip.start * draft.SEC))
             available = max(0, material.duration - start)
-            requested = max(round(clip.duration * draft.SEC), 200_000)
+            requested = min(max(round(clip.duration * draft.SEC), 200_000), available)
+            if requested <= 0:
+                raise JianyingEngineError(f"素材截取起点超过文件时长：{Path(clip.path).name}")
+            available_clips.append(
+                VideoClip(clip.path, clip.start, requested / draft.SEC, material.duration / draft.SEC)
+            )
+
+        timeline_clips = fit_clips_to_duration(
+            available_clips,
+            target_duration / draft.SEC if target_duration is not None else 0.0,
+            overlap=0.0,
+            strategy=project.mix_strategy,
+        )
+        for clip in timeline_clips:
+            material = material_cache[clip.path]
+            start = max(0, round(clip.start * draft.SEC))
+            available = max(0, material.duration - start)
+            requested = min(max(round(clip.duration * draft.SEC), 200_000), available)
             remaining = target_duration - cursor if target_duration is not None else requested
             duration = min(requested, available, remaining)
             if duration <= 0:
@@ -281,9 +308,6 @@ def create_jianying_draft(project: VideoProject, drafts_root: str, requested_nam
             segment.add_background_filling("blur", 0.375)
             prepared_segments.append((segment, duration))
             cursor += duration
-            index += 1
-            if index > 10000:
-                raise JianyingEngineError("视频素材过短，无法安全铺满主音频。")
 
         for index, (segment, duration) in enumerate(prepared_segments):
             if transition is not None and index < len(prepared_segments) - 1:

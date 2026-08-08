@@ -47,6 +47,7 @@ from core.jianying_engine import (
     detect_jianying_executable,
     open_jianying,
     probe_audio_duration,
+    probe_video_duration,
 )
 from core.novel_engine import build_post_prompt, build_rewrite_prompt, chapter_records
 from core.secret_store import SecretStoreError, delete_api_key, load_api_key, save_api_key
@@ -62,7 +63,11 @@ from core.video_engine import (
 
 
 APP_NAME = "解压创作工坊"
-APP_VERSION = "0.2.2"
+APP_VERSION = "0.2.3"
+MIX_STRATEGIES = {
+    "均衡混剪（推荐）": "balanced",
+    "顺序完整播放": "sequential",
+}
 BG = "#F2F4F1"
 SURFACE = "#FFFFFF"
 SURFACE_ALT = "#E9EFEA"
@@ -361,6 +366,7 @@ class StudioApp:
                 ("生成并打开剪映", self.export_jianying_draft, "primary"),
             ],
         )
+        self._upgrade_video_clip_metadata()
         body = Frame(self.main, bg=BG)
         body.pack(fill=BOTH, expand=True, padx=34, pady=(0, 28))
         body.grid_columnconfigure(0, weight=3)
@@ -385,23 +391,24 @@ class StudioApp:
         self.video_tree.heading("order", text="#")
         self.video_tree.heading("name", text="素材文件")
         self.video_tree.heading("start", text="起点")
-        self.video_tree.heading("duration", text="取用时长")
+        self.video_tree.heading("duration", text="取用 / 原片")
         self.video_tree.column("order", width=50, anchor="center", stretch=False)
         self.video_tree.column("name", width=430, anchor="w")
         self.video_tree.column("start", width=90, anchor="center", stretch=False)
-        self.video_tree.column("duration", width=100, anchor="center", stretch=False)
+        self.video_tree.column("duration", width=145, anchor="center", stretch=False)
         self.video_tree.pack(fill=BOTH, expand=True, padx=1)
         self.video_tree.bind("<<TreeviewSelect>>", self.on_video_select)
 
         edit_bar = Frame(left, bg=SURFACE_ALT, padx=16, pady=12)
         edit_bar.pack(fill=X)
         self.clip_start_var = DoubleVar(value=0.0)
-        self.clip_duration_var = DoubleVar(value=5.0)
+        self.clip_duration_var = DoubleVar(value=0.0)
         self._field_label(edit_bar, "起点(秒)").pack(side=LEFT)
         self._entry(edit_bar, self.clip_start_var, 7).pack(side=LEFT, padx=(7, 16), ipady=5)
         self._field_label(edit_bar, "时长(秒)").pack(side=LEFT)
         self._entry(edit_bar, self.clip_duration_var, 7).pack(side=LEFT, padx=(7, 16), ipady=5)
         self._button(edit_bar, "应用", self.update_selected_clip, kind="dark").pack(side=LEFT)
+        self._button(edit_bar, "恢复完整时长", self.restore_selected_clip_duration, kind="ghost").pack(side=LEFT, padx=(7, 0))
         self._button(edit_bar, "删除", self.remove_selected_clip, kind="danger").pack(side=RIGHT)
         self._button(edit_bar, "下移", lambda: self.move_clip(1), kind="ghost").pack(side=RIGHT, padx=(0, 6))
         self._button(edit_bar, "上移", lambda: self.move_clip(-1), kind="ghost").pack(side=RIGHT, padx=(0, 6))
@@ -428,6 +435,9 @@ class StudioApp:
         self.fps_var = StringVar(value=str(video["fps"]))
         self.transition_var = StringVar(value=video["transition"])
         self.transition_duration_var = DoubleVar(value=video["transition_duration"])
+        strategy_id = video.get("mix_strategy", "balanced")
+        strategy_label = next((label for label, value in MIX_STRATEGIES.items() if value == strategy_id), "均衡混剪（推荐）")
+        self.mix_strategy_var = StringVar(value=strategy_label)
         self.voice_var = StringVar(value=video.get("voice_path", ""))
         self.subtitles_var = StringVar(value=video.get("subtitles_path", ""))
         self.music_var = StringVar(value=video["music_path"])
@@ -439,6 +449,16 @@ class StudioApp:
         self._combo_field(settings, "帧率", self.fps_var, ["24", "25", "30", "60"])
         self._combo_field(settings, "转场", self.transition_var, ["fade", "wipeleft", "slideright", "circleopen", "smoothleft", "none"])
         self._number_field(settings, "转场时长（秒）", self.transition_duration_var)
+        self._combo_field(settings, "素材使用方式", self.mix_strategy_var, list(MIX_STRATEGIES))
+        Label(
+            settings,
+            text="均衡混剪会让所有素材尽量平均出现在主音频时间线中；顺序完整播放则优先播完前一段。",
+            bg=SURFACE,
+            fg=MUTED,
+            wraplength=270,
+            justify=LEFT,
+            font=("Microsoft YaHei UI", 8),
+        ).pack(anchor="w", pady=(4, 0))
         self._combo_field(settings, "文案氛围", self.mood_var, ["治愈", "沉浸", "爽感", "轻松", "高级感"])
         self._combo_field(settings, "发布平台", self.platform_var, ["小红书", "抖音", "视频号", "B站", "微博"])
 
@@ -501,7 +521,7 @@ class StudioApp:
         if video.get("voice_path") and float(video.get("voice_duration", 0.0)) > 0:
             return float(video["voice_duration"])
         clips = video.get("clips", [])
-        total = sum(float(clip.get("duration", 5)) for clip in clips)
+        total = sum(float(clip.get("duration", 0)) for clip in clips)
         if len(clips) > 1 and video.get("transition") != "none":
             total -= float(video.get("transition_duration", 0.35)) * (len(clips) - 1)
         return max(0.0, total)
@@ -515,6 +535,7 @@ class StudioApp:
         video["fps"] = int(self.fps_var.get() or 30)
         video["transition"] = self.transition_var.get()
         video["transition_duration"] = max(0.1, min(float(self.transition_duration_var.get()), 2.0))
+        video["mix_strategy"] = MIX_STRATEGIES.get(self.mix_strategy_var.get(), "balanced")
         video["voice_path"] = self.voice_var.get().strip()
         video["subtitles_path"] = self.subtitles_var.get().strip()
         video["music_path"] = self.music_var.get().strip()
@@ -532,7 +553,9 @@ class StudioApp:
             return
         self.video_tree.delete(*self.video_tree.get_children())
         for index, clip in enumerate(self.state["video"]["clips"]):
-            self.video_tree.insert("", END, iid=str(index), values=(index + 1, Path(clip["path"]).name, f"{clip['start']:.1f}s", f"{clip['duration']:.1f}s"))
+            source_duration = float(clip.get("source_duration", 0.0))
+            duration_text = f"{float(clip['duration']):.1f}s / {source_duration:.1f}s" if source_duration > 0 else f"{float(clip['duration']):.1f}s / 未知"
+            self.video_tree.insert("", END, iid=str(index), values=(index + 1, Path(clip["path"]).name, f"{clip['start']:.1f}s", duration_text))
         if selected is not None and str(selected) in self.video_tree.get_children():
             self.video_tree.selection_set(str(selected))
             self.video_tree.focus(str(selected))
@@ -544,10 +567,51 @@ class StudioApp:
             return
         settings = self.state["settings"]
         ffprobe = find_executable(settings.get("ffprobe_path", ""), "ffprobe")
+        failed: list[str] = []
         for path in paths:
-            duration = probe_duration(path, ffprobe) if ffprobe else None
-            self.state["video"]["clips"].append({"path": path, "start": 0.0, "duration": round(min(duration or 5.0, 8.0), 2)})
-        self._refresh_video_tree(len(self.state["video"]["clips"]) - 1)
+            duration = probe_duration(path, ffprobe) or probe_video_duration(path)
+            if not duration or duration < 0.2:
+                failed.append(Path(path).name)
+                continue
+            rounded = round(float(duration), 3)
+            self.state["video"]["clips"].append(
+                {"path": path, "start": 0.0, "duration": rounded, "source_duration": rounded}
+            )
+        if self.state["video"]["clips"]:
+            self._refresh_video_tree(len(self.state["video"]["clips"]) - 1)
+        if failed:
+            messagebox.showwarning(
+                "部分素材未添加",
+                "无法读取以下素材的真实时长，因此没有用错误的 5 秒默认值代替：\n"
+                + "\n".join(failed[:8])
+                + ("\n……" if len(failed) > 8 else "")
+                + "\n\n请配置 FFprobe，或将素材转换为常见的 MP4/MOV 格式后重试。",
+            )
+
+    def _upgrade_video_clip_metadata(self) -> None:
+        """Migrate old 5/8-second imports to their real full source duration."""
+        clips = self.state["video"].get("clips", [])
+        if not clips:
+            return
+        settings = self.state["settings"]
+        ffprobe = find_executable(settings.get("ffprobe_path", ""), "ffprobe")
+        changed = False
+        for clip in clips:
+            if float(clip.get("source_duration", 0.0)) > 0 or not Path(clip.get("path", "")).is_file():
+                continue
+            duration = probe_duration(clip["path"], ffprobe) or probe_video_duration(clip["path"])
+            if not duration:
+                continue
+            source_duration = round(float(duration), 3)
+            start = min(max(0.0, float(clip.get("start", 0.0))), max(0.0, source_duration - 0.2))
+            clip.update(
+                start=start,
+                duration=round(max(0.2, source_duration - start), 3),
+                source_duration=source_duration,
+            )
+            changed = True
+        if changed:
+            self.store.save(self.state)
 
     def on_video_select(self, _event=None) -> None:
         if not self.video_tree or not self.video_tree.selection():
@@ -567,7 +631,33 @@ class StudioApp:
         except (ValueError, TypeError):
             messagebox.showerror("参数错误", "起点和时长必须是数字。")
             return
-        self.state["video"]["clips"][index].update(start=start, duration=duration)
+        clip = self.state["video"]["clips"][index]
+        source_duration = float(clip.get("source_duration", 0.0))
+        was_clamped = False
+        if source_duration > 0:
+            if start >= source_duration:
+                messagebox.showerror("参数错误", f"截取起点必须小于原片时长 {source_duration:.2f} 秒。")
+                return
+            available = source_duration - start
+            if duration > available:
+                duration = available
+                was_clamped = True
+        clip.update(start=start, duration=round(duration, 3))
+        self._refresh_video_tree(index)
+        if was_clamped:
+            messagebox.showinfo("已自动修正", "取用时长超过素材结尾，已自动调整为剩余的完整时长。")
+
+    def restore_selected_clip_duration(self) -> None:
+        if not self.video_tree or not self.video_tree.selection():
+            messagebox.showinfo("选择素材", "请先选择一个视频素材。")
+            return
+        index = int(self.video_tree.selection()[0])
+        clip = self.state["video"]["clips"][index]
+        source_duration = float(clip.get("source_duration", 0.0))
+        if source_duration <= 0:
+            messagebox.showwarning("无法恢复", "尚未读取到这个素材的原始时长，请先配置 FFprobe 后重新添加。")
+            return
+        clip["duration"] = round(max(0.2, source_duration - float(clip.get("start", 0.0))), 3)
         self._refresh_video_tree(index)
 
     def remove_selected_clip(self) -> None:
@@ -624,7 +714,15 @@ class StudioApp:
         self._sync_video_state()
         video = self.state["video"]
         return VideoProject(
-            clips=[VideoClip(item["path"], float(item["start"]), float(item["duration"])) for item in video["clips"]],
+            clips=[
+                VideoClip(
+                    item["path"],
+                    float(item["start"]),
+                    float(item["duration"]),
+                    float(item.get("source_duration", 0.0)),
+                )
+                for item in video["clips"]
+            ],
             aspect=video["aspect"],
             fps=int(video["fps"]),
             transition=video["transition"],
@@ -632,6 +730,7 @@ class StudioApp:
             voice_path=video.get("voice_path", ""),
             subtitles_path=video.get("subtitles_path", ""),
             target_duration=float(video.get("voice_duration", 0.0)) if video.get("voice_path") else 0.0,
+            mix_strategy=video.get("mix_strategy", "balanced"),
             music_path=video["music_path"],
             music_volume=float(video["music_volume"]),
         )

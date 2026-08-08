@@ -156,7 +156,7 @@ class OpenAICompatibleClient:
             headers={
                 "Authorization": f"Bearer {self.config.api_key.strip()}",
                 "Content-Type": "application/json",
-                "User-Agent": "RelaxCreatorStudio/0.2.2",
+                "User-Agent": "RelaxCreatorStudio/0.2.3",
             },
             method="POST",
         )
