@@ -42,6 +42,7 @@ class JianyingDraftResult:
 
 
 INVALID_NAME = re.compile(r'[<>:"/\\|?*\x00-\x1f]')
+SOURCE_VIDEO_VOLUME = 0.0
 
 
 def sanitize_draft_name(value: str) -> str:
@@ -303,7 +304,9 @@ def create_jianying_draft(project: VideoProject, drafts_root: str, requested_nam
                 material,
                 draft.Timerange(cursor, duration),
                 source_timerange=draft.Timerange(start, duration),
-                volume=0.0 if (project.voice_path or project.music_path) else 1.0,
+                # Imported clips are visual material only. Their embedded audio
+                # must never leak into the voice-over/background-music mix.
+                volume=SOURCE_VIDEO_VOLUME,
             )
             segment.add_background_filling("blur", 0.375)
             prepared_segments.append((segment, duration))

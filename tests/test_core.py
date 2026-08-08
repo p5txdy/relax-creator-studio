@@ -16,6 +16,7 @@ from core.ai_client import (
 )
 from core.novel_engine import build_post_prompt, build_rewrite_prompt, chapter_records, split_chapters
 from core.jianying_engine import (
+    SOURCE_VIDEO_VOLUME,
     clamp_srt_text,
     detect_jianying_drafts_path,
     detect_jianying_executable,
@@ -252,6 +253,9 @@ class SecretStoreTests(unittest.TestCase):
 
 
 class JianyingEngineTests(unittest.TestCase):
+    def test_imported_video_audio_is_muted(self) -> None:
+        self.assertEqual(SOURCE_VIDEO_VOLUME, 0.0)
+
     def test_sanitize_and_unique_name(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             self.assertEqual(sanitize_draft_name('测试:/草稿?'), "测试__草稿_")

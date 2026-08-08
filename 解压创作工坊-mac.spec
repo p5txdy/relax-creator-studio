@@ -52,13 +52,13 @@ collect = COLLECT(
 
 app = BUNDLE(
     collect,
-    name="解压创作工坊-v0.2.3.app",
+    name="解压创作工坊-v0.2.4.app",
     icon=None,
     bundle_identifier="com.relaxcreator.studio",
     info_plist={
         "CFBundleDisplayName": "解压创作工坊",
-        "CFBundleShortVersionString": "0.2.3",
-        "CFBundleVersion": "0.2.3",
+        "CFBundleShortVersionString": "0.2.4",
+        "CFBundleVersion": "0.2.4",
         "NSHighResolutionCapable": True,
         "NSHumanReadableCopyright": "Copyright © 2026 Relax Creator Studio",
     },

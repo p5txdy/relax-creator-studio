@@ -63,7 +63,7 @@ from core.video_engine import (
 
 
 APP_NAME = "解压创作工坊"
-APP_VERSION = "0.2.3"
+APP_VERSION = "0.2.4"
 MIX_STRATEGIES = {
     "均衡混剪（推荐）": "balanced",
     "顺序完整播放": "sequential",
@@ -428,7 +428,7 @@ class StudioApp:
         settings_outer.grid(row=0, column=1, sticky="nsew", padx=(9, 0))
         settings = settings_outer.winfo_children()[0]
         Label(settings, text="成片参数", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 13, "bold")).pack(anchor="w")
-        Label(settings, text="所有素材会自动铺满目标画幅", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w", pady=(4, 18))
+        Label(settings, text="素材自动铺满目标画幅，视频原声始终静音", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w", pady=(4, 18))
 
         video = self.state["video"]
         self.aspect_var = StringVar(value=video["aspect"])
