@@ -421,7 +421,5213 @@ class RoundedButton(Canvas):
         self.hovered = False
         self.bind("<Configure>", self._draw, add="+")
         self.bind("<Enter>", lambda _event: self._set_hover(True), add="+")
-        self.bind("<Leave>", lambda _event: self._set_hover(False), add="+÷6ÚÚ$z{-®éÜj×âÂ¶–æCÒ&v†÷7B"’ç6²‡6–FSÔÄTeB¢6VÆbåö'WGFöâ†ÖöFVÅö7F–öç2Â.kˆ^™šN[{.KùŞZÙ‚¶W’"Â6VÆbæ6ÆV%÷6fVEö•ö¶W’Â¶–æCÒ&v†÷7B"’ç6²‡6–FSÔÄTeBÂGƒÒƒrÂ’¢6VÆbåö'WGFöâ†ÖöFVÅö7F–öç2Â.KùŞZÙjŠYè¾Šëî{Úâ"Â6VÆbç6fU÷6WGF–æw2Â¶–æCÒ'&–Ö'’"’ç6²‡6–FSÕ$”t…B¢6VÆbå÷WFFU÷&÷f–FW%ö†VÇ‚¢6VÆbæ'W5ö†æFÆW"Ò6VÆbåö†æFÆU÷6WGF–æw5öWfVç@ ¢FööÅö÷WFW"Ò6VÆbåö6&B†&öG’ÂGƒÓ#BÂG“Ó#"¢FööÅö÷WFW"æw&–B‡&÷sÓÂ6öÇVÖãÓÂ7F–6·“Ò&æWr"ÂGƒÒƒ’Â’¢FööÂÒFööÅö÷WFW"çv–æfõö6†–ÆG&Vâ‚•³Ğ¢Æ&VÂ‡FööÂÂFW‡CÒ.Xš®iŠˆØz‹şKˆîŠxnš)[z^X[r"Â&sÕ5U$d4RÂfsÔ”ä²ÂföçCÒ‚$Ö–7&÷6ögB–†V’T’"ÂBÂ&&öÆB"’’ç6²†æ6†÷#Ò'r"¢Æ&VÂ‡FööÂÂFW‡CÒ.™ÙhkÊ¾KÉ®y»Nhê^yIşh‰Xúş{Én‹éXš®iŠˆØz‹şûÉ´df×VrK¸^yJK¨îXúş˜y¨BÕBš(NŠxZûÎX{®8""Â&sÕ5U$d4RÂfsÔÕUDTBÂw&ÆVæwFƒÓC3Â§W7F–g“ÔÄTeBÂföçCÒ‚$Ö–7&÷6ögB–†V’T’"Â’’’ç6²†æ6†÷#Ò'r"ÂG“ÒƒBÂ‚’¢6VÆbæff×Vu÷f"Ò7G&–æuf"‡fÇVS×6WGF–æw2ævWB‚&ff×Vu÷F‚"Â""’¢6VÆbæfg&ö&U÷f"Ò7G&–æuf"‡fÇVS×6WGF–æw2ævWB‚&fg&ö&U÷F‚"Â""’¢6VÆbæ¦–ç––æu÷f"Ò7G&–æuf"‡fÇVS×6WGF–æw2ævWB‚&¦–ç––æuöW†R"Â""’÷"FWFV7Eö¦–ç––æuöW†V7WF&ÆR‚""’÷"""¢6VÆbæ¦–ç––æuöG&gG5÷f"Ò7G&–æuf"‡fÇVS×6WGF–æw2ævWB‚&¦–ç––æuöG&gG5÷F‚"Â""’÷"FWFV7Eö¦–ç––æuöG&gG5÷F‚‚""’÷"""¢W†V7WF&ÆU÷7Vff—‚Ò""–b7—2çÆFf÷&ÒÓÒ&F'v–â"VÇ6R"æW†R ¢6VÆbå÷F…öf–VÆB‡FööÂÂb&ff×Vw¶W†V7WF&ÆU÷7Vff—‡Ò"Â6VÆbæff×Vu÷f"Â&ff×Vr"¢6VÆbå÷F…öf–VÆB‡FööÂÂb&fg&ö&W¶W†V7WF&ÆU÷7Vff—‡Ò"Â6VÆbæfg&ö&U÷f"Â&fg&ö&R"¢6VÆbå÷F…öf–VÆB‡FööÂÂ.Xš®iŠK‰>K‰®x˜‚"Â6VÆbæ¦–ç––æu÷f"Â$¦–ç––æu&ò"¢6VÆbåöF—&V7F÷'•öf–VÆB‡FööÂÂ.Xš®iŠiÊÎYËˆØz‹şyºî[ÙR"Â6VÆbæ¦–ç––æuöG&gG5÷f"¢FWFV7FVBÒf–æEöW†V7WF&ÆR‡6VÆbæff×Vu÷f"ævWB‚’Â&ff×Vr"¢6VÆbæff×Vu÷7FGW2ÒÆ&VÂ‡FööÂÂFW‡CÒ†b.[{.h›îX‹ûÉ§¶FWFV7FVGÒ"–bFWFV7FVBVÇ6R.[	®iÊ®h›îX‹df×V~ûÉ¾K¸ŞXúşX‹nKÙÎY»îx˜~ûÈÎKØnKˆŞˆ;ŞYh‰™ÙhkÊ¾Šxnš)8""’Â&sÕ5U$d4RÂfsÔ44TåEôD$²–bFWFV7FVBVÇ6Rt$ÒÂw&ÆVæwFƒÓC3Â§W7F–g“ÔÄTeBÂföçCÒ‚$Ö–7&÷6ögB–†V’T’"Â’’¢6VÆbæff×Vu÷7FGW2ç6²†æ6†÷#Ò'r"ÂG“Òƒ‚Â’¢6VÆbåö'WGFöâ‡FööÂÂ.KùŞZÙ[z^X[~Šëî{Úâ"Â6VÆbç6fU÷6WGF–æw2Â¶–æCÒ'&–Ö'’"’ç6²†æ6†÷#Ò&R"ÂG“Òƒ#"Â’ ¢æ÷FUö÷WFW"Ò6VÆbåö6&B†&öG’Â&sÔ4ôÔ”5ôÔ”åBÂGƒÓ#"ÂG“Ób¢æ÷FUö÷WFW"æw&–B‡&÷sÓÂ6öÇVÖãÓÂ6öÇVÖç7ãÓ"Â7F–6·“Ò&Wr"ÂG“Òƒ‚Â’¢æ÷FRÒæ÷FUö÷WFW"çv–æfõö6†–ÆG&Vâ‚•³Ğ¢æ÷FU÷F—FÆRÒ$Ö2X[ÎZëKˆâdf×VrŠûNiˆâ"–b7—2çÆFf÷&ÒÓÒ&F'v–â"VÇ6R$df×Vr˜XŞ{ÚîŠûNiˆâ ¢–b7—2çÆFf÷&ÒÓÒ&F'v–â# ¢æ÷FU÷FW‡BÒ$Ö2[©NyJKÉ®ˆz®Xªj8iúRD‚KŠŞy¨Bff×Vröfg&ö&^ûÉ¾K™şXúşKº^YÊ‹ù˜xÎh˜¾Xª˜hºXúşhš~ŠÎih~K»n8" ¢VÇ6S ¢æ÷FU÷FW‡BÒ.ZèŠ8^ZèÎh‰Yî˜hº’&–âih~K»nZKKŠŞy¨Bff×VræW†RKˆâfg&ö&RæW†^8.[©NyJK™şKÉ®ˆz®Xªj8iúRD8v–ävWBÆ–æ·2Y(Î[‹ŠxZèŠ8^yºî[Ù^8" ¢Æ&VÂ†æ÷FRÂFW‡CÖæ÷FU÷F—FÆRÂ&sÔ4ôÔ”5ôÔ”åBÂfsÔ44TåEôD$²ÂföçCÒ‚$Ö–7&÷6ögB–†V’T’"ÂÂ&&öÆB"’’ç6²†æ6†÷#Ò'r"¢Æ&VÂ†æ÷FRÂFW‡CÖæ÷FU÷FW‡BÂ&sÔ4ôÔ”5ôÔ”åBÂfsÔÕUDTBÂw&ÆVæwFƒÓ“Â§W7F–g“ÔÄTeBÂföçCÒ‚$Ö–7&÷6ögB–†V’T’"Â’’’ç6²†æ6†÷#Ò'r"ÂG“ÒƒRÂ’ ¢FVb÷6WGF–æw5öVçG'’‡6VÆbÂ&VçBÂÆ&VÃ¢7G"Âf&–&ÆS¢7G&–æuf"’ÓâæöæS ¢6VÆbåöf–VÆEöÆ&VÂ‡&VçBÂÆ&VÂ’ç6²†æ6†÷#Ò'r"ÂG“Òƒ2ÂR’¢6VÆbåöVçG'’‡&VçBÂf&–&ÆR’ç6²†f–ÆÃÕ‚Â—G“Ór ¢FVböÇ•÷&÷f–FW%÷6VÆV7F–öâ‡6VÆbÂöWfVçCÔæöæR’ÓâæöæS ¢&Wf–÷W2Ò6VÆbæ7F—fUö•÷&÷f–FW ¢6VÆbæ•ö¶W—5·&Wf–÷W5ÒÒ6VÆbæ•ö¶W’ævWB‚’ç7G&—‚¢6VÆV7FVBÒ6VÆbç&÷f–FW%ö–G5ö'•öÆ&VÂævWB‡6VÆbç&÷f–FW%÷f"ævWB‚’Â&7W7FöÒ"¢6VÆbæ7F—fUö•÷&÷f–FW"Ò6VÆV7FV@¢&W6WBÒ&÷f–FW%÷&W6WB‡6VÆV7FVB¢–b6VÆV7FVBÒ&7W7FöÒ# ¢6VÆbæ&6U÷W&Å÷f"ç6WB‡&W6WBæ&6U÷W&Â¢6VÆbæÖöFVÅöæÖU÷f"ç6WB‡&W6WBæÖöFVÂ¢6VÆbæ•ö¶W’ç6WB‡6VÆbåöÆöE÷&÷f–FW%ö•ö¶W’‡6VÆV7FVB’¢6VÆbå÷WFFU÷&÷f–FW%ö†VÇ‚¢–b†6GG"‡6VÆbÂ&•÷FW7E÷7FGW2"“ ¢6VÆbæ•÷FW7E÷7FGW2æ6öæf–wW&R‡FW‡CÒ.Xˆ~hÚ.iÈŞXªYXnYîŠû~˜xŞikkX¾Šù^‹ùîhêR"ÂfsÔÕUDTB ¢FVb÷WFFU÷&÷f–FW%ö†VÇ‡6VÆb’ÓâæöæS ¢&W6WBÒ&÷f–FW%÷&W6WB‡6VÆbæ7F—fUö•÷&÷f–FW"¢6VÆbç&÷f–FW%ö†VÇæ6öæf–wW&R‡FW‡C×&W6WBæFW67&—F–öâ¢æÖW2Ò"ò"æ¦ö–â‡&W6WBæVçf—&öæÖVçEö¶W—2¢6VÆbæ•ö¶W•ö†–çBæ6öæf–wW&R‡FW‡CÖb.K™şXúşYÊY
-şXªX˜ŞŠëî{ÚîxêşZ(>Xù˜xşûÉ§¶æÖW7Ò" ¢FVböÆöE÷&÷f–FW%ö•ö¶W’‡6VÆbÂ&÷f–FW%ö–C¢7G"’Óâ7G# ¢–b&÷f–FW%ö–B–â6VÆbæ•ö¶W—3 ¢&WGW&â6VÆbæ•ö¶W—5·&÷f–FW%ö–EĞ¢fÇVRÒ" ¢–b6VÆbç&VÖVÖ&W%ö•ö¶W’ævWB‚“ ¢G'“ ¢fÇVRÒÆöEö•ö¶W’‡&÷f–FW%ö–B¢W†6WB6V7&WE7F÷&TW'&÷# ¢fÇVRÒ" ¢fÇVRÒfÇVR÷"•ö¶W•ög&öÕöVçf—&öæÖVçB‡&÷f–FW%ö–B¢6VÆbæ•ö¶W—5·&÷f–FW%ö–EÒÒfÇVP¢&WGW&âfÇVP ¢FVb÷W'6—7Eö7W'&VçEö•ö¶W’‡6VÆb’ÓâæöæS ¢&÷f–FW%ö–BÒ6VÆbæ7F—fUö•÷&÷f–FW ¢fÇVRÒ6VÆbæ•ö¶W’ævWB‚’ç7G&—‚¢6VÆbæ•ö¶W—5·&÷f–FW%ö–EÒÒfÇVP¢–b6VÆbç&VÖVÖ&W%ö•ö¶W’ævWB‚’æBfÇVS ¢6fUö•ö¶W’‡&÷f–FW%ö–BÂfÇVR¢VÇ6S ¢FVÆWFUö•ö¶W’‡&÷f–FW%ö–B ¢FVb6ÆV%÷6fVEö•ö¶W’‡6VÆb’ÓâæöæS ¢&÷f–FW%ö–BÒ6VÆbæ7F—fUö•÷&÷f–FW ¢G'“ ¢FVÆWFUö•ö¶W’‡&÷f–FW%ö–B¢W†6WB6V7&WE7F÷&TW'&÷"2W†3 ¢ÖW76vV&÷‚ç6†÷vW'&÷"‚.kˆ^™šNZK‹JR"Â7G"†W†2’¢&WGW&à¢6VÆbæ•ö¶W—5·&÷f–FW%ö–EÒÒ" ¢6VÆbæ•ö¶W’ç6WB‚""¢ÖW76vV&÷‚ç6†÷v–æfò‚.[{.kˆ^™šB"Âb'·&÷f–FW%÷&W6WB‡&÷f–FW%ö–B’æÆ&VÇÒy¨N[{.KùŞZÙ‚’¶W’[{.K¸î{;¾{¹şXzŞhÚîKŠŞXŠ™šN8"" ¢FVb÷F…öf–VÆB‡6VÆbÂ&VçBÂÆ&VÃ¢7G"Âf&–&ÆS¢7G&–æuf"ÂW†V7WF&ÆUöæÖS¢7G"’ÓâæöæS ¢6VÆbåöf–VÆEöÆ&VÂ‡&VçBÂÆ&VÂ’ç6²†æ6†÷#Ò'r"ÂG“Òƒ2ÂR’¢&÷rÒg&ÖR‡&VçBÂ&sÕ5U$d4R¢&÷rç6²†f–ÆÃÕ‚¢6VÆbåöVçG'’‡&÷rÂf&–&ÆR’ç6²‡6–FSÔÄTeBÂf–ÆÃÕ‚ÂW‡æCÕG'VRÂ—G“Ór ¢FVb'&÷w6R‚’ÓâæöæS ¢–b7—2çÆFf÷&ÒÓÒ&F'v–â"æBW†V7WF&ÆUöæÖRÓÒ$¦–ç––æu&ò# ¢F‚Òf–ÆVF–Æöræ6¶÷Væf–ÆVæÖR€¢F—FÆSÒ.˜hºXš®iŠK‰>K‰®x˜‚æûÈ˜	®[‹KØŞK¨î(	Î[©NyJzˆ¾[¨ş(	ŞûÈ’"À¢–æ—F–ÆF—#Ò"ôÆ–6F–öç2"À¢f–ÆWG—W3Õ²‚$Ö2[©NyJ‚"Â"¢æ"’Â‚.h˜iÈih~K»b"Â"¢â¢"•ÒÀ¢¢VÆ–b7—2çÆFf÷&ÒÓÒ&F'v–â# ¢F‚Òf–ÆVF–Æöræ6¶÷Væf–ÆVæÖR‡F—FÆSÖb.˜hº’¶W†V7WF&ÆUöæÖWÒ"¢VÇ6S ¢F‚Òf–ÆVF–Æöræ6¶÷Væf–ÆVæÖR‡F—FÆSÖb.˜hº’¶W†V7WF&ÆUöæÖWÒæW†R"Âf–ÆWG—W3Õ²‚.Xúşhš~ŠÎih~K»b"Â"¢æW†R"’Â‚.h˜iÈih~K»b"Â"¢â¢"•Ò¢–bFƒ ¢f&–&ÆRç6WB‡F‚ ¢6VÆbåö'WGFöâ‡&÷rÂ.˜hº’"Â'&÷w6RÂ¶–æCÒ&v†÷7B"’ç6²‡6–FSÕ$”t…BÂGƒÒƒrÂ’ ¢FVböF—&V7F÷'•öf–VÆB‡6VÆbÂ&VçBÂÆ&VÃ¢7G"Âf&–&ÆS¢7G&–æuf"’ÓâæöæS ¢6VÆbåöf–VÆEöÆ&VÂ‡&VçBÂÆ&VÂ’ç6²†æ6†÷#Ò'r"ÂG“Òƒ2ÂR’¢&÷rÒg&ÖR‡&VçBÂ&sÕ5U$d4R¢&÷rç6²†f–ÆÃÕ‚¢6VÆbåöVçG'’‡&÷rÂf&–&ÆR’ç6²‡6–FSÔÄTeBÂf–ÆÃÕ‚ÂW‡æCÕG'VRÂ—G“Ór ¢FVb'&÷w6R‚’ÓâæöæS ¢F‚Òf–ÆVF–Æöræ6¶F—&V7F÷'’‡F—FÆSÒ.˜hºXš®iŠˆØz‹şyºî[ÙR"¢–bFƒ ¢f&–&ÆRç6WB‡F‚ ¢6VÆbåö'WGFöâ‡&÷rÂ.˜hº’"Â'&÷w6RÂ¶–æCÒ&v†÷7B"’ç6²‡6–FSÕ$”t…BÂGƒÒƒrÂ’ ¢FVb6fU÷6WGF–æw2‡6VÆb’ÓâæöæS ¢6WGF–æw2Ò6VÆbç7FFU²'6WGF–æw2%Ğ¢6V7&WEöW'&÷"Ò" ¢–b†6GG"‡6VÆbÂ&&6U÷W&Å÷f""“ ¢6WGF–æw5²'&÷f–FW"%ÒÒ6VÆbæ7F—fUö•÷&÷f–FW ¢6WGF–æw5²&&6U÷W&Â%ÒÒ6VÆbæ&6U÷W&Å÷f"ævWB‚’ç7G&—‚’ç'7G&—‚"ò"¢6WGF–æw5²&ÖöFVÂ%ÒÒ6VÆbæÖöFVÅöæÖU÷f"ævWB‚’ç7G&—‚¢6WGF–æw5²'&VÖVÖ&W%ö•ö¶W’%ÒÒ6VÆbç&VÖVÖ&W%ö•ö¶W’ævWB‚¢G'“ ¢6VÆbå÷W'6—7Eö7W'&VçEö•ö¶W’‚¢W†6WB6V7&WE7F÷&TW'&÷"2W†3 ¢6V7&WEöW'&÷"Ò7G"†W†2¢6WGF–æw5²&ff×Vu÷F‚%ÒÒ6VÆbæff×Vu÷f"ævWB‚’ç7G&—‚¢6WGF–æw5²&fg&ö&U÷F‚%ÒÒ6VÆbæfg&ö&U÷f"ævWB‚’ç7G&—‚¢6WGF–æw5²&¦–ç––æuöW†R%ÒÒ6VÆbæ¦–ç––æu÷f"ævWB‚’ç7G&—‚¢6WGF–æw5²&¦–ç––æuöG&gG5÷F‚%ÒÒ6VÆbæ¦–ç––æuöG&gG5÷f"ævWB‚’ç7G&—‚¢6VÆbç7F÷&Rç6fR‡6VÆbç7FFR¢6VÆbå÷&Vg&W6…÷FööÅ÷7FGW2‚¢–b†6GG"‡6VÆbÂ&ff×Vu÷7FGW2"“ ¢FWFV7FVBÒf–æEöW†V7WF&ÆR‡6WGF–æw5²&ff×Vu÷F‚%ÒÂ&ff×Vr"¢6VÆbæff×Vu÷7FGW2æ6öæf–wW&R‡FW‡CÒ†b.[{.h›îX‹ûÉ§¶FWFV7FVGÒ"–bFWFV7FVBVÇ6R.[	®iÊ®h›îX‹df×V~ûÉ¾K¸ŞXúşX‹nKÙÎY»îx˜~ûÈÎKØnKˆŞˆ;ŞYh‰™ÙhkÊ¾Šxnš)8""’ÂfsÔ44TåEôD$²–bFWFV7FVBVÇ6Rt$Ò¢–b6V7&WEöW'&÷# ¢ÖW76vV&÷‚ç6†÷wv&æ–ær‚.Šëî{Úî[{.KùŞZÙ‚"Âb.jŠYè¾Y(Î[z^X[~Šëî{Úî[{.KùŞZÙûÈÎKØb’¶W’iÊ®ˆ;ŞZèXZKùŞZÙûÉ¥Æç·6V7&WEöW'&÷'Ò"¢VÆ–b6VÆbç&VÖVÖ&W%ö•ö¶W’ævWB‚“ ¢ÖW76vV&÷‚ç6†÷v–æfò‚.[{.KùŞZÙ‚"Â.jŠYè¾8Xš®iŠˆØz‹şKˆîŠxnš)[z^X[~Šëî{Úî[{.KùŞZÙ8$’¶W’[{.yK{;¾{¹şZèXZKùŞzêûÈÎKˆ¾jÊh™>[ÈKÉ®ˆz®XªZ¾XZ^8""¢VÇ6S ¢ÖW76vV&÷‚ç6†÷v–æfò‚.[{.KùŞZÙ‚"Â.jŠYè¾8Xš®iŠˆØz‹şKˆîŠxnš)[z^X[~Šëî{Úî[{.KùŞZÙ8$’¶W’iÊ®Š*¾ŠëKØş8"" ¢FVbö•ö6Æ–VçB‡6VÆbÂW6Uöf÷&Ó¢&ööÂÒfÇ6R’Óâ÷Vä”6ö×F–&ÆT6Æ–VçC ¢6WGF–æw2Ò6VÆbç7FFU²'6WGF–æw2%Ğ¢–bW6Uöf÷&ÒæB†6GG"‡6VÆbÂ&&6U÷W&Å÷f""“ ¢&6U÷W&ÂÒ6VÆbæ&6U÷W&Å÷f"ævWB‚¢ÖöFVÂÒ6VÆbæÖöFVÅöæÖU÷f"ævWB‚¢&÷f–FW%ö–BÒ6VÆbæ7F—fUö•÷&÷f–FW ¢VÇ6S ¢&6U÷W&ÂÒ6WGF–æw2ævWB‚&&6U÷W&Â"Â""¢ÖöFVÂÒ6WGF–æw2ævWB‚&ÖöFVÂ"Â""¢&÷f–FW%ö–BÒ6WGF–æw2ævWB‚'&÷f–FW""’÷"–æfW%÷&÷f–FW"†&6U÷W&ÂÂÖöFVÂ¢6öæf–rÒ”6öæf–r†&6U÷W&ÂÂÖöFVÂÂ6VÆbæ•ö¶W’ævWB‚’Â&÷f–FW#×&÷f–FW%ö–B¢–bæ÷B6öæf–ræ&6U÷W&Ã ¢&—6R”6Æ–VçDW'&÷"‚.Šû~XXZ¾XijŠYè²&6RU$Î8""¢–bæ÷B6öæf–ræ•ö¶W“ ¢&—6R”6Æ–VçDW'&÷"‚.Šû~XXYÊ(	ÎjŠYè¾Kˆî[z^X[~(	ŞKŠŞZ¾Xi’’¶W8""¢&WGW&â÷Vä”6ö×F–&ÆT6Æ–VçB†6öæf–r ¢FVbFW7Eö•ö6öææV7F–öâ‡6VÆb’ÓâæöæS ¢–b6VÆbæ—5ö'W7“ ¢&WGW&à¢G'“ ¢6Æ–VçBÒ6VÆbåö•ö6Æ–VçB‡W6Uöf÷&ÓÕG'VR¢W†6WB”6Æ–VçDW'&÷"2W†3 ¢ÖW76vV&÷‚ç6†÷wv&æ–ær‚.izk9^kX¾ŠùR"Â7G"†W†2’¢&WGW&à¢6VÆbæ—5ö'W7’ÒG'VP¢6VÆbæ•÷FW7E÷7FGW2æ6öæf–wW&R‡FW‡CÖb.jÚ>YÊ‹ùîhêR·&÷f–FW%÷&W6WB‡6VÆbæ7F—fUö•÷&÷f–FW"’æÆ&VÇŞ(
-b"ÂfsÔ44TåEôD$² ¢FVbv÷&¶W"‚’ÓâæöæS ¢G'“ ¢&WÇ’Ò6Æ–VçBæ6ö×ÆWFR‚.KÚiŠşhê^Xú>‹ùî˜	®h
-~kX¾Šù^Xªh˜¾8""Â.Šû~Xú®Y¹îZHŞûÉ®‹ùîhê^h‰X©ò"ÂFV×W&GW&SÓã¢6VÆbæ'W2çWB‚‚&•÷FW7Eö6ö×ÆWFR"Â&WÇ’’¢W†6WBW†6WF–öâ2W†3¢2æ÷¢$ÄSÒF—7Æ’&÷f–FW"W'&÷"–âF†RT¢6VÆbæ'W2çWB‚‚&•÷FW7EöW'&÷""ÂW†2’ ¢F‡&VF–æråF‡&VB‡F&vWC×v÷&¶W"ÂFVÖöãÕG'VR’ç7F'B‚ ¢FVbö†æFÆU÷6WGF–æw5öWfVçB‡6VÆbÂWfVçC¢7G"Â–ÆöC¢ö&¦V7B’ÓâæöæS ¢–bWfVçBÓÒ&•÷FW7Eö6ö×ÆWFR# ¢6VÆbæ—5ö'W7’ÒfÇ6P¢6VÆbæ•÷FW7E÷7FGW2æ6öæf–wW&R‡FW‡CÖb.‹ùîhê^h‰X©şûÉ§·7G"‡–ÆöB•³£S×Ò"ÂfsÔ44TåEôD$²¢6V7&WEöW'&÷"Ò" ¢–b6VÆbç&VÖVÖ&W%ö•ö¶W’ævWB‚“ ¢G'“ ¢6VÆbå÷W'6—7Eö7W'&VçEö•ö¶W’‚¢W†6WB6V7&WE7F÷&TW'&÷"2W†3 ¢6V7&WEöW'&÷"Ò7G"†W†2¢ÖW76vRÒb'·&÷f–FW%÷&W6WB‡6VÆbæ7F—fUö•÷&÷f–FW"’æÆ&VÇÒhê^Xú>XúşKº^jÚ>[‹KÛşyJ8" ¢–b6VÆbç&VÖVÖ&W%ö•ö¶W’ævWB‚’æBæ÷B6V7&WEöW'&÷# ¢ÖW76vR³Ò%Æä’¶W’[{.ZèXZŠëKØş8" ¢VÆ–b6V7&WEöW'&÷# ¢ÖW76vR³Òb%ÆîKØb’¶W’KùŞZÙZK‹J^ûÉ§·6V7&WEöW'&÷'Ò ¢ÖW76vV&÷‚ç6†÷v–æfò‚.‹ùîhê^h‰X©ò"ÂÖW76vR¢VÆ–bWfVçBÓÒ&•÷FW7EöW'&÷"# ¢6VÆbæ—5ö'W7’ÒfÇ6P¢6VÆbæ•÷FW7E÷7FGW2æ6öæf–wW&R‡FW‡CÒ.‹ùîhê^ZK‹J^ûÈÎŠû~j8iúR¶W8jŠYè¾YŞY(Î{Ù{¹Â"ÂfsÔU%$õ"¢ÖW76vV&÷‚ç6†÷vW'&÷"‚.‹ùîhê^ZK‹JR"Â7G"‡–ÆöB’ ¢2ÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒWF–Æ—F–W2ÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒĞ¢FVbö6÷•÷FW‡B‡6VÆbÂfÇVS¢7G"’ÓâæöæS ¢6VÆbç&ö÷Bæ6Æ—&ö&Eö6ÆV"‚¢6VÆbç&ö÷Bæ6Æ—&ö&EöVæB‡fÇVR ¢FVb÷6fUö7W'&VçEöVF—F÷'2‡6VÆb’ÓâæöæS ¢–b6VÆbæ7W'&VçE÷vRÓÒ'f–FVò"æB6VÆbç÷7EöVF—F÷# ¢6VÆbå÷7–æ5÷f–FVõ÷7FFR‚¢VÆ–b6VÆbæ7W'&VçE÷vRÓÒ&æ÷fVÂ# ¢6VÆbå÷7–æ5öæ÷fVÅ÷'VÆW2‚¢6VÆbå÷6fUö6†FW%öVF—F÷'2‚¢6VÆbç7F÷&Rç6fR‡6VÆbç7FFR¢VÆ–b6VÆbæ7W'&VçE÷vRÓÒ&6öÖ–2# ¢6VÆbç6fUö6öÖ–5÷6WGF–æw2‡6–ÆVçCÕG'VR ¢FVböG&–åö'W2‡6VÆb’ÓâæöæS ¢G'“ ¢v†–ÆRG'VS ¢WfVçBÂ–ÆöBÒ6VÆbæ'W2ævWEöæ÷v—B‚¢–b6VÆbæ'W5ö†æFÆW# ¢6VÆbæ'W5ö†æFÆW"†WfVçBÂ–ÆöB¢W†6WBVWVRäV×G“ ¢70¢6VÆbç&ö÷BægFW"ƒ#Â6VÆbåöG&–åö'W2 ¢FVböåö6Æ÷6R‡6VÆb’ÓâæöæS ¢–b6VÆbæ—5ö'W7’æBæ÷BÖW76vV&÷‚æ6·–W6æò‚.K»¾XªK¸ŞYÊ‹ù¾ŠÂ"Â.X[>™zŞ[©NyJKÉ®KŠŞijŞ[Ù>X˜ŞK»¾XªûÈÎzîZé®˜X{®Y	~ûÉò"“ ¢&WGW&à¢6VÆbå÷6fUö7W'&VçEöVF—F÷'2‚¢–b†6GG"‡6VÆbÂ'&VÖVÖ&W%ö•ö¶W’"“ ¢6VÆbç7FFU²'6WGF–æw2%Õ²'&VÖVÖ&W%ö•ö¶W’%ÒÒ6VÆbç&VÖVÖ&W%ö•ö¶W’ævWB‚¢G'“ ¢6VÆbå÷W'6—7Eö7W'&VçEö•ö¶W’‚¢W†6WB6V7&WE7F÷&TW'&÷# ¢70¢–b†6GG"‡6VÆbÂ'&VÖVÖ&W%ö&µö•ö¶W’"“ ¢6VÆbç7FFU²'6WGF–æw2%Õ²'&VÖVÖ&W%ö&µö•ö¶W’%ÒÒ6VÆbç&VÖVÖ&W%ö&µö•ö¶W’ævWB‚¢G'“ ¢–b6VÆbç&VÖVÖ&W%ö&µö•ö¶W’ævWB‚’æB6VÆbæ&µö•ö¶W’ævWB‚’ç7G&—‚“ ¢6fUö•ö¶W’‚&&²"Â6VÆbæ&µö•ö¶W’ævWB‚’ç7G&—‚’¢VÇ6S ¢FVÆWFUö•ö¶W’‚&&²"¢W†6WB6V7&WE7F÷&TW'&÷# ¢70¢6VÆbç7F÷&Rç6fR‡6VÆbç7FFR¢6VÆbç7F÷&Rç&VÆV6Uö–ç7Fæ6UöÆö6²‚¢6VÆbç&ö÷BæFW7G&÷’‚  ¦FVbÖ–â‚’ÓâæöæS ¢&ö÷BÒF²‚¢G'“ ¢7GVF–ô‡&ö÷B¢W†6WB7GVF–ô–ç7Fæ6U'Vææ–ætW'&÷"2W†3 ¢&ö÷Bçv—F†G&r‚¢ÖW76vV&÷‚ç6†÷wv&æ–ær‚.zˆ¾[¨ş[{.YÊ‹ùŠÂ"Â7G"†W†2’Â&VçC×&ö÷B¢&ö÷BæFW7G&÷’‚¢&WGW&à¢&ö÷BæÖ–æÆö÷‚  ¦FVb6¶vVE÷6VÆe÷FW7B‚’ÓâæöæS ¢""$W†W&6—6RæF—fRÖVF–'6–æræB¦–ç––ærG&gB76WG2–â6¶vRâ"" ¢–×÷'BFV×f–ÆP ¢g&öÒ–ÖVF––æfò–×÷'BÖVF––æfğ¢–×÷'B”¦–å––ætG&gB2G&g@ ¢–bæ÷B6ÆÆ&ÆR†vWFGG"„ÖVF––æfòÂ''6R"ÂæöæR’“ ¢&—6R'VçF–ÖTW'&÷"‚$ÖVF––æfò'6W"Væf–Æ&ÆR"¢v—F‚FV×f–ÆRåFV×÷&'”F—&V7F÷'’‚’2FV× ¢67&—BÒG&gBäG&gDföÆFW"‡FV×’æ7&VFUöG&gB‚'6VÆb×FW7B"ÂƒÂ“#Â3¢67&—Bç6fR‚¢–bæ÷B…F‚‡FV×’ò'6VÆb×FW7B"ò&G&gEö6öçFVçBæ§6öâ"’æ—5öf–ÆR‚“ ¢&—6R'VçF–ÖTW'&÷"‚$¦–ç––ærG&gB76WG2Væf–Æ&ÆR"  ¦–bõöæÖUõòÓÒ%õöÖ–åõò# ¢–b"Ò×6VÆb×FW7B"–â7—2æ&wc ¢6¶vVE÷6VÆe÷FW7B‚¢VÇ6S ¢Ö–â‚ 
+        self.bind("<Leave>", lambda _event: self._set_hover(False), add="+")
+        self.bind("<ButtonRelease-1>", self._invoke, add="+")
+        self.bind("<Return>", self._invoke, add="+")
+        self.bind("<space>", self._invoke, add="+")
+
+    def _draw(self, _event=None) -> None:
+        self.delete("all")
+        self._aa_round_images = []
+        width = max(10, self.winfo_width())
+        height = max(10, self.winfo_height())
+        color = self.active_bg if self.hovered else self.normal_bg
+        _canvas_round_rect(self, 1, 1, width - 1, height - 1, 10, fill=color, outline="")
+        self.create_text(width / 2, height / 2, text=self.label_text, fill=self.fg, font=("Microsoft YaHei UI", 9, "bold"))
+
+    def _set_hover(self, value: bool) -> None:
+        self.hovered = value
+        self._draw()
+
+    def _invoke(self, _event=None) -> None:
+        if callable(self.command):
+            self.command()
+
+
+def read_document(path: str) -> str:
+    suffix = Path(path).suffix.lower()
+    if suffix == ".docx":
+        with zipfile.ZipFile(path) as archive:
+            xml = archive.read("word/document.xml")
+        root = ElementTree.fromstring(xml)
+        paragraphs: list[str] = []
+        namespace = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
+        for paragraph in root.iter(namespace + "p"):
+            text = "".join(node.text or "" for node in paragraph.iter(namespace + "t"))
+            if text.strip():
+                paragraphs.append(text.strip())
+        return "\n\n".join(paragraphs)
+    data = Path(path).read_bytes()
+    for encoding in ("utf-8-sig", "utf-8", "gb18030"):
+        try:
+            return data.decode(encoding)
+        except UnicodeDecodeError:
+            continue
+    return data.decode("utf-8", errors="replace")
+
+
+class StudioInstanceRunningError(RuntimeError):
+    pass
+
+
+class StudioApp:
+    def __init__(self, root: Tk) -> None:
+        self.root = root
+        self.store = StateStore()
+        if not self.store.acquire_instance_lock():
+            raise StudioInstanceRunningError("æ¼«ç”»æ¨æ–‡å·²ç»åœ¨è¿è¡Œã€‚è¯·å…ˆåˆ‡æ¢åˆ°å·²æ‰“å¼€çš„çª—å£ï¼Œé¿å…ä¸¤ä¸ªå®ä¾‹äº’ç›¸è¦†ç›–é¡¹ç›®æ•°æ®ã€‚")
+        self.state = self.store.load()
+        settings = self.state["settings"]
+        initial_provider = settings.get("provider") or infer_provider(settings.get("base_url", ""), settings.get("model", ""))
+        self.active_api_provider = initial_provider if initial_provider in {item.id for item in PROVIDER_PRESETS} else "custom"
+        self.api_keys: dict[str, str] = {}
+        self.remember_api_key = BooleanVar(value=bool(settings.get("remember_api_key", True)))
+        self.api_key = StringVar(value=self._load_provider_api_key(self.active_api_provider))
+        self.remember_ark_api_key = BooleanVar(value=bool(settings.get("remember_ark_api_key", True)))
+        try:
+            saved_ark_key = load_api_key("ark") if self.remember_ark_api_key.get() else ""
+        except SecretStoreError:
+            saved_ark_key = ""
+        self.ark_api_key = StringVar(value=saved_ark_key or os.getenv("ARK_API_KEY", ""))
+        self.current_page = "dashboard"
+        self.nav_buttons: dict[str, object] = {}
+        self.project_tree: ttk.Treeview | None = None
+        self.bus: queue.Queue[tuple[str, object]] = queue.Queue()
+        self.bus_handler = None
+        self.video_tree: ttk.Treeview | None = None
+        self.novel_list: Listbox | None = None
+        self.source_editor: Text | None = None
+        self.result_editor: Text | None = None
+        self.post_editor: Text | None = None
+        self.current_chapter_index: int | None = None
+        self.comic_source_editor: Text | None = None
+        self.comic_character_list: Listbox | None = None
+        self.comic_scene_list: Listbox | None = None
+        self.comic_shot_tree: ttk.Treeview | None = None
+        self.comic_shot_prompt_editor: Text | None = None
+        self.current_comic_character_index: int | None = None
+        self.current_comic_scene_index: int | None = None
+        self.current_comic_shot_index: int | None = None
+        self.comic_preview_image: PhotoImage | None = None
+        self.comic_character_preview_canvas: Canvas | None = None
+        self.comic_scene_preview_canvas: Canvas | None = None
+        self.comic_character_preview_title: Label | None = None
+        self.comic_scene_preview_title: Label | None = None
+        self.comic_shot_tree_with_previews = False
+        self.comic_shot_preview_images: dict[int, ImageTk.PhotoImage] = {}
+        self.comic_storyboard_canvas: Canvas | None = None
+        self.comic_storyboard_body: Frame | None = None
+        self.comic_storyboard_window: int | None = None
+        self.comic_storyboard_selected_indices: set[int] = set()
+        self.comic_storyboard_selection_vars: dict[int, StringVar] = {}
+        self.comic_storyboard_prompt_editors: dict[int, Text] = {}
+        self.comic_storyboard_row_widgets: dict[int, dict[str, object]] = {}
+        self.comic_storyboard_page = 0
+        self.comic_storyboard_page_size = 20
+        self.comic_storyboard_page_label: Label | None = None
+        self.comic_asset_autosave_after_id: str | None = None
+        self._loading_comic_asset_editor = False
+        self._loading_comic_shot_editor = False
+        self.is_busy = False
+
+        self.root.title(f"{APP_NAME} v{APP_VERSION}")
+        self.root.geometry("1440x900")
+        self.root.minsize(1120, 720)
+        self.root.configure(bg=BG)
+        self._configure_styles()
+        self._build_shell()
+        self.show_dashboard()
+        self.root.protocol("WM_DELETE_WINDOW", self.on_close)
+        self.root.after(120, self._drain_bus)
+
+    def _configure_styles(self) -> None:
+        style = ttk.Style()
+        if "clam" in style.theme_names():
+            style.theme_use("clam")
+        style.configure("Studio.Treeview", background=SURFACE, fieldbackground=SURFACE, foreground=INK, rowheight=38, borderwidth=0, relief="flat", font=("Microsoft YaHei UI", 9))
+        style.configure("Studio.Treeview.Heading", background=SURFACE_ALT, foreground=MUTED, relief="flat", padding=(8, 9), font=("Microsoft YaHei UI", 9, "bold"))
+        style.map("Studio.Treeview", background=[("selected", "#D7EEE9")], foreground=[("selected", INK)])
+        style.configure("Studio.Preview.Treeview", background=SURFACE, fieldbackground=SURFACE, foreground=INK, rowheight=154, borderwidth=0, relief="flat", font=("Microsoft YaHei UI", 9))
+        style.configure("Studio.Preview.Treeview.Heading", background=SURFACE_ALT, foreground=MUTED, relief="flat", padding=(8, 9), font=("Microsoft YaHei UI", 9, "bold"))
+        style.map("Studio.Preview.Treeview", background=[("selected", "#D7EEE9")], foreground=[("selected", INK)])
+        style.configure(
+            "Studio.Inner.TCombobox",
+            padding=(9, 7),
+            fieldbackground=COMIC_INSET,
+            background=COMIC_INSET,
+            foreground=INK,
+            bordercolor=COMIC_INSET,
+            lightcolor=COMIC_INSET,
+            darkcolor=COMIC_INSET,
+            arrowcolor=ACCENT_DARK,
+            arrowsize=16,
+            relief="flat",
+        )
+        style.map(
+            "Studio.Inner.TCombobox",
+            fieldbackground=[("readonly", COMIC_INSET), ("focus", SURFACE)],
+            background=[("readonly", COMIC_INSET), ("active", COMIC_MINT)],
+            arrowcolor=[("active", ACCENT_DARK), ("pressed", SIDEBAR)],
+            foreground=[("disabled", MUTED), ("readonly", INK)],
+        )
+        self.root.option_add("*TCombobox*Listbox.background", SURFACE)
+        self.root.option_add("*TCombobox*Listbox.foreground", INK)
+        self.root.option_add("*TCombobox*Listbox.selectBackground", COMIC_MINT)
+        self.root.option_add("*TCombobox*Listbox.selectForeground", ACCENT_DARK)
+        self.root.option_add("*TCombobox*Listbox.font", "Microsoft YaHei UI 9")
+        style.configure("Studio.Horizontal.TProgressbar", background=ACCENT, troughcolor=SURFACE_ALT, borderwidth=0)
+        style.configure("Studio.TPanedwindow", background=BG)
+
+    def _build_shell(self) -> None:
+        self.sidebar = Frame(self.root, bg=SIDEBAR, width=236)
+        self.sidebar.pack(side=LEFT, fill=Y)
+        self.sidebar.pack_propagate(False)
+
+        brand = Frame(self.sidebar, bg=SIDEBAR)
+        brand.pack(fill=X, padx=24, pady=(28, 34))
+        Label(brand, text="â—†", bg=SIDEBAR, fg=ACCENT, font=("Segoe UI Symbol", 18, "bold")).pack(anchor="w")
+        Label(brand, text=APP_NAME, bg=SIDEBAR, fg="white", font=("Microsoft YaHei UI", 18, "bold")).pack(anchor="w", pady=(8, 2))
+        Label(brand, text="AI COMIC STUDIO", bg=SIDEBAR, fg=SIDEBAR_MUTED, font=("Segoe UI", 8, "bold")).pack(anchor="w")
+
+        nav_items = [
+            ("dashboard", "âŒ‚  é¡¹ç›®ä¸»é¡µ"),
+            ("comic", "â–£  æ¼«ç”»å·¥ä½œå°"),
+            ("novel", "âœ  AI å°è¯´æ”¹æ–‡"),
+            ("settings", "âš™  æ¨¡å‹ä¸ API"),
+        ]
+        for key, label in nav_items:
+            button = Label(
+                self.sidebar,
+                text=label,
+                bg=SIDEBAR,
+                fg=SIDEBAR_MUTED,
+                font=("Microsoft YaHei UI", 11),
+                padx=24,
+                pady=13,
+                anchor="w",
+                cursor="hand2",
+            )
+            button.pack(fill=X, padx=10, pady=2)
+            button.bind("<Button-1>", lambda _event, page=key: self.navigate(page))
+            self.nav_buttons[key] = button
+
+        footer = Frame(self.sidebar, bg=SIDEBAR)
+        footer.pack(side="bottom", fill=X, padx=24, pady=24)
+        Label(footer, text=f"ç‰ˆæœ¬ {APP_VERSION}", bg=SIDEBAR, fg=SIDEBAR_MUTED, font=("Segoe UI", 8)).pack(anchor="w", pady=(0, 6))
+        Label(footer, text="å¤šé¡¹ç›® Â· å…±äº«è§’è‰²åº“", bg=SIDEBAR, fg=SIDEBAR_MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w")
+        self.tool_status = Label(footer, text="æ­£åœ¨æ£€æŸ¥å·¥å…·â€¦", bg=SIDEBAR, fg=WARM, font=("Microsoft YaHei UI", 9))
+        self.tool_status.pack(anchor="w", pady=(6, 0))
+        self._refresh_tool_status()
+
+        self.main = Frame(self.root, bg=BG)
+        self.main.pack(side=LEFT, fill=BOTH, expand=True)
+
+    def _refresh_tool_status(self) -> None:
+        ready = bool(self.api_key.get().strip() and self.ark_api_key.get().strip())
+        self.tool_status.configure(text="â— AI æœåŠ¡å·²é…ç½®" if ready else "â— AI Key å¾…é…ç½®", fg=ACCENT if ready else WARM)
+
+    def navigate(self, page: str) -> None:
+        if self.is_busy and page != self.current_page:
+            messagebox.showinfo("ä»»åŠ¡è¿›è¡Œä¸­", "å½“å‰ä»»åŠ¡å®Œæˆåå†åˆ‡æ¢å·¥ä½œå°ã€‚")
+            return
+        self._save_current_editors()
+        self.current_page = page
+        for key, button in self.nav_buttons.items():
+            button.configure(bg=COMIC_DARK_ALT if key == page else SIDEBAR, fg="white" if key == page else SIDEBAR_MUTED)
+        if page == "dashboard":
+            self.show_dashboard()
+        elif page == "comic":
+            if not self.state.get("active_project_id"):
+                messagebox.showinfo("è¯·å…ˆå»ºç«‹é¡¹ç›®", "åˆ¶ä½œæ–°æ¨æ–‡å‰éœ€è¦å…ˆåœ¨é¡¹ç›®ä¸»é¡µå»ºç«‹ä¸€ä¸ªé¡¹ç›®ã€‚")
+                self.current_page = "dashboard"
+                self.show_dashboard()
+            else:
+                self.show_comic()
+        elif page == "novel":
+            self.show_novel()
+        else:
+            self.show_settings()
+
+    def _clear_main(self) -> None:
+        for child in self.main.winfo_children():
+            child.destroy()
+        self.video_tree = None
+        self.novel_list = None
+        self.source_editor = None
+        self.result_editor = None
+        self.post_editor = None
+        self.project_tree = None
+        self.comic_source_editor = None
+        self.comic_character_list = None
+        self.comic_shot_tree = None
+        self.comic_shot_prompt_editor = None
+        self.comic_character_description_editor = None
+        self.comic_character_prompt_editor = None
+        self.comic_shot_source_label = None
+        self.comic_count_label = None
+        self.comic_generation_detail_label = None
+        self.comic_generation_count_label = None
+        self.bus_handler = None
+
+    def _page_header(self, title: str, subtitle: str, actions: list[tuple[str, object, str]] | None = None) -> Frame:
+        header = Frame(self.main, bg=BG)
+        header.pack(fill=X, padx=34, pady=(28, 18))
+        text_area = Frame(header, bg=BG)
+        text_area.pack(side=LEFT)
+        Label(text_area, text="COMIC CREATOR Â· WORKSPACE", bg=BG, fg=ACCENT_DARK, font=("Segoe UI", 8, "bold")).pack(anchor="w", pady=(0, 3))
+        Label(text_area, text=title, bg=BG, fg=INK, font=("Microsoft YaHei UI", 23, "bold")).pack(anchor="w")
+        Label(text_area, text=subtitle, bg=BG, fg=MUTED, font=("Microsoft YaHei UI", 10)).pack(anchor="w", pady=(5, 0))
+        if actions:
+            action_area = Frame(header, bg=BG)
+            action_area.pack(side=RIGHT, pady=5)
+            for label, command, kind in actions:
+                self._button(action_area, label, command, kind=kind).pack(side=LEFT, padx=(8, 0))
+        return header
+
+    def _card(self, parent, *, bg: str = SURFACE, padx: int = 20, pady: int = 18) -> RoundedCard:
+        return RoundedCard(parent, surface=bg, border=BORDER, padx=padx, pady=pady)
+
+    def _button(self, parent, text: str, command, *, kind: str = "primary", width: int | None = None):
+        palette = {
+            "primary": ("#256F8F", "white", "#1B5B78"),
+            "accent": (ACCENT, SIDEBAR, "#379B8B"),
+            "ghost": (SURFACE_ALT, INK, "#DDE5EA"),
+            "danger": ("#FBEAEC", ERROR, "#F4DADD"),
+            "dark": (SIDEBAR, "white", COMIC_DARK_ALT),
+            "glass": (COMIC_DARK_ALT, "white", "#314C5B"),
+        }
+        bg, fg, active = palette[kind]
+        return RoundedButton(parent, text=text, command=command, bg=bg, fg=fg, active=active, width=width)
+
+    def _entry(self, parent, variable: StringVar | DoubleVar | IntVar, width: int | None = None):
+        return RoundedEntry(parent, textvariable=variable, width=width)
+
+    def _field_label(self, parent, text: str) -> Label:
+        return Label(parent, text=text, bg=parent.cget("bg"), fg=MUTED, font=("Microsoft YaHei UI", 9))
+
+    def _rounded_widget_shell(self, parent, *, bg: str = COMIC_INSET, fixed_height: int | None = None) -> tuple[RoundedCard, Frame]:
+        outer = RoundedCard(parent, surface=bg, border=BORDER, padx=0, pady=0, radius=11)
+        if fixed_height:
+            outer.set_fixed_height(fixed_height)
+        return outer, outer.content
+
+    def _render_local_image(self, canvas: Canvas | None, path: str, *, placeholder: str, max_size: tuple[int, int] | None = None) -> bool:
+        if not canvas:
+            return False
+        canvas.delete("all")
+        width = max_size[0] if max_size else max(80, canvas.winfo_width())
+        height = max_size[1] if max_size else max(80, canvas.winfo_height())
+        image_path = Path(path) if path else None
+        if not image_path or not image_path.is_file():
+            canvas.create_text(width / 2, height / 2, text=placeholder, fill=MUTED, width=max(80, width - 28), justify="center", font=("Microsoft YaHei UI", 9))
+            canvas._preview_photo = None
+            return False
+        try:
+            with Image.open(image_path) as source:
+                image = ImageOps.exif_transpose(source).convert("RGBA")
+                image.thumbnail((max(20, width - 16), max(20, height - 16)), Image.Resampling.LANCZOS)
+            photo = ImageTk.PhotoImage(image, master=canvas)
+            canvas.create_image(width / 2, height / 2, image=photo, anchor="center")
+            canvas._preview_photo = photo
+            return True
+        except (OSError, ValueError):
+            canvas.create_text(width / 2, height / 2, text=f"å›¾ç‰‡è¯»å–å¤±è´¥\n{image_path.name}", fill=ERROR, width=max(80, width - 28), justify="center", font=("Microsoft YaHei UI", 9))
+            canvas._preview_photo = None
+            return False
+
+    def _asset_preview_panel(self, parent, *, title: str, command) -> tuple[Canvas, Label]:
+        outer = self._card(parent, bg=COMIC_INSET, padx=12, pady=12)
+        outer.set_fixed_height(220)
+        outer.pack(fill=X, pady=(12, 10))
+        host = outer.winfo_children()[0]
+        preview = Canvas(host, width=250, height=190, bg=SURFACE_ALT, highlightthickness=0, borderwidth=0, cursor="hand2")
+        preview.pack(side=LEFT)
+        preview.bind("<Button-1>", lambda _event: command())
+        info = Frame(host, bg=COMIC_INSET)
+        info.pack(side=LEFT, fill=BOTH, expand=True, padx=(16, 0))
+        title_label = Label(info, text=title, bg=COMIC_INSET, fg=INK, anchor="w", justify=LEFT, font=("Microsoft YaHei UI", 11, "bold"))
+        title_label.pack(fill=X, pady=(6, 5))
+        Label(info, text="ç¡®è®¤åçš„å‚è€ƒå›¾ä¼šç›´æ¥æ˜¾ç¤ºåœ¨è¿™é‡Œï¼›æœ‰æ–°å€™é€‰æ—¶ä¼˜å…ˆå±•ç¤ºå€™é€‰å›¾ã€‚ç‚¹å‡»å›¾ç‰‡å¯æ”¾å¤§æŸ¥çœ‹ã€‚", bg=COMIC_INSET, fg=MUTED, wraplength=360, justify=LEFT, font=("Microsoft YaHei UI", 8)).pack(anchor="w")
+        self._button(info, "æ”¾å¤§æŸ¥çœ‹", command, kind="ghost").pack(anchor="w", pady=(14, 0))
+        return preview, title_label
+
+    def _pack_vertical_scroller(self, shell: Frame, widget, *, fill=BOTH, expand: bool = True) -> None:
+        """Pack a long-form widget with a visible vertical scrollbar."""
+        scrollbar = RoundedScrollbar(shell, command=widget.yview)
+        widget.configure(yscrollcommand=scrollbar.set)
+        try:
+            widget.configure(highlightthickness=0, borderwidth=0)
+        except TclError:
+            pass
+        widget.pack(side=LEFT, fill=fill, expand=expand)
+        scrollbar.pack(side=RIGHT, fill=Y)
+
+    def _scrollable_content(self, parent, *, bg: str = BG) -> tuple[Frame, Canvas]:
+        """Create a vertically scrollable page that follows the available width."""
+        shell = Frame(parent, bg=bg)
+        shell.pack(fill=BOTH, expand=True)
+        canvas = Canvas(shell, bg=bg, highlightthickness=0, borderwidth=0)
+        scrollbar = RoundedScrollbar(shell, command=canvas.yview)
+        canvas.configure(yscrollcommand=scrollbar.set)
+        canvas.pack(side=LEFT, fill=BOTH, expand=True)
+        scrollbar.pack(side=RIGHT, fill=Y)
+        content = Frame(canvas, bg=bg)
+        window = canvas.create_window((0, 0), window=content, anchor="nw")
+        content.bind("<Configure>", lambda _event: canvas.configure(scrollregion=canvas.bbox("all")))
+        canvas.bind("<Configure>", lambda event: canvas.itemconfigure(window, width=event.width))
+        return content, canvas
+
+    def _bind_page_mousewheel(self, root_widget, canvas: Canvas) -> None:
+        def scroll(event):
+            if getattr(event, "delta", 0):
+                canvas.yview_scroll(-1 if event.delta > 0 else 1, "units")
+            elif getattr(event, "num", 0) == 4:
+                canvas.yview_scroll(-1, "units")
+            elif getattr(event, "num", 0) == 5:
+                canvas.yview_scroll(1, "units")
+            return "break"
+
+        def bind_tree(widget) -> None:
+            if not isinstance(widget, (Text, Listbox, ttk.Treeview, RoundedCombobox)):
+                widget.bind("<MouseWheel>", scroll, add="+")
+                widget.bind("<Button-4>", scroll, add="+")
+                widget.bind("<Button-5>", scroll, add="+")
+            for child in widget.winfo_children():
+                bind_tree(child)
+
+        bind_tree(root_widget)
+
+    def show_dashboard(self) -> None:
+        self._clear_main()
+        self.current_page = "dashboard"
+        self.navigate_highlight("dashboard")
+        self._page_header(
+            "æ¼«ç”»æ¨æ–‡é¡¹ç›®",
+            "æ¯æ¡æ¨æ–‡ä½¿ç”¨ç‹¬ç«‹é¡¹ç›®ä¿å­˜å°è¯´ã€åœºæ™¯ã€åˆ†é•œã€å›¾ç‰‡å’Œæˆç‰‡ï¼›å·²å®šå¦†è§’è‰²åœ¨æ‰€æœ‰é¡¹ç›®é—´å…±äº«ã€‚",
+            [("AI å°è¯´æ”¹æ–‡", lambda: self.navigate("novel"), "ghost"), ("+ æ–°å»ºæ¨æ–‡é¡¹ç›®", self.create_comic_project_dialog, "accent")],
+        )
+
+        body = Frame(self.main, bg=BG)
+        body.pack(fill=BOTH, expand=True, padx=34, pady=(2, 28))
+        projects = [item for item in self.state.get("projects", []) if isinstance(item, dict)]
+        shared_characters = [item for item in self.state.get("shared_characters", []) if isinstance(item, dict)]
+
+        summary_outer = self._card(body, bg=SIDEBAR, padx=26, pady=20)
+        summary_outer.pack(fill=X)
+        summary = summary_outer.winfo_children()[0]
+        summary_text = Frame(summary, bg=SIDEBAR)
+        summary_text.pack(side=LEFT, fill=X, expand=True)
+        Label(summary_text, text="PROJECT LIBRARY Â· LOCAL WORKSPACE", bg=SIDEBAR, fg=ACCENT, font=("Segoe UI", 8, "bold")).pack(anchor="w")
+        Label(summary_text, text=f"{len(projects)} ä¸ªæ¨æ–‡é¡¹ç›®  Â·  {len(shared_characters)} ä¸ªå…±äº«è§’è‰²", bg=SIDEBAR, fg="white", font=("Microsoft YaHei UI", 17, "bold")).pack(anchor="w", pady=(5, 0))
+        Label(summary_text, text="åˆ›å»ºé¡¹ç›®åå†å¯¼å…¥å°è¯´ï¼›åˆ‡æ¢é¡¹ç›®ä¸ä¼šæ¸…ç©ºå…¶ä»–é¡¹ç›®ï¼Œä¹Ÿä¸ä¼šå¤åˆ¶è§’è‰²å®šå¦†ã€‚", bg=SIDEBAR, fg=SIDEBAR_MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w", pady=(5, 0))
+        self._button(summary, "å»ºç«‹æ–°é¡¹ç›®  â†’", self.create_comic_project_dialog, kind="accent").pack(side=RIGHT, padx=(18, 0))
+
+        list_outer = self._card(body, padx=22, pady=18)
+        list_outer.pack(fill=BOTH, expand=True, pady=(16, 0))
+        listing = list_outer.winfo_children()[0]
+        list_header = Frame(listing, bg=SURFACE)
+        list_header.pack(fill=X, pady=(0, 12))
+        Label(list_header, text="æœ¬åœ°é¡¹ç›®", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 13, "bold")).pack(side=LEFT)
+        Label(list_header, text="åŒå‡»é¡¹ç›®å¯ç»§ç»­åˆ¶ä½œ", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 8)).pack(side=LEFT, padx=(10, 0))
+
+        if projects:
+            tree_outer, tree_shell = self._rounded_widget_shell(listing, bg=SURFACE)
+            tree_outer.pack(fill=BOTH, expand=True)
+            self.project_tree = ttk.Treeview(tree_shell, columns=("name", "progress", "assets", "updated"), show="headings", style="Studio.Treeview", selectmode="browse")
+            self.project_tree.heading("name", text="é¡¹ç›®åç§°")
+            self.project_tree.heading("progress", text="åˆ¶ä½œè¿›åº¦")
+            self.project_tree.heading("assets", text="é¡¹ç›®èµ„äº§")
+            self.project_tree.heading("updated", text="æœ€è¿‘ä¿å­˜")
+            self.project_tree.column("name", width=290, anchor="w")
+            self.project_tree.column("progress", width=190, anchor="w")
+            self.project_tree.column("assets", width=230, anchor="w")
+            self.project_tree.column("updated", width=170, anchor="center")
+            for project in sorted(projects, key=lambda item: str(item.get("updated_at", "")), reverse=True):
+                shots = list(project.get("shots", []))
+                images = sum(1 for shot in shots if Path(str(shot.get("local_path", ""))).is_file())
+                draft_ready = Path(str(project.get("jianying_draft_path", ""))).is_dir()
+                progress = "å°šæœªå¯¼å…¥å°è¯´" if not str(project.get("source_text", "")).strip() else ("å‰ªæ˜ è‰ç¨¿å·²å®Œæˆ" if draft_ready else f"åˆ†é•œå›¾ç‰‡ {images}/{len(shots)}")
+                assets = f"{len(project.get('scenes', []))} åœºæ™¯  Â·  {len(shots)} åˆ†é•œ"
+                updated = str(project.get("updated_at", "")).replace("T", " ")[:16] or "â€”"
+                project_id = str(project.get("project_id", ""))
+                self.project_tree.insert("", END, iid=project_id, values=(project.get("project_name", "æœªå‘½åé¡¹ç›®"), progress, assets, updated))
+            self._pack_vertical_scroller(tree_shell, self.project_tree)
+            self.project_tree.bind("<Double-1>", lambda _event: self.open_selected_comic_project())
+            active_id = str(self.state.get("active_project_id", ""))
+            if active_id and self.project_tree.exists(active_id):
+                self.project_tree.selection_set(active_id)
+                self.project_tree.focus(active_id)
+            actions = Frame(listing, bg=SURFACE)
+            actions.pack(fill=X, pady=(12, 0))
+            self._button(actions, "åˆ é™¤æ‰€é€‰é¡¹ç›®", self.delete_selected_comic_project, kind="danger").pack(side=LEFT)
+            self._button(actions, "æ‰“å¼€æ‰€é€‰é¡¹ç›®  â†’", self.open_selected_comic_project, kind="primary").pack(side=RIGHT)
+        else:
+            empty = Frame(listing, bg=COMIC_INSET, padx=28, pady=48)
+            empty.pack(fill=BOTH, expand=True)
+            Label(empty, text="è¿˜æ²¡æœ‰æ¼«ç”»æ¨æ–‡é¡¹ç›®", bg=COMIC_INSET, fg=INK, font=("Microsoft YaHei UI", 17, "bold")).pack()
+            Label(empty, text="å…ˆå»ºç«‹ä¸€ä¸ªé¡¹ç›®ï¼Œå†å¯¼å…¥å°è¯´å¹¶ç”Ÿæˆè§’è‰²ã€åœºæ™¯å’Œåˆ†é•œã€‚", bg=COMIC_INSET, fg=MUTED, font=("Microsoft YaHei UI", 9)).pack(pady=(8, 16))
+            self._button(empty, "+ å»ºç«‹ç¬¬ä¸€ä¸ªé¡¹ç›®", self.create_comic_project_dialog, kind="accent").pack()
+
+    def _metric_row(self, parent, metrics: list[tuple[str, object]]) -> None:
+        row = Frame(parent, bg=SURFACE)
+        row.pack(fill=X, pady=(24, 0))
+        for label, value in metrics:
+            block = Frame(row, bg=SURFACE)
+            block.pack(side=LEFT, padx=(0, 38))
+            Label(block, text=str(value), bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 16, "bold")).pack(anchor="w")
+            Label(block, text=label, bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w")
+
+    def create_comic_project_dialog(self) -> None:
+        if self.is_busy:
+            return
+        dialog = Toplevel(self.root)
+        dialog.title("æ–°å»ºæ¼«ç”»æ¨æ–‡é¡¹ç›®")
+        dialog.geometry("560x410")
+        dialog.resizable(False, False)
+        dialog.configure(bg=BG)
+        dialog.transient(self.root)
+        dialog.grab_set()
+        Label(dialog, text="å»ºç«‹æ–°æ¨æ–‡é¡¹ç›®", bg=BG, fg=INK, font=("Microsoft YaHei UI", 19, "bold")).pack(anchor="w", padx=28, pady=(26, 5))
+        Label(dialog, text="å°è¯´ã€åœºæ™¯ã€åˆ†é•œå’Œæˆç‰‡æŒ‰é¡¹ç›®éš”ç¦»ï¼›å…±äº«è§’è‰²å¯ä»¥åœ¨æ‰€æœ‰é¡¹ç›®ä¸­ç›´æ¥è°ƒç”¨ã€‚", bg=BG, fg=MUTED, wraplength=500, justify=LEFT, font=("Microsoft YaHei UI", 9)).pack(anchor="w", padx=28)
+        card_outer = self._card(dialog, padx=20, pady=18)
+        card_outer.pack(fill=X, padx=28, pady=20)
+        card = card_outer.winfo_children()[0]
+        name_var = StringVar(value=f"æ¼«ç”»æ¨æ–‡ {len(self.state.get('projects', [])) + 1}")
+        style_var = StringVar(value=COMIC_STYLE_PRESETS[0])
+        aspect_var = StringVar(value="9:16")
+        self._field_label(card, "é¡¹ç›®åç§°").pack(anchor="w", pady=(0, 5))
+        name_entry = self._entry(card, name_var)
+        name_entry.pack(fill=X, ipady=7)
+        self._field_label(card, "ç»Ÿä¸€ç”»é£").pack(anchor="w", pady=(13, 5))
+        RoundedCombobox(card, textvariable=style_var, values=COMIC_STYLE_PRESETS).pack(fill=X)
+        self._field_label(card, "ç”»å¹…").pack(anchor="w", pady=(13, 5))
+        RoundedCombobox(card, textvariable=aspect_var, values=["9:16", "4:5", "1:1", "16:9"], state="readonly", width=10).pack(anchor="w")
+
+        def create() -> None:
+            name = name_var.get().strip()
+            if not name:
+                messagebox.showinfo("éœ€è¦é¡¹ç›®åç§°", "è¯·å…ˆå¡«å†™é¡¹ç›®åç§°ã€‚", parent=dialog)
+                return
+            project = new_comic_project(name)
+            project["art_style"] = style_var.get().strip() or COMIC_STYLE_PRESETS[0]
+            project["aspect"] = aspect_var.get().strip() or "9:16"
+            project["output_dir"] = str(self.store.base_dir / "comic_projects" / f"{project['project_id']}_{safe_filename(name)}")
+            project["characters"] = self.state.setdefault("shared_characters", [])
+            self.state.setdefault("projects", []).append(project)
+            self.state["active_project_id"] = project["project_id"]
+            self.state["comic"] = project
+            self.store.save(self.state)
+            dialog.destroy()
+            self.current_page = "comic"
+            self.show_comic()
+
+        actions = Frame(dialog, bg=BG)
+        actions.pack(fill=X, padx=28)
+        self._button(actions, "å–æ¶ˆ", dialog.destroy, kind="ghost").pack(side=LEFT)
+        self._button(actions, "åˆ›å»ºå¹¶è¿›å…¥  â†’", create, kind="accent").pack(side=RIGHT)
+        name_entry.focus_set()
+        name_entry.selection_range(0, END)
+
+    def _activate_comic_project(self, project_id: str) -> bool:
+        projects = self.state.get("projects", [])
+        project = next((item for item in projects if str(item.get("project_id", "")) == project_id), None)
+        if not isinstance(project, dict):
+            return False
+        shared = self.state.setdefault("shared_characters", [])
+        known_names = {str(item.get("name", "")).strip() for item in shared if isinstance(item, dict)}
+        for character in list(project.get("characters", [])):
+            name = str(character.get("name", "")).strip() if isinstance(character, dict) else ""
+            if name and name not in known_names:
+                shared.append(dict(character))
+                known_names.add(name)
+        for item in projects:
+            if isinstance(item, dict):
+                item["characters"] = shared
+        project["characters"] = shared
+        self.state["active_project_id"] = project_id
+        self.state["comic"] = project
+        self.current_comic_character_index = None
+        self.current_comic_scene_index = None
+        self.current_comic_shot_index = None
+        self.store.save(self.state)
+        return True
+
+    def open_selected_comic_project(self) -> None:
+        if not self.project_tree or not self.project_tree.selection():
+            messagebox.showinfo("è¯·é€‰æ‹©é¡¹ç›®", "è¯·å…ˆåœ¨åˆ—è¡¨ä¸­é€‰æ‹©ä¸€ä¸ªæ¼«ç”»æ¨æ–‡é¡¹ç›®ã€‚")
+            return
+        project_id = str(self.project_tree.selection()[0])
+        if self._activate_comic_project(project_id):
+            self.current_page = "comic"
+            self.show_comic()
+
+    def delete_selected_comic_project(self) -> None:
+        if not self.project_tree or not self.project_tree.selection():
+            messagebox.showinfo("è¯·é€‰æ‹©é¡¹ç›®", "è¯·å…ˆé€‰æ‹©è¦åˆ é™¤çš„é¡¹ç›®ã€‚")
+            return
+        project_id = str(self.project_tree.selection()[0])
+        projects = self.state.get("projects", [])
+        project = next((item for item in projects if str(item.get("project_id", "")) == project_id), None)
+        if not isinstance(project, dict):
+            return
+        name = str(project.get("project_name", "æœªå‘½åé¡¹ç›®"))
+        if not messagebox.askyesno(
+            "åˆ é™¤æ¨æ–‡é¡¹ç›®",
+            f"ç¡®å®šä»ä¸»é¡µåˆ é™¤â€œ{name}â€å—ï¼Ÿ\n\né¡¹ç›®è®°å½•ä¼šåˆ é™¤ï¼Œä½†å…±äº«è§’è‰²å’Œå·²ç»ä¿å­˜åˆ°æœ¬åœ°çš„ç´ ææ–‡ä»¶ä¸ä¼šè‡ªåŠ¨åˆ é™¤ã€‚",
+        ):
+            return
+        self.state["projects"] = [item for item in projects if str(item.get("project_id", "")) != project_id]
+        remaining = self.state["projects"]
+        if str(self.state.get("active_project_id", "")) == project_id:
+            if remaining:
+                next_project = remaining[0]
+                self.state["active_project_id"] = str(next_project.get("project_id", ""))
+                next_project["characters"] = self.state.setdefault("shared_characters", [])
+                self.state["comic"] = next_project
+            else:
+                self.state["active_project_id"] = ""
+                empty = new_comic_project("æœªå‘½åæ¼«ç”»æ¨æ–‡")
+                empty["project_id"] = ""
+                empty["characters"] = self.state.setdefault("shared_characters", [])
+                self.state["comic"] = empty
+        self.store.save(self.state)
+        self.show_dashboard()
+
+    def navigate_highlight(self, page: str) -> None:
+        for key, button in self.nav_buttons.items():
+            button.configure(bg=COMIC_DARK_ALT if key == page else SIDEBAR, fg="white" if key == page else SIDEBAR_MUTED)
+
+    # ---------------------------- Video workbench ----------------------------
+    def show_video(self) -> None:
+        self._clear_main()
+        self.navigate_highlight("video")
+        self._page_header(
+            "è§†é¢‘æ··å‰ª",
+            "è°ƒæ•´ç´ æé¡ºåºå’Œæˆªå–åŒºé—´ï¼Œç”Ÿæˆå‰ªæ˜ å¯ç»§ç»­ç¼–è¾‘çš„æ—¶é—´çº¿è‰ç¨¿ã€‚",
+            [
+                ("ï¼‹ æ·»åŠ ç´ æ", self.add_video_clips, "ghost"),
+                ("å¯¼å‡º MP4", self.export_video, "ghost"),
+                ("ç”Ÿæˆå¹¶æ‰“å¼€å‰ªæ˜ ", self.export_jianying_draft, "primary"),
+            ],
+        )
+        self._upgrade_video_clip_metadata()
+        body = Frame(self.main, bg=BG)
+        body.pack(fill=BOTH, expand=True, padx=34, pady=(0, 28))
+        body.grid_columnconfigure(0, weight=3)
+        body.grid_columnconfigure(1, weight=1)
+        body.grid_rowconfigure(0, weight=1)
+
+        left_outer = self._card(body, padx=0, pady=0)
+        left_outer.grid(row=0, column=0, sticky="nsew", padx=(0, 9))
+        left = left_outer.winfo_children()[0]
+        title_row = Frame(left, bg=SURFACE, padx=20, pady=16)
+        title_row.pack(fill=X)
+        self.video_project_var = StringVar(value=self.state["video"]["project_name"])
+        Label(title_row, text="é¡¹ç›®", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 9)).pack(side=LEFT)
+        project_entry = self._entry(title_row, self.video_project_var, 32)
+        project_entry.pack(side=LEFT, padx=(10, 0), ipady=6)
+        project_entry.bind("<FocusOut>", lambda _e: self._sync_video_state())
+        self.video_summary = Label(title_row, text="", bg=SURFACE, fg=ACCENT_DARK, font=("Microsoft YaHei UI", 9, "bold"))
+        self.video_summary.pack(side=RIGHT)
+
+        columns = ("order", "name", "start", "duration")
+        video_tree_outer, video_tree_shell = self._rounded_widget_shell(left, bg=SURFACE)
+        video_tree_outer.pack(fill=BOTH, expand=True, padx=1)
+        self.video_tree = ttk.Treeview(video_tree_shell, columns=columns, show="headings", style="Studio.Treeview", selectmode="browse")
+        self.video_tree.heading("order", text="#")
+        self.video_tree.heading("name", text="ç´ ææ–‡ä»¶")
+        self.video_tree.heading("start", text="èµ·ç‚¹")
+        self.video_tree.heading("duration", text="å–ç”¨ / åŸç‰‡")
+        self.video_tree.column("order", width=50, anchor="center", stretch=False)
+        self.video_tree.column("name", width=430, anchor="w")
+        self.video_tree.column("start", width=90, anchor="center", stretch=False)
+        self.video_tree.column("duration", width=145, anchor="center", stretch=False)
+        self._pack_vertical_scroller(video_tree_shell, self.video_tree)
+        self.video_tree.bind("<<TreeviewSelect>>", self.on_video_select)
+
+        edit_bar = Frame(left, bg=SURFACE_ALT, padx=16, pady=12)
+        edit_bar.pack(fill=X)
+        self.clip_start_var = DoubleVar(value=0.0)
+        self.clip_duration_var = DoubleVar(value=0.0)
+        self._field_label(edit_bar, "èµ·ç‚¹(ç§’)").pack(side=LEFT)
+        self._entry(edit_bar, self.clip_start_var, 7).pack(side=LEFT, padx=(7, 16), ipady=5)
+        self._field_label(edit_bar, "æ—¶é•¿(ç§’)").pack(side=LEFT)
+        self._entry(edit_bar, self.clip_duration_var, 7).pack(side=LEFT, padx=(7, 16), ipady=5)
+        self._button(edit_bar, "åº”ç”¨", self.update_selected_clip, kind="dark").pack(side=LEFT)
+        self._button(edit_bar, "æ¢å¤å®Œæ•´æ—¶é•¿", self.restore_selected_clip_duration, kind="ghost").pack(side=LEFT, padx=(7, 0))
+        self._button(edit_bar, "åˆ é™¤", self.remove_selected_clip, kind="danger").pack(side=RIGHT)
+        self._button(edit_bar, "ä¸‹ç§»", lambda: self.move_clip(1), kind="ghost").pack(side=RIGHT, padx=(0, 6))
+        self._button(edit_bar, "ä¸Šç§»", lambda: self.move_clip(-1), kind="ghost").pack(side=RIGHT, padx=(0, 6))
+
+        post = Frame(left, bg=SURFACE, padx=20, pady=16)
+        post.pack(fill=X)
+        post_header = Frame(post, bg=SURFACE)
+        post_header.pack(fill=X)
+        Label(post_header, text="å‘å¸ƒæ–‡æ¡ˆ", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 11, "bold")).pack(side=LEFT)
+        self._button(post_header, "å¤åˆ¶", self.copy_post, kind="ghost").pack(side=RIGHT)
+        self._button(post_header, "AI ç”Ÿæˆ", self.generate_post_copy, kind="accent").pack(side=RIGHT, padx=(0, 7))
+        post_outer, post_shell = self._rounded_widget_shell(post)
+        post_outer.pack(fill=X, pady=(10, 0))
+        self.post_editor = Text(post_shell, height=5, wrap="word", bg=COMIC_INSET, fg=INK, insertbackground=INK, relief="flat", padx=12, pady=10, font=("Microsoft YaHei UI", 10))
+        self._pack_vertical_scroller(post_shell, self.post_editor, fill=X, expand=True)
+        self.post_editor.insert("1.0", self.state["video"].get("post_copy", ""))
+
+        settings_outer = self._card(body, padx=20, pady=18)
+        settings_outer.grid(row=0, column=1, sticky="nsew", padx=(9, 0))
+        settings = settings_outer.winfo_children()[0]
+        Label(settings, text="æˆç‰‡å‚æ•°", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 13, "bold")).pack(anchor="w")
+        Label(settings, text="ç´ æç”»é¢å›ºå®š 1.75 å€é€Ÿï¼Œè§†é¢‘åŸå£°å§‹ç»ˆé™éŸ³", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w", pady=(4, 18))
+
+        video = self.state["video"]
+        self.aspect_var = StringVar(value=video["aspect"])
+        self.fps_var = StringVar(value=str(video["fps"]))
+        self.transition_var = StringVar(value=video["transition"])
+        self.transition_duration_var = DoubleVar(value=video["transition_duration"])
+        strategy_id = video.get("mix_strategy", "balanced")
+        strategy_label = next((label for label, value in MIX_STRATEGIES.items() if value == strategy_id), "å‡è¡¡æ··å‰ªï¼ˆæ¨èï¼‰")
+        self.mix_strategy_var = StringVar(value=strategy_label)
+        self.voice_var = StringVar(value=video.get("voice_path", ""))
+        self.subtitles_var = StringVar(value=video.get("subtitles_path", ""))
+        self.music_var = StringVar(value=video["music_path"])
+        self.music_volume_var = DoubleVar(value=video["music_volume"])
+        self.mood_var = StringVar(value=video["mood"])
+        self.platform_var = StringVar(value=video["platform"])
+
+        self._combo_field(settings, "ç”»å¹…æ¯”ä¾‹", self.aspect_var, ["9:16", "16:9", "1:1", "4:5"])
+        self._combo_field(settings, "å¸§ç‡", self.fps_var, ["24", "25", "30", "60"])
+        self._combo_field(settings, "è½¬åœº", self.transition_var, ["fade", "wipeleft", "slideright", "circleopen", "smoothleft", "none"])
+        self._number_field(settings, "è½¬åœºæ—¶é•¿ï¼ˆç§’ï¼‰", self.transition_duration_var)
+        self._combo_field(settings, "ç´ æä½¿ç”¨æ–¹å¼", self.mix_strategy_var, list(MIX_STRATEGIES))
+        Label(
+            settings,
+            text="å‡è¡¡æ··å‰ªä¼šè®©æ‰€æœ‰ç´ æå°½é‡å¹³å‡å‡ºç°åœ¨ä¸»éŸ³é¢‘æ—¶é—´çº¿ä¸­ï¼›é¡ºåºå®Œæ•´æ’­æ”¾åˆ™ä¼˜å…ˆæ’­å®Œå‰ä¸€æ®µã€‚",
+            bg=SURFACE,
+            fg=MUTED,
+            wraplength=270,
+            justify=LEFT,
+            font=("Microsoft YaHei UI", 8),
+        ).pack(anchor="w", pady=(4, 0))
+        self._combo_field(settings, "æ–‡æ¡ˆæ°›å›´", self.mood_var, ["æ²»æ„ˆ", "æ²‰æµ¸", "çˆ½æ„Ÿ", "è½»æ¾", "é«˜çº§æ„Ÿ"])
+        self._combo_field(settings, "å‘å¸ƒå¹³å°", self.platform_var, ["å°çº¢ä¹¦", "æŠ–éŸ³", "è§†é¢‘å·", "Bç«™", "å¾®åš"])
+
+        self._field_label(settings, "ä¸»éŸ³é¢‘ï¼ˆå†³å®šæœ€ç»ˆæ—¶é•¿ï¼‰").pack(anchor="w", pady=(13, 5))
+        voice_row = Frame(settings, bg=SURFACE)
+        voice_row.pack(fill=X)
+        voice_entry = self._entry(voice_row, self.voice_var)
+        voice_entry.pack(side=LEFT, fill=X, expand=True, ipady=6)
+        self._button(voice_row, "å¯¼å…¥", self.choose_voice_audio, kind="accent").pack(side=RIGHT, padx=(7, 0))
+        voice_duration = float(video.get("voice_duration", 0.0))
+        self.voice_duration_label = Label(
+            settings,
+            text=(f"éŸ³é¢‘æ—¶é•¿ {voice_duration:.2f} ç§’ï¼›è§†é¢‘å°†è‡ªåŠ¨å¾ªç¯/æˆªæ–­åˆ°ç›¸åŒæ—¶é•¿" if voice_duration > 0 else "æœªå¯¼å…¥æ—¶ï¼Œæˆç‰‡æ—¶é•¿æŒ‰è§†é¢‘ç‰‡æ®µæ€»é•¿è®¡ç®—"),
+            bg=SURFACE,
+            fg=ACCENT_DARK if voice_duration > 0 else MUTED,
+            wraplength=270,
+            justify=LEFT,
+            font=("Microsoft YaHei UI", 8),
+        )
+        self.voice_duration_label.pack(anchor="w", pady=(4, 0))
+
+        self._field_label(settings, "å­—å¹•æ–‡ä»¶ï¼ˆSRTï¼‰").pack(anchor="w", pady=(13, 5))
+        subtitle_row = Frame(settings, bg=SURFACE)
+        subtitle_row.pack(fill=X)
+        subtitle_entry = self._entry(subtitle_row, self.subtitles_var)
+        subtitle_entry.pack(side=LEFT, fill=X, expand=True, ipady=6)
+        self._button(subtitle_row, "å¯¼å…¥", self.choose_subtitles, kind="ghost").pack(side=RIGHT, padx=(7, 0))
+
+        self._field_label(settings, "èƒŒæ™¯éŸ³ä¹").pack(anchor="w", pady=(13, 5))
+        music_row = Frame(settings, bg=SURFACE)
+        music_row.pack(fill=X)
+        music_entry = self._entry(music_row, self.music_var)
+        music_entry.pack(side=LEFT, fill=X, expand=True, ipady=6)
+        self._button(music_row, "é€‰æ‹©", self.choose_music, kind="ghost").pack(side=RIGHT, padx=(7, 0))
+        self._number_field(settings, "éŸ³ä¹éŸ³é‡ï¼ˆ0â€”1ï¼‰", self.music_volume_var)
+
+        self.export_progress = ttk.Progressbar(settings, style="Studio.Horizontal.TProgressbar", mode="determinate", maximum=100)
+        self.export_progress.pack(fill=X, pady=(24, 8))
+        self.export_status = Label(settings, text="ç­‰å¾…å¯¼å‡º", bg=SURFACE, fg=MUTED, wraplength=260, justify=LEFT, font=("Microsoft YaHei UI", 9))
+        self.export_status.pack(anchor="w")
+        self._button(settings, "å¯¼å‡º MP4", self.export_video, kind="primary").pack(fill=X, pady=(14, 0))
+        self._button(settings, "ç”Ÿæˆå¹¶æ‰“å¼€å‰ªæ˜ ", self.export_jianying_draft, kind="accent").pack(fill=X, pady=(8, 0))
+        self._refresh_video_tree()
+        self.bus_handler = self._handle_video_bus
+
+    def _combo_field(self, parent, label: str, variable: StringVar, values: list[str]) -> None:
+        self._field_label(parent, label).pack(anchor="w", pady=(10, 5))
+        combo = RoundedCombobox(parent, textvariable=variable, values=values, state="readonly")
+        combo.pack(fill=X)
+        combo.bind("<<ComboboxSelected>>", lambda _e: self._sync_video_state())
+
+    def _number_field(self, parent, label: str, variable: DoubleVar) -> None:
+        self._field_label(parent, label).pack(anchor="w", pady=(10, 5))
+        entry = self._entry(parent, variable)
+        entry.pack(fill=X, ipady=6)
+        entry.bind("<FocusOut>", lambda _e: self._sync_video_state())
+
+    def _video_duration(self) -> float:
+        video = self.state["video"]
+        if video.get("voice_path") and float(video.get("voice_duration", 0.0)) > 0:
+            return float(video["voice_duration"])
+        clips = video.get("clips", [])
+        speed = float(video.get("playback_speed", DEFAULT_PLAYBACK_SPEED))
+        total = sum(float(clip.get("duration", 0)) / speed for clip in clips)
+        if len(clips) > 1 and video.get("transition") != "none":
+            total -= float(video.get("transition_duration", 0.35)) * (len(clips) - 1)
+        return max(0.0, total)
+
+    def _sync_video_state(self) -> None:
+        if not hasattr(self, "video_project_var"):
+            return
+        video = self.state["video"]
+        video["project_name"] = self.video_project_var.get().strip() or "æœªå‘½åè§†é¢‘"
+        video["aspect"] = self.aspect_var.get()
+        video["fps"] = int(self.fps_var.get() or 30)
+        video["transition"] = self.transition_var.get()
+        video["transition_duration"] = max(0.1, min(float(self.transition_duration_var.get()), 2.0))
+        video["mix_strategy"] = MIX_STRATEGIES.get(self.mix_strategy_var.get(), "balanced")
+        video["playback_speed"] = DEFAULT_PLAYBACK_SPEED
+        video["voice_path"] = self.voice_var.get().strip()
+        video["subtitles_path"] = self.subtitles_var.get().strip()
+        video["music_path"] = self.music_var.get().strip()
+        video["music_volume"] = max(0.0, min(float(self.music_volume_var.get()), 1.0))
+        video["mood"] = self.mood_var.get()
+        video["platform"] = self.platform_var.get()
+        if self.post_editor:
+            video["post_copy"] = self.post_editor.get("1.0", "end-1c")
+        self.store.save(self.state)
+        if self.video_summary:
+            self.video_summary.configure(text=f"{len(video['clips'])} ä¸ªç´ æ  Â·  çº¦ {self._video_duration():.1f} ç§’")
+
+    def _refresh_video_tree(self, selected: int | None = None) -> None:
+        if not self.video_tree:
+            return
+        self.video_tree.delete(*self.video_tree.get_children())
+        for index, clip in enumerate(self.state["video"]["clips"]):
+            source_duration = float(clip.get("source_duration", 0.0))
+            duration_text = f"{float(clip['duration']):.1f}s / {source_duration:.1f}s" if source_duration > 0 else f"{float(clip['duration']):.1f}s / æœªçŸ¥"
+            self.video_tree.insert("", END, iid=str(index), values=(index + 1, Path(clip["path"]).name, f"{clip['start']:.1f}s", duration_text))
+        if selected is not None and str(selected) in self.video_tree.get_children():
+            self.video_tree.selection_set(str(selected))
+            self.video_tree.focus(str(selected))
+        self._sync_video_state()
+
+    def add_video_clips(self) -> None:
+        paths = filedialog.askopenfilenames(title="é€‰æ‹©è§†é¢‘ç´ æ", filetypes=[("è§†é¢‘æ–‡ä»¶", "*.mp4 *.mov *.mkv *.avi *.webm *.m4v"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")])
+        if not paths:
+            return
+        settings = self.state["settings"]
+        ffprobe = find_executable(settings.get("ffprobe_path", ""), "ffprobe")
+        failed: list[str] = []
+        for path in paths:
+            duration = probe_duration(path, ffprobe) or probe_video_duration(path)
+            if not duration or duration < 0.2:
+                failed.append(Path(path).name)
+                continue
+            rounded = round(float(duration), 3)
+            self.state["video"]["clips"].append(
+                {"path": path, "start": 0.0, "duration": rounded, "source_duration": rounded}
+            )
+        if self.state["video"]["clips"]:
+            self._refresh_video_tree(len(self.state["video"]["clips"]) - 1)
+        if failed:
+            messagebox.showwarning(
+                "éƒ¨åˆ†ç´ ææœªæ·»åŠ ",
+                "æ— æ³•è¯»å–ä»¥ä¸‹ç´ æçš„çœŸå®æ—¶é•¿ï¼Œå› æ­¤æ²¡æœ‰ç”¨é”™è¯¯çš„ 5 ç§’é»˜è®¤å€¼ä»£æ›¿ï¼š\n"
+                + "\n".join(failed[:8])
+                + ("\nâ€¦â€¦" if len(failed) > 8 else "")
+                + "\n\nè¯·é…ç½® FFprobeï¼Œæˆ–å°†ç´ æè½¬æ¢ä¸ºå¸¸è§çš„ MP4/MOV æ ¼å¼åé‡è¯•ã€‚",
+            )
+
+    def _upgrade_video_clip_metadata(self) -> None:
+        """Migrate old 5/8-second imports to their real full source duration."""
+        clips = self.state["video"].get("clips", [])
+        if not clips:
+            return
+        settings = self.state["settings"]
+        ffprobe = find_executable(settings.get("ffprobe_path", ""), "ffprobe")
+        changed = False
+        for clip in clips:
+            if float(clip.get("source_duration", 0.0)) > 0 or not Path(clip.get("path", "")).is_file():
+                continue
+            duration = probe_duration(clip["path"], ffprobe) or probe_video_duration(clip["path"])
+            if not duration:
+                continue
+            source_duration = round(float(duration), 3)
+            start = min(max(0.0, float(clip.get("start", 0.0))), max(0.0, source_duration - 0.2))
+            clip.update(
+                start=start,
+                duration=round(max(0.2, source_duration - start), 3),
+                source_duration=source_duration,
+            )
+            changed = True
+        if changed:
+            self.store.save(self.state)
+
+    def on_video_select(self, _event=None) -> None:
+        if not self.video_tree or not self.video_tree.selection():
+            return
+        clip = self.state["video"]["clips"][int(self.video_tree.selection()[0])]
+        self.clip_start_var.set(float(clip["start"]))
+        self.clip_duration_var.set(float(clip["duration"]))
+
+    def update_selected_clip(self) -> None:
+        if not self.video_tree or not self.video_tree.selection():
+            messagebox.showinfo("é€‰æ‹©ç´ æ", "è¯·å…ˆé€‰æ‹©ä¸€ä¸ªè§†é¢‘ç´ æã€‚")
+            return
+        index = int(self.video_tree.selection()[0])
+        try:
+            start = max(0.0, float(self.clip_start_var.get()))
+            duration = max(0.2, float(self.clip_duration_var.get()))
+        except (ValueError, TypeError):
+            messagebox.showerror("å‚æ•°é”™è¯¯", "èµ·ç‚¹å’Œæ—¶é•¿å¿…é¡»æ˜¯æ•°å­—ã€‚")
+            return
+        clip = self.state["video"]["clips"][index]
+        source_duration = float(clip.get("source_duration", 0.0))
+        was_clamped = False
+        if source_duration > 0:
+            if start >= source_duration:
+                messagebox.showerror("å‚æ•°é”™è¯¯", f"æˆªå–èµ·ç‚¹å¿…é¡»å°äºåŸç‰‡æ—¶é•¿ {source_duration:.2f} ç§’ã€‚")
+                return
+            available = source_duration - start
+            if duration > available:
+                duration = available
+                was_clamped = True
+        clip.update(start=start, duration=round(duration, 3))
+        self._refresh_video_tree(index)
+        if was_clamped:
+            messagebox.showinfo("å·²è‡ªåŠ¨ä¿®æ­£", "å–ç”¨æ—¶é•¿è¶…è¿‡ç´ æç»“å°¾ï¼Œå·²è‡ªåŠ¨è°ƒæ•´ä¸ºå‰©ä½™çš„å®Œæ•´æ—¶é•¿ã€‚")
+
+    def restore_selected_clip_duration(self) -> None:
+        if not self.video_tree or not self.video_tree.selection():
+            messagebox.showinfo("é€‰æ‹©ç´ æ", "è¯·å…ˆé€‰æ‹©ä¸€ä¸ªè§†é¢‘ç´ æã€‚")
+            return
+        index = int(self.video_tree.selection()[0])
+        clip = self.state["video"]["clips"][index]
+        source_duration = float(clip.get("source_duration", 0.0))
+        if source_duration <= 0:
+            messagebox.showwarning("æ— æ³•æ¢å¤", "å°šæœªè¯»å–åˆ°è¿™ä¸ªç´ æçš„åŸå§‹æ—¶é•¿ï¼Œè¯·å…ˆé…ç½® FFprobe åé‡æ–°æ·»åŠ ã€‚")
+            return
+        clip["duration"] = round(max(0.2, source_duration - float(clip.get("start", 0.0))), 3)
+        self._refresh_video_tree(index)
+
+    def remove_selected_clip(self) -> None:
+        if not self.video_tree or not self.video_tree.selection():
+            return
+        index = int(self.video_tree.selection()[0])
+        del self.state["video"]["clips"][index]
+        self._refresh_video_tree(min(index, len(self.state["video"]["clips"]) - 1) if self.state["video"]["clips"] else None)
+
+    def move_clip(self, direction: int) -> None:
+        if not self.video_tree or not self.video_tree.selection():
+            return
+        index = int(self.video_tree.selection()[0])
+        target = index + direction
+        clips = self.state["video"]["clips"]
+        if target < 0 or target >= len(clips):
+            return
+        clips[index], clips[target] = clips[target], clips[index]
+        self._refresh_video_tree(target)
+
+    def choose_music(self) -> None:
+        path = filedialog.askopenfilename(title="é€‰æ‹©èƒŒæ™¯éŸ³ä¹", filetypes=[("éŸ³é¢‘æ–‡ä»¶", "*.mp3 *.wav *.m4a *.aac *.flac"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")])
+        if path:
+            self.music_var.set(path)
+            self._sync_video_state()
+
+    def choose_voice_audio(self) -> None:
+        path = filedialog.askopenfilename(
+            title="é€‰æ‹©ä¸»éŸ³é¢‘",
+            filetypes=[("éŸ³é¢‘æ–‡ä»¶", "*.mp3 *.wav *.m4a *.aac *.flac *.ogg"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")],
+        )
+        if not path:
+            return
+        duration = probe_audio_duration(path)
+        if not duration:
+            messagebox.showerror("æ— æ³•è¯»å–éŸ³é¢‘", "æ— æ³•è¯†åˆ«è¿™ä¸ªéŸ³é¢‘æ–‡ä»¶çš„æ—¶é•¿ï¼Œè¯·æ¢ä¸€ä¸ªå¸¸è§æ ¼å¼çš„éŸ³é¢‘ã€‚")
+            return
+        self.voice_var.set(path)
+        self.state["video"]["voice_duration"] = float(duration)
+        self.voice_duration_label.configure(
+            text=f"éŸ³é¢‘æ—¶é•¿ {duration:.2f} ç§’ï¼›è§†é¢‘å°†è‡ªåŠ¨å¾ªç¯/æˆªæ–­åˆ°ç›¸åŒæ—¶é•¿",
+            fg=ACCENT_DARK,
+        )
+        self._sync_video_state()
+        self._refresh_video_tree()
+
+    def choose_subtitles(self) -> None:
+        path = filedialog.askopenfilename(title="é€‰æ‹© SRT å­—å¹•", filetypes=[("SRT å­—å¹•", "*.srt"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")])
+        if path:
+            self.subtitles_var.set(path)
+            self._sync_video_state()
+
+    def _video_project(self) -> VideoProject:
+        self._sync_video_state()
+        video = self.state["video"]
+        return VideoProject(
+            clips=[
+                VideoClip(
+                    item["path"],
+                    float(item["start"]),
+                    float(item["duration"]),
+                    float(item.get("source_duration", 0.0)),
+                )
+                for item in video["clips"]
+            ],
+            aspect=video["aspect"],
+            fps=int(video["fps"]),
+            transition=video["transition"],
+            transition_duration=float(video["transition_duration"]),
+            voice_path=video.get("voice_path", ""),
+            subtitles_path=video.get("subtitles_path", ""),
+            target_duration=float(video.get("voice_duration", 0.0)) if video.get("voice_path") else 0.0,
+            mix_strategy=video.get("mix_strategy", "balanced"),
+            playback_speed=float(video.get("playback_speed", DEFAULT_PLAYBACK_SPEED)),
+            music_path=video["music_path"],
+            music_volume=float(video["music_volume"]),
+        )
+
+    def export_video(self) -> None:
+        if self.is_busy:
+            return
+        project = self._video_project()
+        if not project.clips:
+            messagebox.showinfo("è¿˜æ²¡æœ‰ç´ æ", "è¯·å…ˆæ·»åŠ è‡³å°‘ä¸€ä¸ªè§†é¢‘ç´ æã€‚")
+            return
+        configured = self.state["settings"].get("ffmpeg_path", "")
+        ffmpeg = find_executable(configured, "ffmpeg")
+        if not ffmpeg:
+            tool_name = "ffmpeg" if sys.platform == "darwin" else "ffmpeg.exe"
+            messagebox.showwarning("éœ€è¦ FFmpeg", f"å°šæœªæ‰¾åˆ° FFmpegã€‚è¯·åœ¨â€œæ¨¡å‹ä¸å·¥å…·â€ä¸­æŒ‡å®š {tool_name}ï¼Œä¹‹åå³å¯å¯¼å‡ºè§†é¢‘ã€‚")
+            self.navigate("settings")
+            return
+        default_name = (self.state["video"]["project_name"].strip() or "è§£å‹æ··å‰ª") + ".mp4"
+        output = filedialog.asksaveasfilename(title="å¯¼å‡ºæˆç‰‡", defaultextension=".mp4", initialfile=default_name, filetypes=[("MP4 è§†é¢‘", "*.mp4")])
+        if not output:
+            return
+        try:
+            command = build_export_command(project, ffmpeg, output)
+        except ValueError as exc:
+            messagebox.showerror("æ— æ³•å¯¼å‡º", str(exc))
+            return
+        self.is_busy = True
+        self.export_progress["value"] = 0
+        self.export_status.configure(text="æ­£åœ¨å¯åŠ¨ FFmpegâ€¦", fg=ACCENT_DARK)
+
+        def worker() -> None:
+            try:
+                run_export(command, project.output_duration, lambda value, detail: self.bus.put(("video_progress", (value, detail))))
+                self.bus.put(("video_done", output))
+            except Exception as exc:  # worker boundary
+                self.bus.put(("video_error", str(exc)))
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def export_jianying_draft(self) -> None:
+        if self.is_busy:
+            return
+        project = self._video_project()
+        if not project.clips:
+            messagebox.showinfo("è¿˜æ²¡æœ‰ç´ æ", "è¯·å…ˆæ·»åŠ è‡³å°‘ä¸€ä¸ªè§†é¢‘ç´ æã€‚")
+            return
+        settings = self.state["settings"]
+        drafts_path = detect_jianying_drafts_path(settings.get("jianying_drafts_path", ""))
+        jianying_exe = detect_jianying_executable(settings.get("jianying_exe", ""))
+        if not drafts_path or not jianying_exe:
+            messagebox.showwarning("éœ€è¦å‰ªæ˜ è®¾ç½®", "æ²¡æœ‰æ‰¾åˆ°å‰ªæ˜ ç¨‹åºæˆ–è‰ç¨¿ç›®å½•ï¼Œè¯·åœ¨â€œæ¨¡å‹ä¸å·¥å…·â€ä¸­ç¡®è®¤è·¯å¾„ã€‚")
+            self.navigate("settings")
+            return
+        settings["jianying_drafts_path"] = drafts_path
+        settings["jianying_exe"] = jianying_exe
+        self.store.save(self.state)
+        self.is_busy = True
+        self.export_progress["value"] = 8
+        self.export_status.configure(text="æ­£åœ¨ç”Ÿæˆå‰ªæ˜ æ—¶é—´çº¿è‰ç¨¿â€¦", fg=ACCENT_DARK)
+        project_name = self.state["video"]["project_name"]
+
+        def worker() -> None:
+            try:
+                result = create_jianying_draft(project, drafts_path, project_name)
+                self.bus.put(("jianying_done", (result, jianying_exe)))
+            except Exception as exc:
+                self.bus.put(("jianying_error", str(exc)))
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def _handle_video_bus(self, event: str, payload: object) -> None:
+        if event == "video_progress" and self.export_progress:
+            value, _detail = payload
+            self.export_progress["value"] = float(value) * 100
+            self.export_status.configure(text=f"æ­£åœ¨å¯¼å‡ºâ€¦ {float(value) * 100:.0f}%")
+        elif event == "video_done":
+            self.is_busy = False
+            self.export_status.configure(text="å¯¼å‡ºå®Œæˆ", fg=ACCENT_DARK)
+            messagebox.showinfo("å¯¼å‡ºå®Œæˆ", f"è§†é¢‘å·²ä¿å­˜åˆ°ï¼š\n{payload}")
+        elif event == "video_error":
+            self.is_busy = False
+            self.export_status.configure(text="å¯¼å‡ºå¤±è´¥", fg=ERROR)
+            messagebox.showerror("å¯¼å‡ºå¤±è´¥", str(payload))
+        elif event == "post_done":
+            self.is_busy = False
+            if self.post_editor:
+                self.post_editor.delete("1.0", END)
+                self.post_editor.insert("1.0", str(payload))
+                self._sync_video_state()
+        elif event == "post_error":
+            self.is_busy = False
+            messagebox.showerror("æ–‡æ¡ˆç”Ÿæˆå¤±è´¥", str(payload))
+        elif event == "jianying_done":
+            self.is_busy = False
+            result, executable = payload
+            self.export_progress["value"] = 100
+            self.export_status.configure(text=f"å‰ªæ˜ è‰ç¨¿å·²ç”Ÿæˆï¼š{result.name}", fg=ACCENT_DARK)
+            try:
+                open_jianying(executable)
+            except JianyingEngineError as exc:
+                messagebox.showwarning("è‰ç¨¿å·²ç”Ÿæˆ", f"è‰ç¨¿å·²ç»ç”Ÿæˆï¼Œä½†å‰ªæ˜ æœªèƒ½è‡ªåŠ¨å¯åŠ¨ï¼š\n{exc}\n\nè‰ç¨¿ä½ç½®ï¼š\n{result.path}")
+                return
+            messagebox.showinfo(
+                "å·²æ‰“å¼€å‰ªæ˜ ",
+                f"è‰ç¨¿â€œ{result.name}â€å·²ç»ç”Ÿæˆã€‚\n\nè¯·åœ¨å‰ªæ˜ é¦–é¡µçš„â€œæœ¬åœ°è‰ç¨¿â€ä¸­æ‰“å¼€ï¼›è‹¥åˆ—è¡¨æœªåˆ·æ–°ï¼Œé‡æ–°è¿›å…¥å‰ªæ˜ é¦–é¡µå³å¯ã€‚",
+            )
+        elif event == "jianying_error":
+            self.is_busy = False
+            self.export_progress["value"] = 0
+            self.export_status.configure(text="å‰ªæ˜ è‰ç¨¿ç”Ÿæˆå¤±è´¥", fg=ERROR)
+            messagebox.showerror("å‰ªæ˜ è‰ç¨¿ç”Ÿæˆå¤±è´¥", str(payload))
+
+    def generate_post_copy(self) -> None:
+        if self.is_busy:
+            return
+        try:
+            client = self._ai_client()
+        except AIClientError as exc:
+            messagebox.showwarning("éœ€è¦æ¨¡å‹è®¾ç½®", str(exc))
+            self.navigate("settings")
+            return
+        self._sync_video_state()
+        video = self.state["video"]
+        system, user = build_post_prompt(video["project_name"], video["mood"], video["platform"], [Path(item["path"]).stem for item in video["clips"]], self._video_duration())
+        self.is_busy = True
+        if self.post_editor:
+            self.post_editor.delete("1.0", END)
+            self.post_editor.insert("1.0", "æ­£åœ¨ç”Ÿæˆæ–‡æ¡ˆâ€¦")
+
+        def worker() -> None:
+            try:
+                self.bus.put(("post_done", client.complete(system, user, temperature=0.8)))
+            except Exception as exc:
+                self.bus.put(("post_error", str(exc)))
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def copy_post(self) -> None:
+        if not self.post_editor:
+            return
+        text = self.post_editor.get("1.0", "end-1c")
+        self.root.clipboard_clear()
+        self.root.clipboard_append(text)
+
+    # ---------------------------- Novel workbench ----------------------------
+    def show_novel(self) -> None:
+        self._clear_main()
+        self.navigate_highlight("novel")
+        self._page_header(
+            "å°è¯´æ”¹æ–‡",
+            "è‡ªåŠ¨æ‹†ç« å¹¶ä¿ç•™åŸæ–‡å¯¹ç…§ï¼›å»ºè®®å…ˆå®Œå–„è®¾å®šåº“ï¼Œå†é€ç« ç”Ÿæˆã€‚",
+            [("å¯¼å…¥å°è¯´", self.import_novel, "ghost"), ("æ”¹å†™å½“å‰ç« ", self.rewrite_current, "primary")],
+        )
+        body = Frame(self.main, bg=BG)
+        body.pack(fill=BOTH, expand=True, padx=34, pady=(0, 28))
+        body.grid_columnconfigure(0, weight=0, minsize=300)
+        body.grid_columnconfigure(1, weight=1)
+        body.grid_rowconfigure(0, weight=1)
+
+        control_outer = self._card(body, padx=18, pady=17)
+        control_outer.grid(row=0, column=0, sticky="nsew", padx=(0, 9))
+        control = control_outer.winfo_children()[0]
+        novel = self.state["novel"]
+        self.novel_project_var = StringVar(value=novel["project_name"])
+        self.mode_var = StringVar(value=novel["mode"])
+        self.style_var = StringVar(value=novel["style"])
+        self.perspective_var = StringVar(value=novel["perspective"])
+        self.length_var = StringVar(value=novel["target_length"])
+
+        Label(control, text="æ”¹å†™è§„åˆ™", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 12, "bold")).pack(anchor="w")
+        self._field_label(control, "é¡¹ç›®å").pack(anchor="w", pady=(12, 5))
+        self._entry(control, self.novel_project_var).pack(fill=X, ipady=6)
+        self._novel_combo(control, "æ”¹å†™æ¨¡å¼", self.mode_var, ["è½»åº¦æ¶¦è‰²", "æ·±åº¦æ”¹å†™", "æ‰©å†™ç»†èŠ‚", "ç²¾ç®€æé€Ÿ", "å½±è§†åŒ–æ”¹å†™"])
+        self._novel_combo(control, "ç›®æ ‡é£æ ¼", self.style_var, ["èŠ‚å¥ç´§å‡‘ã€ç”»é¢æ„Ÿå¼º", "è‡ªç„¶ç»†è…»ã€æƒ…ç»ªå……è¶³", "ç®€æ´çˆ½å¿«ã€å¯¹ç™½çªå‡º", "æ‚¬å¿µå¼ºã€ç« èŠ‚é’©å­æ˜æ˜¾", "è½»æ¾å¹½é»˜"])
+        self._novel_combo(control, "å™äº‹è§†è§’", self.perspective_var, ["ä¿æŒåŸè§†è§’", "ç¬¬ä¸€äººç§°", "ç¬¬ä¸‰äººç§°é™çŸ¥", "ç¬¬ä¸‰äººç§°å…¨çŸ¥"])
+        self._novel_combo(control, "ç›®æ ‡ç¯‡å¹…", self.length_var, ["ä¸åŸæ–‡æ¥è¿‘", "ç¼©çŸ­çº¦20%", "æ‰©å†™çº¦30%", "åªä¿ç•™ä¸»çº¿"])
+        self._field_label(control, "è‡ªå®šä¹‰è§„åˆ™").pack(anchor="w", pady=(10, 5))
+        rules_outer, rules_shell = self._rounded_widget_shell(control)
+        rules_outer.pack(fill=X)
+        self.rules_editor = Text(rules_shell, height=4, wrap="word", bg=COMIC_INSET, fg=INK, relief="flat", padx=8, pady=8, font=("Microsoft YaHei UI", 9))
+        self._pack_vertical_scroller(rules_shell, self.rules_editor, fill=X, expand=True)
+        self.rules_editor.insert("1.0", novel["custom_rules"])
+        button_row = Frame(control, bg=SURFACE)
+        button_row.pack(fill=X, pady=(10, 13))
+        self._button(button_row, "è®¾å®šåº“", self.edit_story_bible, kind="ghost").pack(side=LEFT)
+        self._button(button_row, "æŸ¥çœ‹æç¤ºè¯", self.preview_prompt, kind="ghost").pack(side=RIGHT)
+
+        chapter_header = Frame(control, bg=SURFACE)
+        chapter_header.pack(fill=X)
+        Label(chapter_header, text="ç« èŠ‚", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 11, "bold")).pack(side=LEFT)
+        self.chapter_progress_label = Label(chapter_header, text="", bg=SURFACE, fg=ACCENT_DARK, font=("Microsoft YaHei UI", 9))
+        self.chapter_progress_label.pack(side=RIGHT)
+        novel_list_outer, novel_list_shell = self._rounded_widget_shell(control)
+        novel_list_outer.pack(fill=BOTH, expand=True, pady=(8, 10))
+        self.novel_list = Listbox(novel_list_shell, exportselection=False, bg=COMIC_INSET, fg=INK, selectbackground=COMIC_MINT, selectforeground=INK, relief="flat", highlightthickness=0, font=("Microsoft YaHei UI", 9), activestyle="none")
+        self._pack_vertical_scroller(novel_list_shell, self.novel_list)
+        self.novel_list.bind("<<ListboxSelect>>", self.on_chapter_select)
+        actions = Frame(control, bg=SURFACE)
+        actions.pack(fill=X)
+        self._button(actions, "æ‰¹é‡æ”¹å†™", self.rewrite_all, kind="dark").pack(side=LEFT, fill=X, expand=True)
+        self._button(actions, "å¯¼å‡ºç»“æœ", self.export_novel, kind="accent").pack(side=RIGHT, fill=X, expand=True, padx=(7, 0))
+
+        editors_outer = self._card(body, padx=0, pady=0)
+        editors_outer.grid(row=0, column=1, sticky="nsew", padx=(9, 0))
+        editors = editors_outer.winfo_children()[0]
+        pane = ttk.Panedwindow(editors, orient="horizontal", style="Studio.TPanedwindow")
+        pane.pack(fill=BOTH, expand=True)
+        source_panel = self._editor_panel(pane, "åŸæ–‡ç« èŠ‚", "å¯ç›´æ¥ç²˜è´´ç« èŠ‚æ­£æ–‡ï¼Œä¹Ÿå¯ä»¥å…ˆå¯¼å…¥å°è¯´æ–‡ä»¶ã€‚")
+        result_panel = self._editor_panel(pane, "æ”¹å†™ç»“æœ", "AI ç»“æœä¼šæ˜¾ç¤ºåœ¨è¿™é‡Œï¼Œä½ ä»å¯äººå·¥ç¼–è¾‘ã€‚", result=True)
+        pane.add(source_panel, weight=1)
+        pane.add(result_panel, weight=1)
+        self.novel_status = Label(editors, text="å°±ç»ª", bg=SURFACE_ALT, fg=MUTED, anchor="w", padx=16, pady=10, font=("Microsoft YaHei UI", 9))
+        self.novel_status.pack(fill=X)
+        chapter_count = len(novel["chapters"])
+        if chapter_count:
+            selected = self.current_chapter_index if self.current_chapter_index is not None and self.current_chapter_index < chapter_count else 0
+            self._refresh_novel_list(selected)
+        else:
+            self.current_chapter_index = None
+            self._refresh_novel_list()
+        self.bus_handler = self._handle_novel_bus
+
+    def _novel_combo(self, parent, label: str, variable: StringVar, values: list[str]) -> None:
+        self._field_label(parent, label).pack(anchor="w", pady=(10, 5))
+        RoundedCombobox(parent, textvariable=variable, values=values, state="readonly").pack(fill=X)
+
+    def _editor_panel(self, parent, title: str, subtitle: str, result: bool = False) -> Frame:
+        panel = Frame(parent, bg=SURFACE)
+        header = Frame(panel, bg=SURFACE_ALT, padx=16, pady=12)
+        header.pack(fill=X)
+        Label(header, text=title, bg=SURFACE_ALT, fg=INK, font=("Microsoft YaHei UI", 11, "bold")).pack(anchor="w")
+        Label(header, text=subtitle, bg=SURFACE_ALT, fg=MUTED, font=("Microsoft YaHei UI", 8)).pack(anchor="w", pady=(2, 0))
+        editor_outer, editor_shell = self._rounded_widget_shell(panel, bg=SURFACE)
+        editor_outer.pack(fill=BOTH, expand=True)
+        editor = Text(editor_shell, wrap="word", undo=True, bg=SURFACE, fg=INK, insertbackground=INK, relief="flat", padx=18, pady=16, spacing1=2, spacing3=5, font=("Microsoft YaHei UI", 11))
+        self._pack_vertical_scroller(editor_shell, editor)
+        if result:
+            self.result_editor = editor
+        else:
+            self.source_editor = editor
+        return panel
+
+    def import_novel(self) -> None:
+        path = filedialog.askopenfilename(title="å¯¼å…¥å°è¯´", filetypes=[("æ–‡æœ¬æ–‡æ¡£", "*.txt *.md *.docx"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")])
+        if not path:
+            return
+        try:
+            content = read_document(path)
+        except (OSError, zipfile.BadZipFile, ElementTree.ParseError, KeyError) as exc:
+            messagebox.showerror("å¯¼å…¥å¤±è´¥", f"æ— æ³•è¯»å–æ–‡ä»¶ï¼š{exc}")
+            return
+        chapters = chapter_records(content)
+        if not chapters:
+            messagebox.showwarning("æ²¡æœ‰æ­£æ–‡", "æ–‡æ¡£ä¸­æ²¡æœ‰å¯ç”¨æ–‡å­—ã€‚")
+            return
+        novel = self.state["novel"]
+        novel["source_path"] = path
+        novel["source_text"] = content
+        novel["project_name"] = Path(path).stem
+        novel["chapters"] = chapters
+        novel["results"] = {}
+        self.novel_project_var.set(novel["project_name"])
+        self.current_chapter_index = None
+        self._refresh_novel_list(0)
+        self.store.save(self.state)
+
+    def _refresh_novel_list(self, selected: int | None = None) -> None:
+        if not self.novel_list:
+            return
+        self.novel_list.delete(0, END)
+        novel = self.state["novel"]
+        for index, chapter in enumerate(novel["chapters"]):
+            done = "âœ“" if str(index) in novel["results"] and novel["results"][str(index)].strip() else "Â·"
+            self.novel_list.insert(END, f" {done}  {chapter['title']}")
+        self.chapter_progress_label.configure(text=f"{len(novel['results'])}/{len(novel['chapters'])}")
+        if selected is not None and novel["chapters"]:
+            self.novel_list.selection_set(selected)
+            self.novel_list.activate(selected)
+            self._load_chapter(selected)
+
+    def on_chapter_select(self, _event=None) -> None:
+        if not self.novel_list or not self.novel_list.curselection():
+            return
+        next_index = int(self.novel_list.curselection()[0])
+        if self.current_chapter_index == next_index:
+            return
+        self._save_chapter_editors()
+        self._load_chapter(next_index)
+
+    def _load_chapter(self, index: int) -> None:
+        chapters = self.state["novel"]["chapters"]
+        if not (0 <= index < len(chapters)) or not self.source_editor or not self.result_editor:
+            return
+        self.current_chapter_index = index
+        self.source_editor.delete("1.0", END)
+        self.source_editor.insert("1.0", chapters[index]["content"])
+        self.result_editor.delete("1.0", END)
+        self.result_editor.insert("1.0", self.state["novel"]["results"].get(str(index), ""))
+        self.novel_status.configure(text=f"æ­£åœ¨ç¼–è¾‘ï¼š{chapters[index]['title']}")
+
+    def _sync_novel_rules(self) -> None:
+        if not hasattr(self, "novel_project_var"):
+            return
+        novel = self.state["novel"]
+        novel["project_name"] = self.novel_project_var.get().strip() or "æœªå‘½åå°è¯´"
+        novel["mode"] = self.mode_var.get()
+        novel["style"] = self.style_var.get()
+        novel["perspective"] = self.perspective_var.get()
+        novel["target_length"] = self.length_var.get()
+        novel["custom_rules"] = self.rules_editor.get("1.0", "end-1c").strip()
+
+    def _save_chapter_editors(self) -> None:
+        if self.current_chapter_index is None or not self.source_editor or not self.result_editor:
+            return
+        novel = self.state["novel"]
+        if self.current_chapter_index >= len(novel["chapters"]):
+            return
+        novel["chapters"][self.current_chapter_index]["content"] = self.source_editor.get("1.0", "end-1c")
+        result = self.result_editor.get("1.0", "end-1c").strip()
+        key = str(self.current_chapter_index)
+        if result:
+            novel["results"][key] = result
+        else:
+            novel["results"].pop(key, None)
+
+    def _accept_pasted_source(self) -> bool:
+        """Turn text pasted into an otherwise empty source editor into chapters."""
+        if not self.source_editor:
+            return False
+        content = self.source_editor.get("1.0", "end-1c").strip()
+        chapters = chapter_records(content)
+        if not chapters:
+            return False
+        self._sync_novel_rules()
+        novel = self.state["novel"]
+        novel["source_path"] = ""
+        novel["source_text"] = content
+        novel["chapters"] = chapters
+        novel["results"] = {}
+        self.current_chapter_index = None
+        self._refresh_novel_list(0)
+        self.store.save(self.state)
+        self.novel_status.configure(text=f"å·²è¯†åˆ«ç²˜è´´å†…å®¹ï¼š{len(chapters)} ç« ", fg=ACCENT_DARK)
+        return True
+
+    def _chapter_prompt(self, index: int) -> tuple[str, str]:
+        self._sync_novel_rules()
+        novel = self.state["novel"]
+        chapter = novel["chapters"][index]
+        return build_rewrite_prompt(
+            chapter["title"],
+            chapter["content"],
+            mode=novel["mode"],
+            style=novel["style"],
+            perspective=novel["perspective"],
+            target_length=novel["target_length"],
+            custom_rules=novel["custom_rules"],
+            story_bible=novel["story_bible"],
+        )
+
+    def rewrite_current(self) -> None:
+        if self.is_busy:
+            return
+        self._save_chapter_editors()
+        if self.current_chapter_index is None and not self._accept_pasted_source():
+            messagebox.showinfo("æ²¡æœ‰ç« èŠ‚", "è¯·åœ¨â€œåŸæ–‡ç« èŠ‚â€ä¸­ç²˜è´´æ­£æ–‡ï¼Œæˆ–å¯¼å…¥å°è¯´æ–‡ä»¶ã€‚")
+            return
+        assert self.current_chapter_index is not None
+        if not self.state["novel"]["chapters"][self.current_chapter_index]["content"].strip():
+            messagebox.showinfo("æ²¡æœ‰æ­£æ–‡", "å½“å‰ç« èŠ‚æ²¡æœ‰æ­£æ–‡ï¼Œè¯·å…ˆç²˜è´´æˆ–è¾“å…¥å†…å®¹ã€‚")
+            return
+        try:
+            client = self._ai_client()
+        except AIClientError as exc:
+            messagebox.showwarning("éœ€è¦æ¨¡å‹è®¾ç½®", str(exc))
+            self.navigate("settings")
+            return
+        index = self.current_chapter_index
+        system, user = self._chapter_prompt(index)
+        self.is_busy = True
+        self.novel_status.configure(text="AI æ­£åœ¨æ”¹å†™å½“å‰ç« èŠ‚â€¦", fg=ACCENT_DARK)
+
+        def worker() -> None:
+            try:
+                result = client.complete(system, user, temperature=0.72)
+                self.bus.put(("novel_chapter_done", (index, result)))
+            except Exception as exc:
+                self.bus.put(("novel_error", str(exc)))
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def rewrite_all(self) -> None:
+        if self.is_busy:
+            return
+        self._save_chapter_editors()
+        chapters = self.state["novel"]["chapters"]
+        if not chapters and self._accept_pasted_source():
+            chapters = self.state["novel"]["chapters"]
+        if not chapters:
+            messagebox.showinfo("æ²¡æœ‰ç« èŠ‚", "è¯·åœ¨â€œåŸæ–‡ç« èŠ‚â€ä¸­ç²˜è´´æ­£æ–‡ï¼Œæˆ–å¯¼å…¥å°è¯´æ–‡ä»¶ã€‚")
+            return
+        if not messagebox.askyesno("æ‰¹é‡æ”¹å†™", f"å°†ä¾æ¬¡è¯·æ±‚æ¨¡å‹æ”¹å†™ {len(chapters)} ä¸ªç« èŠ‚ã€‚æ­¤æ“ä½œå¯èƒ½äº§ç”Ÿ API è´¹ç”¨ï¼Œæ˜¯å¦ç»§ç»­ï¼Ÿ"):
+            return
+        try:
+            client = self._ai_client()
+        except AIClientError as exc:
+            messagebox.showwarning("éœ€è¦æ¨¡å‹è®¾ç½®", str(exc))
+            self.navigate("settings")
+            return
+        prompts = [self._chapter_prompt(i) for i in range(len(chapters))]
+        self.is_busy = True
+
+        def worker() -> None:
+            try:
+                for index, (system, user) in enumerate(prompts):
+                    self.bus.put(("novel_batch_progress", (index, len(prompts))))
+                    result = client.complete(system, user, temperature=0.72)
+                    self.bus.put(("novel_batch_item", (index, result)))
+                self.bus.put(("novel_batch_done", len(prompts)))
+            except Exception as exc:
+                self.bus.put(("novel_error", str(exc)))
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def _handle_novel_bus(self, event: str, payload: object) -> None:
+        if event in {"novel_chapter_done", "novel_batch_item"}:
+            index, result = payload
+            self.state["novel"]["results"][str(index)] = result
+            self.store.save(self.state)
+            self._refresh_novel_list(index if event == "novel_chapter_done" else self.current_chapter_index)
+            if event == "novel_chapter_done":
+                self.is_busy = False
+                self.novel_status.configure(text="å½“å‰ç« èŠ‚æ”¹å†™å®Œæˆï¼Œå¯ç»§ç»­äººå·¥ç¼–è¾‘ã€‚", fg=ACCENT_DARK)
+        elif event == "novel_batch_progress":
+            index, total = payload
+            self.novel_status.configure(text=f"æ‰¹é‡æ”¹å†™ä¸­ï¼š{index + 1}/{total}", fg=ACCENT_DARK)
+        elif event == "novel_batch_done":
+            self.is_busy = False
+            self._refresh_novel_list(self.current_chapter_index)
+            self.novel_status.configure(text=f"æ‰¹é‡æ”¹å†™å®Œæˆï¼šå…± {payload} ç« ", fg=ACCENT_DARK)
+            messagebox.showinfo("æ‰¹é‡æ”¹å†™å®Œæˆ", "æ‰€æœ‰ç« èŠ‚å·²å¤„ç†å¹¶è‡ªåŠ¨ä¿å­˜ã€‚")
+        elif event == "novel_error":
+            self.is_busy = False
+            self.novel_status.configure(text="æ”¹å†™å¤±è´¥ï¼Œå·²ä¿ç•™å®Œæˆéƒ¨åˆ†ã€‚", fg=ERROR)
+            messagebox.showerror("æ”¹å†™å¤±è´¥", str(payload))
+
+    def preview_prompt(self) -> None:
+        self._save_chapter_editors()
+        if self.current_chapter_index is None and not self._accept_pasted_source():
+            messagebox.showinfo("æ²¡æœ‰ç« èŠ‚", "è¯·åœ¨â€œåŸæ–‡ç« èŠ‚â€ä¸­ç²˜è´´æ­£æ–‡ï¼Œæˆ–å¯¼å…¥å°è¯´æ–‡ä»¶ã€‚")
+            return
+        assert self.current_chapter_index is not None
+        system, user = self._chapter_prompt(self.current_chapter_index)
+        dialog = Toplevel(self.root)
+        dialog.title("æœ¬ç« æç¤ºè¯é¢„è§ˆ")
+        dialog.geometry("820x660")
+        dialog.configure(bg=BG)
+        editor_outer, editor_shell = self._rounded_widget_shell(dialog, bg=SURFACE)
+        editor_outer.pack(fill=BOTH, expand=True, padx=18, pady=(18, 8))
+        editor = Text(editor_shell, wrap="word", bg=SURFACE, fg=INK, padx=18, pady=18, font=("Microsoft YaHei UI", 10))
+        self._pack_vertical_scroller(editor_shell, editor)
+        editor.insert("1.0", f"ã€ç³»ç»Ÿæç¤ºã€‘\n{system}\n\nã€ç”¨æˆ·æç¤ºã€‘\n{user}")
+        row = Frame(dialog, bg=BG)
+        row.pack(fill=X, padx=18, pady=(0, 18))
+        self._button(row, "å¤åˆ¶å…¨éƒ¨", lambda: self._copy_text(editor.get("1.0", "end-1c")), kind="primary").pack(side=RIGHT)
+
+    def edit_story_bible(self) -> None:
+        dialog = Toplevel(self.root)
+        dialog.title("äººç‰©ä¸ä¸–ç•Œè§‚è®¾å®šåº“")
+        dialog.geometry("760x620")
+        dialog.configure(bg=BG)
+        Label(dialog, text="äººç‰©ä¸ä¸–ç•Œè§‚è®¾å®šåº“", bg=BG, fg=INK, font=("Microsoft YaHei UI", 17, "bold")).pack(anchor="w", padx=22, pady=(20, 4))
+        Label(dialog, text="è®°å½•äººç‰©ç§°è°“ã€å…³ç³»ã€èƒ½åŠ›ã€ç¦æ”¹é¡¹å’Œå‰§æƒ…æ—¶é—´çº¿ï¼Œæ¨¡å‹æ¯ç« éƒ½ä¼šå‚è€ƒã€‚", bg=BG, fg=MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w", padx=22)
+        editor_outer, editor_shell = self._rounded_widget_shell(dialog, bg=SURFACE)
+        editor_outer.pack(fill=BOTH, expand=True, padx=22, pady=16)
+        editor = Text(editor_shell, wrap="word", bg=SURFACE, fg=INK, padx=18, pady=18, relief="flat", font=("Microsoft YaHei UI", 10))
+        self._pack_vertical_scroller(editor_shell, editor)
+        editor.insert("1.0", self.state["novel"].get("story_bible", ""))
+
+        def save() -> None:
+            self.state["novel"]["story_bible"] = editor.get("1.0", "end-1c").strip()
+            self.store.save(self.state)
+            dialog.destroy()
+
+        self._button(dialog, "ä¿å­˜è®¾å®š", save, kind="primary").pack(anchor="e", padx=22, pady=(0, 20))
+
+    def export_novel(self) -> None:
+        self._save_chapter_editors()
+        novel = self.state["novel"]
+        if not novel["chapters"]:
+            messagebox.showinfo("æ²¡æœ‰å†…å®¹", "è¯·å…ˆå¯¼å…¥å¹¶æ”¹å†™å°è¯´ã€‚")
+            return
+        output = filedialog.asksaveasfilename(title="å¯¼å‡ºæ”¹å†™ç»“æœ", defaultextension=".txt", initialfile=(novel["project_name"] or "å°è¯´æ”¹æ–‡") + "_æ”¹å†™ç¨¿.txt", filetypes=[("TXT æ–‡æœ¬", "*.txt")])
+        if not output:
+            return
+        parts: list[str] = []
+        for index, chapter in enumerate(novel["chapters"]):
+            content = novel["results"].get(str(index), chapter["content"])
+            parts.append(f"{chapter['title']}\n\n{content.strip()}")
+        try:
+            Path(output).write_text("\n\n\n".join(parts) + "\n", encoding="utf-8-sig")
+        except OSError as exc:
+            messagebox.showerror("å¯¼å‡ºå¤±è´¥", str(exc))
+            return
+        messagebox.showinfo("å¯¼å‡ºå®Œæˆ", f"æ”¹å†™ç¨¿å·²ä¿å­˜åˆ°ï¼š\n{output}")
+
+    # ----------------------------- Comic workbench -----------------------------
+    def show_comic(self) -> None:
+        self._clear_main()
+        self.navigate_highlight("comic")
+        comic = self.state["comic"]
+        self.comic_project_var = StringVar(value=comic["project_name"])
+        self.comic_style_var = StringVar(value=comic["art_style"])
+        self.comic_aspect_var = StringVar(value=comic["aspect"])
+        self.comic_output_var = StringVar(value=comic.get("output_dir", ""))
+        self.comic_resolution_var = StringVar(value=str(comic.get("resolution", "2K")))
+        self.comic_optimize_var = StringVar(value="æ ‡å‡†è´¨é‡" if comic.get("optimize_mode", "standard") == "standard" else "æé€Ÿæ¨¡å¼")
+        self.comic_audio_var = StringVar(value=str(comic.get("audio_path", "")))
+        self.comic_subtitles_var = StringVar(value=str(comic.get("subtitles_path", "")))
+        self.comic_motion_var = StringVar(value=str(comic.get("motion_mode", "ä¸Šä¸‹äº¤æ›¿å…³é”®å¸§")))
+        self.comic_video_output_var = StringVar(value=str(comic.get("video_output_path", "")))
+        self.comic_draft_output_var = StringVar(value=str(comic.get("jianying_draft_path", "")))
+        self.open_jianying_after_video = False
+        self.open_jianying_after_draft = False
+        self.comic_step = min(max(int(comic.get("workspace_step", 0)), 0), 5)
+        self.comic_step_widgets: list[tuple[Frame, Frame, Label, Label, Label]] = []
+        self.comic_character_description_editor = None
+        self.comic_character_prompt_editor = None
+        self.comic_scene_description_editor = None
+        self.comic_scene_prompt_editor = None
+        self.comic_shot_source_label = None
+        self.comic_count_label = None
+        self.comic_generation_detail_label = None
+        self.comic_generation_count_label = None
+        self.comic_shot_character_list = None
+        self.comic_shot_scene_var = StringVar()
+        self.comic_batch_scope_var = StringVar(value="å…¨éƒ¨åˆ†é•œ")
+        self.comic_batch_character_from_var = StringVar()
+        self.comic_batch_character_to_var = StringVar()
+        self.comic_batch_scene_from_var = StringVar()
+        self.comic_batch_scene_to_var = StringVar()
+        self.comic_video_audio_label = None
+        self.comic_video_subtitle_label = None
+        self.comic_video_result_label = None
+        self.comic_draft_progress = None
+        self.comic_draft_status_label = None
+        self.comic_character_preview_canvas = None
+        self.comic_scene_preview_canvas = None
+        self.comic_character_preview_title = None
+        self.comic_scene_preview_title = None
+        self.comic_shot_tree_with_previews = False
+        self.comic_shot_preview_images = {}
+        self.comic_storyboard_canvas = None
+        self.comic_storyboard_body = None
+        self.comic_storyboard_window = None
+        self.comic_storyboard_selected_indices = set()
+        self.comic_storyboard_selection_vars = {}
+        self.comic_storyboard_prompt_editors = {}
+        self.comic_storyboard_row_widgets = {}
+        self.comic_storyboard_page = 0
+        self.comic_storyboard_page_label = None
+
+        hero_outer = Frame(self.main, bg=SIDEBAR)
+        hero_outer.pack(fill=X, padx=34, pady=(24, 12))
+        hero = Frame(hero_outer, bg=SIDEBAR, padx=24, pady=16)
+        hero.pack(fill=X)
+        hero_text = Frame(hero, bg=SIDEBAR)
+        hero_text.pack(side=LEFT, fill=X, expand=True)
+        Label(hero_text, text="AI COMIC STUDIO Â· STATIC STORYBOARD", bg=SIDEBAR, fg=ACCENT, font=("Segoe UI", 8, "bold")).pack(anchor="w")
+        title_row = Frame(hero_text, bg=SIDEBAR)
+        title_row.pack(fill=X, pady=(4, 0))
+        Label(title_row, text="AI æ¼«ç”»å·¥ä½œå°", bg=SIDEBAR, fg="white", font=("Microsoft YaHei UI", 22, "bold")).pack(side=LEFT)
+        self.comic_hero_status = Label(title_row, text="æœ¬åœ°è‡ªåŠ¨ä¿å­˜", bg=COMIC_DARK_ALT, fg="#D4EDEA", padx=10, pady=4, font=("Microsoft YaHei UI", 8, "bold"))
+        self.comic_hero_status.pack(side=LEFT, padx=(14, 0))
+        Label(hero_text, text="ä»å°è¯´æ‹†è§£ã€è§’è‰²å®šå¦†ã€åœºæ™¯å®šæ™¯åˆ°å¯ç¼–è¾‘å‰ªæ˜ è‰ç¨¿ï¼Œè®©æ¯ä¸€æ­¥éƒ½æ¸…æ¥šã€å¯æ§ã€å¯å›é€€ã€‚", bg=SIDEBAR, fg=SIDEBAR_MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w", pady=(5, 0))
+        hero_actions = Frame(hero, bg=SIDEBAR)
+        hero_actions.pack(side=RIGHT, padx=(18, 0))
+        self._button(hero_actions, "Seedream API", self.edit_seedream_settings, kind="glass").pack(side=LEFT)
+        self._button(hero_actions, "ç´ æç›®å½•", self.open_comic_output_dir, kind="glass").pack(side=LEFT, padx=(8, 0))
+        self._button(hero_actions, "ä¿å­˜é¡¹ç›®", self.save_comic_settings, kind="accent").pack(side=LEFT, padx=(8, 0))
+
+        status_strip = Frame(self.main, bg=BG)
+        status_strip.pack(fill=X, padx=34, pady=(0, 10))
+        self.comic_project_summary = Label(status_strip, text="", bg=BG, fg=INK, anchor="w", font=("Microsoft YaHei UI", 9, "bold"))
+        self.comic_project_summary.pack(side=LEFT)
+        self.comic_api_status = Label(status_strip, text="", bg=BG, fg=MUTED, anchor="e", font=("Microsoft YaHei UI", 8))
+        self.comic_api_status.pack(side=RIGHT, padx=(12, 0))
+        self.comic_progress = ttk.Progressbar(status_strip, mode="determinate", length=180, style="Studio.Horizontal.TProgressbar")
+        self.comic_progress.pack(side=RIGHT, padx=(12, 0))
+        self.comic_status = Label(status_strip, text="å°±ç»ª", bg=BG, fg=MUTED, anchor="e", font=("Microsoft YaHei UI", 8))
+        self.comic_status.pack(side=RIGHT)
+
+        pipeline = Frame(self.main, bg=BG)
+        pipeline.pack(fill=X, padx=34, pady=(0, 12))
+        step_titles = ["å°è¯´ä¸é¡¹ç›®", "è§’è‰²å®šå¦†", "åœºæ™¯å®šæ™¯", "é™æ€åˆ†é•œ", "æ‰¹é‡å‡ºå›¾", "å‰ªæ˜ è‰ç¨¿"]
+        step_subtitles = ["å¯¼å…¥ä¸æ‹†è§£", "ç¡®è®¤äººç‰©å‚è€ƒ", "ç¡®è®¤ç¯å¢ƒå‚è€ƒ", "è§’è‰²ä¸åœºæ™¯", "ç”Ÿæˆä¸å¤æŸ¥", "é™æ€å›¾å…³é”®å¸§"]
+        for index, title in enumerate(step_titles):
+            cell = Frame(pipeline, bg=BORDER, padx=1, pady=1, cursor="hand2")
+            cell.pack(side=LEFT, fill=X, expand=True, padx=(0, 7 if index < 5 else 0))
+            cell_body = Frame(cell, bg=SURFACE, padx=13, pady=10, cursor="hand2")
+            cell_body.pack(fill=BOTH, expand=True)
+            badge = Label(cell_body, text=str(index + 1), bg=SURFACE_ALT, fg=MUTED, width=3, pady=5, font=("Segoe UI", 9, "bold"), cursor="hand2")
+            badge.pack(side=LEFT)
+            step_text = Frame(cell_body, bg=SURFACE, cursor="hand2")
+            step_text.pack(side=LEFT, padx=(10, 0))
+            title_label = Label(step_text, text=title, bg=SURFACE, fg=INK, anchor="w", font=("Microsoft YaHei UI", 9, "bold"), cursor="hand2")
+            title_label.pack(anchor="w")
+            subtitle_label = Label(step_text, text=step_subtitles[index], bg=SURFACE, fg=MUTED, anchor="w", font=("Microsoft YaHei UI", 7), cursor="hand2")
+            subtitle_label.pack(anchor="w", pady=(1, 0))
+            for widget in (cell, cell_body, badge, step_text, title_label, subtitle_label):
+                widget.bind("<Button-1>", lambda _event, step=index: self._switch_comic_step(step))
+            self.comic_step_widgets.append((cell, cell_body, badge, title_label, subtitle_label))
+
+        self.comic_readiness_labels: list[Label] = []
+        self.comic_next_hint = None
+        self.comic_next_button = None
+
+        body = Frame(self.main, bg=BG)
+        body.pack(fill=BOTH, expand=True, padx=34, pady=(0, 24))
+        self.comic_workspace = Frame(body, bg=BG)
+        self.comic_workspace.pack(fill=BOTH, expand=True)
+
+        self.bus_handler = self._handle_comic_bus
+        self._switch_comic_step(self.comic_step, save=False)
+
+    @staticmethod
+    def _comic_progress_snapshot(comic: dict[str, object]) -> dict[str, int | bool]:
+        source_ready = bool(str(comic.get("source_text", "")).strip())
+        characters = list(comic.get("characters", []))
+        scenes = list(comic.get("scenes", []))
+        shots = list(comic.get("shots", []))
+        character_ready = sum(1 for item in characters if has_local_reference(item))
+        scene_ready = sum(1 for item in scenes if has_local_reference(item))
+        images_ready = sum(1 for item in shots if Path(str(item.get("local_path", ""))).is_file())
+        video_ready = bool(str(comic.get("jianying_draft_path", "")).strip() and Path(str(comic.get("jianying_draft_path", ""))).is_dir())
+        return {
+            "source_ready": source_ready,
+            "character_count": len(characters),
+            "character_ready": character_ready,
+            "scene_count": len(scenes),
+            "scene_ready": scene_ready,
+            "shot_count": len(shots),
+            "images_ready": images_ready,
+            "video_ready": video_ready,
+        }
+
+    def _recommended_comic_step(self) -> int:
+        progress = self._comic_progress_snapshot(self.state["comic"])
+        if not progress["source_ready"]:
+            return 0
+        if progress["character_count"] and progress["character_ready"] < progress["character_count"]:
+            return 1
+        if not progress["character_count"] and not progress["scene_count"] and not progress["shot_count"]:
+            return 1
+        if not progress["scene_count"] or progress["scene_ready"] < progress["scene_count"]:
+            return 2
+        if not progress["shot_count"]:
+            return 3
+        if progress["images_ready"] < progress["shot_count"]:
+            return 4
+        return 5
+
+    def _reset_comic_step_widgets(self) -> None:
+        if self.comic_asset_autosave_after_id:
+            try:
+                self.root.after_cancel(self.comic_asset_autosave_after_id)
+            except TclError:
+                pass
+            self.comic_asset_autosave_after_id = None
+        self.comic_source_editor = None
+        self.comic_character_list = None
+        self.comic_character_description_editor = None
+        self.comic_character_prompt_editor = None
+        self.comic_scene_list = None
+        self.comic_scene_description_editor = None
+        self.comic_scene_prompt_editor = None
+        self.comic_shot_tree = None
+        self.comic_shot_prompt_editor = None
+        self.comic_shot_source_label = None
+        self.comic_count_label = None
+        self.comic_generation_detail_label = None
+        self.comic_generation_count_label = None
+        self.comic_shot_character_list = None
+        self.comic_shot_scene_combo = None
+        self.comic_video_audio_label = None
+        self.comic_video_subtitle_label = None
+        self.comic_video_result_label = None
+        self.comic_draft_progress = None
+        self.comic_draft_status_label = None
+        self.comic_character_preview_canvas = None
+        self.comic_scene_preview_canvas = None
+        self.comic_character_preview_title = None
+        self.comic_scene_preview_title = None
+        self.comic_shot_tree_with_previews = False
+        self.comic_shot_preview_images = {}
+        self.comic_storyboard_canvas = None
+        self.comic_storyboard_body = None
+        self.comic_storyboard_window = None
+        self.comic_storyboard_selected_indices = set()
+        self.comic_storyboard_selection_vars = {}
+        self.comic_storyboard_prompt_editors = {}
+        self.comic_storyboard_row_widgets = {}
+        self.comic_storyboard_page = 0
+        self.comic_storyboard_page_label = None
+
+    def _switch_comic_step(self, step: int, *, save: bool = True) -> None:
+        step = min(max(int(step), 0), 5)
+        if self.is_busy and step != getattr(self, "comic_step", step):
+            messagebox.showinfo("ä»»åŠ¡è¿›è¡Œä¸­", "å½“å‰ä»»åŠ¡å®Œæˆåå†åˆ‡æ¢åˆ¶ä½œæ­¥éª¤ã€‚")
+            return
+        if save:
+            self._sync_comic_state()
+            self.store.save(self.state)
+        for child in self.comic_workspace.winfo_children():
+            child.destroy()
+        self._reset_comic_step_widgets()
+        self.comic_step = step
+        self.state["comic"]["workspace_step"] = step
+        builders = [self._build_comic_source_step, self._build_comic_character_step, self._build_comic_scene_step, self._build_comic_storyboard_step, self._build_comic_generation_step, self._build_comic_video_step]
+        builders[step](self.comic_workspace)
+        self._refresh_comic_overview()
+
+    def _refresh_comic_overview(self) -> None:
+        if not hasattr(self, "comic_step_widgets"):
+            return
+        comic = self.state["comic"]
+        progress = self._comic_progress_snapshot(comic)
+        character_count = int(progress["character_count"])
+        character_ready = int(progress["character_ready"])
+        scene_count = int(progress["scene_count"])
+        scene_ready = int(progress["scene_ready"])
+        shot_count = int(progress["shot_count"])
+        images_ready = int(progress["images_ready"])
+        video_ready = bool(progress["video_ready"])
+        complete = [
+            bool(progress["source_ready"]),
+            (character_count > 0 and character_ready == character_count) or (character_count == 0 and shot_count > 0),
+            scene_count > 0 and scene_ready == scene_count,
+            shot_count > 0,
+            shot_count > 0 and images_ready == shot_count,
+            video_ready,
+        ]
+        values = [
+            ("å°è¯´æ­£æ–‡", "å·²å¯¼å…¥" if complete[0] else "å¾…å¯¼å…¥"),
+            ("è§’è‰²å®šå¦†", f"{character_ready}/{character_count}" if character_count else ("æ— éœ€è§’è‰²" if shot_count else "å¾…è¯†åˆ«")),
+            ("åœºæ™¯å®šæ™¯", f"{scene_ready}/{scene_count}" if scene_count else "å¾…è¯†åˆ«"),
+            ("åˆ†é•œè„šæœ¬", f"{shot_count} ä¸ª"),
+            ("æˆå“å›¾ç‰‡", f"{images_ready}/{shot_count}"),
+            ("å‰ªæ˜ è‰ç¨¿", "å·²ç”Ÿæˆ" if video_ready else "å¯é€‰"),
+        ]
+        for index, ((title, value), label) in enumerate(zip(values, self.comic_readiness_labels)):
+            row_bg = COMIC_MINT if complete[index] else COMIC_INSET
+            label.master.configure(bg=row_bg)
+            label.configure(text=f"{'âœ“' if complete[index] else 'â—‹'}  {title}    {value}", bg=row_bg, fg=ACCENT_DARK if complete[index] else MUTED)
+        self.comic_project_summary.configure(text=f"{comic.get('project_name', 'æœªå‘½åé¡¹ç›®')}  Â·  {comic.get('aspect', '9:16')}  Â·  {character_count} è§’è‰²  Â·  {scene_count} åœºæ™¯  Â·  {shot_count} åˆ†é•œ")
+        self.comic_hero_status.configure(text="å‰ªæ˜ è‰ç¨¿å·²å®Œæˆ" if video_ready else (f"{images_ready}/{shot_count} å¼ å·²å®Œæˆ" if shot_count else "æœ¬åœ°è‡ªåŠ¨ä¿å­˜"))
+        for index, (outer, body, badge, title_label, subtitle_label) in enumerate(self.comic_step_widgets):
+            active = index == self.comic_step
+            body_bg = SIDEBAR if active else (COMIC_MINT if complete[index] else SURFACE)
+            border_bg = ACCENT if active else ("#9DD4C9" if complete[index] else BORDER)
+            badge_bg = ACCENT if active else (ACCENT_DARK if complete[index] else SURFACE_ALT)
+            badge_fg = SIDEBAR if active else ("white" if complete[index] else MUTED)
+            title_fg = "white" if active else (ACCENT_DARK if complete[index] else INK)
+            subtitle_fg = "#C7E6E0" if active else (ACCENT_DARK if complete[index] else MUTED)
+            outer.configure(bg=border_bg)
+            body.configure(bg=body_bg)
+            badge.configure(text="âœ“" if complete[index] and not active else str(index + 1), bg=badge_bg, fg=badge_fg)
+            title_label.master.configure(bg=body_bg)
+            title_label.configure(bg=body_bg, fg=title_fg)
+            subtitle_label.configure(bg=body_bg, fg=subtitle_fg)
+        self.comic_api_status.configure(text="â— Key å·²é…ç½®" if self.ark_api_key.get().strip() else "â—‹ å°šæœªé…ç½® Key", fg=ACCENT_DARK if self.ark_api_key.get().strip() else WARM)
+        if getattr(self, "comic_generation_count_label", None):
+            self.comic_generation_count_label.configure(text=f"{images_ready} / {shot_count}")
+
+    def _comic_section_title(self, parent, number: str, title: str, description: str) -> None:
+        header = Frame(parent, bg=parent.cget("bg"))
+        header.pack(fill=X, pady=(0, 16))
+        Label(header, text=f"STEP {number}", bg=COMIC_MINT, fg=ACCENT_DARK, padx=10, pady=6, font=("Segoe UI", 8, "bold")).pack(side=LEFT)
+        text = Frame(header, bg=parent.cget("bg"))
+        text.pack(side=LEFT, padx=(12, 0))
+        Label(text, text=title, bg=parent.cget("bg"), fg=INK, font=("Microsoft YaHei UI", 15, "bold")).pack(anchor="w")
+        Label(text, text=description, bg=parent.cget("bg"), fg=MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w", pady=(2, 0))
+
+    def _build_comic_source_step(self, parent) -> None:
+        page, canvas = self._scrollable_content(parent)
+        outer = self._card(page, padx=24, pady=20)
+        outer.pack(fill=X, padx=(0, 8), pady=(0, 2))
+        content = outer.winfo_children()[0]
+        self._comic_section_title(content, "01", "å°è¯´ä¸é¡¹ç›®", "ç¡®å®šç»Ÿä¸€ç”»é£åï¼Œç”± AI æ ¹æ®å‰§æƒ…èŠ‚å¥æ‹†åˆ†åˆ†é•œå¹¶è¯†åˆ«è§’è‰²ä¸å›ºå®šåœºæ™¯ã€‚")
+
+        settings = Frame(content, bg=SURFACE)
+        settings.pack(fill=X)
+        settings.grid_columnconfigure(0, weight=1)
+        settings.grid_columnconfigure(1, weight=2)
+        project = Frame(settings, bg=SURFACE)
+        project.grid(row=0, column=0, sticky="ew", padx=(0, 10))
+        self._field_label(project, "é¡¹ç›®å").pack(anchor="w", pady=(0, 4))
+        self._entry(project, self.comic_project_var).pack(fill=X, ipady=6)
+        style = Frame(settings, bg=SURFACE)
+        style.grid(row=0, column=1, sticky="ew", padx=(10, 0))
+        self._field_label(style, "ç»Ÿä¸€ç”»é£ï¼ˆä¼šå†™å…¥æ‰€æœ‰äººç‰©ä¸åˆ†é•œæç¤ºè¯ï¼‰").pack(anchor="w", pady=(0, 4))
+        RoundedCombobox(style, textvariable=self.comic_style_var, values=COMIC_STYLE_PRESETS).pack(fill=X)
+
+        options_outer = self._card(content, bg=SURFACE_ALT, padx=14, pady=10)
+        options_outer.pack(fill=X, pady=(14, 14))
+        options = options_outer.winfo_children()[0]
+        Label(options, text="ç”»å¹…", bg=SURFACE_ALT, fg=MUTED, font=("Microsoft YaHei UI", 9)).pack(side=LEFT)
+        RoundedCombobox(options, textvariable=self.comic_aspect_var, values=["9:16", "4:5", "1:1", "16:9"], state="readonly", width=7).pack(side=LEFT, padx=(6, 18))
+        Label(options, text="åˆ†é•œç”± AI æŒ‰åœºæ™¯ã€åŠ¨ä½œã€å¯¹ç™½ä¸æƒ…ç»ªè½¬æŠ˜è‡ªåŠ¨æ‹†åˆ†", bg=SURFACE_ALT, fg=ACCENT_DARK, font=("Microsoft YaHei UI", 9, "bold")).pack(side=LEFT)
+        self._button(options, "é€‰æ‹©ä¿å­˜ç›®å½•", self.choose_comic_output_dir, kind="ghost").pack(side=RIGHT)
+        self.comic_output_hint = Label(options, text="", bg=SURFACE_ALT, fg=MUTED, font=("Microsoft YaHei UI", 8))
+        self.comic_output_hint.pack(side=RIGHT, padx=(0, 10))
+        output_text = self.comic_output_var.get().strip() or "å°†è‡ªåŠ¨åˆ›å»ºé¡¹ç›®ç›®å½•"
+        self.comic_output_hint.configure(text=Path(output_text).name if self.comic_output_var.get().strip() else output_text)
+
+        ai_hint_outer = self._card(content, bg=COMIC_MINT, padx=12, pady=8)
+        ai_hint_outer.pack(fill=X, pady=(0, 12))
+        ai_hint = ai_hint_outer.winfo_children()[0]
+        Label(ai_hint, text="AI åˆ†æ‰¹ä¿æŠ¤", bg=COMIC_MINT, fg=ACCENT_DARK, font=("Microsoft YaHei UI", 8, "bold")).pack(side=LEFT)
+        Label(ai_hint, text="ç¨‹åºåªæŒ‰æŠ€æœ¯ä¸Šé™åˆ†æ‰¹å‘é€é•¿æ–‡æœ¬ï¼›æ¯æ‰¹å†…éƒ¨ç”± AI è‡ªä¸»å†³å®šåˆ†é•œæ•°é‡ï¼Œå¹¶æ ¡éªŒåŸæ–‡æ˜¯å¦å®Œæ•´è¦†ç›–ã€‚å¤±è´¥æ—¶ä¼šè‡ªåŠ¨ç¼©å°æ‰¹æ¬¡é‡è¯•ã€‚", bg=COMIC_MINT, fg=INK, wraplength=680, justify=LEFT, font=("Microsoft YaHei UI", 8)).pack(side=LEFT, padx=(10, 0))
+
+        editor_header = Frame(content, bg=SURFACE)
+        editor_header.pack(fill=X)
+        Label(editor_header, text="å°è¯´æ­£æ–‡", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 11, "bold")).pack(side=LEFT)
+        Label(editor_header, text="æ”¯æŒ TXT / Markdown / DOCXï¼Œä¹Ÿå¯ä»¥ç›´æ¥ç²˜è´´", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 8)).pack(side=LEFT, padx=(10, 0))
+        source_outer, source_shell = self._rounded_widget_shell(content)
+        source_outer.pack(fill=X, pady=(8, 14))
+        self.comic_source_editor = Text(source_shell, width=1, height=18, wrap="word", undo=True, bg=COMIC_INSET, fg=INK, insertbackground=INK, relief="flat", highlightthickness=1, highlightbackground=BORDER, highlightcolor=ACCENT_DARK, padx=16, pady=14, font=("Microsoft YaHei UI", 10))
+        self._pack_vertical_scroller(source_shell, self.comic_source_editor, fill=X, expand=True)
+        self.comic_source_editor.insert("1.0", self.state["comic"].get("source_text", ""))
+        actions = Frame(content, bg=SURFACE)
+        actions.pack(fill=X)
+        self._button(actions, "å¯¼å…¥å°è¯´", self.import_comic_novel, kind="ghost").pack(side=LEFT)
+        self._button(actions, "è§’è‰² + åœºæ™¯ + åˆ†é•œ", lambda: self.analyze_comic_story("all"), kind="accent").pack(side=RIGHT)
+        self._button(actions, "åªç”Ÿæˆé™æ€åˆ†é•œ", lambda: self.analyze_comic_story("shots"), kind="primary").pack(side=RIGHT, padx=(0, 8))
+        self._button(actions, "åªè¯†åˆ«åœºæ™¯", lambda: self.analyze_comic_story("scenes"), kind="ghost").pack(side=RIGHT, padx=(0, 8))
+        self._button(actions, "åªè¯†åˆ«è§’è‰²", lambda: self.analyze_comic_story("characters"), kind="ghost").pack(side=RIGHT, padx=(0, 8))
+        self._bind_page_mousewheel(page, canvas)
+
+    def _build_comic_character_step(self, parent) -> None:
+        page, canvas = self._scrollable_content(parent)
+        shell = Frame(page, bg=BG)
+        shell.pack(fill=X, padx=(0, 8), pady=(0, 2))
+        shell.grid_columnconfigure(0, weight=0, minsize=245)
+        shell.grid_columnconfigure(1, weight=1)
+        shell.grid_rowconfigure(0, weight=1)
+        library_outer = self._card(shell, padx=16, pady=16)
+        library_outer.grid(row=0, column=0, sticky="nsew", padx=(0, 12))
+        library = library_outer.winfo_children()[0]
+        Label(library, text="å…±äº«è§’è‰²èµ„äº§", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 12, "bold")).pack(anchor="w")
+        Label(library, text="è§’è‰²å®šå¦†å¯è¢«æ‰€æœ‰æ¨æ–‡é¡¹ç›®è°ƒç”¨ã€‚", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 8)).pack(anchor="w", pady=(3, 10))
+        character_list_outer, character_list_shell = self._rounded_widget_shell(library)
+        character_list_outer.pack(fill=BOTH, expand=True)
+        self.comic_character_list = Listbox(character_list_shell, exportselection=False, bg=COMIC_INSET, fg=INK, selectbackground=COMIC_MINT, selectforeground=ACCENT_DARK, relief="flat", highlightthickness=1, highlightbackground=BORDER, font=("Microsoft YaHei UI", 9), activestyle="none")
+        self._pack_vertical_scroller(character_list_shell, self.comic_character_list)
+        self.comic_character_list.bind("<<ListboxSelect>>", self.on_comic_character_select)
+        library_actions = Frame(library, bg=SURFACE)
+        library_actions.pack(fill=X, pady=(10, 0))
+        self._button(library_actions, "+ æ·»åŠ ", self.add_comic_character, kind="primary").pack(side=LEFT)
+        self._button(library_actions, "åˆ é™¤", self.delete_comic_character, kind="danger").pack(side=RIGHT)
+        transfer_actions = Frame(library, bg=SURFACE)
+        transfer_actions.pack(fill=X, pady=(7, 0))
+        self._button(transfer_actions, "å¯¼å…¥èµ„äº§åŒ…", self.import_comic_assets, kind="ghost").pack(side=LEFT)
+        self._button(transfer_actions, "å¯¼å‡ºèµ„äº§åŒ…", self.export_comic_assets, kind="ghost").pack(side=RIGHT)
+
+        editor_outer = self._card(shell, padx=24, pady=20)
+        editor_outer.grid(row=0, column=1, sticky="nsew")
+        editor = editor_outer.winfo_children()[0]
+        self._comic_section_title(editor, "02", "å…±äº«è§’è‰²å®šå¦†", "äººç‰©å‚è€ƒå›¾åªä¿ç•™è§’è‰²æœ¬èº«å’Œçº¯è‰²èƒŒæ™¯ï¼Œä¸ç”Ÿæˆåœºæ™¯ï¼›ç¡®è®¤åä¼šä¿å­˜åˆ°å…¬å…±è§’è‰²åº“ä¾›æ‰€æœ‰é¡¹ç›®ä½¿ç”¨ã€‚")
+        self.comic_character_preview_canvas, self.comic_character_preview_title = self._asset_preview_panel(
+            editor,
+            title="è§’è‰²å‚è€ƒå›¾",
+            command=self.preview_comic_character,
+        )
+        self.comic_character_name_var = StringVar()
+        self._field_label(editor, "è§’è‰²å").pack(anchor="w", pady=(0, 4))
+        self._entry(editor, self.comic_character_name_var).pack(fill=X, ipady=6)
+        self._field_label(editor, "å›ºå®šå¤–è²Œã€æœè£…ä¸æ ‡å¿—ç‰©").pack(anchor="w", pady=(13, 5))
+        description_outer, description_shell = self._rounded_widget_shell(editor, fixed_height=92)
+        description_outer.pack(fill=X)
+        self.comic_character_description_editor = Text(description_shell, height=3, wrap="word", undo=True, bg=COMIC_INSET, fg=INK, relief="flat", highlightthickness=1, highlightbackground=BORDER, highlightcolor=ACCENT_DARK, padx=12, pady=9, font=("Microsoft YaHei UI", 9))
+        self._pack_vertical_scroller(description_shell, self.comic_character_description_editor, fill=X, expand=True)
+        self._field_label(editor, "å®šå¦†æç¤ºè¯ï¼ˆå¯æ‰‹åŠ¨ç»†åŒ–ï¼‰").pack(anchor="w", pady=(13, 5))
+        prompt_outer, prompt_shell = self._rounded_widget_shell(editor, fixed_height=96)
+        prompt_outer.pack(fill=X)
+        self.comic_character_prompt_editor = Text(prompt_shell, height=3, wrap="word", undo=True, bg=COMIC_INSET, fg=INK, relief="flat", highlightthickness=1, highlightbackground=BORDER, highlightcolor=ACCENT_DARK, padx=12, pady=9, font=("Microsoft YaHei UI", 9))
+        self._pack_vertical_scroller(prompt_shell, self.comic_character_prompt_editor, fill=X, expand=True)
+        prompt_actions = Frame(editor, bg=SURFACE)
+        prompt_actions.pack(fill=X, pady=(7, 0))
+        self._button(prompt_actions, "å¯¼å…¥æç¤ºè¯", self.import_comic_character_prompt, kind="ghost").pack(side=LEFT)
+        self._button(prompt_actions, "å¯¼å‡ºå½“å‰æç¤ºè¯", self.export_comic_character_prompt, kind="ghost").pack(side=LEFT, padx=(7, 0))
+        Label(prompt_actions, text="ä¿®æ”¹åè‡ªåŠ¨ä¿å­˜", bg=SURFACE, fg=ACCENT_DARK, font=("Microsoft YaHei UI", 8, "bold")).pack(side=RIGHT)
+        reference_outer = self._card(editor, bg=SURFACE_ALT, padx=12, pady=9)
+        reference_outer.pack(fill=X, pady=(12, 10))
+        reference = reference_outer.winfo_children()[0]
+        Label(reference, text="å‚è€ƒå›¾", bg=SURFACE_ALT, fg=MUTED, font=("Microsoft YaHei UI", 8, "bold")).pack(side=LEFT)
+        self.comic_character_status = Label(reference, text="å°šæœªé€‰æ‹©è§’è‰²", bg=SURFACE_ALT, fg=MUTED, wraplength=480, justify=LEFT, font=("Microsoft YaHei UI", 8))
+        self.comic_character_status.pack(side=LEFT, padx=(10, 0))
+        asset_actions = Frame(editor, bg=SURFACE)
+        asset_actions.pack(fill=X, pady=(0, 9))
+        self._button(asset_actions, "ç”Ÿæˆå€™é€‰å®šå¦†", self.generate_comic_character, kind="accent").pack(side=LEFT)
+        self._button(asset_actions, "ç¡®è®¤å€™é€‰ä¸ºå‚è€ƒå›¾", self.confirm_comic_character_candidate, kind="primary").pack(side=LEFT, padx=(8, 0))
+        self._button(asset_actions, "å¯¼å…¥å¹¶ç¡®è®¤å‚è€ƒå›¾", self.choose_comic_character_image, kind="ghost").pack(side=RIGHT)
+        self._button(asset_actions, "é¢„è§ˆå€™é€‰/å‚è€ƒ", self.preview_comic_character, kind="ghost").pack(side=RIGHT, padx=(0, 8))
+        actions = Frame(editor, bg=SURFACE)
+        actions.pack(fill=X)
+        self._button(actions, "â† å°è¯´", lambda: self._switch_comic_step(0), kind="ghost").pack(side=LEFT)
+        self._button(actions, "åœºæ™¯å®šæ™¯  â†’", lambda: self._switch_comic_step(2), kind="primary").pack(side=RIGHT, padx=(0, 8))
+        self.comic_character_name_var.trace_add("write", lambda *_args: self._schedule_comic_asset_autosave("character"))
+        for text_editor in (self.comic_character_description_editor, self.comic_character_prompt_editor):
+            text_editor.bind("<KeyRelease>", lambda _event: self._schedule_comic_asset_autosave("character"), add="+")
+            text_editor.bind("<<Paste>>", lambda _event: self.root.after_idle(lambda: self._schedule_comic_asset_autosave("character")), add="+")
+        selected = self.current_comic_character_index if self.current_comic_character_index is not None else (0 if self.state["comic"]["characters"] else None)
+        self._refresh_comic_character_list(selected)
+        self._bind_page_mousewheel(page, canvas)
+
+    def _build_comic_scene_step(self, parent) -> None:
+        page, canvas = self._scrollable_content(parent)
+        shell = Frame(page, bg=BG)
+        shell.pack(fill=X, padx=(0, 8), pady=(0, 2))
+        shell.grid_columnconfigure(0, weight=0, minsize=245)
+        shell.grid_columnconfigure(1, weight=1)
+        shell.grid_rowconfigure(0, weight=1)
+        library_outer = self._card(shell, padx=16, pady=16)
+        library_outer.grid(row=0, column=0, sticky="nsew", padx=(0, 12))
+        library = library_outer.winfo_children()[0]
+        Label(library, text="åœºæ™¯èµ„äº§", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 12, "bold")).pack(anchor="w")
+        Label(library, text="å…ˆå›ºå®šç¯å¢ƒï¼Œå†è¿›å…¥åˆ†é•œã€‚", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 8)).pack(anchor="w", pady=(3, 10))
+        scene_list_outer, scene_list_shell = self._rounded_widget_shell(library)
+        scene_list_outer.pack(fill=BOTH, expand=True)
+        self.comic_scene_list = Listbox(scene_list_shell, exportselection=False, bg=COMIC_INSET, fg=INK, selectbackground=COMIC_MINT, selectforeground=ACCENT_DARK, relief="flat", highlightthickness=1, highlightbackground=BORDER, font=("Microsoft YaHei UI", 9), activestyle="none")
+        self._pack_vertical_scroller(scene_list_shell, self.comic_scene_list)
+        self.comic_scene_list.bind("<<ListboxSelect>>", self.on_comic_scene_select)
+        library_actions = Frame(library, bg=SURFACE)
+        library_actions.pack(fill=X, pady=(10, 0))
+        self._button(library_actions, "+ æ·»åŠ ", self.add_comic_scene, kind="primary").pack(side=LEFT)
+        self._button(library_actions, "åˆ é™¤", self.delete_comic_scene, kind="danger").pack(side=RIGHT)
+        transfer_actions = Frame(library, bg=SURFACE)
+        transfer_actions.pack(fill=X, pady=(7, 0))
+        self._button(transfer_actions, "å¯¼å…¥èµ„äº§åŒ…", self.import_comic_assets, kind="ghost").pack(side=LEFT)
+        self._button(transfer_actions, "å¯¼å‡ºèµ„äº§åŒ…", self.export_comic_assets, kind="ghost").pack(side=RIGHT)
+
+        editor_outer = self._card(shell, padx=24, pady=20)
+        editor_outer.grid(row=0, column=1, sticky="nsew")
+        editor = editor_outer.winfo_children()[0]
+        self._comic_section_title(editor, "03", "åœºæ™¯å®šæ™¯", "å›ºå®šç©ºé—´å¸ƒå±€ã€å»ºç­‘ç»“æ„ã€å®¶å…·å’Œå…‰çº¿ï¼›åœºæ™¯è‡ªåŠ¨æ²¿ç”¨è§’è‰²å®šå¦†ç”»é£ï¼Œç¡®è®¤åä¼šç»‘å®šåˆ°å¯¹åº”åˆ†é•œã€‚")
+        self.comic_scene_preview_canvas, self.comic_scene_preview_title = self._asset_preview_panel(
+            editor,
+            title="åœºæ™¯å‚è€ƒå›¾",
+            command=self.preview_comic_scene,
+        )
+        self.comic_scene_name_var = StringVar()
+        self._field_label(editor, "åœºæ™¯å").pack(anchor="w", pady=(0, 4))
+        self._entry(editor, self.comic_scene_name_var).pack(fill=X, ipady=6)
+        self._field_label(editor, "å›ºå®šç©ºé—´ã€é™ˆè®¾ã€æ ‡å¿—ç‰©ä¸åŸºç¡€å…‰çº¿").pack(anchor="w", pady=(13, 5))
+        scene_description_outer, scene_description_shell = self._rounded_widget_shell(editor, fixed_height=92)
+        scene_description_outer.pack(fill=X)
+        self.comic_scene_description_editor = Text(scene_description_shell, height=3, wrap="word", undo=True, bg=COMIC_INSET, fg=INK, relief="flat", highlightthickness=1, highlightbackground=BORDER, highlightcolor=ACCENT_DARK, padx=12, pady=9, font=("Microsoft YaHei UI", 9))
+        self._pack_vertical_scroller(scene_description_shell, self.comic_scene_description_editor, fill=X, expand=True)
+        self._field_label(editor, f"å®šæ™¯æç¤ºè¯ï¼ˆè·Ÿéšè§’è‰²ç”»é£ï¼š{self.state['comic']['art_style']}ï¼›ä¿æŒæ— äººç‰©ï¼‰").pack(anchor="w", pady=(13, 5))
+        scene_prompt_outer, scene_prompt_shell = self._rounded_widget_shell(editor, fixed_height=96)
+        scene_prompt_outer.pack(fill=X)
+        self.comic_scene_prompt_editor = Text(scene_prompt_shell, height=3, wrap="word", undo=True, bg=COMIC_INSET, fg=INK, relief="flat", highlightthickness=1, highlightbackground=BORDER, highlightcolor=ACCENT_DARK, padx=12, pady=9, font=("Microsoft YaHei UI", 9))
+        self._pack_vertical_scroller(scene_prompt_shell, self.comic_scene_prompt_editor, fill=X, expand=True)
+        Label(editor, text="åœºæ™¯åç§°ä¸æç¤ºè¯ä¿®æ”¹åè‡ªåŠ¨ä¿å­˜å¹¶åŒæ­¥åˆ°åˆ†é•œ", bg=SURFACE, fg=ACCENT_DARK, font=("Microsoft YaHei UI", 8, "bold")).pack(anchor="e", pady=(7, 0))
+        reference_outer = self._card(editor, bg=SURFACE_ALT, padx=12, pady=9)
+        reference_outer.pack(fill=X, pady=(12, 10))
+        reference = reference_outer.winfo_children()[0]
+        Label(reference, text="åœºæ™¯å‚è€ƒå›¾", bg=SURFACE_ALT, fg=MUTED, font=("Microsoft YaHei UI", 8, "bold")).pack(side=LEFT)
+        self.comic_scene_status = Label(reference, text="å°šæœªé€‰æ‹©åœºæ™¯", bg=SURFACE_ALT, fg=MUTED, wraplength=480, justify=LEFT, font=("Microsoft YaHei UI", 8))
+        self.comic_scene_status.pack(side=LEFT, padx=(10, 0))
+        asset_actions = Frame(editor, bg=SURFACE)
+        asset_actions.pack(fill=X, pady=(0, 9))
+        self._button(asset_actions, "ç”Ÿæˆå€™é€‰åœºæ™¯", self.generate_comic_scene, kind="accent").pack(side=LEFT)
+        self._button(asset_actions, "ç¡®è®¤å€™é€‰ä¸ºå‚è€ƒå›¾", self.confirm_comic_scene_candidate, kind="primary").pack(side=LEFT, padx=(8, 0))
+        self._button(asset_actions, "å¯¼å…¥å¹¶ç¡®è®¤å‚è€ƒå›¾", self.choose_comic_scene_image, kind="ghost").pack(side=RIGHT)
+        self._button(asset_actions, "é¢„è§ˆå€™é€‰/å‚è€ƒ", self.preview_comic_scene, kind="ghost").pack(side=RIGHT, padx=(0, 8))
+        actions = Frame(editor, bg=SURFACE)
+        actions.pack(fill=X)
+        self._button(actions, "â† è§’è‰²å®šå¦†", lambda: self._switch_comic_step(1), kind="ghost").pack(side=LEFT)
+        self._button(actions, "é™æ€åˆ†é•œ  â†’", lambda: self._switch_comic_step(3), kind="primary").pack(side=RIGHT, padx=(0, 8))
+        self.comic_scene_name_var.trace_add("write", lambda *_args: self._schedule_comic_asset_autosave("scene"))
+        for text_editor in (self.comic_scene_description_editor, self.comic_scene_prompt_editor):
+            text_editor.bind("<KeyRelease>", lambda _event: self._schedule_comic_asset_autosave("scene"), add="+")
+            text_editor.bind("<<Paste>>", lambda _event: self.root.after_idle(lambda: self._schedule_comic_asset_autosave("scene")), add="+")
+        selected = self.current_comic_scene_index if self.current_comic_scene_index is not None else (0 if self.state["comic"]["scenes"] else None)
+        self._refresh_comic_scene_list(selected)
+        self._bind_page_mousewheel(page, canvas)
+
+    def _build_comic_storyboard_step(self, parent) -> None:
+        page, canvas = self._scrollable_content(parent)
+        outer = self._card(page, padx=22, pady=18)
+        outer.pack(fill=X, padx=(0, 8), pady=(0, 2))
+        content = outer.winfo_children()[0]
+        self._comic_section_title(content, "04", "é™æ€åˆ†é•œ", "æ¯ä¸ªé•œå¤´éƒ½åœ¨å¯¹åº”è¡Œä¸­ç›´æ¥ä¿®æ”¹ç”»é¢æç¤ºè¯ï¼›äººç‰©ä¸åœºæ™¯å¯åœ¨åˆ—è¡¨ä¸Šæ–¹æ‰¹é‡æ›¿æ¢ã€‚")
+
+        character_names = [str(item.get("name", "")).strip() for item in self.state["comic"].get("characters", []) if str(item.get("name", "")).strip()]
+        scene_names = [str(item.get("name", "")).strip() for item in self.state["comic"].get("scenes", []) if str(item.get("name", "")).strip()]
+        self.comic_batch_character_from_var.set(character_names[0] if character_names else "")
+        self.comic_batch_character_to_var.set(character_names[1] if len(character_names) > 1 else "ï¼ˆç§»é™¤è§’è‰²ï¼‰")
+        self.comic_batch_scene_from_var.set(scene_names[0] if scene_names else "")
+        self.comic_batch_scene_to_var.set(scene_names[1] if len(scene_names) > 1 else "ï¼ˆæ¸…ç©ºåœºæ™¯ï¼‰")
+
+        list_area = content
+        list_header = Frame(list_area, bg=SURFACE_ALT, padx=12, pady=9)
+        list_header.pack(fill=X)
+        Label(list_header, text="åˆ†é•œä¸å¯¹åº”ç”»é¢", bg=SURFACE_ALT, fg=INK, font=("Microsoft YaHei UI", 10, "bold")).pack(side=LEFT)
+        Label(list_header, text="æç¤ºè¯å°±åœ¨å¯¹åº”é•œå¤´è¡Œå†…ï¼Œå¯éšæ—¶ä¿®æ”¹å¹¶ä¿å­˜", bg=SURFACE_ALT, fg=MUTED, font=("Microsoft YaHei UI", 8)).pack(side=LEFT, padx=(10, 0))
+        self.comic_count_label = Label(list_header, text="", bg=SURFACE_ALT, fg=ACCENT_DARK, font=("Microsoft YaHei UI", 9))
+        self.comic_count_label.pack(side=RIGHT)
+
+        batch = Frame(list_area, bg=COMIC_MINT, padx=12, pady=10)
+        batch.pack(fill=X, padx=10, pady=(10, 4))
+        batch.grid_columnconfigure(1, weight=1)
+        batch.grid_columnconfigure(3, weight=1)
+        batch.grid_columnconfigure(6, weight=1)
+        batch.grid_columnconfigure(8, weight=1)
+        Label(batch, text="äººç‰© / åœºæ™¯æ›¿æ¢", bg=COMIC_MINT, fg=INK, font=("Microsoft YaHei UI", 9, "bold")).grid(row=0, column=0, sticky="w", padx=(0, 10), pady=(0, 7))
+        RoundedCombobox(batch, textvariable=self.comic_batch_scope_var, values=["å…¨éƒ¨åˆ†é•œ", "é€‰ä¸­åˆ†é•œ"], state="readonly", width=10).grid(row=0, column=1, sticky="w", pady=(0, 7))
+        Label(batch, text="æ— éœ€å…ˆç‚¹å¼€é•œå¤´ï¼›å¯æ›¿æ¢å…¨éƒ¨åˆ†é•œæˆ–å½“å‰é€‰ä¸­çš„åˆ†é•œ", bg=COMIC_MINT, fg=MUTED, font=("Microsoft YaHei UI", 8)).grid(row=0, column=2, columnspan=7, sticky="w", padx=(12, 0), pady=(0, 7))
+        Label(batch, text="è§’è‰²", bg=COMIC_MINT, fg=MUTED, font=("Microsoft YaHei UI", 8, "bold")).grid(row=1, column=0, sticky="e", padx=(0, 5))
+        RoundedCombobox(batch, textvariable=self.comic_batch_character_from_var, values=character_names, state="readonly", width=11).grid(row=1, column=1, sticky="ew")
+        Label(batch, text="â†’", bg=COMIC_MINT, fg=ACCENT_DARK, font=("Segoe UI", 9, "bold")).grid(row=1, column=2, padx=5)
+        RoundedCombobox(batch, textvariable=self.comic_batch_character_to_var, values=["ï¼ˆç§»é™¤è§’è‰²ï¼‰"] + character_names, state="readonly", width=11).grid(row=1, column=3, sticky="ew")
+        self._button(batch, "æ›¿æ¢è§’è‰²", self.batch_replace_comic_character, kind="primary").grid(row=1, column=4, sticky="w", padx=(6, 18))
+        Label(batch, text="åœºæ™¯", bg=COMIC_MINT, fg=MUTED, font=("Microsoft YaHei UI", 8, "bold")).grid(row=1, column=5, sticky="e", padx=(0, 5))
+        RoundedCombobox(batch, textvariable=self.comic_batch_scene_from_var, values=scene_names, state="readonly", width=11).grid(row=1, column=6, sticky="ew")
+        Label(batch, text="â†’", bg=COMIC_MINT, fg=ACCENT_DARK, font=("Segoe UI", 9, "bold")).grid(row=1, column=7, padx=5)
+        RoundedCombobox(batch, textvariable=self.comic_batch_scene_to_var, values=["ï¼ˆæ¸…ç©ºåœºæ™¯ï¼‰"] + scene_names, state="readonly", width=11).grid(row=1, column=8, sticky="ew")
+        self._button(batch, "æ›¿æ¢åœºæ™¯", self.batch_replace_comic_scene, kind="primary").grid(row=1, column=9, sticky="w", padx=(6, 0))
+
+        selection_bar = Frame(list_area, bg=SURFACE, padx=10, pady=7)
+        selection_bar.pack(fill=X)
+        self._button(selection_bar, "å…¨é€‰é•œå¤´", self.select_all_comic_shots, kind="ghost").pack(side=LEFT)
+        self._button(selection_bar, "æ¸…ç©ºé€‰æ‹©", self.clear_comic_shot_selection, kind="ghost").pack(side=LEFT, padx=(6, 0))
+        Label(selection_bar, text="ç›´æ¥ç‚¹å‡»â€œé€‰æ‹©â€å³å¯å¤šé€‰ï¼Œæ— éœ€æŒ‰ Ctrl", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 8)).pack(side=LEFT, padx=(12, 0))
+        self._button(selection_bar, "æ‹†åˆ†é€‰ä¸­é•œå¤´", self.split_current_comic_shot, kind="primary").pack(side=RIGHT)
+        self._button(selection_bar, "åˆå¹¶é€‰ä¸­ç›¸é‚»é•œå¤´", self.merge_selected_comic_shots, kind="accent").pack(side=RIGHT, padx=(0, 7))
+        page_bar = Frame(list_area, bg=SURFACE, padx=10, pady=3)
+        page_bar.pack(fill=X)
+        Label(page_bar, text="é•œå¤´è¾ƒå¤šæ—¶è‡ªåŠ¨åˆ†é¡µï¼Œå·²é€‰é•œå¤´ä¼šè·¨é¡µä¿ç•™", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 7)).pack(side=LEFT)
+        self._button(page_bar, "ä¸‹ä¸€é¡µ  â†’", lambda: self._change_comic_storyboard_page(1), kind="ghost").pack(side=RIGHT)
+        self.comic_storyboard_page_label = Label(page_bar, text="", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 8, "bold"))
+        self.comic_storyboard_page_label.pack(side=RIGHT, padx=9)
+        self._button(page_bar, "â†  ä¸Šä¸€é¡µ", lambda: self._change_comic_storyboard_page(-1), kind="ghost").pack(side=RIGHT)
+        self._create_comic_storyboard_list(list_area, height=548)
+
+        footer = Frame(content, bg=SURFACE)
+        footer.pack(fill=X, pady=(14, 0))
+        self._button(footer, "â† åœºæ™¯å®šæ™¯", lambda: self._switch_comic_step(2), kind="ghost").pack(side=LEFT)
+        self._button(footer, "è¿›å…¥æ‰¹é‡å‡ºå›¾  â†’", lambda: self._switch_comic_step(4), kind="accent").pack(side=RIGHT)
+        selected = self.current_comic_shot_index if self.current_comic_shot_index is not None else (0 if self.state["comic"]["shots"] else None)
+        self._refresh_comic_shot_tree(selected)
+        self._bind_page_mousewheel(page, canvas)
+
+    def _create_comic_storyboard_list(self, parent, *, height: int = 548) -> None:
+        """Build the static-storyboard-only list whose prompts are edited in place."""
+        shell_outer, shell = self._rounded_widget_shell(parent, bg=SURFACE, fixed_height=height)
+        shell_outer.pack(fill=X, padx=10, pady=(0, 10))
+        headers = Frame(shell, bg=SURFACE_ALT, padx=17, pady=8)
+        headers.pack(fill=X, padx=(0, 13))
+        self._configure_comic_storyboard_columns(headers)
+        for column, text in enumerate(("é€‰æ‹©", "å¯¹åº”ç”»é¢", "ç‰‡æ®µ / åŸæ–‡", "ç”»é¢æç¤ºè¯ï¼ˆç›´æ¥ç¼–è¾‘ï¼‰", "è§’è‰²ï¼ˆç‚¹å‡»å¤šé€‰ï¼‰", "åœºæ™¯ï¼ˆç‚¹å‡»å•é€‰ï¼‰", "çŠ¶æ€")):
+            Label(headers, text=text, bg=SURFACE_ALT, fg=MUTED, anchor="w", font=("Microsoft YaHei UI", 8, "bold")).grid(row=0, column=column, sticky="ew", padx=(0, 8) if column < 6 else 0)
+
+        canvas_host = Frame(shell, bg=SURFACE)
+        canvas_host.pack(fill=BOTH, expand=True)
+        self.comic_storyboard_canvas = Canvas(canvas_host, bg=SURFACE, highlightthickness=0, borderwidth=0)
+        scrollbar = RoundedScrollbar(canvas_host, command=self.comic_storyboard_canvas.yview)
+        self.comic_storyboard_canvas.configure(yscrollcommand=scrollbar.set)
+        self.comic_storyboard_canvas.pack(side=LEFT, fill=BOTH, expand=True)
+        scrollbar.pack(side=RIGHT, fill=Y)
+        self.comic_storyboard_body = Frame(self.comic_storyboard_canvas, bg=SURFACE, padx=6, pady=4)
+        self.comic_storyboard_window = self.comic_storyboard_canvas.create_window((0, 0), window=self.comic_storyboard_body, anchor="nw")
+        self.comic_storyboard_body.bind("<Configure>", lambda _event: self.comic_storyboard_canvas and self.comic_storyboard_canvas.configure(scrollregion=self.comic_storyboard_canvas.bbox("all")))
+        self.comic_storyboard_canvas.bind("<Configure>", lambda event: self.comic_storyboard_canvas and self.comic_storyboard_window is not None and self.comic_storyboard_canvas.itemconfigure(self.comic_storyboard_window, width=event.width))
+
+    @staticmethod
+    def _configure_comic_storyboard_columns(container: Frame) -> None:
+        """Keep header cells and every editable storyboard row on one shared grid."""
+        specifications = (
+            (0, 0, 71),
+            (1, 0, 114),
+            (2, 2, 160),
+            (3, 3, 230),
+            (4, 1, 105),
+            (5, 1, 120),
+            (6, 0, 80),
+        )
+        for column, weight, minsize in specifications:
+            container.grid_columnconfigure(column, weight=weight, minsize=minsize)
+
+    def _bind_comic_storyboard_wheel(self, widget) -> None:
+        if not self.comic_storyboard_canvas:
+            return
+
+        def scroll(event):
+            if not self.comic_storyboard_canvas:
+                return "break"
+            if getattr(event, "delta", 0):
+                self.comic_storyboard_canvas.yview_scroll(-1 if event.delta > 0 else 1, "units")
+            elif getattr(event, "num", 0) == 4:
+                self.comic_storyboard_canvas.yview_scroll(-1, "units")
+            elif getattr(event, "num", 0) == 5:
+                self.comic_storyboard_canvas.yview_scroll(1, "units")
+            return "break"
+
+        if not isinstance(widget, (Text, Listbox, RoundedCombobox)):
+            widget.bind("<MouseWheel>", scroll, add="+")
+            widget.bind("<Button-4>", scroll, add="+")
+            widget.bind("<Button-5>", scroll, add="+")
+        for child in widget.winfo_children():
+            self._bind_comic_storyboard_wheel(child)
+
+    def _change_comic_storyboard_page(self, delta: int) -> None:
+        shots = self.state["comic"].get("shots", [])
+        page_count = max(1, (len(shots) + self.comic_storyboard_page_size - 1) // self.comic_storyboard_page_size)
+        target = min(max(self.comic_storyboard_page + int(delta), 0), page_count - 1)
+        if target == self.comic_storyboard_page:
+            return
+        self._save_all_inline_comic_shot_prompts()
+        self.comic_storyboard_page = target
+        self._refresh_comic_storyboard_rows()
+        if self.comic_storyboard_canvas:
+            self.comic_storyboard_canvas.yview_moveto(0)
+
+    def _refresh_comic_storyboard_rows(self, selected: int | None = None) -> None:
+        if not self.comic_storyboard_body:
+            return
+        for child in self.comic_storyboard_body.winfo_children():
+            child.destroy()
+        self.comic_storyboard_selection_vars = {}
+        self.comic_storyboard_prompt_editors = {}
+        self.comic_storyboard_row_widgets = {}
+        self.comic_shot_preview_images = {}
+        shots = self.state["comic"].get("shots", [])
+        character_names = [str(item.get("name", "")).strip() for item in self.state["comic"].get("characters", []) if str(item.get("name", "")).strip()]
+        scene_names = [str(item.get("name", "")).strip() for item in self.state["comic"].get("scenes", []) if str(item.get("name", "")).strip()]
+        self.comic_storyboard_selected_indices = {index for index in self.comic_storyboard_selected_indices if 0 <= index < len(shots)}
+        if selected is not None and shots:
+            selected = min(max(selected, 0), len(shots) - 1)
+            if not self.comic_storyboard_selected_indices:
+                self.comic_storyboard_selected_indices.add(selected)
+            self.comic_storyboard_page = selected // self.comic_storyboard_page_size
+
+        page_count = max(1, (len(shots) + self.comic_storyboard_page_size - 1) // self.comic_storyboard_page_size)
+        self.comic_storyboard_page = min(max(self.comic_storyboard_page, 0), page_count - 1)
+        start_index = self.comic_storyboard_page * self.comic_storyboard_page_size
+        end_index = min(start_index + self.comic_storyboard_page_size, len(shots))
+
+        if not shots:
+            Label(self.comic_storyboard_body, text="æš‚æ— åˆ†é•œã€‚è¯·è¿”å›â€œå°è¯´ä¸é¡¹ç›®â€ä½¿ç”¨ AI æ‹†åˆ†ï¼Œæˆ–å¯¼å…¥å·²æœ‰é¡¹ç›®ã€‚", bg=SURFACE, fg=MUTED, pady=70, font=("Microsoft YaHei UI", 10)).pack(fill=X)
+            self.current_comic_shot_index = None
+        for index in range(start_index, end_index):
+            shot = shots[index]
+            selected_row = index in self.comic_storyboard_selected_indices
+            row_bg = COMIC_INSET if index % 2 else SURFACE
+            row_outer = Frame(self.comic_storyboard_body, bg=row_bg, height=160, highlightthickness=1, highlightbackground=ACCENT if selected_row else row_bg)
+            row_outer.pack(fill=X, pady=(0, 2))
+            row_outer.pack_propagate(False)
+            row = Frame(row_outer, bg=row_bg, padx=10, pady=8)
+            row.pack(fill=BOTH, expand=True)
+            self._configure_comic_storyboard_columns(row)
+
+            selection_var = StringVar(value="âœ“ å·²é€‰" if selected_row else "â—‹ é€‰æ‹©")
+            selection = Label(row, textvariable=selection_var, width=7, bg=ACCENT if selected_row else SURFACE_ALT, fg=SIDEBAR if selected_row else MUTED, cursor="hand2", padx=5, pady=8, font=("Microsoft YaHei UI", 8, "bold"))
+            selection.grid(row=0, column=0, sticky="n", padx=(0, 8), pady=(4, 0))
+            selection.bind("<Button-1>", lambda _event, item=index: self._toggle_comic_storyboard_row(item))
+
+            preview = Canvas(row, width=104, height=124, bg=SURFACE_ALT, highlightthickness=0, borderwidth=0, cursor="hand2")
+            preview.grid(row=0, column=1, sticky="n", padx=(0, 10))
+            self._render_local_image(preview, str(shot.get("local_path", "")), placeholder="ç­‰å¾…å‡ºå›¾", max_size=(104, 124))
+            preview.bind("<Button-1>", lambda _event, item=index: self._open_comic_storyboard_image(item))
+
+            source_panel = Frame(row, bg=row_bg)
+            source_panel.grid(row=0, column=2, sticky="nsew", padx=(0, 10))
+            source_panel.pack_propagate(False)
+            Label(source_panel, text=str(shot.get("title", f"åˆ†é•œ {index + 1:03d}")), bg=row_bg, fg=INK, anchor="w", justify=LEFT, font=("Microsoft YaHei UI", 9, "bold")).pack(fill=X, pady=(3, 5))
+            source = str(shot.get("source", "")).strip().replace("\n", " ") or "æš‚æ— å¯¹åº”åŸæ–‡"
+            Label(source_panel, text=source, bg=row_bg, fg=MUTED, anchor="nw", justify=LEFT, wraplength=220, font=("Microsoft YaHei UI", 8)).pack(fill=BOTH, expand=True)
+
+            prompt_panel = Frame(row, bg=row_bg)
+            prompt_panel.grid(row=0, column=3, sticky="nsew", padx=(0, 10))
+            prompt_panel.pack_propagate(False)
+            prompt_header = Frame(prompt_panel, bg=row_bg)
+            prompt_header.pack(fill=X, pady=(0, 4))
+            Label(prompt_header, text="è¡¨æƒ… / åŠ¨ä½œ", bg=row_bg, fg=ACCENT_DARK, font=("Microsoft YaHei UI", 8, "bold")).pack(side=LEFT)
+            self._button(prompt_header, "ä¿å­˜", lambda item=index: self._save_inline_comic_shot_prompt(item), kind="accent").pack(side=RIGHT)
+            prompt_editor_host = Frame(prompt_panel, bg=row_bg)
+            prompt_editor_host.pack(fill=BOTH, expand=True)
+            prompt_editor = Text(prompt_editor_host, width=1, height=4, wrap="word", undo=True, bg="#F3F8F7", fg=INK, relief="flat", highlightthickness=0, padx=8, pady=6, font=("Microsoft YaHei UI", 8))
+            self._pack_vertical_scroller(prompt_editor_host, prompt_editor, fill=X, expand=True)
+            prompt_editor.insert("1.0", str(shot.get("prompt", "")))
+            prompt_editor.bind("<FocusOut>", lambda _event, item=index: self._save_inline_comic_shot_prompt(item, silent=True), add="+")
+            prompt_editor.bind("<Control-s>", lambda _event, item=index: (self._save_inline_comic_shot_prompt(item), "break")[1], add="+")
+
+            role_panel = Frame(row, bg=row_bg)
+            role_panel.grid(row=0, column=4, sticky="nsew", padx=(0, 8))
+            role_panel.pack_propagate(False)
+            role_values = list(character_names)
+            for name in (str(item).strip() for item in shot.get("characters", [])):
+                if name and name not in role_values:
+                    role_values.append(name)
+            character_list = None
+            if role_values:
+                character_list = Listbox(
+                    role_panel,
+                    selectmode="multiple",
+                    exportselection=False,
+                    bg=row_bg,
+                    fg=INK,
+                    selectbackground=COMIC_MINT,
+                    selectforeground=ACCENT_DARK,
+                    relief="flat",
+                    highlightthickness=0,
+                    activestyle="none",
+                    font=("Microsoft YaHei UI", 8),
+                )
+                selected_characters = {str(name) for name in shot.get("characters", [])}
+                for character_index, name in enumerate(role_values):
+                    character_list.insert(END, name)
+                    if name in selected_characters:
+                        character_list.selection_set(character_index)
+                self._pack_vertical_scroller(role_panel, character_list)
+                character_list.bind("<<ListboxSelect>>", lambda _event, item=index: self._save_inline_comic_shot_characters(item), add="+")
+            else:
+                Label(role_panel, text="æš‚æ— è§’è‰²\nè¯·å…ˆå®šå¦†", bg=row_bg, fg=MUTED, justify="center", font=("Microsoft YaHei UI", 8)).pack(fill=BOTH, expand=True)
+
+            scene_panel = Frame(row, bg=row_bg)
+            scene_panel.grid(row=0, column=5, sticky="nsew", padx=(0, 8))
+            scene_panel.pack_propagate(False)
+            current_scene = str(shot.get("scene", "")).strip()
+            scene_values = ["ï¼ˆæ— åœºæ™¯ï¼‰"] + list(scene_names)
+            if current_scene and current_scene not in scene_values:
+                scene_values.append(current_scene)
+            scene_list = Listbox(
+                scene_panel,
+                selectmode="browse",
+                exportselection=False,
+                bg=row_bg,
+                fg=INK,
+                selectbackground=COMIC_MINT,
+                selectforeground=ACCENT_DARK,
+                relief="flat",
+                highlightthickness=0,
+                activestyle="none",
+                font=("Microsoft YaHei UI", 8),
+            )
+            selected_scene_value = current_scene or "ï¼ˆæ— åœºæ™¯ï¼‰"
+            for scene_index, name in enumerate(scene_values):
+                scene_list.insert(END, name)
+                if name == selected_scene_value:
+                    scene_list.selection_set(scene_index)
+                    scene_list.activate(scene_index)
+            self._pack_vertical_scroller(scene_panel, scene_list)
+            scene_list.bind("<<ListboxSelect>>", lambda _event, item=index: self._save_inline_comic_shot_scene(item), add="+")
+            status_label = Label(row, text=self._comic_shot_status_text(shot), bg=row_bg, fg=ACCENT_DARK if shot.get("local_path") else MUTED, anchor="n", justify="center", wraplength=90, font=("Microsoft YaHei UI", 8))
+            status_label.grid(row=0, column=6, sticky="nsew", pady=(9, 0))
+
+            self.comic_storyboard_selection_vars[index] = selection_var
+            self.comic_storyboard_prompt_editors[index] = prompt_editor
+            self.comic_storyboard_row_widgets[index] = {
+                "outer": row_outer,
+                "default_border": row_bg,
+                "selection": selection,
+                "preview": preview,
+                "characters": character_list,
+                "character_values": role_values,
+                "scene": scene_list,
+                "scene_values": scene_values,
+                "status": status_label,
+            }
+            self._bind_comic_storyboard_wheel(row_outer)
+
+        done = sum(1 for shot in shots if Path(str(shot.get("local_path", ""))).is_file())
+        if self.comic_count_label:
+            self.comic_count_label.configure(text=f"{len(shots)} ä¸ªåˆ†é•œ Â· {done} å¼ æœ‰å›¾")
+        if self.comic_storyboard_page_label:
+            visible_range = f"{start_index + 1}-{end_index}" if shots else "0"
+            self.comic_storyboard_page_label.configure(text=f"ç¬¬ {self.comic_storyboard_page + 1}/{page_count} é¡µ Â· é•œå¤´ {visible_range}")
+        if self.comic_storyboard_canvas:
+            self.comic_storyboard_canvas.update_idletasks()
+            self.comic_storyboard_canvas.configure(scrollregion=self.comic_storyboard_canvas.bbox("all"))
+
+    @staticmethod
+    def _comic_shot_status_text(shot: dict[str, object]) -> str:
+        status = str(shot.get("status", "å¾…ç”Ÿæˆ"))
+        progress = str(shot.get("progress", ""))
+        return f"{status}\n{progress}" if progress and progress not in {"0%", "100%"} else status
+
+    def _toggle_comic_storyboard_row(self, index: int) -> None:
+        if index in self.comic_storyboard_selected_indices:
+            self.comic_storyboard_selected_indices.remove(index)
+        else:
+            self.comic_storyboard_selected_indices.add(index)
+            self.current_comic_shot_index = index
+        selected = index in self.comic_storyboard_selected_indices
+        selection_var = self.comic_storyboard_selection_vars.get(index)
+        row_widgets = self.comic_storyboard_row_widgets.get(index, {})
+        if selection_var:
+            selection_var.set("âœ“ å·²é€‰" if selected else "â—‹ é€‰æ‹©")
+        selection = row_widgets.get("selection")
+        outer = row_widgets.get("outer")
+        if selection:
+            selection.configure(bg=ACCENT if selected else SURFACE_ALT, fg=SIDEBAR if selected else MUTED)
+        if outer:
+            outer.configure(highlightbackground=ACCENT if selected else row_widgets.get("default_border", SURFACE))
+
+    def _open_comic_storyboard_image(self, index: int) -> None:
+        shots = self.state["comic"].get("shots", [])
+        if not (0 <= index < len(shots)):
+            return
+        path = str(shots[index].get("local_path", ""))
+        if Path(path).is_file():
+            self._show_comic_image(path, str(shots[index].get("title", f"åˆ†é•œ {index + 1:03d}")))
+        else:
+            self.comic_status.configure(text=f"åˆ†é•œ {index + 1:03d} å°šæœªç”Ÿæˆå›¾ç‰‡ã€‚", fg=MUTED)
+
+    def _save_inline_comic_shot_prompt(self, index: int, silent: bool = False) -> None:
+        shots = self.state["comic"].get("shots", [])
+        editor = self.comic_storyboard_prompt_editors.get(index)
+        if not editor or not (0 <= index < len(shots)):
+            return
+        try:
+            new_prompt = editor.get("1.0", "end-1c").strip()
+        except TclError:
+            return
+        shot = shots[index]
+        old_prompt = str(shot.get("prompt", "")).strip()
+        if old_prompt == new_prompt:
+            return
+        shot["prompt"] = new_prompt
+        if shot.get("local_path") or shot.get("image_url"):
+            self._mark_comic_shot_stale(shot)
+            self._invalidate_comic_draft()
+        self.store.save(self.state)
+        self._update_comic_storyboard_row(index)
+        if not silent and hasattr(self, "comic_status"):
+            self.comic_status.configure(text=f"åˆ†é•œ {index + 1:03d} çš„æç¤ºè¯å·²ä¿å­˜ã€‚", fg=ACCENT_DARK)
+
+    def _save_inline_comic_shot_characters(self, index: int, silent: bool = False) -> None:
+        shots = self.state["comic"].get("shots", [])
+        widgets = self.comic_storyboard_row_widgets.get(index, {})
+        character_list = widgets.get("characters")
+        if not character_list or not (0 <= index < len(shots)):
+            return
+        try:
+            new_characters = [str(character_list.get(item)).strip() for item in character_list.curselection() if str(character_list.get(item)).strip()]
+        except TclError:
+            return
+        shot = shots[index]
+        old_characters = [str(name).strip() for name in shot.get("characters", []) if str(name).strip()]
+        if old_characters == new_characters:
+            return
+        shot["characters"] = new_characters
+        if shot.get("local_path") or shot.get("image_url"):
+            self._mark_comic_shot_stale(shot)
+            self._invalidate_comic_draft()
+        self.store.save(self.state)
+        self._update_comic_storyboard_row(index)
+        if not silent and hasattr(self, "comic_status"):
+            self.comic_status.configure(text=f"åˆ†é•œ {index + 1:03d} çš„è§’è‰²å·²ç›´æ¥æ›´æ–°ã€‚", fg=ACCENT_DARK)
+
+    def _save_inline_comic_shot_scene(self, index: int, silent: bool = False) -> None:
+        shots = self.state["comic"].get("shots", [])
+        widgets = self.comic_storyboard_row_widgets.get(index, {})
+        scene_list = widgets.get("scene")
+        if not scene_list or not (0 <= index < len(shots)):
+            return
+        try:
+            selection = scene_list.curselection()
+            if not selection:
+                return
+            new_scene = str(scene_list.get(selection[0])).strip()
+        except TclError:
+            return
+        if new_scene == "ï¼ˆæ— åœºæ™¯ï¼‰":
+            new_scene = ""
+        shot = shots[index]
+        if str(shot.get("scene", "")).strip() == new_scene:
+            return
+        shot["scene"] = new_scene
+        if shot.get("local_path") or shot.get("image_url"):
+            self._mark_comic_shot_stale(shot)
+            self._invalidate_comic_draft()
+        self.store.save(self.state)
+        self._update_comic_storyboard_row(index)
+        if not silent and hasattr(self, "comic_status"):
+            self.comic_status.configure(text=f"åˆ†é•œ {index + 1:03d} çš„åœºæ™¯å·²ç›´æ¥æ›´æ–°ã€‚", fg=ACCENT_DARK)
+
+    def _save_all_inline_comic_shot_prompts(self) -> None:
+        for index in list(self.comic_storyboard_prompt_editors):
+            self._save_inline_comic_shot_prompt(index, silent=True)
+            self._save_inline_comic_shot_characters(index, silent=True)
+            self._save_inline_comic_shot_scene(index, silent=True)
+
+    def _update_comic_storyboard_row(self, index: int) -> None:
+        shots = self.state["comic"].get("shots", [])
+        widgets = self.comic_storyboard_row_widgets.get(index)
+        if not widgets or not (0 <= index < len(shots)):
+            return
+        shot = shots[index]
+        character_list = widgets.get("characters")
+        if character_list:
+            selected_characters = {str(name) for name in shot.get("characters", [])}
+            character_list.selection_clear(0, END)
+            for character_index, name in enumerate(widgets.get("character_values", [])):
+                if name in selected_characters:
+                    character_list.selection_set(character_index)
+        scene_list = widgets.get("scene")
+        if scene_list:
+            selected_scene = str(shot.get("scene", "")).strip() or "ï¼ˆæ— åœºæ™¯ï¼‰"
+            scene_list.selection_clear(0, END)
+            for scene_index, name in enumerate(widgets.get("scene_values", [])):
+                if name == selected_scene:
+                    scene_list.selection_set(scene_index)
+                    scene_list.activate(scene_index)
+                    scene_list.see(scene_index)
+                    break
+        widgets["status"].configure(text=self._comic_shot_status_text(shot), fg=ACCENT_DARK if shot.get("local_path") else MUTED)
+        self._render_local_image(widgets["preview"], str(shot.get("local_path", "")), placeholder="ç­‰å¾…å‡ºå›¾", max_size=(104, 124))
+
+    def _create_comic_shot_tree(self, parent, *, with_previews: bool = False, preview_height: int = 650) -> None:
+        tree_outer, tree_shell = self._rounded_widget_shell(parent, bg=SURFACE)
+        if with_previews:
+            tree_outer.set_fixed_height(preview_height)
+        tree_outer.pack(fill=BOTH, expand=True)
+        self.comic_shot_tree_with_previews = with_previews
+        self.comic_shot_preview_images = {}
+        self.comic_shot_tree = ttk.Treeview(
+            tree_shell,
+            columns=("title", "characters", "scene", "status"),
+            show=("tree", "headings") if with_previews else "headings",
+            style="Studio.Preview.Treeview" if with_previews else "Studio.Treeview",
+            selectmode="extended",
+            height=4 if with_previews else 10,
+        )
+        if with_previews:
+            self.comic_shot_tree.heading("#0", text="å¯¹åº”å›¾ç‰‡")
+            self.comic_shot_tree.column("#0", width=132, minwidth=132, stretch=False, anchor="center")
+        self.comic_shot_tree.heading("title", text="ç‰‡æ®µ")
+        self.comic_shot_tree.heading("characters", text="è§’è‰²")
+        self.comic_shot_tree.heading("scene", text="åœºæ™¯")
+        self.comic_shot_tree.heading("status", text="çŠ¶æ€")
+        self.comic_shot_tree.column("title", width=185 if with_previews else 210, anchor="w")
+        self.comic_shot_tree.column("characters", width=90 if with_previews else 100, anchor="w")
+        self.comic_shot_tree.column("scene", width=85 if with_previews else 105, anchor="w")
+        self.comic_shot_tree.column("status", width=75 if with_previews else 90, anchor="center")
+        self.comic_shot_tree.tag_configure("alternate", background=COMIC_INSET)
+        self.comic_shot_tree.tag_configure("done", foreground=ACCENT_DARK)
+        self.comic_shot_tree.tag_configure("error", foreground=ERROR)
+        self._pack_vertical_scroller(tree_shell, self.comic_shot_tree)
+        self.comic_shot_tree.bind("<<TreeviewSelect>>", self.on_comic_shot_select)
+        self.comic_shot_tree.bind("<Button-1>", self._toggle_comic_shot_selection)
+
+    def _build_comic_generation_step(self, parent) -> None:
+        page, canvas = self._scrollable_content(parent)
+        shell = Frame(page, bg=BG)
+        shell.pack(fill=X, padx=(0, 8), pady=(0, 2))
+        shell.grid_columnconfigure(0, weight=1)
+        shell.grid_columnconfigure(1, weight=0, minsize=260)
+        shell.grid_rowconfigure(0, weight=1)
+        list_outer = self._card(shell, padx=20, pady=18)
+        list_outer.grid(row=0, column=0, sticky="nsew", padx=(0, 12))
+        listing = list_outer.winfo_children()[0]
+        self._comic_section_title(listing, "05", "æ‰¹é‡å‡ºå›¾", "æ¯å¼ å›¾ç‰‡å›ºå®šæ˜¾ç¤ºåœ¨å¯¹åº”åˆ†é•œæ—è¾¹ï¼›è§’è‰²å‚è€ƒå›¾ä¸å›ºå®šåœºæ™¯å‚è€ƒå›¾ä¼šä¸€å¹¶æäº¤ã€‚")
+        list_header = Frame(listing, bg=SURFACE_ALT, padx=12, pady=9)
+        list_header.pack(fill=X)
+        Label(list_header, text="åˆ†é•œä¸å¯¹åº”å›¾ç‰‡", bg=SURFACE_ALT, fg=INK, font=("Microsoft YaHei UI", 10, "bold")).pack(side=LEFT)
+        Label(list_header, text="å•å‡»å·¦ä¾§å›¾ç‰‡å³å¯æ”¾å¤§ï¼›å¾…ç”Ÿæˆåˆ†é•œä¼šæ˜¾ç¤ºå ä½å›¾", bg=SURFACE_ALT, fg=MUTED, font=("Microsoft YaHei UI", 8)).pack(side=LEFT, padx=(10, 0))
+        self.comic_count_label = Label(list_header, text="", bg=SURFACE_ALT, fg=ACCENT_DARK, font=("Microsoft YaHei UI", 9))
+        self.comic_count_label.pack(side=RIGHT)
+        self._create_comic_shot_tree(listing, with_previews=True)
+        footer = Frame(listing, bg=SURFACE)
+        footer.pack(fill=X, pady=(12, 0))
+        self._button(footer, "â† é™æ€åˆ†é•œ", lambda: self._switch_comic_step(3), kind="ghost").pack(side=LEFT)
+        self._button(footer, "æ”¾å¤§é€‰ä¸­å›¾ç‰‡", self.preview_comic_shot, kind="ghost").pack(side=RIGHT)
+        self._button(footer, "ç”Ÿæˆé€‰ä¸­åˆ†é•œ", self.generate_selected_comic_shot, kind="primary").pack(side=RIGHT, padx=(0, 8))
+
+        control_outer = self._card(shell, bg=SIDEBAR, padx=20, pady=20)
+        control_outer.grid(row=0, column=1, sticky="nsew")
+        control = control_outer.winfo_children()[0]
+        Label(control, text="ç”Ÿäº§æ§åˆ¶", bg=SIDEBAR, fg="white", font=("Microsoft YaHei UI", 13, "bold")).pack(anchor="w")
+        Label(control, text="Doubao Seedream 5.0 Pro", bg=SIDEBAR, fg=SIDEBAR_MUTED, font=("Segoe UI", 8, "bold")).pack(anchor="w", pady=(3, 16))
+        metric = Frame(control, bg=COMIC_DARK_ALT, padx=14, pady=12)
+        metric.pack(fill=X, pady=(0, 10))
+        self.comic_generation_count_label = Label(metric, text="0 / 0", bg=COMIC_DARK_ALT, fg="white", font=("Segoe UI", 21, "bold"))
+        self.comic_generation_count_label.pack(anchor="w")
+        Label(metric, text="åˆ†é•œå›¾ç‰‡å·²å®Œæˆ", bg=COMIC_DARK_ALT, fg=SIDEBAR_MUTED, font=("Microsoft YaHei UI", 8)).pack(anchor="w")
+        option = Frame(control, bg=COMIC_DARK_ALT, padx=12, pady=10)
+        option.pack(fill=X)
+        Label(option, text="è¾“å‡ºåˆ†è¾¨ç‡", bg=COMIC_DARK_ALT, fg=SIDEBAR_MUTED, font=("Microsoft YaHei UI", 8)).pack(anchor="w")
+        RoundedCombobox(option, textvariable=self.comic_resolution_var, values=["1K", "1.5K", "2K"], state="readonly", width=10).pack(anchor="w", pady=(5, 10))
+        Label(option, text="æç¤ºè¯ä¼˜åŒ–", bg=COMIC_DARK_ALT, fg=SIDEBAR_MUTED, font=("Microsoft YaHei UI", 8)).pack(anchor="w")
+        RoundedCombobox(option, textvariable=self.comic_optimize_var, values=["æ ‡å‡†è´¨é‡", "æé€Ÿæ¨¡å¼"], state="readonly", width=10).pack(anchor="w", pady=(5, 0))
+        self.comic_generation_detail_label = Label(control, text="è¯·é€‰æ‹©ä¸€ä¸ªåˆ†é•œæŸ¥çœ‹çŠ¶æ€ã€‚", bg=SIDEBAR, fg=SIDEBAR_MUTED, justify=LEFT, wraplength=220, font=("Microsoft YaHei UI", 8))
+        self.comic_generation_detail_label.pack(fill=X, pady=(18, 16))
+        self._button(control, "æ‰¹é‡ç”Ÿæˆæœªå®Œæˆåˆ†é•œ", self.generate_all_comic_shots, kind="accent").pack(fill=X)
+        self._button(control, "ç”Ÿæˆå‰ªæ˜ è‰ç¨¿  â†’", lambda: self._switch_comic_step(5), kind="primary").pack(fill=X, pady=(8, 0))
+        self._button(control, "æ‰“å¼€å›¾ç‰‡ç›®å½•", self.open_comic_output_dir, kind="ghost").pack(fill=X, pady=(8, 0))
+        Label(control, text="æç¤ºï¼šç”Ÿæˆå‰å¿…é¡»ä¸ºå‡ºåœºè§’è‰²å’Œå·²ç»‘å®šåœºæ™¯ç¡®è®¤å‚è€ƒå›¾ï¼Œä»¥ä¿æŒäººç‰©ä¸ç¯å¢ƒä¸€è‡´æ€§ã€‚", bg=SIDEBAR, fg=SIDEBAR_MUTED, justify=LEFT, wraplength=220, font=("Microsoft YaHei UI", 8)).pack(anchor="w", pady=(18, 0))
+        selected = self.current_comic_shot_index if self.current_comic_shot_index is not None else (0 if self.state["comic"]["shots"] else None)
+        self._refresh_comic_shot_tree(selected)
+        self._bind_page_mousewheel(page, canvas)
+
+    def _build_comic_video_step(self, parent) -> None:
+        page, canvas = self._scrollable_content(parent)
+        outer = self._card(page, padx=24, pady=20)
+        outer.pack(fill=X, padx=(0, 8), pady=(0, 2))
+        content = outer.winfo_children()[0]
+        self._comic_section_title(content, "06", "é™æ€æ¼«å‰ªæ˜ è‰ç¨¿ï¼ˆå¯é€‰ï¼‰", "æŠŠæ¯å¼ åˆ†é•œå›¾ä½œä¸ºå¯ç¼–è¾‘å›¾ç‰‡ç‰‡æ®µå†™å…¥å‰ªæ˜ ï¼Œå¹¶æ·»åŠ ä¸Šä¸‹å¹³ç§»èµ·æ­¢å…³é”®å¸§ã€‚")
+
+        work = Frame(content, bg=SURFACE)
+        work.pack(fill=BOTH, expand=True)
+        work.grid_columnconfigure(0, weight=3)
+        work.grid_columnconfigure(1, weight=2)
+        work.grid_rowconfigure(0, weight=1)
+
+        inputs_outer = self._card(work, bg=COMIC_INSET, padx=18, pady=16)
+        inputs_outer.set_fixed_height(650)
+        inputs_outer.grid(row=0, column=0, sticky="nsew", padx=(0, 12))
+        inputs = inputs_outer.winfo_children()[0]
+        Label(inputs, text="æˆç‰‡ç´ æ", bg=COMIC_INSET, fg=INK, font=("Microsoft YaHei UI", 12, "bold")).pack(anchor="w")
+        Label(inputs, text="éŸ³é¢‘å†³å®šæ€»æ—¶é•¿ï¼›å¯¼å…¥ SRT åï¼Œé•œå¤´åˆ‡æ¢ä¼šå°½é‡å¯¹é½å­—å¹•æ®µè½å¹¶æŠŠå­—å¹•çƒ§å½•è¿›ç”»é¢ã€‚", bg=COMIC_INSET, fg=MUTED, wraplength=560, justify=LEFT, font=("Microsoft YaHei UI", 8)).pack(anchor="w", pady=(4, 14))
+
+        audio_outer = self._card(inputs, bg=SURFACE, padx=16, pady=14)
+        audio_outer.set_fixed_height(150)
+        audio_outer.pack(fill=X, pady=(0, 12))
+        audio_card = audio_outer.winfo_children()[0]
+        Label(audio_card, text="01  é…éŸ³éŸ³é¢‘ï¼ˆå¿…éœ€ï¼‰", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 9, "bold")).pack(anchor="w")
+        self.comic_video_audio_label = Label(audio_card, text="", bg=SURFACE, fg=MUTED, anchor="w", wraplength=500, font=("Microsoft YaHei UI", 8))
+        self.comic_video_audio_label.pack(fill=X, pady=(5, 8))
+        self._button(audio_card, "é€‰æ‹©å¹¶å¯¼å…¥é…éŸ³éŸ³é¢‘", self.choose_comic_audio, kind="accent").pack(fill=X)
+
+        subtitle_outer = self._card(inputs, bg=COMIC_MINT, padx=18, pady=18)
+        subtitle_outer.set_fixed_height(190)
+        subtitle_outer.pack(fill=X, pady=(0, 12))
+        subtitle_card = subtitle_outer.winfo_children()[0]
+        Label(subtitle_card, text="02  SRT å­—å¹•ï¼ˆæ¨èï¼‰", bg=COMIC_MINT, fg=INK, font=("Microsoft YaHei UI", 11, "bold")).pack(anchor="w")
+        Label(subtitle_card, text="å¯¼å…¥åä¼šæŒ‰å­—å¹•æ—¶é—´è½´åŒ¹é…åˆ†é•œå›¾ç‰‡ï¼Œå¹¶å†™å…¥å‰ªæ˜ å­—å¹•è½¨é“ã€‚", bg=COMIC_MINT, fg=MUTED, justify=LEFT, font=("Microsoft YaHei UI", 8)).pack(anchor="w", pady=(5, 4))
+        self.comic_video_subtitle_label = Label(subtitle_card, text="", bg=COMIC_MINT, fg=INK, anchor="w", wraplength=500, font=("Microsoft YaHei UI", 9, "bold"))
+        self.comic_video_subtitle_label.pack(fill=X, pady=(6, 12))
+        self._button(subtitle_card, "é€‰æ‹©å¹¶å¯¼å…¥ SRT å­—å¹•æ–‡ä»¶", self.choose_comic_subtitles, kind="primary").pack(fill=X)
+
+        motion_outer = self._card(inputs, bg=SURFACE, padx=16, pady=14)
+        motion_outer.set_fixed_height(145)
+        motion_outer.pack(fill=X)
+        motion_card = motion_outer.winfo_children()[0]
+        Label(motion_card, text="03  é™æ€å›¾ç‰‡å…³é”®å¸§", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 9, "bold")).pack(anchor="w")
+        RoundedCombobox(motion_card, textvariable=self.comic_motion_var, values=["ä¸Šä¸‹äº¤æ›¿å…³é”®å¸§", "å‘ä¸Šç§»åŠ¨å…³é”®å¸§", "å‘ä¸‹ç§»åŠ¨å…³é”®å¸§", "æ— å…³é”®å¸§"], state="readonly").pack(fill=X, pady=(8, 0))
+        Label(motion_card, text="ä»…æ”¹å˜å›¾ç‰‡çºµå‘ä½ç½®ï¼Œä¸åš AI åŠ¨ç”»ã€äººç‰©åŠ¨ä½œã€æ¨è¿‘æˆ–å·¦å³æ‘‡ç§»ã€‚", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 8)).pack(anchor="w", pady=(7, 0))
+
+        result_outer = self._card(work, bg=SIDEBAR, padx=20, pady=20)
+        result_outer.set_fixed_height(650)
+        result_outer.grid(row=0, column=1, sticky="nsew")
+        result = result_outer.winfo_children()[0]
+        Label(result, text="JY DRAFT OUTPUT", bg=SIDEBAR, fg=ACCENT, font=("Segoe UI", 8, "bold")).pack(anchor="w")
+        Label(result, text="å¯ç¼–è¾‘å‰ªæ˜ è‰ç¨¿", bg=SIDEBAR, fg="white", font=("Microsoft YaHei UI", 14, "bold")).pack(anchor="w", pady=(4, 12))
+        self.comic_video_result_label = Label(result, text="", bg=COMIC_DARK_ALT, fg=SIDEBAR_MUTED, justify=LEFT, wraplength=250, padx=14, pady=14, font=("Microsoft YaHei UI", 8))
+        self.comic_video_result_label.pack(fill=X)
+        self.comic_draft_progress = ttk.Progressbar(result, mode="determinate", maximum=100, style="Studio.Horizontal.TProgressbar")
+        self.comic_draft_progress.pack(fill=X, pady=(16, 5))
+        self.comic_draft_status_label = Label(result, text="ç­‰å¾…ç”Ÿæˆ", bg=SIDEBAR, fg=SIDEBAR_MUTED, justify=LEFT, wraplength=250, font=("Microsoft YaHei UI", 8))
+        self.comic_draft_status_label.pack(fill=X)
+        self._button(result, "ç”Ÿæˆå‰ªæ˜ è‰ç¨¿", self.generate_comic_draft, kind="accent").pack(fill=X, pady=(13, 0))
+        self._button(result, "ç”Ÿæˆè‰ç¨¿å¹¶æ‰“å¼€å‰ªæ˜ ", lambda: self.generate_comic_draft(open_after=True), kind="primary").pack(fill=X, pady=(8, 0))
+        self._button(result, "æ‰“å¼€å‰ªæ˜ æŸ¥çœ‹è‰ç¨¿", self.open_comic_draft_in_jianying, kind="ghost").pack(fill=X, pady=(8, 0))
+        self._button(result, "æ‰“å¼€è‰ç¨¿ç›®å½•", self.open_comic_draft_directory, kind="ghost").pack(fill=X, pady=(8, 0))
+        Label(result, text="ç”Ÿæˆè¦æ±‚ï¼šæ‰€æœ‰åˆ†é•œå·²å‡ºå›¾å¹¶å¯¼å…¥éŸ³é¢‘ã€‚è‰ç¨¿å†…çš„å›¾ç‰‡ã€é…éŸ³ã€å­—å¹•å’Œå…³é”®å¸§å‡å¯ç»§ç»­ç¼–è¾‘ã€‚", bg=SIDEBAR, fg=SIDEBAR_MUTED, justify=LEFT, wraplength=240, font=("Microsoft YaHei UI", 8)).pack(anchor="w", pady=(18, 0))
+
+        footer = Frame(content, bg=SURFACE)
+        footer.pack(fill=X, pady=(14, 0))
+        self._button(footer, "â† æ‰¹é‡å‡ºå›¾", lambda: self._switch_comic_step(4), kind="ghost").pack(side=LEFT)
+        self._refresh_comic_video_labels()
+        self._bind_page_mousewheel(page, canvas)
+
+    def edit_seedream_settings(self) -> None:
+        dialog = Toplevel(self.root)
+        dialog.title("Doubao Seedream 5.0 Pro è¿æ¥è®¾ç½®")
+        dialog.geometry("590x475")
+        dialog.resizable(False, False)
+        dialog.configure(bg=BG)
+        Label(dialog, text="Doubao Seedream 5.0 Pro", bg=BG, fg=INK, font=("Microsoft YaHei UI", 17, "bold")).pack(anchor="w", padx=24, pady=(22, 4))
+        Label(dialog, text="ä½¿ç”¨ç«å±±æ–¹èˆŸç”Ÿæˆè§’è‰²å®šå¦†ã€åœºæ™¯å®šæ™¯ä¸åˆ†é•œï¼›æ¯ä¸ªåˆ†é•œæœ€å¤šé™„å¸¦ 10 å¼ è§’è‰²å’Œåœºæ™¯å‚è€ƒå›¾ã€‚", bg=BG, fg=MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w", padx=24)
+        card_outer = self._card(dialog, padx=18, pady=16)
+        card_outer.pack(fill=X, padx=24, pady=18)
+        card = card_outer.winfo_children()[0]
+        base_url_var = StringVar(value=self.state["settings"].get("ark_base_url", SEEDREAM_BASE_URL))
+        model_var = StringVar(value=self.state["settings"].get("ark_model", SEEDREAM_MODEL))
+        self._field_label(card, "ç«å±±æ–¹èˆŸ API åœ°å€").pack(anchor="w", pady=(0, 4))
+        self._entry(card, base_url_var).pack(fill=X, ipady=6)
+        self._field_label(card, "æ¨¡å‹ ID").pack(anchor="w", pady=(12, 4))
+        self._entry(card, model_var).pack(fill=X, ipady=6)
+        self._field_label(card, "ARK API Key").pack(anchor="w", pady=(12, 4))
+        key_entry = self._entry(card, self.ark_api_key)
+        key_entry.configure(show="â€¢")
+        key_entry.pack(fill=X, ipady=6)
+        ttk.Checkbutton(card, text="å®‰å…¨è®°ä½ ARK API Key", variable=self.remember_ark_api_key).pack(anchor="w", pady=(9, 0))
+        self.comic_api_dialog_status = Label(card, text="", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 8))
+        self.comic_api_dialog_status.pack(anchor="w", pady=(8, 0))
+
+        def apply_connection() -> None:
+            self.state["settings"]["ark_base_url"] = base_url_var.get().strip().rstrip("/") or SEEDREAM_BASE_URL
+            self.state["settings"]["ark_model"] = model_var.get().strip() or SEEDREAM_MODEL
+            self.save_comic_settings(silent=True)
+            self._refresh_comic_overview()
+            self.comic_api_dialog_status.configure(text="è®¾ç½®å·²ä¿å­˜", fg=ACCENT_DARK)
+
+        def test_connection() -> None:
+            apply_connection()
+            self.test_seedream_connection()
+
+        actions = Frame(dialog, bg=BG)
+        actions.pack(fill=X, padx=24)
+        self._button(actions, "ä¿å­˜", apply_connection, kind="primary").pack(side=RIGHT)
+        self._button(actions, "éªŒè¯ Key", test_connection, kind="ghost").pack(side=RIGHT, padx=(0, 8))
+
+    def _comic_output_dir(self) -> Path:
+        project_name = self.comic_project_var.get().strip() if hasattr(self, "comic_project_var") else self.state["comic"].get("project_name", "æ¼«ç”»æ¨æ–‡")
+        configured = self.comic_output_var.get().strip() if hasattr(self, "comic_output_var") else self.state["comic"].get("output_dir", "")
+        if configured:
+            return Path(configured)
+        return self.store.base_dir / "comic_projects" / safe_filename(project_name, "æ¼«ç”»æ¨æ–‡")
+
+    def _shared_character_asset_dir(self) -> Path:
+        return self.store.base_dir / "shared_assets" / "characters"
+
+    @staticmethod
+    def _delete_comic_asset_files(item: dict[str, object], kind: str) -> list[str]:
+        errors: list[str] = []
+        seen: set[Path] = set()
+        for key in ("local_path", "candidate_path"):
+            raw_path = str(item.get(key, "")).strip()
+            if not raw_path:
+                continue
+            path = Path(raw_path)
+            try:
+                resolved = path.resolve()
+            except OSError:
+                resolved = path.absolute()
+            if resolved in seen:
+                continue
+            seen.add(resolved)
+            allowed_name = "_reference" in path.stem or "_candidate" in path.stem
+            if path.parent.name != kind or not allowed_name:
+                errors.append(f"ä¸ºå®‰å…¨èµ·è§æœªåˆ é™¤éæ ‡å‡†èµ„äº§è·¯å¾„ï¼š{path}")
+                continue
+            try:
+                path.unlink(missing_ok=True)
+            except OSError as exc:
+                errors.append(f"{path.name}ï¼š{exc}")
+        return errors
+
+    def _sync_comic_state(self) -> None:
+        if not hasattr(self, "comic_project_var"):
+            return
+        self._save_current_comic_character()
+        self._save_current_comic_scene()
+        self.save_comic_shot_prompt(silent=True)
+        comic = self.state["comic"]
+        comic["project_name"] = self.comic_project_var.get().strip() or "æœªå‘½åæ¼«ç”»æ¨æ–‡"
+        comic["art_style"] = self.comic_style_var.get().strip()
+        next_aspect = self.comic_aspect_var.get().strip() or "9:16"
+        if comic.get("aspect") != next_aspect:
+            comic["video_output_path"] = ""
+            self.comic_video_output_var.set("")
+            comic["jianying_draft_path"] = ""
+            comic["jianying_draft_name"] = ""
+            self.comic_draft_output_var.set("")
+        comic["aspect"] = next_aspect
+        comic["resolution"] = self.comic_resolution_var.get() if self.comic_resolution_var.get() in {"1K", "1.5K", "2K"} else "2K"
+        comic["optimize_mode"] = "fast" if self.comic_optimize_var.get() == "æé€Ÿæ¨¡å¼" else "standard"
+        comic["source_text"] = self.comic_source_editor.get("1.0", "end-1c") if self.comic_source_editor else comic.get("source_text", "")
+        comic["output_dir"] = str(self._comic_output_dir())
+        self.comic_output_var.set(comic["output_dir"])
+        comic["audio_path"] = self.comic_audio_var.get().strip()
+        comic["subtitles_path"] = self.comic_subtitles_var.get().strip()
+        next_motion = self.comic_motion_var.get().strip() or "ä¸Šä¸‹äº¤æ›¿å…³é”®å¸§"
+        if next_motion not in {"ä¸Šä¸‹äº¤æ›¿å…³é”®å¸§", "å‘ä¸Šç§»åŠ¨å…³é”®å¸§", "å‘ä¸‹ç§»åŠ¨å…³é”®å¸§", "æ— å…³é”®å¸§"}:
+            next_motion = "ä¸Šä¸‹äº¤æ›¿å…³é”®å¸§"
+            self.comic_motion_var.set(next_motion)
+        if comic.get("motion_mode") != next_motion:
+            comic["video_output_path"] = ""
+            self.comic_video_output_var.set("")
+            comic["jianying_draft_path"] = ""
+            comic["jianying_draft_name"] = ""
+            self.comic_draft_output_var.set("")
+        comic["motion_mode"] = next_motion
+        comic["video_output_path"] = self.comic_video_output_var.get().strip()
+        comic["jianying_draft_path"] = self.comic_draft_output_var.get().strip()
+        comic["updated_at"] = datetime.now().isoformat(timespec="seconds")
+        shared = self.state.setdefault("shared_characters", [])
+        if comic.get("characters") is not shared:
+            merged_shared = self._merge_imported_comic_assets([dict(item) for item in shared], [dict(item) for item in comic.get("characters", [])])
+            shared[:] = merged_shared
+            comic["characters"] = shared
+        for project in self.state.get("projects", []):
+            if isinstance(project, dict):
+                project["characters"] = shared
+        settings = self.state["settings"]
+        settings["remember_ark_api_key"] = self.remember_ark_api_key.get()
+        settings.setdefault("ark_base_url", SEEDREAM_BASE_URL)
+        settings.setdefault("ark_model", SEEDREAM_MODEL)
+
+    def save_comic_settings(self, silent: bool = False) -> None:
+        self._sync_comic_state()
+        error = ""
+        try:
+            if self.remember_ark_api_key.get() and self.ark_api_key.get().strip():
+                save_api_key("ark", self.ark_api_key.get().strip())
+            else:
+                delete_api_key("ark")
+        except SecretStoreError as exc:
+            error = str(exc)
+        self.store.save(self.state)
+        self._refresh_comic_overview()
+        if silent:
+            return
+        if error:
+            messagebox.showwarning("é¡¹ç›®å·²ä¿å­˜", f"æ¼«ç”»é¡¹ç›®å·²ä¿å­˜ï¼Œä½† ARK API Key æœªèƒ½å®‰å…¨ä¿å­˜ï¼š\n{error}")
+        else:
+            messagebox.showinfo("å·²ä¿å­˜", "æ¼«ç”»é¡¹ç›®ã€è§’è‰²ä¸åœºæ™¯è®¾å®šå’Œ Seedream é…ç½®å·²ä¿å­˜ã€‚")
+
+    def choose_comic_output_dir(self) -> None:
+        path = filedialog.askdirectory(title="é€‰æ‹©æ¼«ç”»å›¾ç‰‡ä¿å­˜ç›®å½•")
+        if path:
+            self.comic_output_var.set(path)
+            self.state["comic"]["output_dir"] = path
+            self.store.save(self.state)
+            if hasattr(self, "comic_output_hint") and self.comic_output_hint.winfo_exists():
+                self.comic_output_hint.configure(text=Path(path).name)
+
+    def export_comic_assets(self) -> None:
+        self._sync_comic_state()
+        comic = self.state["comic"]
+        characters = [dict(item) for item in comic.get("characters", [])]
+        scenes = [dict(item) for item in comic.get("scenes", [])]
+        if not characters and not scenes:
+            messagebox.showinfo("æ²¡æœ‰å¯å¯¼å‡ºçš„èµ„äº§", "è¯·å…ˆå»ºç«‹è§’è‰²æˆ–åœºæ™¯èµ„äº§ã€‚")
+            return
+        initial_name = f"{safe_filename(str(comic.get('project_name', 'æ¼«ç”»é¡¹ç›®')))}_äººç‰©åœºæ™¯èµ„äº§åŒ….zip"
+        destination = filedialog.asksaveasfilename(
+            title="å¯¼å‡ºäººç‰©ä¸åœºæ™¯èµ„äº§åŒ…",
+            defaultextension=".zip",
+            initialfile=initial_name,
+            filetypes=[("æ¼«ç”»èµ„äº§åŒ…", "*.zip"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")],
+        )
+        if not destination:
+            return
+        try:
+            summary = export_comic_asset_pack(
+                destination,
+                characters=characters,
+                scenes=scenes,
+                metadata={
+                    "project_name": comic.get("project_name", ""),
+                    "art_style": comic.get("art_style", ""),
+                    "aspect": comic.get("aspect", ""),
+                    "app_version": APP_VERSION,
+                },
+            )
+        except ComicEngineError as exc:
+            messagebox.showerror("èµ„äº§åŒ…å¯¼å‡ºå¤±è´¥", str(exc))
+            return
+        missing = int(summary["characters"]) + int(summary["scenes"]) - int(summary["references"])
+        note = f"å·²å¯¼å‡º {summary['characters']} ä¸ªè§’è‰²ã€{summary['scenes']} ä¸ªåœºæ™¯å’Œ {summary['references']} å¼ æœ¬åœ°å›ºå®šå‚è€ƒå›¾ã€‚"
+        if missing:
+            note += f"\n\nå…¶ä¸­ {missing} ä¸ªèµ„äº§å°šæ— æœ¬åœ°å›ºå®šå‚è€ƒå›¾ï¼Œä»…å¯¼å‡ºäº†åç§°ã€æè¿°å’Œæç¤ºè¯ã€‚"
+        messagebox.showinfo("èµ„äº§åŒ…å·²å¯¼å‡º", f"{note}\n\næ–‡ä»¶ï¼š{destination}")
+        self.comic_status.configure(text=f"äººç‰©ä¸åœºæ™¯èµ„äº§åŒ…å·²ä¿å­˜ï¼š{Path(destination).name}", fg=ACCENT_DARK)
+
+    @staticmethod
+    def _merge_imported_comic_assets(existing: list[dict[str, object]], imported: list[dict[str, object]]) -> list[dict[str, object]]:
+        result = [dict(item) for item in existing]
+        positions = {str(item.get("name", "")).strip(): index for index, item in enumerate(result) if str(item.get("name", "")).strip()}
+        for incoming in imported:
+            record = dict(incoming)
+            name = str(record.get("name", "")).strip()
+            if name in positions:
+                old = result[positions[name]]
+                if not has_local_reference(record) and has_local_reference(old):
+                    for key in ("task_id", "image_url", "local_path", "candidate_path", "candidate_image_url", "status"):
+                        record[key] = old.get(key, "")
+                result[positions[name]] = record
+            else:
+                positions[name] = len(result)
+                result.append(record)
+        return result
+
+    def import_comic_assets(self) -> None:
+        self._sync_comic_state()
+        source = filedialog.askopenfilename(
+            title="å¯¼å…¥äººç‰©ä¸åœºæ™¯èµ„äº§åŒ…",
+            filetypes=[("æ¼«ç”»èµ„äº§åŒ…", "*.zip"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")],
+        )
+        if not source:
+            return
+        comic = self.state["comic"]
+        if (comic.get("characters") or comic.get("scenes")) and not messagebox.askyesno(
+            "åˆå¹¶äººç‰©ä¸åœºæ™¯èµ„äº§",
+            "èµ„äº§åŒ…å°†åˆå¹¶åˆ°å½“å‰é¡¹ç›®ï¼›åŒåèµ„äº§ä¼šæ›´æ–°ä¸ºå¯¼å…¥ç‰ˆæœ¬ï¼ŒåŸæœ¬çš„æœ¬åœ°å›¾ç‰‡æ–‡ä»¶ä¸ä¼šè¢«è‡ªåŠ¨åˆ é™¤ã€‚æ˜¯å¦ç»§ç»­ï¼Ÿ",
+        ):
+            return
+        try:
+            imported = import_comic_asset_pack(source, self._comic_output_dir())
+        except ComicEngineError as exc:
+            messagebox.showerror("èµ„äº§åŒ…å¯¼å…¥å¤±è´¥", str(exc))
+            return
+        imported_characters = [dict(item) for item in imported.get("characters", [])]
+        imported_scenes = [dict(item) for item in imported.get("scenes", [])]
+        merged_characters = self._merge_imported_comic_assets([dict(item) for item in self.state.get("shared_characters", [])], imported_characters)
+        shared = self.state.setdefault("shared_characters", [])
+        shared[:] = merged_characters
+        comic["characters"] = shared
+        for project in self.state.get("projects", []):
+            if isinstance(project, dict):
+                project["characters"] = shared
+        comic["scenes"] = self._merge_imported_comic_assets([dict(item) for item in comic.get("scenes", [])], imported_scenes)
+        self.store.save(self.state)
+        self._refresh_comic_character_list(0 if comic["characters"] else None)
+        self._refresh_comic_scene_list(0 if comic["scenes"] else None)
+        self._refresh_comic_shot_tree(self.current_comic_shot_index)
+        self._refresh_comic_overview()
+        local_references = sum(1 for item in imported_characters + imported_scenes if has_local_reference(item))
+        messagebox.showinfo(
+            "èµ„äº§åŒ…å¯¼å…¥å®Œæˆ",
+            f"å·²å¯¼å…¥å¹¶ä¿å­˜åˆ°å½“å‰ç”µè„‘ï¼š\n{len(imported_characters)} ä¸ªè§’è‰²\n{len(imported_scenes)} ä¸ªåœºæ™¯\n{local_references} å¼ æœ¬åœ°å›ºå®šå‚è€ƒå›¾",
+        )
+        self.comic_status.configure(text=f"èµ„äº§åŒ…å¯¼å…¥å®Œæˆï¼š{Path(source).name}", fg=ACCENT_DARK)
+
+    def import_comic_novel(self) -> None:
+        path = filedialog.askopenfilename(title="å¯¼å…¥å°è¯´", filetypes=[("æ–‡æœ¬æ–‡æ¡£", "*.txt *.md *.docx"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")])
+        if not path:
+            return
+        try:
+            content = read_document(path)
+        except (OSError, zipfile.BadZipFile, ElementTree.ParseError, KeyError) as exc:
+            messagebox.showerror("å¯¼å…¥å¤±è´¥", f"æ— æ³•è¯»å–æ–‡ä»¶ï¼š{exc}")
+            return
+        comic = self.state["comic"]
+        comic["source_path"] = path
+        comic["source_text"] = content
+        self.comic_source_editor.delete("1.0", END)
+        self.comic_source_editor.insert("1.0", content)
+        self._sync_comic_state()
+        self.store.save(self.state)
+        self._refresh_comic_overview()
+        self.comic_status.configure(text=f"å·²å¯¼å…¥ {len(content)} å­—ï¼Œå¯è¿›è¡Œ AI åˆ†ææˆ–æœ¬åœ°æ‹†åˆ†ã€‚", fg=ACCENT_DARK)
+
+    def _schedule_comic_asset_autosave(self, kind: str) -> None:
+        if self._loading_comic_asset_editor:
+            return
+        if self.comic_asset_autosave_after_id:
+            try:
+                self.root.after_cancel(self.comic_asset_autosave_after_id)
+            except TclError:
+                pass
+
+        def commit() -> None:
+            self.comic_asset_autosave_after_id = None
+            if kind == "character":
+                self._save_current_comic_character()
+                self._update_comic_character_list_row(self.current_comic_character_index)
+            elif kind == "scene":
+                self._save_current_comic_scene()
+                self._update_comic_scene_list_row(self.current_comic_scene_index)
+            self.store.save(self.state)
+            self._refresh_comic_shot_binding_controls()
+
+        self.comic_asset_autosave_after_id = self.root.after(450, commit)
+
+    @staticmethod
+    def _comic_character_list_text(item: dict[str, object]) -> str:
+        ready = "âœ“" if has_local_reference(item) else ("?" if Path(str(item.get("candidate_path", ""))).is_file() else "Â·")
+        return f" {ready}  {item.get('name', 'æœªå‘½åè§’è‰²')}  Â·  {item.get('status', 'æœªç”Ÿæˆ')}"
+
+    def _update_comic_character_list_row(self, index: int | None) -> None:
+        characters = self.state["comic"].get("characters", [])
+        if not self.comic_character_list or index is None or not (0 <= index < len(characters)):
+            return
+        self.comic_character_list.delete(index)
+        self.comic_character_list.insert(index, self._comic_character_list_text(characters[index]))
+        self.comic_character_list.selection_set(index)
+        self.comic_character_list.activate(index)
+
+    @staticmethod
+    def _comic_scene_list_text(item: dict[str, object]) -> str:
+        ready = "âœ“" if has_local_reference(item) else ("?" if Path(str(item.get("candidate_path", ""))).is_file() else "Â·")
+        return f" {ready}  {item.get('name', 'æœªå‘½ååœºæ™¯')}  Â·  {item.get('status', 'æœªç”Ÿæˆ')}"
+
+    def _update_comic_scene_list_row(self, index: int | None) -> None:
+        scenes = self.state["comic"].get("scenes", [])
+        if not self.comic_scene_list or index is None or not (0 <= index < len(scenes)):
+            return
+        self.comic_scene_list.delete(index)
+        self.comic_scene_list.insert(index, self._comic_scene_list_text(scenes[index]))
+        self.comic_scene_list.selection_set(index)
+        self.comic_scene_list.activate(index)
+
+    def import_comic_character_prompt(self) -> None:
+        index = self.current_comic_character_index
+        if index is None or not self.comic_character_prompt_editor:
+            messagebox.showinfo("æ²¡æœ‰è§’è‰²", "è¯·å…ˆé€‰æ‹©è¦å¯¼å…¥æç¤ºè¯çš„è§’è‰²ã€‚")
+            return
+        source = filedialog.askopenfilename(
+            title="å¯¼å…¥è§’è‰²å®šå¦†æç¤ºè¯",
+            filetypes=[("æç¤ºè¯æ–‡æœ¬", "*.txt *.md"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")],
+        )
+        if not source:
+            return
+        try:
+            prompt = read_document(source).strip()
+        except (OSError, zipfile.BadZipFile, ElementTree.ParseError, KeyError) as exc:
+            messagebox.showerror("å¯¼å…¥å¤±è´¥", str(exc))
+            return
+        self.comic_character_prompt_editor.delete("1.0", END)
+        self.comic_character_prompt_editor.insert("1.0", prompt)
+        self._save_current_comic_character()
+        self.store.save(self.state)
+        self.comic_status.configure(text=f"å·²å¯¼å…¥å¹¶ä¿å­˜è§’è‰²æç¤ºè¯ï¼š{Path(source).name}", fg=ACCENT_DARK)
+
+    def export_comic_character_prompt(self) -> None:
+        self._save_current_comic_character()
+        index = self.current_comic_character_index
+        characters = self.state["comic"].get("characters", [])
+        if index is None or not (0 <= index < len(characters)):
+            messagebox.showinfo("æ²¡æœ‰è§’è‰²", "è¯·å…ˆé€‰æ‹©è¦å¯¼å‡ºæç¤ºè¯çš„è§’è‰²ã€‚")
+            return
+        character = characters[index]
+        prompt = str(character.get("prompt", "")).strip()
+        if not prompt:
+            messagebox.showinfo("æ²¡æœ‰æç¤ºè¯", "å½“å‰è§’è‰²çš„å®šå¦†æç¤ºè¯ä¸ºç©ºã€‚")
+            return
+        destination = filedialog.asksaveasfilename(
+            title="å¯¼å‡ºè§’è‰²å®šå¦†æç¤ºè¯",
+            defaultextension=".txt",
+            initialfile=f"{safe_filename(str(character.get('name', 'è§’è‰²')))}_å®šå¦†æç¤ºè¯.txt",
+            filetypes=[("TXT æ–‡æœ¬", "*.txt"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")],
+        )
+        if not destination:
+            return
+        try:
+            Path(destination).write_text(prompt + "\n", encoding="utf-8-sig")
+        except OSError as exc:
+            messagebox.showerror("å¯¼å‡ºå¤±è´¥", str(exc))
+            return
+        self.store.save(self.state)
+        messagebox.showinfo("å¯¼å‡ºå®Œæˆ", f"è§’è‰²æç¤ºè¯å·²ä¿å­˜åˆ°ï¼š\n{destination}")
+
+    def add_comic_character(self) -> None:
+        self._save_current_comic_character()
+        characters = self.state["comic"]["characters"]
+        characters.append(default_character(f"è§’è‰² {len(characters) + 1}"))
+        self._refresh_comic_character_list(len(characters) - 1)
+        self.store.save(self.state)
+        self._refresh_comic_overview()
+
+    def delete_comic_character(self) -> None:
+        index = self.current_comic_character_index
+        characters = self.state["comic"]["characters"]
+        if index is None or not (0 <= index < len(characters)):
+            messagebox.showinfo("æ²¡æœ‰è§’è‰²", "è¯·å…ˆé€‰æ‹©è¦åˆ é™¤çš„è§’è‰²ã€‚")
+            return
+        name = str(characters[index].get("name", "è¯¥è§’è‰²"))
+        if not messagebox.askyesno("æ°¸ä¹…åˆ é™¤å…±äº«è§’è‰²", f"ç¡®å®šåˆ é™¤å…±äº«è§’è‰²â€œ{name}â€å—ï¼Ÿ\n\nè¯¥è§’è‰²ä¼šä»æ‰€æœ‰æ¨æ–‡é¡¹ç›®ä¸­ç§»é™¤ï¼Œå€™é€‰å›¾å’Œå›ºå®šå‚è€ƒå›¾ä¹Ÿä¼šæ°¸ä¹…åˆ é™¤ã€‚æ­¤æ“ä½œæ— æ³•æ’¤é”€ã€‚"):
+            return
+        delete_errors = self._delete_comic_asset_files(characters[index], "characters")
+        characters.pop(index)
+        for project in self.state.get("projects", []):
+            for shot in project.get("shots", []) if isinstance(project, dict) else []:
+                shot["characters"] = [item for item in shot.get("characters", []) if item != name]
+        self.current_comic_character_index = None
+        self._refresh_comic_character_list(min(index, len(characters) - 1) if characters else None)
+        self._refresh_comic_shot_tree(self.current_comic_shot_index)
+        self.store.save(self.state)
+        self._refresh_comic_overview()
+        if delete_errors:
+            messagebox.showwarning("éƒ¨åˆ†æ–‡ä»¶æœªåˆ é™¤", "è§’è‰²è®°å½•å·²åˆ é™¤ï¼Œä½†ä»¥ä¸‹æœ¬åœ°æ–‡ä»¶è¢«å®‰å…¨ä¿ç•™æˆ–åˆ é™¤å¤±è´¥ï¼š\n" + "\n".join(delete_errors))
+
+    def _save_current_comic_character(self) -> None:
+        index = self.current_comic_character_index
+        characters = self.state["comic"]["characters"]
+        if (
+            index is None
+            or not (0 <= index < len(characters))
+            or not hasattr(self, "comic_character_name_var")
+            or not self.comic_character_description_editor
+            or not self.comic_character_prompt_editor
+        ):
+            return
+        old_name = str(characters[index].get("name", ""))
+        new_name = self.comic_character_name_var.get().strip() or f"è§’è‰² {index + 1}"
+        characters[index]["name"] = new_name
+        characters[index]["description"] = self.comic_character_description_editor.get("1.0", "end-1c").strip()
+        characters[index]["prompt"] = self.comic_character_prompt_editor.get("1.0", "end-1c").strip()
+        if old_name and old_name != new_name:
+            replace_character_in_shots(self.state["comic"].get("shots", []), old_name, new_name)
+            for project in self.state.get("projects", []):
+                for shot in project.get("shots", []) if isinstance(project, dict) else []:
+                    replace_character_in_shots([shot], old_name, new_name)
+            self._refresh_comic_shot_tree(self.current_comic_shot_index)
+
+    def _load_comic_character(self, index: int) -> None:
+        characters = self.state["comic"]["characters"]
+        if not (0 <= index < len(characters)):
+            self.current_comic_character_index = None
+            return
+        self.current_comic_character_index = index
+        character = characters[index]
+        self._loading_comic_asset_editor = True
+        try:
+            self.comic_character_name_var.set(str(character.get("name", "")))
+            self.comic_character_description_editor.delete("1.0", END)
+            self.comic_character_description_editor.insert("1.0", str(character.get("description", "")))
+            self.comic_character_prompt_editor.delete("1.0", END)
+            self.comic_character_prompt_editor.insert("1.0", str(character.get("prompt", "")))
+        finally:
+            self._loading_comic_asset_editor = False
+        local = str(character.get("local_path", "")) if has_local_reference(character) else ""
+        candidate_path = str(character.get("candidate_path", ""))
+        candidate = candidate_path if candidate_path and Path(candidate_path).is_file() else ""
+        status = str(character.get("status", "æœªç”Ÿæˆ"))
+        details = [status]
+        if candidate:
+            details.append(f"å€™é€‰ï¼š{Path(candidate).name}")
+        if local:
+            details.append(f"å·²ç¡®è®¤ï¼š{Path(local).name}")
+        self.comic_character_status.configure(text=" Â· ".join(details), fg=ACCENT_DARK if local else (WARM if candidate else MUTED))
+        confirmed = bool(local and "å·²ç¡®è®¤" in status)
+        preview_path = local if confirmed else (candidate or local)
+        preview_kind = "å·²ç¡®è®¤è§’è‰²å‚è€ƒå›¾" if confirmed else ("å€™é€‰å®šå¦†å›¾ Â· å¾…ç¡®è®¤" if candidate else "è§’è‰²å‚è€ƒå›¾")
+        if self.comic_character_preview_title:
+            self.comic_character_preview_title.configure(text=f"{preview_kind}\n{character.get('name', '')}", fg=ACCENT_DARK if confirmed else (WARM if candidate else INK))
+        self._render_local_image(self.comic_character_preview_canvas, preview_path, placeholder="å°šæœªç”Ÿæˆè§’è‰²å‚è€ƒå›¾", max_size=(250, 190))
+
+    def _refresh_comic_character_list(self, selected: int | None = None) -> None:
+        if not self.comic_character_list:
+            return
+        self.comic_character_list.delete(0, END)
+        for item in self.state["comic"]["characters"]:
+            self.comic_character_list.insert(END, self._comic_character_list_text(item))
+        if selected is not None and self.state["comic"]["characters"]:
+            selected = min(max(selected, 0), len(self.state["comic"]["characters"]) - 1)
+            self.comic_character_list.selection_set(selected)
+            self.comic_character_list.activate(selected)
+            self._load_comic_character(selected)
+        elif not self.state["comic"]["characters"]:
+            self.current_comic_character_index = None
+            self.comic_character_name_var.set("")
+            self.comic_character_description_editor.delete("1.0", END)
+            self.comic_character_prompt_editor.delete("1.0", END)
+            self._render_local_image(self.comic_character_preview_canvas, "", placeholder="å°šæœªæ·»åŠ è§’è‰²", max_size=(250, 190))
+
+    def on_comic_character_select(self, _event=None) -> None:
+        if not self.comic_character_list or not self.comic_character_list.curselection():
+            return
+        next_index = int(self.comic_character_list.curselection()[0])
+        if self.current_comic_character_index == next_index:
+            return
+        self._save_current_comic_character()
+        self._load_comic_character(next_index)
+
+    def choose_comic_character_image(self) -> None:
+        self._save_current_comic_character()
+        index = self.current_comic_character_index
+        if index is None:
+            messagebox.showinfo("æ²¡æœ‰è§’è‰²", "è¯·å…ˆæ·»åŠ æˆ–é€‰æ‹©ä¸€ä¸ªè§’è‰²ã€‚")
+            return
+        source = filedialog.askopenfilename(title="é€‰æ‹©è§’è‰²å‚è€ƒå›¾", filetypes=[("å›¾ç‰‡", "*.png *.jpg *.jpeg *.webp"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")])
+        if not source:
+            return
+        if Path(source).suffix.lower() not in {".png", ".jpg", ".jpeg", ".webp"}:
+            messagebox.showerror("å›¾ç‰‡æ ¼å¼ä¸æ”¯æŒ", "å›ºå®šå‚è€ƒå›¾ä»…æ”¯æŒ PNGã€JPGã€JPEG æˆ– WebPã€‚")
+            return
+        character = self.state["comic"]["characters"][index]
+        destination = self._shared_character_asset_dir() / f"{safe_filename(str(character.get('name', 'è§’è‰²')))}_reference{Path(source).suffix.lower()}"
+        try:
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, destination)
+        except OSError as exc:
+            messagebox.showerror("ä¿å­˜å¤±è´¥", str(exc))
+            return
+        character.update({"local_path": str(destination), "image_url": "", "candidate_path": "", "candidate_image_url": "", "task_id": "", "status": "å®šå¦†å·²ç¡®è®¤"})
+        self.store.save(self.state)
+        self._refresh_comic_character_list(index)
+        self._refresh_comic_overview()
+
+    def confirm_comic_character_candidate(self) -> None:
+        self._save_current_comic_character()
+        index = self.current_comic_character_index
+        if index is None:
+            messagebox.showinfo("æ²¡æœ‰è§’è‰²", "è¯·å…ˆé€‰æ‹©è§’è‰²ã€‚")
+            return
+        character = self.state["comic"]["characters"][index]
+        candidate = Path(str(character.get("candidate_path", "")))
+        if not candidate.is_file():
+            messagebox.showinfo("æ²¡æœ‰å€™é€‰å®šå¦†", "è¯·å…ˆç”Ÿæˆä¸€å¼ å€™é€‰å®šå¦†å›¾ï¼Œå†ç¡®è®¤ä¿ç•™ã€‚")
+            return
+        reference = self._shared_character_asset_dir() / f"{safe_filename(str(character.get('name', 'è§’è‰²')))}_reference{candidate.suffix.lower()}"
+        try:
+            reference.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(candidate, reference)
+        except OSError as exc:
+            messagebox.showerror("ç¡®è®¤å¤±è´¥", str(exc))
+            return
+        character.update(
+            {
+                "local_path": str(reference),
+                "image_url": str(character.get("candidate_image_url", "")),
+                "status": "å®šå¦†å·²ç¡®è®¤",
+            }
+        )
+        self.store.save(self.state)
+        self._refresh_comic_character_list(index)
+        self._refresh_comic_overview()
+        self.comic_status.configure(text=f"å·²ç¡®è®¤ {character.get('name', 'è§’è‰²')} çš„å‚è€ƒå›¾ï¼Œåç»­é•œå¤´å°†è‡ªåŠ¨ä½¿ç”¨å®ƒã€‚", fg=ACCENT_DARK)
+
+    def _seedream_client(self) -> DoubaoSeedreamClient:
+        key = self.ark_api_key.get().strip()
+        if not key:
+            raise ComicEngineError("è¯·å…ˆåœ¨æ¼«ç”»æ¨æ–‡å·¥ä½œå°å¡«å†™ç«å±±æ–¹èˆŸ ARK API Keyã€‚")
+        settings = self.state["settings"]
+        return DoubaoSeedreamClient(
+            SeedreamConfig(
+                key,
+                settings.get("ark_base_url", SEEDREAM_BASE_URL),
+                settings.get("ark_model", SEEDREAM_MODEL),
+            )
+        )
+
+    def test_seedream_connection(self) -> None:
+        if self.is_busy:
+            return
+        try:
+            client = self._seedream_client()
+        except ComicEngineError as exc:
+            messagebox.showwarning("æ— æ³•æµ‹è¯•", str(exc))
+            return
+        self.is_busy = True
+        self._set_comic_api_status("æµ‹è¯•ä¸­â€¦", ACCENT_DARK)
+
+        def worker() -> None:
+            try:
+                client.check_connection()
+                self.bus.put(("comic_api_ok", None))
+            except Exception as exc:
+                self.bus.put(("comic_api_error", str(exc)))
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def _set_comic_api_status(self, text: str, color: str) -> None:
+        for name in ("comic_api_status", "comic_api_dialog_status"):
+            label = getattr(self, name, None)
+            try:
+                if label and label.winfo_exists():
+                    label.configure(text=text, fg=color)
+            except TclError:
+                pass
+
+    def generate_comic_character(self) -> None:
+        if self.is_busy:
+            return
+        self._sync_comic_state()
+        index = self.current_comic_character_index
+        if index is None:
+            messagebox.showinfo("æ²¡æœ‰è§’è‰²", "è¯·å…ˆæ·»åŠ æˆ–é€‰æ‹©ä¸€ä¸ªè§’è‰²ã€‚")
+            return
+        try:
+            client = self._seedream_client()
+        except ComicEngineError as exc:
+            messagebox.showwarning("éœ€è¦ ARK API Key", str(exc))
+            return
+        character = dict(self.state["comic"]["characters"][index])
+        prompt = str(character.get("prompt", "")).strip()
+        if not prompt:
+            prompt = build_character_prompt(str(character.get("name", "è§’è‰²")), str(character.get("description", "")), self.state["comic"]["art_style"])
+        prompt = enforce_character_reference_prompt(prompt)
+        if prompt != str(character.get("prompt", "")).strip():
+            self.state["comic"]["characters"][index]["prompt"] = prompt
+            self.comic_character_prompt_editor.delete("1.0", END)
+            self.comic_character_prompt_editor.insert("1.0", prompt)
+        if not messagebox.askyesno("ç”Ÿæˆå€™é€‰å®šå¦†", "å°†ä½¿ç”¨ Doubao Seedream 5.0 Pro ç”Ÿæˆä¸€å¼ å€™é€‰å®šå¦†å›¾ã€‚ç”Ÿæˆåéœ€è¦é¢„è§ˆå¹¶ç‚¹å‡»â€œç¡®è®¤å€™é€‰ä¸ºå‚è€ƒå›¾â€ï¼Œæ‰ä¼šç”¨äºåç»­é•œå¤´ã€‚æ˜¯å¦ç»§ç»­ï¼Ÿ"):
+            return
+        output = self._shared_character_asset_dir() / f"{safe_filename(str(character.get('name', 'è§’è‰²')))}_candidate.png"
+        resolution = self.comic_resolution_var.get()
+        optimize_mode = "fast" if self.comic_optimize_var.get() == "æé€Ÿæ¨¡å¼" else "standard"
+        self.is_busy = True
+        self.comic_progress["value"] = 0
+        self.comic_status.configure(text=f"æ­£åœ¨ç”Ÿæˆ {character.get('name', 'è§’è‰²')} çš„å®šå¦†ç…§â€¦", fg=ACCENT_DARK)
+
+        def worker() -> None:
+            try:
+                def progress(task: dict[str, object]) -> None:
+                    self.bus.put(("comic_character_progress", (index, str(task.get("progress", "")), str(task.get("id", "")))))
+
+                result = client.generate_image(prompt, size=resolution, optimize_mode=optimize_mode, progress=progress)
+                client.download_image(str(result["imageUrl"]), output)
+                self.bus.put(("comic_character_done", (index, result, str(output))))
+            except Exception as exc:
+                self.bus.put(("comic_character_error", (index, str(exc))))
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def add_comic_scene(self) -> None:
+        self._save_current_comic_scene()
+        scenes = self.state["comic"]["scenes"]
+        scenes.append(default_scene(f"åœºæ™¯ {len(scenes) + 1}"))
+        self._refresh_comic_scene_list(len(scenes) - 1)
+        self.store.save(self.state)
+        self._refresh_comic_overview()
+
+    def delete_comic_scene(self) -> None:
+        index = self.current_comic_scene_index
+        scenes = self.state["comic"]["scenes"]
+        if index is None or not (0 <= index < len(scenes)):
+            messagebox.showinfo("æ²¡æœ‰åœºæ™¯", "è¯·å…ˆé€‰æ‹©è¦åˆ é™¤çš„åœºæ™¯ã€‚")
+            return
+        name = str(scenes[index].get("name", "è¯¥åœºæ™¯"))
+        if not messagebox.askyesno("æ°¸ä¹…åˆ é™¤åœºæ™¯èµ„äº§", f"ç¡®å®šåˆ é™¤â€œ{name}â€å—ï¼Ÿ\n\nè¯¥åœºæ™¯ä¼šä»é¡¹ç›®ä¸­ç§»é™¤ï¼Œç´ æç›®å½•å†…çš„å€™é€‰å›¾å’Œå›ºå®šå‚è€ƒå›¾ä¹Ÿä¼šæ°¸ä¹…åˆ é™¤ï¼Œç›¸å…³åˆ†é•œçš„åœºæ™¯ç»‘å®šä¼šæ¸…ç©ºã€‚æ­¤æ“ä½œæ— æ³•æ’¤é”€ã€‚"):
+            return
+        delete_errors = self._delete_comic_asset_files(scenes[index], "scenes")
+        scenes.pop(index)
+        for shot in self.state["comic"]["shots"]:
+            if str(shot.get("scene", "")) == name:
+                shot["scene"] = ""
+        self.current_comic_scene_index = None
+        self._refresh_comic_scene_list(min(index, len(scenes) - 1) if scenes else None)
+        self._refresh_comic_shot_tree(self.current_comic_shot_index)
+        self.store.save(self.state)
+        self._refresh_comic_overview()
+        if delete_errors:
+            messagebox.showwarning("éƒ¨åˆ†æ–‡ä»¶æœªåˆ é™¤", "åœºæ™¯è®°å½•å·²åˆ é™¤ï¼Œä½†ä»¥ä¸‹æœ¬åœ°æ–‡ä»¶è¢«å®‰å…¨ä¿ç•™æˆ–åˆ é™¤å¤±è´¥ï¼š\n" + "\n".join(delete_errors))
+
+    def _save_current_comic_scene(self) -> None:
+        index = self.current_comic_scene_index
+        scenes = self.state["comic"].get("scenes", [])
+        if (
+            index is None
+            or not (0 <= index < len(scenes))
+            or not hasattr(self, "comic_scene_name_var")
+            or not self.comic_scene_description_editor
+            or not self.comic_scene_prompt_editor
+        ):
+            return
+        old_name = str(scenes[index].get("name", ""))
+        new_name = self.comic_scene_name_var.get().strip() or f"åœºæ™¯ {index + 1}"
+        scenes[index]["name"] = new_name
+        scenes[index]["description"] = self.comic_scene_description_editor.get("1.0", "end-1c").strip()
+        scenes[index]["prompt"] = self.comic_scene_prompt_editor.get("1.0", "end-1c").strip()
+        if old_name and old_name != new_name:
+            replace_scene_in_shots(self.state["comic"].get("shots", []), old_name, new_name)
+            self._refresh_comic_shot_tree(self.current_comic_shot_index)
+
+    def _load_comic_scene(self, index: int) -> None:
+        scenes = self.state["comic"]["scenes"]
+        if not (0 <= index < len(scenes)):
+            self.current_comic_scene_index = None
+            return
+        self.current_comic_scene_index = index
+        scene = scenes[index]
+        self._loading_comic_asset_editor = True
+        try:
+            self.comic_scene_name_var.set(str(scene.get("name", "")))
+            self.comic_scene_description_editor.delete("1.0", END)
+            self.comic_scene_description_editor.insert("1.0", str(scene.get("description", "")))
+            self.comic_scene_prompt_editor.delete("1.0", END)
+            self.comic_scene_prompt_editor.insert("1.0", str(scene.get("prompt", "")))
+        finally:
+            self._loading_comic_asset_editor = False
+        local = str(scene.get("local_path", "")) if has_local_reference(scene) else ""
+        candidate_path = str(scene.get("candidate_path", ""))
+        candidate = candidate_path if candidate_path and Path(candidate_path).is_file() else ""
+        status = str(scene.get("status", "æœªç”Ÿæˆ"))
+        details = [status]
+        if candidate:
+            details.append(f"å€™é€‰ï¼š{Path(candidate).name}")
+        if local:
+            details.append(f"å·²ç¡®è®¤ï¼š{Path(local).name}")
+        self.comic_scene_status.configure(text=" Â· ".join(details), fg=ACCENT_DARK if local else (WARM if candidate else MUTED))
+        confirmed = bool(local and "å·²ç¡®è®¤" in status)
+        preview_path = local if confirmed else (candidate or local)
+        preview_kind = "å·²ç¡®è®¤åœºæ™¯å‚è€ƒå›¾" if confirmed else ("å€™é€‰åœºæ™¯å›¾ Â· å¾…ç¡®è®¤" if candidate else "åœºæ™¯å‚è€ƒå›¾")
+        if self.comic_scene_preview_title:
+            self.comic_scene_preview_title.configure(text=f"{preview_kind}\n{scene.get('name', '')}", fg=ACCENT_DARK if confirmed else (WARM if candidate else INK))
+        self._render_local_image(self.comic_scene_preview_canvas, preview_path, placeholder="å°šæœªç”Ÿæˆåœºæ™¯å‚è€ƒå›¾", max_size=(250, 190))
+
+    def _refresh_comic_scene_list(self, selected: int | None = None) -> None:
+        if not self.comic_scene_list:
+            return
+        scenes = self.state["comic"]["scenes"]
+        self.comic_scene_list.delete(0, END)
+        for item in scenes:
+            self.comic_scene_list.insert(END, self._comic_scene_list_text(item))
+        if selected is not None and scenes:
+            selected = min(max(selected, 0), len(scenes) - 1)
+            self.comic_scene_list.selection_set(selected)
+            self.comic_scene_list.activate(selected)
+            self._load_comic_scene(selected)
+        elif not scenes:
+            self.current_comic_scene_index = None
+            self.comic_scene_name_var.set("")
+            self.comic_scene_description_editor.delete("1.0", END)
+            self.comic_scene_prompt_editor.delete("1.0", END)
+            self._render_local_image(self.comic_scene_preview_canvas, "", placeholder="å°šæœªæ·»åŠ åœºæ™¯", max_size=(250, 190))
+
+    def on_comic_scene_select(self, _event=None) -> None:
+        if not self.comic_scene_list or not self.comic_scene_list.curselection():
+            return
+        next_index = int(self.comic_scene_list.curselection()[0])
+        if self.current_comic_scene_index == next_index:
+            return
+        self._save_current_comic_scene()
+        self._load_comic_scene(next_index)
+
+    def choose_comic_scene_image(self) -> None:
+        self._save_current_comic_scene()
+        index = self.current_comic_scene_index
+        if index is None:
+            messagebox.showinfo("æ²¡æœ‰åœºæ™¯", "è¯·å…ˆæ·»åŠ æˆ–é€‰æ‹©ä¸€ä¸ªåœºæ™¯ã€‚")
+            return
+        source = filedialog.askopenfilename(title="é€‰æ‹©åœºæ™¯å‚è€ƒå›¾", filetypes=[("å›¾ç‰‡", "*.png *.jpg *.jpeg *.webp"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")])
+        if not source:
+            return
+        if Path(source).suffix.lower() not in {".png", ".jpg", ".jpeg", ".webp"}:
+            messagebox.showerror("å›¾ç‰‡æ ¼å¼ä¸æ”¯æŒ", "å›ºå®šå‚è€ƒå›¾ä»…æ”¯æŒ PNGã€JPGã€JPEG æˆ– WebPã€‚")
+            return
+        scene = self.state["comic"]["scenes"][index]
+        destination = self._comic_output_dir() / "scenes" / f"{safe_filename(str(scene.get('name', 'åœºæ™¯')))}_reference{Path(source).suffix.lower()}"
+        try:
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, destination)
+        except OSError as exc:
+            messagebox.showerror("ä¿å­˜å¤±è´¥", str(exc))
+            return
+        scene.update({"local_path": str(destination), "image_url": "", "candidate_path": "", "candidate_image_url": "", "task_id": "", "status": "å®šæ™¯å·²ç¡®è®¤"})
+        self.store.save(self.state)
+        self._refresh_comic_scene_list(index)
+        self._refresh_comic_overview()
+
+    def confirm_comic_scene_candidate(self) -> None:
+        self._save_current_comic_scene()
+        index = self.current_comic_scene_index
+        if index is None:
+            messagebox.showinfo("æ²¡æœ‰åœºæ™¯", "è¯·å…ˆé€‰æ‹©åœºæ™¯ã€‚")
+            return
+        scene = self.state["comic"]["scenes"][index]
+        candidate = Path(str(scene.get("candidate_path", "")))
+        if not candidate.is_file():
+            messagebox.showinfo("æ²¡æœ‰å€™é€‰åœºæ™¯", "è¯·å…ˆç”Ÿæˆä¸€å¼ å€™é€‰åœºæ™¯å›¾ï¼Œå†ç¡®è®¤ä¿ç•™ã€‚")
+            return
+        reference = self._comic_output_dir() / "scenes" / f"{safe_filename(str(scene.get('name', 'åœºæ™¯')))}_reference{candidate.suffix.lower()}"
+        try:
+            reference.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(candidate, reference)
+        except OSError as exc:
+            messagebox.showerror("ç¡®è®¤å¤±è´¥", str(exc))
+            return
+        scene.update({"local_path": str(reference), "image_url": str(scene.get("candidate_image_url", "")), "status": "å®šæ™¯å·²ç¡®è®¤"})
+        self.store.save(self.state)
+        self._refresh_comic_scene_list(index)
+        self._refresh_comic_overview()
+        self.comic_status.configure(text=f"å·²ç¡®è®¤ {scene.get('name', 'åœºæ™¯')} çš„å‚è€ƒå›¾ï¼Œç»‘å®šå®ƒçš„é•œå¤´å°†è‡ªåŠ¨ä½¿ç”¨è¯¥ç¯å¢ƒã€‚", fg=ACCENT_DARK)
+
+    def generate_comic_scene(self) -> None:
+        if self.is_busy:
+            return
+        self._sync_comic_state()
+        index = self.current_comic_scene_index
+        if index is None:
+            messagebox.showinfo("æ²¡æœ‰åœºæ™¯", "è¯·å…ˆæ·»åŠ æˆ–é€‰æ‹©ä¸€ä¸ªåœºæ™¯ã€‚")
+            return
+        try:
+            client = self._seedream_client()
+        except ComicEngineError as exc:
+            messagebox.showwarning("éœ€è¦ ARK API Key", str(exc))
+            return
+        scene = dict(self.state["comic"]["scenes"][index])
+        prompt = str(scene.get("prompt", "")).strip()
+        if not prompt:
+            prompt = build_scene_prompt(str(scene.get("name", "åœºæ™¯")), str(scene.get("description", "")), self.state["comic"]["art_style"], self.state["comic"]["aspect"])
+        prompt = enforce_scene_reference_prompt(
+            prompt,
+            self.state["comic"]["art_style"],
+            self.state["comic"]["aspect"],
+        )
+        if prompt != str(scene.get("prompt", "")).strip():
+            self.state["comic"]["scenes"][index]["prompt"] = prompt
+            self.comic_scene_prompt_editor.delete("1.0", END)
+            self.comic_scene_prompt_editor.insert("1.0", prompt)
+        if not messagebox.askyesno("ç”Ÿæˆå€™é€‰åœºæ™¯", "å°†ä½¿ç”¨ Doubao Seedream 5.0 Pro ç”Ÿæˆä¸€å¼ æ— äººåœºæ™¯å®šæ™¯å›¾ã€‚ç¡®è®¤ä¿ç•™åï¼Œæ‰ä¼šç”¨äºåç»­é•œå¤´ã€‚æ˜¯å¦ç»§ç»­ï¼Ÿ"):
+            return
+        output = self._comic_output_dir() / "scenes" / f"{safe_filename(str(scene.get('name', 'åœºæ™¯')))}_candidate.png"
+        resolution = self.comic_resolution_var.get()
+        optimize_mode = "fast" if self.comic_optimize_var.get() == "æé€Ÿæ¨¡å¼" else "standard"
+        self.is_busy = True
+        self.comic_progress["value"] = 0
+        self.comic_status.configure(text=f"æ­£åœ¨ç”Ÿæˆ {scene.get('name', 'åœºæ™¯')} çš„å®šæ™¯å›¾â€¦", fg=ACCENT_DARK)
+
+        def worker() -> None:
+            try:
+                def progress(task: dict[str, object]) -> None:
+                    self.bus.put(("comic_scene_progress", (index, str(task.get("progress", "")), str(task.get("id", "")))))
+
+                result = client.generate_image(prompt, size=resolution, optimize_mode=optimize_mode, progress=progress)
+                client.download_image(str(result["imageUrl"]), output)
+                self.bus.put(("comic_scene_done", (index, result, str(output))))
+            except Exception as exc:
+                self.bus.put(("comic_scene_error", (index, str(exc))))
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def preview_comic_scene(self) -> None:
+        index = self.current_comic_scene_index
+        if index is None:
+            messagebox.showinfo("æ²¡æœ‰åœºæ™¯", "è¯·å…ˆé€‰æ‹©åœºæ™¯ã€‚")
+            return
+        scene = self.state["comic"]["scenes"][index]
+        candidate = str(scene.get("candidate_path", ""))
+        has_candidate = bool(candidate and Path(candidate).is_file())
+        path = candidate if has_candidate else str(scene.get("local_path") or "")
+        title_kind = "å€™é€‰åœºæ™¯" if has_candidate else "å·²ç¡®è®¤å‚è€ƒ"
+        self._show_comic_image(path, f"{title_kind} Â· {scene.get('name', '')}")
+
+    def analyze_comic_story(self, generation_mode: str = "all") -> None:
+        if self.is_busy:
+            return
+        if generation_mode == "both":
+            generation_mode = "all"
+        if generation_mode not in {"characters", "scenes", "shots", "all"}:
+            messagebox.showerror("æ¨¡å¼æ— æ•ˆ", "ä¸æ”¯æŒçš„ AI ç”Ÿæˆæ¨¡å¼ã€‚")
+            return
+        self._sync_comic_state()
+        comic = self.state["comic"]
+        source = comic["source_text"].strip()
+        if not source:
+            messagebox.showinfo("æ²¡æœ‰æ­£æ–‡", "è¯·å¯¼å…¥å°è¯´ï¼Œæˆ–æŠŠæ­£æ–‡ç²˜è´´åˆ°ç¼–è¾‘æ¡†ã€‚")
+            return
+        mode_label = {"characters": "åªè¯†åˆ«è§’è‰²", "scenes": "åªè¯†åˆ«åœºæ™¯", "shots": "åªç”Ÿæˆé™æ€åˆ†é•œ", "all": "ç”Ÿæˆè§’è‰²ã€åœºæ™¯ä¸é™æ€åˆ†é•œ"}[generation_mode]
+        if generation_mode in {"shots", "all"} and comic["shots"] and not messagebox.askyesno(
+            "é‡æ–°ç”Ÿæˆé™æ€åˆ†é•œ",
+            f"â€œ{mode_label}â€ä¼šåœ¨å…¨éƒ¨æ‰¹æ¬¡æ ¡éªŒé€šè¿‡åæ›¿æ¢ç°æœ‰åˆ†é•œï¼›å·²ç¡®è®¤çš„è§’è‰²ä¸åœºæ™¯å‚è€ƒå›¾ä¼šæŒ‰åç§°ä¿ç•™ï¼Œ"
+            "ç°æœ‰åˆ†é•œå›¾ç‰‡ä¸ä¼šè‡ªåŠ¨å¥—ç”¨åˆ°æ–°åˆ†é•œï¼Œéœ€è¦é‡æ–°å‡ºå›¾ã€‚æ˜¯å¦ç»§ç»­ï¼Ÿ",
+        ):
+            return
+        try:
+            client = self._ai_client()
+        except AIClientError as exc:
+            messagebox.showwarning("éœ€è¦æ–‡æœ¬ AI", f"è¯·å…ˆåœ¨â€œæ¨¡å‹ä¸å·¥å…·â€ä¸­é…ç½®æ–‡æœ¬æ¨¡å‹ï¼š\n{exc}")
+            return
+        existing = [dict(item) for item in comic["characters"]]
+        existing_scenes = [dict(item) for item in comic.get("scenes", [])]
+        art_style = comic["art_style"]
+        source_chunks = split_story_source_chunks(source, int(comic.get("analysis_chunk_chars", 3500)))
+        if not source_chunks:
+            messagebox.showinfo("æ²¡æœ‰å¯åˆ†æå†…å®¹", "æ­£æ–‡æ²¡æœ‰å¯åˆ†æçš„å†…å®¹ã€‚")
+            return
+        self.is_busy = True
+        self.comic_status.configure(text=f"{mode_label}ï¼šæ­£æ–‡å°†åˆ† {len(source_chunks)} ä¸ªè¯·æ±‚å‘é€ï¼ŒAI å°†æŒ‰å•å¼ é™æ­¢ç”»é¢çš„å˜åŒ–åˆ¤æ–­è¾¹ç•Œâ€¦", fg=ACCENT_DARK)
+        self.comic_progress["value"] = 2
+
+        def worker() -> None:
+            accumulated_characters = [dict(item) for item in existing]
+            accumulated_scenes = [dict(item) for item in existing_scenes]
+            generated_shots: list[dict[str, object]] = []
+            pending_batches = [
+                {"chunk_id": f"B{index:04d}", "source": chunk}
+                for index, chunk in enumerate(source_chunks, start=1)
+            ]
+            request_index = 0
+            completed_chars = 0
+            total_chars = sum(len(chunk) for chunk in source_chunks)
+            split_count = 0
+            while pending_batches:
+                batch = pending_batches.pop(0)
+                batch_source = str(batch.get("source", "")).strip()
+                batch_id = str(batch.get("chunk_id", "å½“å‰æ‰¹æ¬¡"))
+                request_index += 1
+                last_error: Exception | None = None
+                parsed: dict[str, list[dict[str, object]]] | None = None
+                ordered_shots: list[dict[str, object]] = []
+                batch_succeeded = False
+                for attempt in range(1, 4):
+                    try:
+                        system, user = build_ai_split_storyboard_prompt(
+                            batch_source,
+                            art_style=art_style,
+                            existing_characters=accumulated_characters if generation_mode in {"characters", "all"} else existing,
+                            existing_scenes=accumulated_scenes if generation_mode in {"scenes", "all"} else existing_scenes,
+                            generation_mode=generation_mode,
+                            batch_index=request_index,
+                            batch_total=request_index + len(pending_batches),
+                        )
+                        raw = client.complete(system, user, temperature=0.2)
+                        parsed = parse_storyboard_response(raw, art_style=art_style, generation_mode=generation_mode)
+                        if generation_mode in {"shots", "all"}:
+                            ordered_shots = validate_ai_storyboard_split(
+                                parsed["shots"], batch_source, start_index=len(generated_shots) + 1
+                            )
+                        batch_succeeded = True
+                        break
+                    except Exception as exc:
+                        last_error = exc
+                        if attempt < 3:
+                            self.bus.put(("comic_analysis_retry", (request_index, request_index + len(pending_batches), str(exc))))
+                if not batch_succeeded or parsed is None:
+                    smaller_chunks = split_story_source_chunks(batch_source, max(300, len(batch_source) // 2))
+                    if len(smaller_chunks) > 1:
+                        replacements = [
+                            {"chunk_id": f"{batch_id}.{index}", "source": chunk}
+                            for index, chunk in enumerate(smaller_chunks, start=1)
+                        ]
+                        pending_batches[0:0] = replacements
+                        split_count += 1
+                        self.bus.put(("comic_analysis_split", (batch_id, len(batch_source), str(last_error or "æœªçŸ¥é”™è¯¯"))))
+                        continue
+                    self.bus.put(("comic_analysis_error", (request_index, request_index + len(pending_batches), f"{batch_id} è¿ç»­ä¸‰æ¬¡å¤±è´¥ï¼š{last_error or 'æœªçŸ¥é”™è¯¯'}")))
+                    return
+                if generation_mode in {"characters", "all"}:
+                    accumulated_characters = self._merge_comic_characters(accumulated_characters, parsed["characters"])
+                if generation_mode in {"scenes", "all"}:
+                    accumulated_scenes = self._merge_comic_scenes(accumulated_scenes, parsed["scenes"])
+                if generation_mode in {"shots", "all"}:
+                    generated_shots.extend(ordered_shots)
+                completed_chars += len(batch_source)
+                self.bus.put(("comic_analysis_progress", (completed_chars, total_chars, mode_label)))
+
+            if generation_mode == "characters" and not accumulated_characters:
+                self.bus.put(("comic_analysis_error", (len(source_chunks), len(source_chunks), "æ‰€æœ‰æ‰¹æ¬¡å‡æœªè¯†åˆ«åˆ°è§’è‰²ã€‚")))
+                return
+            if generation_mode == "scenes" and not accumulated_scenes:
+                self.bus.put(("comic_analysis_error", (len(source_chunks), len(source_chunks), "æ‰€æœ‰æ‰¹æ¬¡å‡æœªè¯†åˆ«åˆ°å›ºå®šåœºæ™¯ã€‚")))
+                return
+            for index, shot in enumerate(generated_shots, start=1):
+                original_title = str(shot.get("title", "")).strip()
+                shot["index"] = index
+                shot["title"] = f"{index:03d} Â· {original_title}" if original_title else f"åˆ†é•œ {index:03d}"
+            result = {
+                "characters": accumulated_characters if generation_mode in {"characters", "all"} else [],
+                "scenes": accumulated_scenes if generation_mode in {"scenes", "all"} else [],
+                "shots": generated_shots if generation_mode in {"shots", "all"} else [],
+            }
+            split_note = f"ï¼Œå¹¶è‡ªåŠ¨ç»†åˆ† {split_count} æ¬¡" if split_count else ""
+            if generation_mode in {"shots", "all"}:
+                note = f"{mode_label}å®Œæˆï¼šAI æŒ‰é™æ€ç”»é¢èŠ‚å¥æ‹†åˆ†ä¸º {len(generated_shots)} ä¸ªåˆ†é•œï¼Œå¹¶å·²æ ¡éªŒåŸæ–‡å®Œæ•´æ€§{split_note}ã€‚"
+            else:
+                note = f"{mode_label}å®Œæˆï¼šå·²åˆ†æå…¨éƒ¨æ­£æ–‡{split_note}ã€‚"
+            self.bus.put(("comic_analysis_done", (result, note, generation_mode)))
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def split_comic_locally(self) -> None:
+        self.analyze_comic_story("shots")
+
+    @staticmethod
+    def _merge_comic_characters(existing: list[dict[str, object]], analyzed: list[dict[str, object]]) -> list[dict[str, object]]:
+        by_name = {str(item.get("name", "")).strip(): item for item in existing if str(item.get("name", "")).strip()}
+        merged: list[dict[str, object]] = []
+        for item in analyzed:
+            name = str(item.get("name", "")).strip()
+            old = by_name.pop(name, None)
+            if old:
+                record = dict(item)
+                for key in ("task_id", "image_url", "local_path", "candidate_path", "candidate_image_url", "status"):
+                    if old.get(key):
+                        record[key] = old[key]
+                if old.get("description") and not record.get("description"):
+                    record["description"] = old["description"]
+                merged.append(record)
+            else:
+                merged.append(dict(item))
+        merged.extend(by_name.values())
+        return merged
+
+    @staticmethod
+    def _merge_comic_scenes(existing: list[dict[str, object]], analyzed: list[dict[str, object]]) -> list[dict[str, object]]:
+        by_name = {str(item.get("name", "")).strip(): item for item in existing if str(item.get("name", "")).strip()}
+        merged: list[dict[str, object]] = []
+        for item in analyzed:
+            name = str(item.get("name", "")).strip()
+            old = by_name.pop(name, None)
+            if old:
+                record = dict(item)
+                for key in ("task_id", "image_url", "local_path", "candidate_path", "candidate_image_url", "status"):
+                    if old.get(key):
+                        record[key] = old[key]
+                if old.get("description") and not record.get("description"):
+                    record["description"] = old["description"]
+                merged.append(record)
+            else:
+                merged.append(dict(item))
+        merged.extend(by_name.values())
+        return merged
+
+    def _invalidate_comic_draft(self) -> None:
+        comic = self.state["comic"]
+        comic["video_output_path"] = ""
+        comic["jianying_draft_path"] = ""
+        comic["jianying_draft_name"] = ""
+        if hasattr(self, "comic_video_output_var"):
+            self.comic_video_output_var.set("")
+        if hasattr(self, "comic_draft_output_var"):
+            self.comic_draft_output_var.set("")
+
+    @staticmethod
+    def _mark_comic_shot_stale(shot: dict[str, object]) -> None:
+        shot.update(
+            {
+                "task_id": "",
+                "status": "å¾…é‡æ–°ç”Ÿæˆ",
+                "progress": "0%",
+                "image_url": "",
+                "local_path": "",
+                "error": "",
+                "final_prompt": "",
+            }
+        )
+
+    def _comic_batch_shot_indices(self) -> list[int]:
+        shots = self.state["comic"].get("shots", [])
+        if self.comic_batch_scope_var.get() != "é€‰ä¸­åˆ†é•œ":
+            return list(range(len(shots)))
+        return self._selected_comic_shot_indices()
+
+    def _selected_comic_shot_indices(self) -> list[int]:
+        shots = self.state["comic"].get("shots", [])
+        if self.comic_storyboard_body:
+            return sorted(index for index in self.comic_storyboard_selected_indices if 0 <= index < len(shots))
+        if not self.comic_shot_tree:
+            return []
+        return sorted({int(item) for item in self.comic_shot_tree.selection() if str(item).isdigit() and 0 <= int(item) < len(shots)})
+
+    def batch_replace_comic_character(self) -> None:
+        self.save_comic_shot_prompt(silent=True)
+        source = self.comic_batch_character_from_var.get().strip()
+        target_value = self.comic_batch_character_to_var.get().strip()
+        target = "" if target_value == "ï¼ˆç§»é™¤è§’è‰²ï¼‰" else target_value
+        indices = self._comic_batch_shot_indices()
+        if not source:
+            messagebox.showinfo("è¯·é€‰æ‹©è§’è‰²", "è¯·é€‰æ‹©éœ€è¦è¢«æ›¿æ¢çš„è§’è‰²ã€‚")
+            return
+        if not indices:
+            messagebox.showinfo("æ²¡æœ‰é€‰ä¸­åˆ†é•œ", "è¯·å…ˆé€‰æ‹©ä¸€ä¸ªæˆ–å¤šä¸ªåˆ†é•œï¼Œæˆ–å°†èŒƒå›´æ”¹ä¸ºâ€œå…¨éƒ¨åˆ†é•œâ€ã€‚")
+            return
+        shots = self.state["comic"]["shots"]
+        affected = [index for index in indices if source in {str(name) for name in shots[index].get("characters", [])}]
+        changed = replace_character_in_shots([shots[index] for index in indices], source, target)
+        if not changed:
+            messagebox.showinfo("æ²¡æœ‰åŒ¹é…é¡¹", f"æ‰€é€‰èŒƒå›´å†…æ²¡æœ‰ç»‘å®šè§’è‰²â€œ{source}â€ã€‚")
+            return
+        for index in affected:
+            self._mark_comic_shot_stale(shots[index])
+        self._invalidate_comic_draft()
+        self.store.save(self.state)
+        self._refresh_comic_shot_tree(affected[0] if affected else self.current_comic_shot_index)
+        action = f"æ›¿æ¢ä¸ºâ€œ{target}â€" if target else "ç§»é™¤"
+        self.comic_status.configure(text=f"å·²åœ¨ {changed} ä¸ªé™æ€åˆ†é•œä¸­å°†â€œ{source}â€{action}ã€‚", fg=ACCENT_DARK)
+
+    def batch_replace_comic_scene(self) -> None:
+        self.save_comic_shot_prompt(silent=True)
+        source = self.comic_batch_scene_from_var.get().strip()
+        target_value = self.comic_batch_scene_to_var.get().strip()
+        target = "" if target_value == "ï¼ˆæ¸…ç©ºåœºæ™¯ï¼‰" else target_value
+        indices = self._comic_batch_shot_indices()
+        if not source:
+            messagebox.showinfo("è¯·é€‰æ‹©åœºæ™¯", "è¯·é€‰æ‹©éœ€è¦è¢«æ›¿æ¢çš„å›ºå®šåœºæ™¯ã€‚")
+            return
+        if not indices:
+            messagebox.showinfo("æ²¡æœ‰é€‰ä¸­åˆ†é•œ", "è¯·å…ˆé€‰æ‹©ä¸€ä¸ªæˆ–å¤šä¸ªåˆ†é•œï¼Œæˆ–å°†èŒƒå›´æ”¹ä¸ºâ€œå…¨éƒ¨åˆ†é•œâ€ã€‚")
+            return
+        shots = self.state["comic"]["shots"]
+        affected = [index for index in indices if str(shots[index].get("scene", "")).strip() == source]
+        changed = replace_scene_in_shots([shots[index] for index in indices], source, target)
+        if not changed:
+            messagebox.showinfo("æ²¡æœ‰åŒ¹é…é¡¹", f"æ‰€é€‰èŒƒå›´å†…æ²¡æœ‰ç»‘å®šåœºæ™¯â€œ{source}â€ã€‚")
+            return
+        for index in affected:
+            self._mark_comic_shot_stale(shots[index])
+        self._invalidate_comic_draft()
+        self.store.save(self.state)
+        self._refresh_comic_shot_tree(affected[0] if affected else self.current_comic_shot_index)
+        action = f"æ›¿æ¢ä¸ºâ€œ{target}â€" if target else "æ¸…ç©º"
+        self.comic_status.configure(text=f"å·²åœ¨ {changed} ä¸ªé™æ€åˆ†é•œä¸­å°†â€œ{source}â€{action}ã€‚", fg=ACCENT_DARK)
+
+    def _refresh_comic_shot_binding_controls(self) -> None:
+        index = self.current_comic_shot_index
+        shots = self.state["comic"].get("shots", [])
+        self._loading_comic_shot_editor = True
+        try:
+            if self.comic_shot_character_list:
+                selected_names = {str(name) for name in shots[index].get("characters", [])} if index is not None and 0 <= index < len(shots) else set()
+                self.comic_shot_character_list.delete(0, END)
+                for character_index, character in enumerate(self.state["comic"].get("characters", [])):
+                    name = str(character.get("name", "æœªå‘½åè§’è‰²"))
+                    self.comic_shot_character_list.insert(END, name)
+                    if name in selected_names:
+                        self.comic_shot_character_list.selection_set(character_index)
+            if self.comic_shot_scene_combo:
+                values = [""] + [str(scene.get("name", "æœªå‘½ååœºæ™¯")) for scene in self.state["comic"].get("scenes", [])]
+                self.comic_shot_scene_combo.configure(values=values)
+                if index is not None and 0 <= index < len(shots):
+                    self.comic_shot_scene_var.set(str(shots[index].get("scene", "")))
+        finally:
+            self._loading_comic_shot_editor = False
+
+    def _comic_shot_preview_image(self, index: int, shot: dict[str, object]) -> ImageTk.PhotoImage:
+        """Build a compact preview that stays inside the matching storyboard row."""
+        width, height = 112, 142
+        preview = Image.new("RGB", (width, height), COMIC_INSET)
+        path = Path(str(shot.get("local_path", "")))
+        if path.is_file():
+            try:
+                with Image.open(path) as source:
+                    image = ImageOps.exif_transpose(source).convert("RGB")
+                    image.thumbnail((width - 8, height - 8), Image.Resampling.LANCZOS)
+                    x = (width - image.width) // 2
+                    y = (height - image.height) // 2
+                    preview.paste(image, (x, y))
+            except (OSError, ValueError):
+                path = Path()
+        if not path.is_file():
+            draw = ImageDraw.Draw(preview)
+            draw.rounded_rectangle((8, 8, width - 9, height - 9), radius=14, fill=SURFACE_ALT, outline=BORDER, width=2)
+            draw.rounded_rectangle((25, 37, width - 26, height - 38), radius=9, outline="#9CB2B0", width=3)
+            draw.ellipse((38, 50, 51, 63), fill="#9CB2B0")
+            draw.line((31, height - 49, 52, height - 70, 65, height - 57, 78, height - 76, width - 31, height - 49), fill="#9CB2B0", width=4, joint="curve")
+        image = ImageTk.PhotoImage(preview)
+        self.comic_shot_preview_images[index] = image
+        return image
+
+    def _update_comic_shot_tree_row(self, index: int) -> None:
+        if self.comic_storyboard_body:
+            self._update_comic_storyboard_row(index)
+            return
+        shots = self.state["comic"].get("shots", [])
+        if not self.comic_shot_tree or not (0 <= index < len(shots)) or not self.comic_shot_tree.exists(str(index)):
+            return
+        shot = shots[index]
+        status = str(shot.get("status", "å¾…ç”Ÿæˆ"))
+        progress = str(shot.get("progress", ""))
+        if progress and progress not in {"0%", "100%"}:
+            status = f"{status} {progress}"
+        tags: list[str] = ["alternate"] if index % 2 else []
+        if shot.get("local_path") or shot.get("image_url"):
+            tags.append("done")
+        elif shot.get("error"):
+            tags.append("error")
+        options: dict[str, object] = {
+            "text": "",
+            "values": (shot.get("title", f"åˆ†é•œ {index + 1:02d}"), "ã€".join(shot.get("characters", [])), shot.get("scene", ""), status),
+            "tags": tuple(tags),
+        }
+        if self.comic_shot_tree_with_previews:
+            options["image"] = self._comic_shot_preview_image(index, shot)
+        self.comic_shot_tree.item(str(index), **options)
+
+    def _refresh_comic_shot_tree(self, selected: int | None = None) -> None:
+        if self.comic_storyboard_body:
+            self._refresh_comic_storyboard_rows(selected)
+            return
+        if not self.comic_shot_tree:
+            return
+        self.comic_shot_preview_images = {}
+        for item in self.comic_shot_tree.get_children():
+            self.comic_shot_tree.delete(item)
+        shots = self.state["comic"]["shots"]
+        for index, shot in enumerate(shots):
+            status = str(shot.get("status", "å¾…ç”Ÿæˆ"))
+            progress = str(shot.get("progress", ""))
+            if progress and progress not in {"0%", "100%"}:
+                status = f"{status} {progress}"
+            tags: list[str] = []
+            if index % 2:
+                tags.append("alternate")
+            if shot.get("local_path") or shot.get("image_url"):
+                tags.append("done")
+            elif shot.get("error"):
+                tags.append("error")
+            options: dict[str, object] = {
+                "text": "",
+                "values": (shot.get("title", f"åˆ†é•œ {index + 1:02d}"), "ã€".join(shot.get("characters", [])), shot.get("scene", ""), status),
+                "tags": tuple(tags),
+            }
+            if self.comic_shot_tree_with_previews:
+                options["image"] = self._comic_shot_preview_image(index, shot)
+            self.comic_shot_tree.insert("", END, iid=str(index), **options)
+        done = sum(1 for shot in shots if shot.get("local_path"))
+        if self.comic_step == 3:
+            self.comic_count_label.configure(text=f"{len(shots)} ä¸ªåˆ†é•œ Â· {done} å¼ æœ‰å›¾")
+        else:
+            self.comic_count_label.configure(text=f"{done}/{len(shots)} å·²å®Œæˆ")
+        if selected is not None and shots:
+            selected = min(max(selected, 0), len(shots) - 1)
+            self.comic_shot_tree.selection_set(str(selected))
+            self.comic_shot_tree.focus(str(selected))
+            self._load_comic_shot(selected)
+        elif not shots:
+            self.current_comic_shot_index = None
+            if self.comic_shot_prompt_editor:
+                self.comic_shot_prompt_editor.delete("1.0", END)
+            if self.comic_generation_detail_label:
+                self.comic_generation_detail_label.configure(text="æš‚æ— åˆ†é•œã€‚è¯·è¿”å›ä¸Šä¸€æ­¥åˆ†ææˆ–æ‹†åˆ†å°è¯´ã€‚")
+
+    def _load_comic_shot(self, index: int) -> None:
+        shots = self.state["comic"]["shots"]
+        if not (0 <= index < len(shots)):
+            return
+        self.current_comic_shot_index = index
+        shot = shots[index]
+        source = str(shot.get("source", "")).replace("\n", " ")
+        if self.comic_shot_source_label:
+            self.comic_shot_source_label.configure(text=f"{shot.get('title', '')} Â· åŸæ–‡ï¼š{source[:240]}")
+        if self.comic_shot_prompt_editor:
+            self.comic_shot_prompt_editor.delete("1.0", END)
+            self.comic_shot_prompt_editor.insert("1.0", str(shot.get("prompt", "")))
+        self._loading_comic_shot_editor = True
+        try:
+            if self.comic_shot_character_list:
+                self.comic_shot_character_list.selection_clear(0, END)
+                selected_names = {str(name) for name in shot.get("characters", [])}
+                for character_index, character in enumerate(self.state["comic"]["characters"]):
+                    if str(character.get("name", "")) in selected_names:
+                        self.comic_shot_character_list.selection_set(character_index)
+            if self.comic_shot_scene_combo:
+                self.comic_shot_scene_var.set(str(shot.get("scene", "")))
+        finally:
+            self._loading_comic_shot_editor = False
+        if self.comic_generation_detail_label:
+            characters = "ã€".join(shot.get("characters", [])) or "æ— æŒ‡å®šè§’è‰²"
+            scene = str(shot.get("scene", "")).strip() or "æœªç»‘å®šåœºæ™¯"
+            path = str(shot.get("local_path", ""))
+            detail = f"{shot.get('title', '')}\nè§’è‰²ï¼š{characters}\nåœºæ™¯ï¼š{scene}\nçŠ¶æ€ï¼š{shot.get('status', 'å¾…ç”Ÿæˆ')}"
+            if path:
+                detail += f"\næ–‡ä»¶ï¼š{Path(path).name}"
+            if shot.get("error"):
+                detail += f"\nå¤±è´¥åŸå› ï¼š{shot.get('error')}"
+            self.comic_generation_detail_label.configure(text=detail)
+
+    def on_comic_shot_select(self, _event=None) -> None:
+        if not self.comic_shot_tree or not self.comic_shot_tree.selection():
+            return
+        selected = self.comic_shot_tree.selection()
+        focused = self.comic_shot_tree.focus()
+        next_item = focused if focused in selected else selected[-1]
+        next_index = int(next_item)
+        if self.current_comic_shot_index == next_index:
+            return
+        self.save_comic_shot_prompt(silent=True)
+        self._load_comic_shot(next_index)
+
+    def _toggle_comic_shot_selection(self, event):
+        """Toggle a shot with a plain click so multi-selection never needs Ctrl."""
+        if not self.comic_shot_tree or self.comic_shot_tree.identify_region(event.x, event.y) not in {"cell", "tree"}:
+            return None
+        item = self.comic_shot_tree.identify_row(event.y)
+        if not item:
+            return None
+        if self.comic_shot_tree_with_previews and self.comic_shot_tree.identify_column(event.x) == "#0":
+            index = int(item)
+            self.comic_shot_tree.selection_set(item)
+            self.comic_shot_tree.focus(item)
+            self._load_comic_shot(index)
+            shot = self.state["comic"]["shots"][index]
+            path = str(shot.get("local_path", ""))
+            if Path(path).is_file():
+                self._show_comic_image(path, str(shot.get("title", f"åˆ†é•œ {index + 1:03d}")))
+            else:
+                self.comic_status.configure(text=f"åˆ†é•œ {index + 1:03d} å°šæœªç”Ÿæˆå›¾ç‰‡ã€‚", fg=MUTED)
+            return "break"
+        selected = set(self.comic_shot_tree.selection())
+        if item in selected:
+            self.comic_shot_tree.selection_remove(item)
+        else:
+            self.save_comic_shot_prompt(silent=True)
+            self.comic_shot_tree.selection_add(item)
+            self.comic_shot_tree.focus(item)
+            self._load_comic_shot(int(item))
+        return "break"
+
+    def select_all_comic_shots(self) -> None:
+        if self.comic_storyboard_body:
+            shots = self.state["comic"].get("shots", [])
+            self.comic_storyboard_selected_indices = set(range(len(shots)))
+            for index, selection_var in self.comic_storyboard_selection_vars.items():
+                selection_var.set("âœ“ å·²é€‰")
+                widgets = self.comic_storyboard_row_widgets.get(index, {})
+                if widgets.get("selection"):
+                    widgets["selection"].configure(bg=ACCENT, fg=SIDEBAR)
+                if widgets.get("outer"):
+                    widgets["outer"].configure(highlightbackground=ACCENT)
+            return
+        if not self.comic_shot_tree:
+            return
+        items = self.comic_shot_tree.get_children()
+        if items:
+            self.comic_shot_tree.selection_set(items)
+
+    def clear_comic_shot_selection(self) -> None:
+        if self.comic_storyboard_body:
+            self.comic_storyboard_selected_indices.clear()
+            for index, selection_var in self.comic_storyboard_selection_vars.items():
+                selection_var.set("â—‹ é€‰æ‹©")
+                widgets = self.comic_storyboard_row_widgets.get(index, {})
+                if widgets.get("selection"):
+                    widgets["selection"].configure(bg=SURFACE_ALT, fg=MUTED)
+                if widgets.get("outer"):
+                    widgets["outer"].configure(highlightbackground=widgets.get("default_border", SURFACE))
+            return
+        if self.comic_shot_tree:
+            self.comic_shot_tree.selection_remove(self.comic_shot_tree.selection())
+
+    @staticmethod
+    def _renumber_comic_shots(shots: list[dict[str, object]]) -> None:
+        for index, shot in enumerate(shots, start=1):
+            shot["index"] = index
+            shot["segment_id"] = f"S{index:05d}"
+
+    def merge_selected_comic_shots(self) -> None:
+        self.save_comic_shot_prompt(silent=True)
+        indices = self._selected_comic_shot_indices()
+        if len(indices) != 2:
+            messagebox.showinfo("è¯·é€‰æ‹©ä¸¤ä¸ªé•œå¤´", "è¯·åœ¨åˆ†é•œåˆ—è¡¨ä¸­é€‰ä¸­ä¸¤ä¸ªç›¸é‚»é•œå¤´ï¼Œå†ç‚¹å‡»åˆå¹¶ã€‚æ™®é€šå•å‡»å³å¯å¤šé€‰ï¼Œä¸éœ€è¦æŒ‰ Ctrlã€‚")
+            return
+        first_index, second_index = indices
+        if second_index != first_index + 1:
+            messagebox.showinfo("é•œå¤´ä¸ç›¸é‚»", "åªèƒ½åˆå¹¶å‰åç›¸é‚»çš„ä¸¤ä¸ªé•œå¤´ï¼Œè¯·é‡æ–°é€‰æ‹©ã€‚")
+            return
+        shots = self.state["comic"]["shots"]
+        first = shots[first_index]
+        second = shots[second_index]
+        notes: list[str] = []
+        if str(first.get("scene", "")).strip() != str(second.get("scene", "")).strip():
+            notes.append("ä¸¤ä¸ªé•œå¤´çš„åœºæ™¯ä¸åŒï¼Œåˆå¹¶ååœºæ™¯ä¼šç•™ç©ºï¼Œè¯·é‡æ–°é€‰æ‹©ã€‚")
+        if first.get("local_path") or second.get("local_path"):
+            notes.append("ä¸¤ä¸ªé•œå¤´ç°æœ‰çš„å›¾ç‰‡å°†ä¸å†ç»‘å®šï¼Œåˆå¹¶åçš„é•œå¤´éœ€è¦é‡æ–°å‡ºå›¾ã€‚")
+        if notes and not messagebox.askyesno("ç¡®è®¤åˆå¹¶é•œå¤´", "\n\n".join(notes) + "\n\næ˜¯å¦ç»§ç»­ï¼Ÿ"):
+            return
+        merged = merge_storyboard_shots(first, second)
+        shots[first_index : second_index + 1] = [merged]
+        self._renumber_comic_shots(shots)
+        self._invalidate_comic_draft()
+        self.store.save(self.state)
+        self.current_comic_shot_index = first_index
+        self.comic_storyboard_selected_indices = {first_index}
+        self._refresh_comic_shot_tree(first_index)
+        self._refresh_comic_overview()
+        self.comic_status.configure(text=f"å·²å°†ç¬¬ {first_index + 1}ã€{second_index + 1} ä¸ªé•œå¤´åˆå¹¶ï¼Œè¯·åœ¨å¯¹åº”è¡Œæ ¡å¯¹æç¤ºè¯ã€‚", fg=ACCENT_DARK)
+
+    def split_current_comic_shot(self) -> None:
+        self.save_comic_shot_prompt(silent=True)
+        selected_indices = self._selected_comic_shot_indices()
+        if self.comic_storyboard_body:
+            if len(selected_indices) != 1:
+                messagebox.showinfo("è¯·é€‰æ‹©ä¸€ä¸ªé•œå¤´", "è¯·å…ˆåœ¨åˆ—è¡¨ä¸­åªé€‰ä¸­ä¸€ä¸ªéœ€è¦æ‹†åˆ†çš„é•œå¤´ã€‚")
+                return
+            index = selected_indices[0]
+        else:
+            index = selected_indices[0] if len(selected_indices) == 1 else self.current_comic_shot_index
+        shots = self.state["comic"]["shots"]
+        if index is None or not (0 <= index < len(shots)):
+            messagebox.showinfo("è¯·é€‰æ‹©é•œå¤´", "è¯·å…ˆåœ¨åˆ—è¡¨ä¸­é€‰æ‹©ä¸€ä¸ªéœ€è¦æ‹†åˆ†çš„é•œå¤´ã€‚")
+            return
+        shot = shots[index]
+        source = str(shot.get("source", ""))
+        if len(source.strip()) < 2:
+            messagebox.showinfo("åŸæ–‡å¤ªçŸ­", "å½“å‰é•œå¤´æ²¡æœ‰è¶³å¤Ÿçš„åŸæ–‡å¯æ‹†åˆ†ã€‚")
+            return
+
+        midpoint = len(source) // 2
+        boundaries = [position + 1 for position, char in enumerate(source) if char in "ã€‚ï¼ï¼Ÿ!?ï¼›;\n"]
+        initial_offset = min(boundaries, key=lambda value: abs(value - midpoint)) if boundaries else midpoint
+        initial_offset = min(max(initial_offset, 1), len(source) - 1)
+
+        dialog = Toplevel(self.root)
+        dialog.title(f"æ‰‹åŠ¨æ‹†åˆ† Â· {shot.get('title', f'åˆ†é•œ {index + 1:02d}')}")
+        dialog.geometry("860x650")
+        dialog.minsize(760, 580)
+        dialog.configure(bg=BG)
+        dialog.transient(self.root)
+        dialog.grab_set()
+        Label(dialog, text="æ‰‹åŠ¨é€‰æ‹©æ‹†åˆ†ä½ç½®", bg=BG, fg=INK, font=("Microsoft YaHei UI", 17, "bold")).pack(anchor="w", padx=24, pady=(20, 4))
+        Label(dialog, text="åœ¨åŸæ–‡ä¸­å•å‡»åˆ†ç•Œä½ç½®ï¼šç»¿è‰²éƒ¨åˆ†æˆä¸ºä¸Šä¸€ä¸ªé•œå¤´ï¼Œæµ…é»„è‰²éƒ¨åˆ†æˆä¸ºä¸‹ä¸€ä¸ªé•œå¤´ã€‚ä¸ä¼šé‡æ–°è°ƒç”¨ AIã€‚", bg=BG, fg=MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w", padx=24)
+
+        source_outer = self._card(dialog, bg=SURFACE, padx=14, pady=12)
+        source_outer.pack(fill=X, padx=24, pady=(16, 10))
+        source_panel = source_outer.winfo_children()[0]
+        source_editor_outer, source_editor_shell = self._rounded_widget_shell(source_panel, bg=SURFACE, fixed_height=220)
+        source_editor_outer.pack(fill=X)
+        source_editor = Text(source_editor_shell, height=9, wrap="word", bg=SURFACE, fg=INK, relief="flat", highlightthickness=1, highlightbackground=BORDER, padx=14, pady=12, cursor="xterm", font=("Microsoft YaHei UI", 10))
+        self._pack_vertical_scroller(source_editor_shell, source_editor, fill=X, expand=True)
+        source_editor.insert("1.0", source)
+        source_editor.tag_configure("before_split", background="#DDF1EC")
+        source_editor.tag_configure("after_split", background="#F7EEDC")
+
+        preview_row = Frame(dialog, bg=BG)
+        preview_row.pack(fill=BOTH, expand=True, padx=24)
+        preview_row.grid_columnconfigure(0, weight=1, uniform="split_preview")
+        preview_row.grid_columnconfigure(1, weight=1, uniform="split_preview")
+        before_outer = self._card(preview_row, bg=SURFACE, padx=12, pady=10)
+        before_outer.grid(row=0, column=0, sticky="nsew", padx=(0, 6))
+        after_outer = self._card(preview_row, bg=SURFACE, padx=12, pady=10)
+        after_outer.grid(row=0, column=1, sticky="nsew", padx=(6, 0))
+        before_panel = before_outer.winfo_children()[0]
+        after_panel = after_outer.winfo_children()[0]
+        Label(before_panel, text="ä¸Šä¸€ä¸ªé•œå¤´åŸæ–‡", bg=SURFACE, fg=ACCENT_DARK, font=("Microsoft YaHei UI", 9, "bold")).pack(anchor="w")
+        Label(after_panel, text="ä¸‹ä¸€ä¸ªé•œå¤´åŸæ–‡", bg=SURFACE, fg=WARM, font=("Microsoft YaHei UI", 9, "bold")).pack(anchor="w")
+        before_text = Text(before_panel, height=7, wrap="word", state="disabled", bg=SURFACE, fg=INK, relief="flat", padx=5, pady=7, font=("Microsoft YaHei UI", 9))
+        before_text.pack(fill=BOTH, expand=True)
+        after_text = Text(after_panel, height=7, wrap="word", state="disabled", bg=SURFACE, fg=INK, relief="flat", padx=5, pady=7, font=("Microsoft YaHei UI", 9))
+        after_text.pack(fill=BOTH, expand=True)
+        split_state = {"offset": initial_offset}
+        split_status_var = StringVar()
+
+        def set_preview_text(widget: Text, value: str) -> None:
+            widget.configure(state="normal")
+            widget.delete("1.0", END)
+            widget.insert("1.0", value)
+            widget.configure(state="disabled")
+
+        def update_split(offset: int) -> None:
+            offset = min(max(int(offset), 1), len(source) - 1)
+            split_state["offset"] = offset
+            split_index = f"1.0+{offset}c"
+            source_editor.tag_remove("before_split", "1.0", END)
+            source_editor.tag_remove("after_split", "1.0", END)
+            source_editor.tag_add("before_split", "1.0", split_index)
+            source_editor.tag_add("after_split", split_index, "end-1c")
+            source_editor.mark_set("insert", split_index)
+            source_editor.see(split_index)
+            before = source[:offset].strip()
+            after = source[offset:].strip()
+            set_preview_text(before_text, before)
+            set_preview_text(after_text, after)
+            split_status_var.set(f"æ‹†åˆ†ä½ç½®ï¼šç¬¬ {offset} / {len(source)} ä¸ªå­—ç¬¦ Â· ä¸Šé•œå¤´ {len(before)} å­— Â· ä¸‹é•œå¤´ {len(after)} å­—")
+
+        def choose_split(event) -> str:
+            text_index = source_editor.index(f"@{event.x},{event.y}")
+            count = source_editor.count("1.0", text_index, "chars")
+            update_split(int(count[0]) if count else initial_offset)
+            return "break"
+
+        def move_split(event) -> str:
+            if event.keysym == "Left":
+                update_split(split_state["offset"] - 1)
+            elif event.keysym == "Right":
+                update_split(split_state["offset"] + 1)
+            elif event.keysym == "Home":
+                update_split(1)
+            elif event.keysym == "End":
+                update_split(len(source) - 1)
+            return "break"
+
+        source_editor.bind("<Button-1>", choose_split)
+        source_editor.bind("<KeyPress>", move_split)
+        update_split(initial_offset)
+
+        footer = Frame(dialog, bg=BG)
+        footer.pack(fill=X, padx=24, pady=(12, 20))
+        Label(footer, textvariable=split_status_var, bg=BG, fg=MUTED, font=("Microsoft YaHei UI", 8)).pack(side=LEFT)
+        self._button(footer, "å–æ¶ˆ", dialog.destroy, kind="ghost").pack(side=RIGHT)
+
+        def confirm_split() -> None:
+            try:
+                first, second = split_storyboard_shot(shot, split_state["offset"])
+            except ValueError as exc:
+                messagebox.showwarning("æ— æ³•æ‹†åˆ†", str(exc), parent=dialog)
+                return
+            shots[index : index + 1] = [first, second]
+            self._renumber_comic_shots(shots)
+            self._invalidate_comic_draft()
+            self.store.save(self.state)
+            dialog.destroy()
+            self.current_comic_shot_index = index
+            self.comic_storyboard_selected_indices = {index, index + 1}
+            self._refresh_comic_shot_tree(index)
+            self._refresh_comic_overview()
+            self.comic_status.configure(text=f"å·²å°†ç¬¬ {index + 1} ä¸ªé•œå¤´æ‹†æˆä¸¤ä¸ªï¼Œè¯·åœ¨å¯¹åº”è¡Œæ ¡å¯¹æç¤ºè¯ã€‚", fg=ACCENT_DARK)
+
+        self._button(footer, "ç¡®è®¤æ‹†æˆä¸¤ä¸ªé•œå¤´", confirm_split, kind="accent").pack(side=RIGHT, padx=(0, 8))
+
+    def _on_comic_shot_binding_change(self, _event=None) -> None:
+        if self._loading_comic_shot_editor:
+            return
+        self.save_comic_shot_prompt(silent=True)
+
+    def save_comic_shot_prompt(self, silent: bool = False) -> None:
+        if self.comic_storyboard_prompt_editors:
+            self._save_all_inline_comic_shot_prompts()
+            if not self.comic_shot_prompt_editor:
+                if not silent and hasattr(self, "comic_status"):
+                    self.comic_status.configure(text="åˆ†é•œæç¤ºè¯å·²ä¿å­˜ã€‚", fg=ACCENT_DARK)
+                return
+        index = self.current_comic_shot_index
+        shots = self.state["comic"]["shots"]
+        if index is None or not (0 <= index < len(shots)) or not self.comic_shot_prompt_editor:
+            return
+        old_prompt = str(shots[index].get("prompt", "")).strip()
+        old_characters = [str(item) for item in shots[index].get("characters", [])]
+        old_scene = str(shots[index].get("scene", "")).strip()
+        new_prompt = self.comic_shot_prompt_editor.get("1.0", "end-1c").strip()
+        shots[index]["prompt"] = new_prompt
+        if self.comic_shot_character_list:
+            characters = self.state["comic"]["characters"]
+            shots[index]["characters"] = [
+                str(characters[item].get("name", ""))
+                for item in self.comic_shot_character_list.curselection()
+                if 0 <= item < len(characters)
+            ]
+        if self.comic_shot_scene_combo:
+            shots[index]["scene"] = self.comic_shot_scene_var.get().strip()
+        changed = (
+            old_prompt != new_prompt
+            or old_characters != [str(item) for item in shots[index].get("characters", [])]
+            or old_scene != str(shots[index].get("scene", "")).strip()
+        )
+        if changed and (shots[index].get("local_path") or shots[index].get("image_url")):
+            self._mark_comic_shot_stale(shots[index])
+            self._invalidate_comic_draft()
+        self.store.save(self.state)
+        self._update_comic_shot_tree_row(index)
+        if not silent and hasattr(self, "comic_status"):
+            self.comic_status.configure(text="å½“å‰åˆ†é•œæç¤ºè¯å·²ä¿å­˜ã€‚", fg=ACCENT_DARK)
+
+    def select_all_comic_shot_characters(self) -> None:
+        if self.comic_shot_character_list:
+            self.comic_shot_character_list.selection_set(0, END)
+
+    def clear_comic_shot_characters(self) -> None:
+        if self.comic_shot_character_list:
+            self.comic_shot_character_list.selection_clear(0, END)
+
+    def _comic_reference_characters(self, shot: dict[str, object], characters: list[dict[str, object]]) -> list[dict[str, object]]:
+        selected_names = {str(name) for name in shot.get("characters", [])}
+        if not selected_names:
+            source = str(shot.get("source", ""))
+            selected_names = {str(item.get("name", "")) for item in characters if str(item.get("name", "")) and str(item.get("name", "")) in source}
+        if not selected_names and len(characters) == 1:
+            selected_names = {str(characters[0].get("name", ""))}
+        return [item for item in characters if str(item.get("name", "")) in selected_names]
+
+    @staticmethod
+    def _comic_reference_scene(shot: dict[str, object], scenes: list[dict[str, object]]) -> dict[str, object] | None:
+        scene_name = str(shot.get("scene", "")).strip()
+        return next((item for item in scenes if str(item.get("name", "")).strip() == scene_name), None)
+
+    def _generate_comic_shots(self, indices: list[int]) -> None:
+        if self.is_busy or not indices:
+            return
+        self._sync_comic_state()
+        try:
+            client = self._seedream_client()
+        except ComicEngineError as exc:
+            messagebox.showwarning("éœ€è¦ ARK API Key", str(exc))
+            return
+        comic = self.state["comic"]
+        characters = [dict(item) for item in comic["characters"]]
+        scenes = [dict(item) for item in comic.get("scenes", [])]
+        shots = [dict(item) for item in comic["shots"]]
+        missing: set[str] = set()
+        missing_scenes: set[str] = set()
+        too_many_references: list[str] = []
+        for index in indices:
+            selected_characters = self._comic_reference_characters(shots[index], characters)
+            selected_scene = self._comic_reference_scene(shots[index], scenes)
+            reference_count = len(selected_characters) + (1 if selected_scene else 0)
+            if reference_count > 10:
+                too_many_references.append(f"{shots[index].get('title', f'åˆ†é•œ {index + 1:02d}')}ï¼ˆ{len(selected_characters)} ä¸ªè§’è‰² + {1 if selected_scene else 0} ä¸ªåœºæ™¯ï¼‰")
+            for character in selected_characters:
+                if not has_local_reference(character):
+                    missing.add(str(character.get("name", "æœªå‘½åè§’è‰²")))
+            assigned_scene = str(shots[index].get("scene", "")).strip()
+            if assigned_scene and (not selected_scene or not has_local_reference(selected_scene)):
+                missing_scenes.add(assigned_scene)
+        if too_many_references:
+            messagebox.showwarning("å‚è€ƒå›¾è¿‡å¤š", "Seedream 5.0 Pro æ¯æ¬¡æœ€å¤šæ¥æ”¶ 10 å¼ å‚è€ƒå›¾ï¼ˆè§’è‰²ä¸åœºæ™¯åˆè®¡ï¼‰ï¼Œè¯·è°ƒæ•´ä»¥ä¸‹åˆ†é•œï¼š\n" + "\n".join(too_many_references))
+            return
+        if missing:
+            messagebox.showwarning("è¯·å…ˆç¡®è®¤è§’è‰²å®šå¦†", "ä»¥ä¸‹è§’è‰²å°šæ— å·²ç¡®è®¤çš„å‚è€ƒå›¾ï¼š\n" + "ã€".join(sorted(missing)))
+            return
+        if missing_scenes:
+            messagebox.showwarning("è¯·å…ˆç¡®è®¤åœºæ™¯å®šæ™¯", "ä»¥ä¸‹å·²ç»‘å®šåœºæ™¯å°šæ— å·²ç¡®è®¤çš„å‚è€ƒå›¾ï¼Œæˆ–å·²ä»åœºæ™¯åº“åˆ é™¤ï¼š\n" + "ã€".join(sorted(missing_scenes)))
+            return
+        if len(indices) > 1 and not messagebox.askyesno("æ‰¹é‡ç”Ÿæˆåˆ†é•œ", f"å°†ä½¿ç”¨ Seedream 5.0 Pro æŒ‰é¡ºåºç”Ÿæˆ {len(indices)} å¼ åˆ†é•œå›¾ï¼Œå¯èƒ½äº§ç”Ÿç«å±±æ–¹èˆŸ API è´¹ç”¨ã€‚æ˜¯å¦ç»§ç»­ï¼Ÿ"):
+            return
+        art_style = comic["art_style"]
+        aspect = comic["aspect"]
+        resolution = str(comic.get("resolution", "2K"))
+        optimize_mode = str(comic.get("optimize_mode", "standard"))
+        output_dir = self._comic_output_dir() / "shots"
+        self.is_busy = True
+        self.comic_progress["value"] = 0
+
+        def worker() -> None:
+            completed = 0
+            failed = 0
+            total = len(indices)
+            for position, index in enumerate(indices, start=1):
+                shot = shots[index]
+                selected = self._comic_reference_characters(shot, characters)
+                selected_scene = self._comic_reference_scene(shot, scenes)
+                prompt_shot = dict(shot)
+                prompt_shot["characters"] = [str(item.get("name", "")) for item in selected]
+                prompt = compose_shot_prompt(prompt_shot, art_style=art_style, aspect=aspect, characters=characters, scenes=scenes)
+                references = character_reference_data(selected) + scene_reference_data(selected_scene)
+                destination = output_dir / f"{index + 1:03d}_{safe_filename(str(shot.get('title', 'åˆ†é•œ')))}.png"
+                self.bus.put(("comic_shot_started", (index, position, total, prompt)))
+                try:
+                    def progress(task: dict[str, object], shot_index: int = index) -> None:
+                        self.bus.put(("comic_shot_progress", (shot_index, str(task.get("progress", "")), str(task.get("id", "")))))
+
+                    result = client.generate_image(prompt, images=references, size=resolution, optimize_mode=optimize_mode, progress=progress)
+                    client.download_image(str(result["imageUrl"]), destination)
+                    self.bus.put(("comic_shot_done", (index, result, str(destination), prompt)))
+                    completed += 1
+                except Exception as exc:
+                    self.bus.put(("comic_shot_error", (index, str(exc))))
+                    failed += 1
+            self.bus.put(("comic_batch_done", (completed, failed, total)))
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def generate_selected_comic_shot(self) -> None:
+        self.save_comic_shot_prompt(silent=True)
+        if self.current_comic_shot_index is None:
+            messagebox.showinfo("æ²¡æœ‰åˆ†é•œ", "è¯·å…ˆé€‰æ‹©ä¸€ä¸ªåˆ†é•œã€‚")
+            return
+        self._generate_comic_shots([self.current_comic_shot_index])
+
+    def generate_all_comic_shots(self) -> None:
+        self.save_comic_shot_prompt(silent=True)
+        shots = self.state["comic"]["shots"]
+        if not shots:
+            messagebox.showinfo("æ²¡æœ‰åˆ†é•œ", "è¯·å…ˆåˆ†æå°è¯´æˆ–è¿›è¡Œæœ¬åœ°æ‹†åˆ†ã€‚")
+            return
+        indices = [index for index, shot in enumerate(shots) if not shot.get("local_path") or shot.get("error")]
+        if not indices:
+            if not messagebox.askyesno("é‡æ–°ç”Ÿæˆ", "æ‰€æœ‰åˆ†é•œéƒ½å·²æœ‰å›¾ç‰‡ã€‚æ˜¯å¦å…¨éƒ¨é‡æ–°ç”Ÿæˆï¼Ÿ"):
+                return
+            indices = list(range(len(shots)))
+        self._generate_comic_shots(indices)
+
+    def _show_comic_image(self, path: str, title: str) -> None:
+        if not path or not Path(path).is_file():
+            messagebox.showinfo("æ²¡æœ‰å›¾ç‰‡", "å½“å‰é¡¹ç›®è¿˜æ²¡æœ‰å¯é¢„è§ˆçš„æœ¬åœ°å›¾ç‰‡ã€‚")
+            return
+        dialog = Toplevel(self.root)
+        dialog.title(title)
+        dialog.geometry("980x860")
+        dialog.minsize(720, 620)
+        dialog.configure(bg=BG)
+        try:
+            with Image.open(path) as source:
+                original = ImageOps.exif_transpose(source).convert("RGBA")
+        except (OSError, ValueError):
+            Label(dialog, text=f"ç³»ç»Ÿé¢„è§ˆå™¨å¯æ‰“å¼€æ­¤å›¾ç‰‡ï¼š\n{path}", bg=BG, fg=INK, wraplength=680, font=("Microsoft YaHei UI", 11)).pack(fill=BOTH, expand=True, padx=24, pady=24)
+            return
+
+        toolbar = Frame(dialog, bg=BG)
+        toolbar.pack(fill=X, padx=18, pady=(16, 8))
+        Label(toolbar, text=title, bg=BG, fg=INK, font=("Microsoft YaHei UI", 12, "bold")).pack(side=LEFT)
+        Label(toolbar, text="æ»šè½®ç¼©æ”¾ Â· æŒ‰ä½é¼ æ ‡å·¦é”®æ‹–åŠ¨ç”»é¢", bg=BG, fg=MUTED, font=("Microsoft YaHei UI", 8)).pack(side=LEFT, padx=(12, 0))
+        viewport_outer = self._card(dialog, bg="#111A22", padx=0, pady=0)
+        viewport_outer.pack(fill=BOTH, expand=True, padx=18, pady=(0, 18))
+        viewport_host = viewport_outer.winfo_children()[0]
+        viewport = Canvas(viewport_host, bg="#111A22", highlightthickness=0, borderwidth=0, cursor="fleur")
+        viewport.pack(fill=BOTH, expand=True)
+        state = {"scale": 1.0, "fit": 1.0}
+
+        def render(*, keep_center: bool = True) -> None:
+            viewport.update_idletasks()
+            available_width = max(120, viewport.winfo_width() - 24)
+            available_height = max(120, viewport.winfo_height() - 24)
+            state["fit"] = min(1.0, available_width / original.width, available_height / original.height)
+            scale = max(0.08, min(float(state["scale"]), 4.0))
+            target = (max(1, int(original.width * scale)), max(1, int(original.height * scale)))
+            resized = original.resize(target, Image.Resampling.LANCZOS)
+            photo = ImageTk.PhotoImage(resized, master=viewport)
+            viewport.delete("all")
+            canvas_width = max(viewport.winfo_width(), target[0] + 24)
+            canvas_height = max(viewport.winfo_height(), target[1] + 24)
+            viewport.configure(scrollregion=(0, 0, canvas_width, canvas_height))
+            viewport.create_image(canvas_width / 2, canvas_height / 2, image=photo, anchor="center")
+            viewport._preview_photo = photo
+            self.comic_preview_image = photo
+            if keep_center:
+                viewport.xview_moveto(max(0.0, (canvas_width - viewport.winfo_width()) / max(canvas_width, 1) / 2))
+                viewport.yview_moveto(max(0.0, (canvas_height - viewport.winfo_height()) / max(canvas_height, 1) / 2))
+
+        def zoom(multiplier: float) -> None:
+            state["scale"] = max(0.08, min(4.0, float(state["scale"]) * multiplier))
+            render()
+
+        def fit_image() -> None:
+            viewport.update_idletasks()
+            state["scale"] = min(1.0, max(0.08, (viewport.winfo_width() - 24) / original.width), max(0.08, (viewport.winfo_height() - 24) / original.height))
+            render()
+
+        self._button(toolbar, "+ æ”¾å¤§", lambda: zoom(1.25), kind="primary").pack(side=RIGHT)
+        self._button(toolbar, "ï¼ ç¼©å°", lambda: zoom(0.8), kind="ghost").pack(side=RIGHT, padx=(0, 7))
+        self._button(toolbar, "é€‚åº”çª—å£", fit_image, kind="ghost").pack(side=RIGHT, padx=(0, 7))
+        viewport.bind("<ButtonPress-1>", lambda event: viewport.scan_mark(event.x, event.y))
+        viewport.bind("<B1-Motion>", lambda event: viewport.scan_dragto(event.x, event.y, gain=1))
+
+        def wheel_zoom(event):
+            zoom(1.12 if event.delta > 0 else 0.89)
+            return "break"
+
+        viewport.bind("<MouseWheel>", wheel_zoom)
+        dialog.after(80, fit_image)
+
+    def preview_comic_character(self) -> None:
+        index = self.current_comic_character_index
+        if index is None:
+            messagebox.showinfo("æ²¡æœ‰è§’è‰²", "è¯·å…ˆé€‰æ‹©è§’è‰²ã€‚")
+            return
+        character = self.state["comic"]["characters"][index]
+        candidate = str(character.get("candidate_path", ""))
+        has_candidate = bool(candidate and Path(candidate).is_file())
+        path = candidate if has_candidate else str(character.get("local_path") or "")
+        title_kind = "å€™é€‰å®šå¦†" if has_candidate else "å·²ç¡®è®¤å‚è€ƒ"
+        self._show_comic_image(path, f"{title_kind} Â· {character.get('name', '')}")
+
+    def preview_comic_shot(self) -> None:
+        index = self.current_comic_shot_index
+        if index is None:
+            messagebox.showinfo("æ²¡æœ‰åˆ†é•œ", "è¯·å…ˆé€‰æ‹©åˆ†é•œã€‚")
+            return
+        shot = self.state["comic"]["shots"][index]
+        self._show_comic_image(str(shot.get("local_path", "")), str(shot.get("title", "åˆ†é•œé¢„è§ˆ")))
+
+    def _refresh_comic_video_labels(self) -> None:
+        comic = self.state["comic"]
+        audio = str(comic.get("audio_path", ""))
+        subtitles = str(comic.get("subtitles_path", ""))
+        output = str(comic.get("jianying_draft_path", ""))
+        duration = float(comic.get("audio_duration", 0.0) or 0.0)
+        if self.comic_video_audio_label:
+            self.comic_video_audio_label.configure(text=f"{Path(audio).name} Â· {duration:.1f} ç§’" if audio else "å°šæœªå¯¼å…¥é…éŸ³éŸ³é¢‘")
+        if self.comic_video_subtitle_label:
+            if subtitles:
+                try:
+                    cue_count = len(load_srt(subtitles)) if Path(subtitles).is_file() else 0
+                except OSError:
+                    cue_count = 0
+                self.comic_video_subtitle_label.configure(text=f"{Path(subtitles).name} Â· {cue_count} æ¡å­—å¹•")
+            else:
+                self.comic_video_subtitle_label.configure(text="æœªå¯¼å…¥å­—å¹•ï¼›ä»å¯ç”Ÿæˆæ— å­—å¹•è‰ç¨¿")
+        if self.comic_video_result_label:
+            images = sum(1 for shot in comic.get("shots", []) if Path(str(shot.get("local_path", ""))).is_file())
+            total = len(comic.get("shots", []))
+            result_text = f"åˆ†é•œå›¾ç‰‡ï¼š{images}/{total}\néŸ³é¢‘ï¼š{'å·²å¯¼å…¥' if audio else 'æœªå¯¼å…¥'}\nå­—å¹•ï¼š{'å·²å¯¼å…¥' if subtitles else 'æœªå¯¼å…¥'}\nå…³é”®å¸§ï¼š{comic.get('motion_mode', 'ä¸Šä¸‹äº¤æ›¿å…³é”®å¸§')}"
+            if output and Path(output).is_dir():
+                result_text += f"\n\nå·²ç”Ÿæˆè‰ç¨¿ï¼š{comic.get('jianying_draft_name') or Path(output).name}"
+            self.comic_video_result_label.configure(text=result_text)
+
+    def choose_comic_audio(self) -> None:
+        source = filedialog.askopenfilename(title="å¯¼å…¥æ¼«ç”»é…éŸ³", filetypes=[("éŸ³é¢‘", "*.mp3 *.wav *.m4a *.aac *.flac"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")])
+        if not source:
+            return
+        destination = self._comic_output_dir() / "audio" / f"{safe_filename(Path(source).stem, 'voice')}{Path(source).suffix.lower()}"
+        try:
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            if Path(source).resolve() != destination.resolve():
+                shutil.copy2(source, destination)
+        except OSError as exc:
+            messagebox.showerror("éŸ³é¢‘å¯¼å…¥å¤±è´¥", str(exc))
+            return
+        path = str(destination)
+        duration = probe_audio_duration(path) or 0.0
+        if duration <= 0:
+            settings = self.state["settings"]
+            ffprobe = find_executable(str(settings.get("ffprobe_path", "")), "ffprobe")
+            duration = probe_duration(path, ffprobe) or 0.0
+        if duration <= 0:
+            messagebox.showerror("æ— æ³•è¯»å–éŸ³é¢‘", "æ— æ³•è¯»å–éŸ³é¢‘æ—¶é•¿ï¼Œè¯·æ£€æŸ¥æ–‡ä»¶ï¼Œæˆ–åœ¨â€œæ¨¡å‹ä¸å·¥å…·â€ä¸­é…ç½® FFprobeã€‚")
+            return
+        comic = self.state["comic"]
+        comic.update({"audio_path": path, "audio_duration": duration, "video_output_path": "", "jianying_draft_path": "", "jianying_draft_name": ""})
+        self.comic_audio_var.set(path)
+        self.comic_video_output_var.set("")
+        self.comic_draft_output_var.set("")
+        self.store.save(self.state)
+        self._refresh_comic_video_labels()
+        self._refresh_comic_overview()
+
+    def choose_comic_subtitles(self) -> None:
+        source = filedialog.askopenfilename(title="å¯¼å…¥æ¼«ç”»å­—å¹•", filetypes=[("SRT å­—å¹•", "*.srt"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")])
+        if not source:
+            return
+        destination = self._comic_output_dir() / "audio" / f"{safe_filename(Path(source).stem, 'subtitles')}.srt"
+        try:
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            if Path(source).resolve() != destination.resolve():
+                shutil.copy2(source, destination)
+        except OSError as exc:
+            messagebox.showerror("å­—å¹•å¯¼å…¥å¤±è´¥", str(exc))
+            return
+        path = str(destination)
+        try:
+            cues = load_srt(path)
+        except OSError as exc:
+            messagebox.showerror("å­—å¹•è¯»å–å¤±è´¥", str(exc))
+            return
+        if not cues:
+            messagebox.showerror("å­—å¹•æ ¼å¼æ— æ•ˆ", "æ²¡æœ‰è¯†åˆ«åˆ°æœ‰æ•ˆçš„ SRT æ—¶é—´è½´ã€‚")
+            return
+        self.state["comic"].update({"subtitles_path": path, "video_output_path": "", "jianying_draft_path": "", "jianying_draft_name": ""})
+        self.comic_subtitles_var.set(path)
+        self.comic_video_output_var.set("")
+        self.comic_draft_output_var.set("")
+        self.store.save(self.state)
+        self._refresh_comic_video_labels()
+        self._refresh_comic_overview()
+
+    def generate_comic_draft(self, open_after: bool = False) -> None:
+        if self.is_busy:
+            messagebox.showinfo("ä»»åŠ¡è¿›è¡Œä¸­", "å½“å‰ä»»åŠ¡å°šæœªç»“æŸï¼Œè¯·ç­‰å¾…å³ä¾§è¿›åº¦å®Œæˆåå†ç”Ÿæˆå‰ªæ˜ è‰ç¨¿ã€‚")
+            return
+        self._sync_comic_state()
+        comic = self.state["comic"]
+        shots = list(comic.get("shots", []))
+        if not shots:
+            messagebox.showinfo("æ²¡æœ‰åˆ†é•œ", "è¯·å…ˆç”Ÿæˆé™æ€æ¼«ç”»åˆ†é•œå’Œå›¾ç‰‡ã€‚")
+            return
+        image_paths = [str(shot.get("local_path", "")) for shot in shots]
+        missing = [shots[index].get("title", f"åˆ†é•œ {index + 1:02d}") for index, path in enumerate(image_paths) if not Path(path).is_file()]
+        if missing:
+            messagebox.showwarning("åˆ†é•œå›¾ç‰‡æœªå®Œæˆ", "è¯·å…ˆç”Ÿæˆä»¥ä¸‹åˆ†é•œå›¾ç‰‡ï¼š\n" + "ã€".join(str(item) for item in missing[:12]))
+            return
+        audio_path = self.comic_audio_var.get().strip()
+        if not Path(audio_path).is_file():
+            messagebox.showwarning("éœ€è¦é…éŸ³éŸ³é¢‘", "è¯·å…ˆå¯¼å…¥é…éŸ³éŸ³é¢‘ã€‚")
+            return
+        duration = float(comic.get("audio_duration", 0.0) or 0.0)
+        if duration <= 0:
+            duration = probe_audio_duration(audio_path) or 0.0
+        if duration <= 0:
+            ffprobe = find_executable(str(self.state["settings"].get("ffprobe_path", "")), "ffprobe")
+            duration = probe_duration(audio_path, ffprobe) or 0.0
+        if duration <= 0:
+            messagebox.showerror("æ— æ³•è¯»å–éŸ³é¢‘", "æ— æ³•ç¡®å®šéŸ³é¢‘æ—¶é•¿ï¼Œè¯·æ£€æŸ¥éŸ³é¢‘æ–‡ä»¶åé‡è¯•ã€‚")
+            return
+        subtitles_path = self.comic_subtitles_var.get().strip()
+        try:
+            cues = load_srt(subtitles_path) if subtitles_path and Path(subtitles_path).is_file() else []
+            shot_texts = [str(shot.get("source", "") or shot.get("narration", "")) for shot in shots]
+            durations = allocate_shot_durations(duration, len(image_paths), cues, shot_texts)
+        except (OSError, ValueError) as exc:
+            messagebox.showerror("æ— æ³•å‡†å¤‡è‰ç¨¿", str(exc))
+            return
+
+        settings = self.state["settings"]
+        drafts_path = detect_jianying_drafts_path(str(settings.get("jianying_drafts_path", "")))
+        executable = detect_jianying_executable(str(settings.get("jianying_exe", "")))
+        if not drafts_path:
+            messagebox.showwarning("éœ€è¦å‰ªæ˜ è‰ç¨¿ç›®å½•", "æ²¡æœ‰æ‰¾åˆ°å‰ªæ˜ è‰ç¨¿ç›®å½•ï¼Œè¯·åœ¨â€œæ¨¡å‹ä¸å·¥å…·â€ä¸­é€‰æ‹©åé‡è¯•ã€‚")
+            self.navigate("settings")
+            return
+        if open_after and not executable:
+            messagebox.showwarning("æœªæ‰¾åˆ°å‰ªæ˜ ", "æ²¡æœ‰æ‰¾åˆ°å‰ªæ˜ ä¸“ä¸šç‰ˆç¨‹åºï¼Œè¯·åœ¨â€œæ¨¡å‹ä¸å·¥å…·â€ä¸­é€‰æ‹© JianyingPro.exeã€‚")
+            self.navigate("settings")
+            return
+        settings["jianying_drafts_path"] = drafts_path
+        if executable:
+            settings["jianying_exe"] = executable
+        self.store.save(self.state)
+
+        self.is_busy = True
+        self.open_jianying_after_draft = bool(open_after)
+        self.comic_progress["value"] = 1
+        if self.comic_draft_progress:
+            self.comic_draft_progress["value"] = 1
+        if self.comic_draft_status_label:
+            self.comic_draft_status_label.configure(text="1% Â· æ­£åœ¨å‡†å¤‡å‰ªæ˜ è‰ç¨¿", fg=SIDEBAR_MUTED)
+        self.comic_status.configure(text="æ­£åœ¨å‡†å¤‡å¯ç¼–è¾‘å‰ªæ˜ è‰ç¨¿â€¦", fg=ACCENT_DARK)
+        requested_name = f"{safe_filename(str(comic.get('project_name', 'æ¼«ç”»æ¨æ–‡')))}_é™æ€æ¼«"
+        motion_mode = self.comic_motion_var.get()
+
+        def worker() -> None:
+            try:
+                def progress(value: float, detail: str) -> None:
+                    self.bus.put(("comic_draft_progress", (value, detail)))
+
+                result = create_comic_jianying_draft(
+                    image_paths,
+                    durations,
+                    audio_path=audio_path,
+                    subtitles_path=subtitles_path,
+                    aspect=str(comic.get("aspect", "9:16")),
+                    motion_mode=motion_mode,
+                    drafts_root=drafts_path,
+                    requested_name=requested_name,
+                    fps=30,
+                    on_progress=progress,
+                )
+                self.bus.put(("comic_draft_done", (result, executable or "")))
+            except Exception as exc:
+                self.bus.put(("comic_draft_error", str(exc)))
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def open_comic_draft_in_jianying(self) -> None:
+        comic = self.state["comic"]
+        path = str(comic.get("jianying_draft_path", ""))
+        if not path or not Path(path).is_dir():
+            messagebox.showinfo("æ²¡æœ‰å‰ªæ˜ è‰ç¨¿", "è¯·å…ˆç”Ÿæˆå‰ªæ˜ è‰ç¨¿ã€‚")
+            return
+        settings = self.state["settings"]
+        executable = detect_jianying_executable(str(settings.get("jianying_exe", "")))
+        if not executable:
+            messagebox.showwarning("æœªæ‰¾åˆ°å‰ªæ˜ ", "æ²¡æœ‰æ‰¾åˆ°å‰ªæ˜ ä¸“ä¸šç‰ˆç¨‹åºï¼Œè¯·åœ¨â€œæ¨¡å‹ä¸å·¥å…·â€ä¸­é€‰æ‹© JianyingPro.exeã€‚")
+            return
+        settings["jianying_exe"] = executable
+        self.store.save(self.state)
+        try:
+            open_jianying(executable)
+        except JianyingEngineError as exc:
+            messagebox.showerror("æ— æ³•æ‰“å¼€å‰ªæ˜ ", str(exc))
+            return
+        draft_name = str(comic.get("jianying_draft_name", "")) or Path(path).name
+        self._copy_text(draft_name)
+        messagebox.showinfo(
+            "å‰ªæ˜ å·²æ‰“å¼€",
+            f"å¯ç¼–è¾‘è‰ç¨¿â€œ{draft_name}â€å·²å†™å…¥å‰ªæ˜ æœ¬åœ°è‰ç¨¿åˆ—è¡¨ï¼Œå¹¶å·²å¤åˆ¶è‰ç¨¿åã€‚\n\n"
+            "å‰ªæ˜  11 æš‚ä¸æ”¯æŒå¤–éƒ¨ç¨‹åºç›´æ¥è·³å…¥æŒ‡å®šè‰ç¨¿ï¼›è¯·åœ¨æœ¬åœ°è‰ç¨¿åˆ—è¡¨ä¸­æ‰“å¼€å®ƒã€‚è‹¥åˆ—è¡¨å°šæœªåˆ·æ–°ï¼Œè¯·é‡å¯ä¸€æ¬¡å‰ªæ˜ ã€‚",
+        )
+
+    def open_comic_draft_directory(self) -> None:
+        path = str(self.state["comic"].get("jianying_draft_path", ""))
+        if not path or not Path(path).is_dir():
+            path = detect_jianying_drafts_path(str(self.state["settings"].get("jianying_drafts_path", ""))) or ""
+        if not path or not Path(path).is_dir():
+            messagebox.showinfo("æ²¡æœ‰è‰ç¨¿ç›®å½•", "è¯·å…ˆç”Ÿæˆå‰ªæ˜ è‰ç¨¿ï¼Œæˆ–åœ¨â€œæ¨¡å‹ä¸å·¥å…·â€ä¸­é€‰æ‹©è‰ç¨¿ç›®å½•ã€‚")
+            return
+        try:
+            if sys.platform == "win32":
+                os.startfile(path)  # type: ignore[attr-defined]
+            elif sys.platform == "darwin":
+                __import__("subprocess").Popen(["/usr/bin/open", path], close_fds=True)
+            else:
+                __import__("subprocess").Popen(["xdg-open", path], close_fds=True)
+        except OSError as exc:
+            messagebox.showerror("æ— æ³•æ‰“å¼€è‰ç¨¿ç›®å½•", str(exc))
+
+    def generate_comic_video(self, open_jianying_after: bool = False) -> None:
+        if self.is_busy:
+            return
+        self._sync_comic_state()
+        comic = self.state["comic"]
+        shots = list(comic.get("shots", []))
+        if not shots:
+            messagebox.showinfo("æ²¡æœ‰åˆ†é•œ", "è¯·å…ˆç”Ÿæˆé™æ€æ¼«ç”»åˆ†é•œå’Œå›¾ç‰‡ã€‚")
+            return
+        image_paths = [str(shot.get("local_path", "")) for shot in shots]
+        missing = [shots[index].get("title", f"åˆ†é•œ {index + 1:02d}") for index, path in enumerate(image_paths) if not Path(path).is_file()]
+        if missing:
+            messagebox.showwarning("åˆ†é•œå›¾ç‰‡æœªå®Œæˆ", "è¯·å…ˆç”Ÿæˆä»¥ä¸‹åˆ†é•œå›¾ç‰‡ï¼š\n" + "ã€".join(str(item) for item in missing[:12]))
+            return
+        audio_path = self.comic_audio_var.get().strip()
+        if not Path(audio_path).is_file():
+            messagebox.showwarning("éœ€è¦é…éŸ³éŸ³é¢‘", "è¯·å…ˆå¯¼å…¥é…éŸ³éŸ³é¢‘ã€‚")
+            return
+        settings = self.state["settings"]
+        ffmpeg = find_executable(str(settings.get("ffmpeg_path", "")), "ffmpeg")
+        if not ffmpeg:
+            messagebox.showerror("ç¼ºå°‘ FFmpeg", "è¯·å…ˆåœ¨â€œæ¨¡å‹ä¸å·¥å…·â€ä¸­é…ç½® FFmpegï¼Œæ‰èƒ½æŠŠé™æ€åˆ†é•œåˆæˆä¸ºè§†é¢‘ã€‚")
+            return
+        duration = float(comic.get("audio_duration", 0.0) or 0.0)
+        if duration <= 0:
+            ffprobe = find_executable(str(settings.get("ffprobe_path", "")), "ffprobe")
+            duration = probe_duration(audio_path, ffprobe) or 0.0
+        if duration <= 0:
+            messagebox.showerror("æ— æ³•è¯»å–éŸ³é¢‘", "æ— æ³•ç¡®å®šéŸ³é¢‘æ—¶é•¿ï¼Œè¯·é…ç½® FFprobe åé‡è¯•ã€‚")
+            return
+        subtitles_path = self.comic_subtitles_var.get().strip()
+        cues = load_srt(subtitles_path) if subtitles_path and Path(subtitles_path).is_file() else []
+        try:
+            shot_texts = [str(shot.get("source", "") or shot.get("narration", "")) for shot in shots]
+            durations = allocate_shot_durations(duration, len(image_paths), cues, shot_texts)
+            output = self._comic_output_dir() / f"{safe_filename(str(comic.get('project_name', 'æ¼«ç”»æ¨æ–‡')))}_é™æ€æ¼«.mp4"
+            output.parent.mkdir(parents=True, exist_ok=True)
+            command = build_comic_video_command(
+                image_paths,
+                durations,
+                audio_path=audio_path,
+                subtitles_path=subtitles_path,
+                aspect=str(comic.get("aspect", "9:16")),
+                motion_mode=self.comic_motion_var.get(),
+                ffmpeg_path=ffmpeg,
+                output_path=str(output),
+            )
+        except (OSError, ValueError) as exc:
+            messagebox.showerror("æ— æ³•ç”Ÿæˆè§†é¢‘", str(exc))
+            return
+        self.is_busy = True
+        self.open_jianying_after_video = bool(open_jianying_after)
+        self.comic_progress["value"] = 0
+        self.comic_status.configure(text="æ­£åœ¨åˆæˆé™æ€åˆ†é•œã€ä¸Šä¸‹å…³é”®å¸§ã€é…éŸ³å’Œå­—å¹•â€¦", fg=ACCENT_DARK)
+
+        def worker() -> None:
+            try:
+                def progress(value: float, detail: str) -> None:
+                    self.bus.put(("comic_video_progress", (value, detail)))
+
+                run_export(command, duration, progress)
+                self.bus.put(("comic_video_done", (str(output), duration)))
+            except Exception as exc:
+                self.bus.put(("comic_video_error", str(exc)))
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def open_comic_video(self) -> None:
+        path = self.comic_video_output_var.get().strip() or str(self.state["comic"].get("video_output_path", ""))
+        if not Path(path).is_file():
+            messagebox.showinfo("æ²¡æœ‰è§†é¢‘", "è¯·å…ˆç”Ÿæˆé™æ€æ¼«è§†é¢‘ã€‚")
+            return
+        try:
+            if sys.platform == "win32":
+                os.startfile(path)  # type: ignore[attr-defined]
+            elif sys.platform == "darwin":
+                __import__("subprocess").Popen(["/usr/bin/open", path], close_fds=True)
+            else:
+                __import__("subprocess").Popen(["xdg-open", path], close_fds=True)
+        except OSError as exc:
+            messagebox.showerror("æ— æ³•æ’­æ”¾è§†é¢‘", str(exc))
+
+    def open_comic_video_in_jianying(self) -> None:
+        path = self.comic_video_output_var.get().strip() or str(self.state["comic"].get("video_output_path", ""))
+        if not Path(path).is_file():
+            messagebox.showinfo("æ²¡æœ‰è§†é¢‘", "è¯·å…ˆç”Ÿæˆé™æ€æ¼«è§†é¢‘ï¼Œå†äº¤ç»™å‰ªæ˜ ç»§ç»­ç¼–è¾‘ã€‚")
+            return
+        settings = self.state["settings"]
+        configured = self.jianying_var.get().strip() if hasattr(self, "jianying_var") else str(settings.get("jianying_exe", ""))
+        executable = detect_jianying_executable(configured)
+        if not executable:
+            messagebox.showwarning("æœªæ‰¾åˆ°å‰ªæ˜ ", "æ²¡æœ‰æ‰¾åˆ°å‰ªæ˜ ä¸“ä¸šç‰ˆç¨‹åºã€‚è¯·åœ¨â€œæ¨¡å‹ä¸å·¥å…·â€ä¸­é€‰æ‹© JianyingPro.exeï¼Œç„¶åé‡è¯•ã€‚")
+            return
+        settings["jianying_exe"] = executable
+        self.store.save(self.state)
+        try:
+            open_jianying(executable)
+            self._copy_text(path)
+            if sys.platform == "win32":
+                __import__("subprocess").Popen(["explorer.exe", "/select,", str(Path(path).resolve())], close_fds=True)
+        except (JianyingEngineError, OSError) as exc:
+            messagebox.showerror("æ— æ³•æ‰“å¼€å‰ªæ˜ ", str(exc))
+            return
+        messagebox.showinfo(
+            "å·²æ‰“å¼€å‰ªæ˜ ",
+            "å‰ªæ˜ å·²å¯åŠ¨ï¼Œå¹¶å·²åœ¨æ–‡ä»¶ç®¡ç†å™¨ä¸­å®šä½ç”Ÿæˆçš„è§†é¢‘ã€‚è§†é¢‘è·¯å¾„ä¹Ÿå·²å¤åˆ¶åˆ°å‰ªè´´æ¿ï¼›å¦‚æœå‰ªæ˜ æ²¡æœ‰è‡ªåŠ¨å¯¼å…¥ï¼Œç›´æ¥æ‹–å…¥ç´ æåŒºå³å¯ã€‚",
+        )
+
+    def open_comic_output_dir(self) -> None:
+        path = self._comic_output_dir()
+        path.mkdir(parents=True, exist_ok=True)
+        try:
+            if sys.platform == "win32":
+                os.startfile(path)  # type: ignore[attr-defined]
+            elif sys.platform == "darwin":
+                __import__("subprocess").Popen(["/usr/bin/open", str(path)], close_fds=True)
+            else:
+                __import__("subprocess").Popen(["xdg-open", str(path)], close_fds=True)
+        except OSError as exc:
+            messagebox.showerror("æ— æ³•æ‰“å¼€ç›®å½•", str(exc))
+
+    @staticmethod
+    def _percent_value(value: str) -> float:
+        match = __import__("re").search(r"(\d+(?:\.\d+)?)", value or "")
+        return min(max(float(match.group(1)), 0), 100) if match else 0
+
+    def _handle_comic_bus(self, event: str, payload: object) -> None:
+        if event == "comic_api_ok":
+            self.is_busy = False
+            self.save_comic_settings(silent=True)
+            self._set_comic_api_status("â— è¿æ¥æˆåŠŸ", ACCENT_DARK)
+        elif event == "comic_api_error":
+            self.is_busy = False
+            self._set_comic_api_status("â— è¿æ¥å¤±è´¥", ERROR)
+            messagebox.showerror("ç«å±±æ–¹èˆŸè¿æ¥å¤±è´¥", str(payload))
+        elif event == "comic_character_progress":
+            index, progress, task_id = payload
+            character = self.state["comic"]["characters"][index]
+            character["status"] = f"ç”Ÿæˆä¸­ {progress or 'æ’é˜Ÿä¸­'}"
+            if task_id:
+                character["task_id"] = task_id
+            self.comic_progress["value"] = self._percent_value(progress)
+            self._refresh_comic_character_list(index)
+        elif event == "comic_character_done":
+            index, result, local_path = payload
+            character = self.state["comic"]["characters"][index]
+            character.update({"task_id": str(result.get("id", "")), "candidate_image_url": str(result.get("imageUrl", "")), "candidate_path": local_path, "status": "å€™é€‰å¾…ç¡®è®¤"})
+            self.store.save(self.state)
+            self.is_busy = False
+            self.comic_progress["value"] = 100
+            self._refresh_comic_character_list(index)
+            self._refresh_comic_overview()
+            self.comic_status.configure(text=f"{character.get('name', 'è§’è‰²')} çš„å€™é€‰å®šå¦†å·²ç”Ÿæˆã€‚è¯·é¢„è§ˆå¹¶ç¡®è®¤ä¿ç•™åå†ç”¨äºåˆ†é•œã€‚", fg=WARM)
+        elif event == "comic_character_error":
+            index, error = payload
+            self.state["comic"]["characters"][index].update({"status": "ç”Ÿæˆå¤±è´¥"})
+            self.store.save(self.state)
+            self.is_busy = False
+            self.comic_progress["value"] = 0
+            self._refresh_comic_character_list(index)
+            messagebox.showerror("è§’è‰²å®šå¦†ç”Ÿæˆå¤±è´¥", str(error))
+        elif event == "comic_scene_progress":
+            index, progress, task_id = payload
+            scene = self.state["comic"]["scenes"][index]
+            scene["status"] = f"ç”Ÿæˆä¸­ {progress or 'æ’é˜Ÿä¸­'}"
+            if task_id:
+                scene["task_id"] = task_id
+            self.comic_progress["value"] = self._percent_value(progress)
+            self._refresh_comic_scene_list(index)
+        elif event == "comic_scene_done":
+            index, result, local_path = payload
+            scene = self.state["comic"]["scenes"][index]
+            scene.update({"task_id": str(result.get("id", "")), "candidate_image_url": str(result.get("imageUrl", "")), "candidate_path": local_path, "status": "å€™é€‰å¾…ç¡®è®¤"})
+            self.store.save(self.state)
+            self.is_busy = False
+            self.comic_progress["value"] = 100
+            self._refresh_comic_scene_list(index)
+            self._refresh_comic_overview()
+            self.comic_status.configure(text=f"{scene.get('name', 'åœºæ™¯')} çš„å€™é€‰å®šæ™¯å›¾å·²ç”Ÿæˆã€‚è¯·é¢„è§ˆå¹¶ç¡®è®¤ä¿ç•™åå†ç”¨äºåˆ†é•œã€‚", fg=WARM)
+        elif event == "comic_scene_error":
+            index, error = payload
+            self.state["comic"]["scenes"][index].update({"status": "ç”Ÿæˆå¤±è´¥"})
+            self.store.save(self.state)
+            self.is_busy = False
+            self.comic_progress["value"] = 0
+            self._refresh_comic_scene_list(index)
+            messagebox.showerror("åœºæ™¯å®šæ™¯ç”Ÿæˆå¤±è´¥", str(error))
+        elif event == "comic_analysis_retry":
+            batch_index, batch_total, error = payload
+            self.comic_status.configure(text=f"ç¬¬ {batch_index}/{batch_total} æ‰¹æ ¡éªŒæœªé€šè¿‡ï¼Œæ­£åœ¨è‡ªåŠ¨é‡è¯•â€¦ {error}", fg=WARM)
+        elif event == "comic_analysis_split":
+            batch_id, source_chars, error = payload
+            self.comic_status.configure(text=f"{batch_id} è¿ç»­å¤±è´¥ï¼Œå·²è‡ªåŠ¨æŠŠçº¦ {source_chars} å­—åŸæ–‡æ‹†æˆæ›´å°è¯·æ±‚ç»§ç»­å¤„ç†ã€‚åŸå› ï¼š{error}", fg=WARM)
+        elif event == "comic_analysis_progress":
+            completed_chars, total_chars, mode_label = payload
+            progress = min(99, completed_chars / max(total_chars, 1) * 100)
+            self.comic_progress["value"] = progress
+            self.comic_status.configure(text=f"{mode_label}ï¼šå·²åˆ†æå¹¶æ ¡éªŒçº¦ {progress:.0f}% åŸæ–‡", fg=ACCENT_DARK)
+        elif event == "comic_analysis_error":
+            batch_index, batch_total, error = payload
+            self.is_busy = False
+            self.comic_progress["value"] = 0
+            self.comic_status.configure(text=f"AI ç”Ÿæˆå¤±è´¥ï¼š{error}ã€‚åŸæœ‰ç»“æœæœªè¢«æ›¿æ¢ã€‚", fg=ERROR)
+            messagebox.showerror("AI åˆ†æ‰¹ç”Ÿæˆå¤±è´¥", f"è¯·æ±‚ {batch_index}/{batch_total} æœªé€šè¿‡ï¼š\n{error}\n\nç³»ç»Ÿå·²é‡è¯•å¹¶è‡ªåŠ¨ç¼©å°æ‰¹æ¬¡ï¼›åŸæœ‰ç»“æœå·²å®Œæ•´ä¿ç•™ã€‚")
+        elif event == "comic_analysis_done":
+            result, note, generation_mode = payload
+            comic = self.state["comic"]
+            if generation_mode in {"characters", "all"}:
+                merged_characters = self._merge_comic_characters([dict(item) for item in self.state.get("shared_characters", [])], [dict(item) for item in result.get("characters", [])])
+                shared = self.state.setdefault("shared_characters", [])
+                shared[:] = merged_characters
+                comic["characters"] = shared
+                for project in self.state.get("projects", []):
+                    if isinstance(project, dict):
+                        project["characters"] = shared
+            if generation_mode in {"scenes", "all"}:
+                comic["scenes"] = self._merge_comic_scenes([dict(item) for item in comic.get("scenes", [])], [dict(item) for item in result.get("scenes", [])])
+            if generation_mode in {"shots", "all"}:
+                comic["shots"] = [dict(item) for item in result.get("shots", [])]
+                comic["video_output_path"] = ""
+                comic["jianying_draft_path"] = ""
+                comic["jianying_draft_name"] = ""
+                self.comic_video_output_var.set("")
+                self.comic_draft_output_var.set("")
+            self.store.save(self.state)
+            self.is_busy = False
+            self.comic_progress["value"] = 100
+            self._refresh_comic_character_list(0 if comic["characters"] else None)
+            self._refresh_comic_scene_list(0 if comic["scenes"] else None)
+            self._refresh_comic_shot_tree(0 if comic["shots"] else None)
+            self._refresh_comic_overview()
+            self.comic_status.configure(text=f"{note} å…± {len(comic['characters'])} ä¸ªè§’è‰²ã€{len(comic['scenes'])} ä¸ªå›ºå®šåœºæ™¯ã€{len(comic['shots'])} ä¸ªåˆ†é•œã€‚", fg=ACCENT_DARK)
+        elif event == "comic_shot_started":
+            index, position, total, prompt = payload
+            shot = self.state["comic"]["shots"][index]
+            shot.update({"status": "æäº¤ä¸­", "progress": "0%", "error": "", "final_prompt": prompt})
+            self.comic_status.configure(text=f"æ­£åœ¨ç”Ÿæˆ {position}/{total}ï¼š{shot.get('title', '')}", fg=ACCENT_DARK)
+            self._update_comic_shot_tree_row(index)
+            if self.current_comic_shot_index == index:
+                self._load_comic_shot(index)
+        elif event == "comic_shot_progress":
+            index, progress, task_id = payload
+            shot = self.state["comic"]["shots"][index]
+            shot.update({"status": "ç”Ÿæˆä¸­", "progress": progress or "æ’é˜Ÿä¸­"})
+            if task_id:
+                shot["task_id"] = task_id
+            self.comic_progress["value"] = self._percent_value(progress)
+            self._update_comic_shot_tree_row(index)
+            if self.current_comic_shot_index == index:
+                self._load_comic_shot(index)
+        elif event == "comic_shot_done":
+            index, result, local_path, prompt = payload
+            shot = self.state["comic"]["shots"][index]
+            shot.update({"task_id": str(result.get("id", "")), "image_url": str(result.get("imageUrl", "")), "local_path": local_path, "status": "å·²å®Œæˆ", "progress": "100%", "error": "", "final_prompt": prompt})
+            self.state["comic"]["video_output_path"] = ""
+            self.state["comic"]["jianying_draft_path"] = ""
+            self.state["comic"]["jianying_draft_name"] = ""
+            self.comic_video_output_var.set("")
+            self.comic_draft_output_var.set("")
+            self.store.save(self.state)
+            self._update_comic_shot_tree_row(index)
+            if self.current_comic_shot_index == index:
+                self._load_comic_shot(index)
+            self._refresh_comic_overview()
+        elif event == "comic_shot_error":
+            index, error = payload
+            self.state["comic"]["shots"][index].update({"status": "å¤±è´¥ï¼Œå¯é‡è¯•", "error": error})
+            self.store.save(self.state)
+            self._update_comic_shot_tree_row(index)
+            if self.current_comic_shot_index == index:
+                self._load_comic_shot(index)
+        elif event == "comic_batch_done":
+            completed, failed, total = payload
+            self.is_busy = False
+            self.comic_progress["value"] = 100 if completed else 0
+            self._refresh_comic_shot_tree(self.current_comic_shot_index)
+            self._refresh_comic_overview()
+            self.comic_status.configure(text=f"ç”Ÿæˆç»“æŸï¼šæˆåŠŸ {completed}ï¼Œå¤±è´¥ {failed}ï¼Œå…± {total} ä¸ªåˆ†é•œã€‚å¤±è´¥é¡¹å¯ç›´æ¥å†æ¬¡æ‰¹é‡ç”Ÿæˆã€‚", fg=ACCENT_DARK if not failed else WARM)
+            if failed:
+                messagebox.showwarning("æ‰¹é‡ç”Ÿæˆç»“æŸ", f"æˆåŠŸ {completed} å¼ ï¼Œå¤±è´¥ {failed} å¼ ã€‚å¤±è´¥åŸå› å·²ä¿å­˜åœ¨å¯¹åº”åˆ†é•œä¸­ï¼Œå¯å†æ¬¡ç‚¹å‡»æ‰¹é‡ç”Ÿæˆé‡è¯•ã€‚")
+        elif event == "comic_draft_progress":
+            value, detail = payload
+            percent = min(max(float(value) * 100, 0), 100)
+            self.comic_progress["value"] = percent
+            if self.comic_draft_progress:
+                self.comic_draft_progress["value"] = percent
+            if self.comic_draft_status_label:
+                self.comic_draft_status_label.configure(text=f"{percent:.0f}% Â· {detail}", fg=SIDEBAR_MUTED)
+            self.comic_status.configure(text=f"æ­£åœ¨ç”Ÿæˆå‰ªæ˜ è‰ç¨¿â€¦ {percent:.0f}% Â· {detail}", fg=ACCENT_DARK)
+        elif event == "comic_draft_done":
+            result, executable = payload
+            self.is_busy = False
+            comic = self.state["comic"]
+            comic.update(
+                {
+                    "jianying_draft_path": result.path,
+                    "jianying_draft_name": result.name,
+                    "audio_duration": result.duration_seconds,
+                    "motion_mode": self.comic_motion_var.get(),
+                }
+            )
+            self.comic_draft_output_var.set(result.path)
+            self.comic_progress["value"] = 100
+            if self.comic_draft_progress:
+                self.comic_draft_progress["value"] = 100
+            if self.comic_draft_status_label:
+                self.comic_draft_status_label.configure(text=f"100% Â· è‰ç¨¿å·²ç”Ÿæˆï¼š{result.name}", fg=ACCENT)
+            self.store.save(self.state)
+            self._refresh_comic_video_labels()
+            self._refresh_comic_overview()
+            self.comic_status.configure(text=f"å‰ªæ˜ è‰ç¨¿å·²ç”Ÿæˆï¼š{result.name}", fg=ACCENT_DARK)
+            should_open = self.open_jianying_after_draft
+            self.open_jianying_after_draft = False
+            if should_open and executable:
+                self.open_comic_draft_in_jianying()
+            else:
+                messagebox.showinfo("å‰ªæ˜ è‰ç¨¿ç”Ÿæˆå®Œæˆ", f"å¯ç¼–è¾‘è‰ç¨¿å·²ä¿å­˜ï¼š\n{result.path}")
+        elif event == "comic_draft_error":
+            self.is_busy = False
+            self.open_jianying_after_draft = False
+            self.comic_progress["value"] = 0
+            if self.comic_draft_progress:
+                self.comic_draft_progress["value"] = 0
+            if self.comic_draft_status_label:
+                self.comic_draft_status_label.configure(text="ç”Ÿæˆå¤±è´¥", fg=ERROR)
+            self.comic_status.configure(text="å‰ªæ˜ è‰ç¨¿ç”Ÿæˆå¤±è´¥ã€‚", fg=ERROR)
+            messagebox.showerror("å‰ªæ˜ è‰ç¨¿ç”Ÿæˆå¤±è´¥", str(payload))
+        elif event == "comic_video_progress":
+            value, _detail = payload
+            self.comic_progress["value"] = min(max(float(value) * 100, 0), 100)
+            self.comic_status.configure(text=f"æ­£åœ¨ç”Ÿæˆé™æ€æ¼«è§†é¢‘â€¦ {float(value) * 100:.0f}%", fg=ACCENT_DARK)
+        elif event == "comic_video_done":
+            output, duration = payload
+            self.is_busy = False
+            self.state["comic"].update({"video_output_path": output, "audio_duration": duration, "motion_mode": self.comic_motion_var.get()})
+            self.comic_video_output_var.set(output)
+            self.comic_progress["value"] = 100
+            self.store.save(self.state)
+            self._refresh_comic_video_labels()
+            self._refresh_comic_overview()
+            self.comic_status.configure(text=f"é™æ€æ¼«è§†é¢‘å·²ç”Ÿæˆï¼š{Path(output).name}", fg=ACCENT_DARK)
+            should_open_jianying = self.open_jianying_after_video
+            self.open_jianying_after_video = False
+            if should_open_jianying:
+                self.open_comic_video_in_jianying()
+            else:
+                messagebox.showinfo("è§†é¢‘ç”Ÿæˆå®Œæˆ", f"é™æ€æ¼«è§†é¢‘å·²ä¿å­˜åˆ°ï¼š\n{output}")
+        elif event == "comic_video_error":
+            self.is_busy = False
+            self.open_jianying_after_video = False
+            self.comic_progress["value"] = 0
+            self.comic_status.configure(text="é™æ€æ¼«è§†é¢‘ç”Ÿæˆå¤±è´¥ã€‚", fg=ERROR)
+            messagebox.showerror("è§†é¢‘ç”Ÿæˆå¤±è´¥", str(payload))
+
+    # ----------------------------- Settings page -----------------------------
+    def show_settings(self) -> None:
+        self._clear_main()
+        self.navigate_highlight("settings")
+        self._page_header("æ¨¡å‹ä¸å·¥å…·", "å¯ç›´æ¥é€‰æ‹© DeepSeekã€åƒé—®ã€æ™ºè°± GLMã€Kimiï¼›API Key ç”±ç³»ç»Ÿå®‰å…¨ä¿ç®¡ã€‚")
+        body = Frame(self.main, bg=BG)
+        body.pack(fill=BOTH, expand=True, padx=34, pady=(0, 28))
+        body.grid_columnconfigure(0, weight=1)
+        body.grid_columnconfigure(1, weight=1)
+
+        model_outer = self._card(body, padx=24, pady=22)
+        model_outer.grid(row=0, column=0, sticky="new", padx=(0, 9))
+        model = model_outer.winfo_children()[0]
+        Label(model, text="AI æ¨¡å‹", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 14, "bold")).pack(anchor="w")
+        Label(model, text="é€‰æ‹©æœåŠ¡å•†åä¼šè‡ªåŠ¨å¡«å†™å®˜æ–¹æ¥å£ä¸æ¨èæ¨¡å‹ï¼Œä¹Ÿå¯ç»§ç»­æ‰‹åŠ¨ä¿®æ”¹ã€‚", bg=SURFACE, fg=MUTED, wraplength=430, justify=LEFT, font=("Microsoft YaHei UI", 9)).pack(anchor="w", pady=(4, 18))
+        settings = self.state["settings"]
+        provider_id = settings.get("provider") or infer_provider(settings.get("base_url", ""), settings.get("model", ""))
+        if provider_id not in {item.id for item in PROVIDER_PRESETS}:
+            provider_id = "custom"
+        self.active_api_provider = provider_id
+        if not self.api_key.get().strip():
+            self.api_key.set(self._load_provider_api_key(provider_id))
+        self.provider_ids_by_label = {item.label: item.id for item in PROVIDER_PRESETS}
+        self.provider_labels_by_id = {item.id: item.label for item in PROVIDER_PRESETS}
+        self.provider_var = StringVar(value=self.provider_labels_by_id[provider_id])
+        self.base_url_var = StringVar(value=settings["base_url"])
+        self.model_name_var = StringVar(value=settings["model"])
+        self._field_label(model, "æ¨¡å‹æœåŠ¡å•†").pack(anchor="w", pady=(2, 5))
+        provider_box = RoundedCombobox(
+            model,
+            textvariable=self.provider_var,
+            values=[item.label for item in PROVIDER_PRESETS],
+            state="readonly",
+        )
+        provider_box.pack(fill=X)
+        provider_box.bind("<<ComboboxSelected>>", self._apply_provider_selection)
+        self.provider_help = Label(model, bg=SURFACE, fg=ACCENT_DARK, wraplength=430, justify=LEFT, font=("Microsoft YaHei UI", 8))
+        self.provider_help.pack(anchor="w", pady=(6, 0))
+        self._settings_entry(model, "Base URL", self.base_url_var)
+        self._settings_entry(model, "æ¨¡å‹åç§°", self.model_name_var)
+        self._field_label(model, "API Key").pack(anchor="w", pady=(13, 5))
+        key_entry = self._entry(model, self.api_key)
+        key_entry.configure(show="â€¢")
+        key_entry.pack(fill=X, ipady=7)
+        self.api_key_hint = Label(model, bg=SURFACE, fg=MUTED, wraplength=430, justify=LEFT, font=("Microsoft YaHei UI", 8))
+        self.api_key_hint.pack(anchor="w", pady=(5, 0))
+        ttk.Checkbutton(
+            model,
+            text="å®‰å…¨è®°ä½ API Keyï¼ˆWindows å‡­æ®ç®¡ç†å™¨ / macOS é’¥åŒ™ä¸²ï¼‰",
+            variable=self.remember_api_key,
+        ).pack(anchor="w", pady=(10, 0))
+        self.ai_test_status = Label(model, text="å°šæœªæµ‹è¯•è¿æ¥", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 8))
+        self.ai_test_status.pack(anchor="w", pady=(12, 0))
+        model_actions = Frame(model, bg=SURFACE)
+        model_actions.pack(fill=X, pady=(14, 0))
+        self._button(model_actions, "æµ‹è¯•è¿æ¥", self.test_ai_connection, kind="ghost").pack(side=LEFT)
+        self._button(model_actions, "æ¸…é™¤å·²ä¿å­˜ Key", self.clear_saved_api_key, kind="ghost").pack(side=LEFT, padx=(7, 0))
+        self._button(model_actions, "ä¿å­˜æ¨¡å‹è®¾ç½®", self.save_settings, kind="primary").pack(side=RIGHT)
+        self._update_provider_help()
+        self.bus_handler = self._handle_settings_event
+
+        tool_outer = self._card(body, padx=24, pady=22)
+        tool_outer.grid(row=0, column=1, sticky="new", padx=(9, 0))
+        tool = tool_outer.winfo_children()[0]
+        Label(tool, text="å‰ªæ˜ è‰ç¨¿ä¸è§†é¢‘å·¥å…·", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 14, "bold")).pack(anchor="w")
+        Label(tool, text="é™æ€æ¼«ä¼šç›´æ¥ç”Ÿæˆå¯ç¼–è¾‘å‰ªæ˜ è‰ç¨¿ï¼›FFmpeg ä»…ç”¨äºå¯é€‰çš„ MP4 é¢„è§ˆå¯¼å‡ºã€‚", bg=SURFACE, fg=MUTED, wraplength=430, justify=LEFT, font=("Microsoft YaHei UI", 9)).pack(anchor="w", pady=(4, 18))
+        self.ffmpeg_var = StringVar(value=settings.get("ffmpeg_path", ""))
+        self.ffprobe_var = StringVar(value=settings.get("ffprobe_path", ""))
+        self.jianying_var = StringVar(value=settings.get("jianying_exe", "") or detect_jianying_executable("") or "")
+        self.jianying_drafts_var = StringVar(value=settings.get("jianying_drafts_path", "") or detect_jianying_drafts_path("") or "")
+        executable_suffix = "" if sys.platform == "darwin" else ".exe"
+        self._path_field(tool, f"ffmpeg{executable_suffix}", self.ffmpeg_var, "ffmpeg")
+        self._path_field(tool, f"ffprobe{executable_suffix}", self.ffprobe_var, "ffprobe")
+        self._path_field(tool, "å‰ªæ˜ ä¸“ä¸šç‰ˆ", self.jianying_var, "JianyingPro")
+        self._directory_field(tool, "å‰ªæ˜ æœ¬åœ°è‰ç¨¿ç›®å½•", self.jianying_drafts_var)
+        detected = find_executable(self.ffmpeg_var.get(), "ffmpeg")
+        self.ffmpeg_status = Label(tool, text=(f"å·²æ‰¾åˆ°ï¼š{detected}" if detected else "å°šæœªæ‰¾åˆ° FFmpegï¼›ä»å¯åˆ¶ä½œå›¾ç‰‡ï¼Œä½†ä¸èƒ½åˆæˆé™æ€æ¼«è§†é¢‘ã€‚"), bg=SURFACE, fg=ACCENT_DARK if detected else WARM, wraplength=430, justify=LEFT, font=("Microsoft YaHei UI", 9))
+        self.ffmpeg_status.pack(anchor="w", pady=(18, 0))
+        self._button(tool, "ä¿å­˜å·¥å…·è®¾ç½®", self.save_settings, kind="primary").pack(anchor="e", pady=(22, 0))
+
+        note_outer = self._card(body, bg=COMIC_MINT, padx=22, pady=16)
+        note_outer.grid(row=1, column=0, columnspan=2, sticky="ew", pady=(18, 0))
+        note = note_outer.winfo_children()[0]
+        note_title = "Mac å…¼å®¹ä¸ FFmpeg è¯´æ˜" if sys.platform == "darwin" else "FFmpeg é…ç½®è¯´æ˜"
+        if sys.platform == "darwin":
+            note_text = "Mac åº”ç”¨ä¼šè‡ªåŠ¨æ£€æŸ¥ PATH ä¸­çš„ ffmpeg/ffprobeï¼›ä¹Ÿå¯ä»¥åœ¨è¿™é‡Œæ‰‹åŠ¨é€‰æ‹©å¯æ‰§è¡Œæ–‡ä»¶ã€‚"
+        else:
+            note_text = "å®‰è£…å®Œæˆåé€‰æ‹© bin æ–‡ä»¶å¤¹ä¸­çš„ ffmpeg.exe ä¸ ffprobe.exeã€‚åº”ç”¨ä¹Ÿä¼šè‡ªåŠ¨æ£€æŸ¥ PATHã€WinGet Links å’Œå¸¸è§å®‰è£…ç›®å½•ã€‚"
+        Label(note, text=note_title, bg=COMIC_MINT, fg=ACCENT_DARK, font=("Microsoft YaHei UI", 10, "bold")).pack(anchor="w")
+        Label(note, text=note_text, bg=COMIC_MINT, fg=MUTED, wraplength=900, justify=LEFT, font=("Microsoft YaHei UI", 9)).pack(anchor="w", pady=(5, 0))
+
+    def _settings_entry(self, parent, label: str, variable: StringVar) -> None:
+        self._field_label(parent, label).pack(anchor="w", pady=(13, 5))
+        self._entry(parent, variable).pack(fill=X, ipady=7)
+
+    def _apply_provider_selection(self, _event=None) -> None:
+        previous = self.active_api_provider
+        self.api_keys[previous] = self.api_key.get().strip()
+        selected = self.provider_ids_by_label.get(self.provider_var.get(), "custom")
+        self.active_api_provider = selected
+        preset = provider_preset(selected)
+        if selected != "custom":
+            self.base_url_var.set(preset.base_url)
+            self.model_name_var.set(preset.model)
+        self.api_key.set(self._load_provider_api_key(selected))
+        self._update_provider_help()
+        if hasattr(self, "ai_test_status"):
+            self.ai_test_status.configure(text="åˆ‡æ¢æœåŠ¡å•†åè¯·é‡æ–°æµ‹è¯•è¿æ¥", fg=MUTED)
+
+    def _update_provider_help(self) -> None:
+        preset = provider_preset(self.active_api_provider)
+        self.provider_help.configure(text=preset.description)
+        names = " / ".join(preset.environment_keys)
+        self.api_key_hint.configure(text=f"ä¹Ÿå¯åœ¨å¯åŠ¨å‰è®¾ç½®ç¯å¢ƒå˜é‡ï¼š{names}")
+
+    def _load_provider_api_key(self, provider_id: str) -> str:
+        if provider_id in self.api_keys:
+            return self.api_keys[provider_id]
+        value = ""
+        if self.remember_api_key.get():
+            try:
+                value = load_api_key(provider_id)
+            except SecretStoreError:
+                value = ""
+        value = value or api_key_from_environment(provider_id)
+        self.api_keys[provider_id] = value
+        return value
+
+    def _persist_current_api_key(self) -> None:
+        provider_id = self.active_api_provider
+        value = self.api_key.get().strip()
+        self.api_keys[provider_id] = value
+        if self.remember_api_key.get() and value:
+            save_api_key(provider_id, value)
+        else:
+            delete_api_key(provider_id)
+
+    def clear_saved_api_key(self) -> None:
+        provider_id = self.active_api_provider
+        try:
+            delete_api_key(provider_id)
+        except SecretStoreError as exc:
+            messagebox.showerror("æ¸…é™¤å¤±è´¥", str(exc))
+            return
+        self.api_keys[provider_id] = ""
+        self.api_key.set("")
+        messagebox.showinfo("å·²æ¸…é™¤", f"{provider_preset(provider_id).label} çš„å·²ä¿å­˜ API Key å·²ä»ç³»ç»Ÿå‡­æ®ä¸­åˆ é™¤ã€‚")
+
+    def _path_field(self, parent, label: str, variable: StringVar, executable_name: str) -> None:
+        self._field_label(parent, label).pack(anchor="w", pady=(13, 5))
+        row = Frame(parent, bg=SURFACE)
+        row.pack(fill=X)
+        self._entry(row, variable).pack(side=LEFT, fill=X, expand=True, ipady=7)
+
+        def browse() -> None:
+            if sys.platform == "darwin" and executable_name == "JianyingPro":
+                path = filedialog.askopenfilename(
+                    title="é€‰æ‹©å‰ªæ˜ ä¸“ä¸šç‰ˆ.appï¼ˆé€šå¸¸ä½äºâ€œåº”ç”¨ç¨‹åºâ€ï¼‰",
+                    initialdir="/Applications",
+                    filetypes=[("Mac åº”ç”¨", "*.app"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")],
+                )
+            elif sys.platform == "darwin":
+                path = filedialog.askopenfilename(title=f"é€‰æ‹© {executable_name}")
+            else:
+                path = filedialog.askopenfilename(title=f"é€‰æ‹© {executable_name}.exe", filetypes=[("å¯æ‰§è¡Œæ–‡ä»¶", "*.exe"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")])
+            if path:
+                variable.set(path)
+
+        self._button(row, "é€‰æ‹©", browse, kind="ghost").pack(side=RIGHT, padx=(7, 0))
+
+    def _directory_field(self, parent, label: str, variable: StringVar) -> None:
+        self._field_label(parent, label).pack(anchor="w", pady=(13, 5))
+        row = Frame(parent, bg=SURFACE)
+        row.pack(fill=X)
+        self._entry(row, variable).pack(side=LEFT, fill=X, expand=True, ipady=7)
+
+        def browse() -> None:
+            path = filedialog.askdirectory(title="é€‰æ‹©å‰ªæ˜ è‰ç¨¿ç›®å½•")
+            if path:
+                variable.set(path)
+
+        self._button(row, "é€‰æ‹©", browse, kind="ghost").pack(side=RIGHT, padx=(7, 0))
+
+    def save_settings(self) -> None:
+        settings = self.state["settings"]
+        secret_error = ""
+        if hasattr(self, "base_url_var"):
+            settings["provider"] = self.active_api_provider
+            settings["base_url"] = self.base_url_var.get().strip().rstrip("/")
+            settings["model"] = self.model_name_var.get().strip()
+            settings["remember_api_key"] = self.remember_api_key.get()
+            try:
+                self._persist_current_api_key()
+            except SecretStoreError as exc:
+                secret_error = str(exc)
+            settings["ffmpeg_path"] = self.ffmpeg_var.get().strip()
+            settings["ffprobe_path"] = self.ffprobe_var.get().strip()
+            settings["jianying_exe"] = self.jianying_var.get().strip()
+            settings["jianying_drafts_path"] = self.jianying_drafts_var.get().strip()
+        self.store.save(self.state)
+        self._refresh_tool_status()
+        if hasattr(self, "ffmpeg_status"):
+            detected = find_executable(settings["ffmpeg_path"], "ffmpeg")
+            self.ffmpeg_status.configure(text=(f"å·²æ‰¾åˆ°ï¼š{detected}" if detected else "å°šæœªæ‰¾åˆ° FFmpegï¼›ä»å¯åˆ¶ä½œå›¾ç‰‡ï¼Œä½†ä¸èƒ½åˆæˆé™æ€æ¼«è§†é¢‘ã€‚"), fg=ACCENT_DARK if detected else WARM)
+        if secret_error:
+            messagebox.showwarning("è®¾ç½®å·²ä¿å­˜", f"æ¨¡å‹å’Œå·¥å…·è®¾ç½®å·²ä¿å­˜ï¼Œä½† API Key æœªèƒ½å®‰å…¨ä¿å­˜ï¼š\n{secret_error}")
+        elif self.remember_api_key.get():
+            messagebox.showinfo("å·²ä¿å­˜", "æ¨¡å‹ã€å‰ªæ˜ è‰ç¨¿ä¸è§†é¢‘å·¥å…·è®¾ç½®å·²ä¿å­˜ã€‚API Key å·²ç”±ç³»ç»Ÿå®‰å…¨ä¿ç®¡ï¼Œä¸‹æ¬¡æ‰“å¼€ä¼šè‡ªåŠ¨å¡«å…¥ã€‚")
+        else:
+            messagebox.showinfo("å·²ä¿å­˜", "æ¨¡å‹ã€å‰ªæ˜ è‰ç¨¿ä¸è§†é¢‘å·¥å…·è®¾ç½®å·²ä¿å­˜ã€‚API Key æœªè¢«è®°ä½ã€‚")
+
+    def _ai_client(self, use_form: bool = False) -> OpenAICompatibleClient:
+        settings = self.state["settings"]
+        if use_form and hasattr(self, "base_url_var"):
+            base_url = self.base_url_var.get()
+            model = self.model_name_var.get()
+            provider_id = self.active_api_provider
+        else:
+            base_url = settings.get("base_url", "")
+            model = settings.get("model", "")
+            provider_id = settings.get("provider") or infer_provider(base_url, model)
+        config = AIConfig(base_url, model, self.api_key.get(), provider=provider_id)
+        if not config.base_url:
+            raise AIClientError("è¯·å…ˆå¡«å†™æ¨¡å‹ Base URLã€‚")
+        if not config.api_key:
+            raise AIClientError("è¯·å…ˆåœ¨â€œæ¨¡å‹ä¸å·¥å…·â€ä¸­å¡«å†™ API Keyã€‚")
+        return OpenAICompatibleClient(config)
+
+    def test_ai_connection(self) -> None:
+        if self.is_busy:
+            return
+        try:
+            client = self._ai_client(use_form=True)
+        except AIClientError as exc:
+            messagebox.showwarning("æ— æ³•æµ‹è¯•", str(exc))
+            return
+        self.is_busy = True
+        self.ai_test_status.configure(text=f"æ­£åœ¨è¿æ¥ {provider_preset(self.active_api_provider).label}â€¦", fg=ACCENT_DARK)
+
+        def worker() -> None:
+            try:
+                reply = client.complete("ä½ æ˜¯æ¥å£è¿é€šæ€§æµ‹è¯•åŠ©æ‰‹ã€‚", "è¯·åªå›å¤ï¼šè¿æ¥æˆåŠŸ", temperature=0.0)
+                self.bus.put(("ai_test_complete", reply))
+            except Exception as exc:  # noqa: BLE001 - display provider error in the UI
+                self.bus.put(("ai_test_error", exc))
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def _handle_settings_event(self, event: str, payload: object) -> None:
+        if event == "ai_test_complete":
+            self.is_busy = False
+            self.ai_test_status.configure(text=f"è¿æ¥æˆåŠŸï¼š{str(payload)[:50]}", fg=ACCENT_DARK)
+            secret_error = ""
+            if self.remember_api_key.get():
+                try:
+                    self._persist_current_api_key()
+                except SecretStoreError as exc:
+                    secret_error = str(exc)
+            message = f"{provider_preset(self.active_api_provider).label} æ¥å£å¯ä»¥æ­£å¸¸ä½¿ç”¨ã€‚"
+            if self.remember_api_key.get() and not secret_error:
+                message += "\nAPI Key å·²å®‰å…¨è®°ä½ã€‚"
+            elif secret_error:
+                message += f"\nä½† API Key ä¿å­˜å¤±è´¥ï¼š{secret_error}"
+            messagebox.showinfo("è¿æ¥æˆåŠŸ", message)
+        elif event == "ai_test_error":
+            self.is_busy = False
+            self.ai_test_status.configure(text="è¿æ¥å¤±è´¥ï¼Œè¯·æ£€æŸ¥ Keyã€æ¨¡å‹åå’Œç½‘ç»œ", fg=ERROR)
+            messagebox.showerror("è¿æ¥å¤±è´¥", str(payload))
+
+    # ------------------------------- Utilities -------------------------------
+    def _copy_text(self, value: str) -> None:
+        self.root.clipboard_clear()
+        self.root.clipboard_append(value)
+
+    def _save_current_editors(self) -> None:
+        if self.current_page == "video" and self.post_editor:
+            self._sync_video_state()
+        elif self.current_page == "novel":
+            self._sync_novel_rules()
+            self._save_chapter_editors()
+            self.store.save(self.state)
+        elif self.current_page == "comic":
+            self.save_comic_settings(silent=True)
+
+    def _drain_bus(self) -> None:
+        try:
+            while True:
+                event, payload = self.bus.get_nowait()
+                if self.bus_handler:
+                    self.bus_handler(event, payload)
+        except queue.Empty:
+            pass
+        self.root.after(120, self._drain_bus)
+
+    def on_close(self) -> None:
+        if self.is_busy and not messagebox.askyesno("ä»»åŠ¡ä»åœ¨è¿›è¡Œ", "å…³é—­åº”ç”¨ä¼šä¸­æ–­å½“å‰ä»»åŠ¡ï¼Œç¡®å®šé€€å‡ºå—ï¼Ÿ"):
+            return
+        self._save_current_editors()
+        if hasattr(self, "remember_api_key"):
+            self.state["settings"]["remember_api_key"] = self.remember_api_key.get()
+            try:
+                self._persist_current_api_key()
+            except SecretStoreError:
+                pass
+        if hasattr(self, "remember_ark_api_key"):
+            self.state["settings"]["remember_ark_api_key"] = self.remember_ark_api_key.get()
+            try:
+                if self.remember_ark_api_key.get() and self.ark_api_key.get().strip():
+                    save_api_key("ark", self.ark_api_key.get().strip())
+                else:
+                    delete_api_key("ark")
+            except SecretStoreError:
+                pass
+        self.store.save(self.state)
+        self.store.release_instance_lock()
+        self.root.destroy()
+
+
+def main() -> None:
+    root = Tk()
+    try:
+        StudioApp(root)
+    except StudioInstanceRunningError as exc:
+        root.withdraw()
+        messagebox.showwarning("ç¨‹åºå·²åœ¨è¿è¡Œ", str(exc), parent=root)
+        root.destroy()
+        return
+    root.mainloop()
+
+
+def packaged_self_test() -> None:
+    """Exercise native media parsing and Jianying draft assets in a package."""
+    import tempfile
+
+    from pymediainfo import MediaInfo
+    import pyJianYingDraft as draft
+
+    if not callable(getattr(MediaInfo, "parse", None)):
+        raise RuntimeError("MediaInfo parser unavailable")
+    with tempfile.TemporaryDirectory() as temp:
+        script = draft.DraftFolder(temp).create_draft("self-test", 1080, 1920, 30)
+        script.save()
+        if not (Path(temp) / "self-test" / "draft_content.json").is_file():
+            raise RuntimeError("Jianying draft assets unavailable")
+
+
+if __name__ == "__main__":
+    if "--self-test" in sys.argv:
+        packaged_self_test()
+    else:
+        main()
