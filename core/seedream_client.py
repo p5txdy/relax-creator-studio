@@ -1,0 +1,172 @@
+from __future__ import annotations
+
+import base64
+import json
+import urllib.error
+import urllib.request
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Callable, Mapping, Sequence
+
+from .comic_engine import ComicEngineError
+
+
+SEEDREAM_MODEL = "doubao-seedream-5-0-pro-260628"
+SEEDREAM_BASE_URL = "https://ark.cn-beijing.volces.com/api/v3"
+SEEDREAM_SIZES = ("1K", "1.5K", "2K")
+
+
+@dataclass(frozen=True)
+class SeedreamConfig:
+    api_key: str
+    base_url: str = SEEDREAM_BASE_URL
+    model: str = SEEDREAM_MODEL
+    timeout: int = 300
+
+
+def _clean_base_url(value: str) -> str:
+    base = value.strip().rstrip("/")
+    if not base.startswith(("https://", "http://")):
+        raise ComicEngineError("火山方舟 API 地址必须以 http:// 或 https:// 开头。")
+    return base
+
+
+def _error_detail(payload: object, fallback: str) -> str:
+    if not isinstance(payload, Mapping):
+        return fallback
+    error = payload.get("error")
+    if isinstance(error, Mapping):
+        return str(error.get("message") or error.get("code") or fallback)
+    return str(error or payload.get("message") or fallback)
+
+
+class DoubaoSeedreamClient:
+    """Dependency-free client for Volcengine Ark's Seedream image API."""
+
+    def __init__(self, config: SeedreamConfig) -> None:
+        self.config = config
+
+    def _request_json(self, path: str, *, method: str = "GET", payload: object | None = None) -> object:
+        if not self.config.api_key.strip():
+            raise ComicEngineError("请先填写火山方舟 API Key。")
+        data = None if payload is None else json.dumps(payload, ensure_ascii=False).encode("utf-8")
+        request = urllib.request.Request(
+            f"{_clean_base_url(self.config.base_url)}{path}",
+            data=data,
+            headers={
+                "Authorization": f"Bearer {self.config.api_key.strip()}",
+                "Content-Type": "application/json",
+                "User-Agent": "ComicPostStudio/1.0",
+            },
+            method=method,
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=self.config.timeout) as response:
+                return json.loads(response.read().decode("utf-8"))
+        except urllib.error.HTTPError as exc:
+            raw = exc.read().decode("utf-8", errors="replace")
+            try:
+                parsed: object = json.loads(raw)
+            except json.JSONDecodeError:
+                parsed = None
+            detail = _error_detail(parsed, raw or str(exc))
+            raise ComicEngineError(f"火山方舟接口返回错误（{exc.code}）：{detail}") from exc
+        except urllib.error.URLError as exc:
+            raise ComicEngineError(f"无法连接火山方舟接口：{exc.reason}") from exc
+        except TimeoutError as exc:
+            raise ComicEngineError("Seedream 请求超时，请稍后重试。") from exc
+        except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+            raise ComicEngineError("火山方舟接口返回了无法解析的数据。") from exc
+
+    def check_connection(self) -> object:
+        """Validate the Ark key without submitting a paid image generation."""
+        return self._request_json("/models")
+
+    def generate_image(
+        self,
+        prompt: str,
+        *,
+        images: Sequence[str] | None = None,
+        size: str = "2K",
+        output_format: str = "png",
+        watermark: bool = False,
+        optimize_mode: str = "standard",
+        progress: Callable[[dict[str, object]], None] | None = None,
+    ) -> dict[str, object]:
+        if not prompt.strip():
+            raise ComicEngineError("图片提示词不能为空。")
+        if size not in SEEDREAM_SIZES:
+            raise ComicEngineError("Seedream 分辨率只支持 1K、1.5K 或 2K。")
+        if output_format not in {"png", "jpeg"}:
+            raise ComicEngineError("Seedream 输出格式只支持 png 或 jpeg。")
+        if optimize_mode not in {"standard", "fast"}:
+            raise ComicEngineError("Seedream 提示词优化模式只支持 standard 或 fast。")
+
+        references = [str(item).strip() for item in (images or []) if str(item).strip()]
+        if len(references) > 10:
+            raise ComicEngineError("Seedream 5.0 Pro 最多支持 10 张参考图。")
+        request_payload: dict[str, object] = {
+            "model": self.config.model.strip() or SEEDREAM_MODEL,
+            "prompt": prompt.strip(),
+            "size": size,
+            "response_format": "url",
+            "output_format": output_format,
+            "watermark": bool(watermark),
+            "optimize_prompt_options": {"mode": optimize_mode},
+        }
+        if references:
+            request_payload["image"] = references[0] if len(references) == 1 else references
+
+        if progress:
+            progress({"status": "SUBMITTED", "progress": "15%", "id": ""})
+        payload = self._request_json("/images/generations", method="POST", payload=request_payload)
+        if not isinstance(payload, Mapping):
+            raise ComicEngineError("Seedream 没有返回有效的图片数据。")
+        data = payload.get("data")
+        if not isinstance(data, list) or not data or not isinstance(data[0], Mapping):
+            raise ComicEngineError(_error_detail(payload, "Seedream 没有返回图片。"))
+        image = data[0]
+        image_url = str(image.get("url") or "").strip()
+        b64_json = str(image.get("b64_json") or "").strip()
+        if not image_url and b64_json:
+            image_url = f"data:image/{output_format};base64,{b64_json}"
+        if not image_url:
+            raise ComicEngineError("Seedream 已完成生成，但响应中没有图片 URL。")
+
+        result = {
+            "id": str(image.get("id") or payload.get("id") or payload.get("created") or ""),
+            "status": "SUCCESS",
+            "progress": "100%",
+            "imageUrl": image_url,
+            "model": str(payload.get("model") or request_payload["model"]),
+            "created": payload.get("created"),
+        }
+        if progress:
+            progress(result)
+        return result
+
+    def download_image(self, image_url: str, destination: Path) -> Path:
+        if image_url.startswith("data:image/"):
+            try:
+                encoded = image_url.split(",", 1)[1]
+                content = base64.b64decode(encoded, validate=True)
+            except (IndexError, ValueError) as exc:
+                raise ComicEngineError("Seedream 返回的图片数据无效。") from exc
+        else:
+            request = urllib.request.Request(
+                image_url,
+                headers={"User-Agent": "ComicPostStudio/1.0"},
+                method="GET",
+            )
+            try:
+                with urllib.request.urlopen(request, timeout=self.config.timeout) as response:
+                    content = response.read()
+            except (urllib.error.URLError, TimeoutError) as exc:
+                raise ComicEngineError(f"图片下载失败：{exc}") from exc
+        if not content:
+            raise ComicEngineError("图片下载失败：服务器返回了空文件。")
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        temp = destination.with_suffix(destination.suffix + ".tmp")
+        temp.write_bytes(content)
+        temp.replace(destination)
+        return destination

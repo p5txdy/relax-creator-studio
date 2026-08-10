@@ -1,7 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
 
 import os
-from PyInstaller.utils.hooks import collect_data_files
 
 
 mediainfo_library = os.environ.get("CREATOR_MEDIAINFO_LIB", "")
@@ -12,7 +11,7 @@ a = Analysis(
     ["app.py"],
     pathex=[],
     binaries=[(mediainfo_library, "pymediainfo")],
-    datas=collect_data_files("pyJianYingDraft"),
+    datas=[("./vendor/pyJianYingDraft/assets", "pyJianYingDraft/assets")],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -28,7 +27,7 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name="解压创作工坊",
+    name="漫画推文",
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -47,19 +46,19 @@ collect = COLLECT(
     a.datas,
     strip=False,
     upx=False,
-    name="解压创作工坊",
+    name="漫画推文",
 )
 
 app = BUNDLE(
     collect,
-    name="解压创作工坊-v0.2.5.app",
+    name="漫画推文-v1.0.app",
     icon=None,
-    bundle_identifier="com.relaxcreator.studio",
+    bundle_identifier="com.comicpost.studio",
     info_plist={
-        "CFBundleDisplayName": "解压创作工坊",
-        "CFBundleShortVersionString": "0.2.5",
-        "CFBundleVersion": "0.2.5",
+        "CFBundleDisplayName": "漫画推文",
+        "CFBundleShortVersionString": "1.0",
+        "CFBundleVersion": "1.0",
         "NSHighResolutionCapable": True,
-        "NSHumanReadableCopyright": "Copyright © 2026 Relax Creator Studio",
+        "NSHumanReadableCopyright": "Copyright © 2026 Comic Post Studio",
     },
 )

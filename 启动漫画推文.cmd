@@ -1,0 +1,10 @@
+@echo off
+setlocal
+chcp 65001 >nul
+cd /d "%~dp0"
+if exist "dist\漫画推文-v1.0.exe" (
+  start "" "dist\漫画推文-v1.0.exe"
+  exit /b 0
+)
+pythonw app.py
+if errorlevel 1 python app.py

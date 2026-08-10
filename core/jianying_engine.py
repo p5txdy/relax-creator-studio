@@ -11,6 +11,7 @@ import uuid
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Callable, Sequence
 
 from .video_engine import ASPECT_SIZES, VideoClip, VideoProject, fit_clips_to_duration
 
@@ -374,6 +375,133 @@ def create_jianying_draft(project: VideoProject, drafts_root: str, requested_nam
         raise JianyingEngineError(f"生成剪映草稿失败：{exc}") from exc
 
     return JianyingDraftResult(name, str(draft_path), cursor / 1_000_000)
+
+
+def create_comic_jianying_draft(
+    image_paths: Sequence[str],
+    durations: Sequence[float],
+    *,
+    audio_path: str,
+    subtitles_path: str = "",
+    aspect: str = "9:16",
+    motion_mode: str = "上下交替关键帧",
+    drafts_root: str,
+    requested_name: str,
+    fps: int = 30,
+    on_progress: Callable[[float, str], None] | None = None,
+) -> JianyingDraftResult:
+    """Create an editable Jianying draft from still comic panels.
+
+    Every panel stays a photo segment.  The only visual keyframes written are
+    two vertical-position points, so the motion can be adjusted directly in
+    Jianying after opening the draft.
+    """
+    if draft is None:
+        raise JianyingEngineError(f"剪映草稿组件未能加载：{DRAFT_IMPORT_ERROR}")
+    if not image_paths or len(image_paths) != len(durations):
+        raise JianyingEngineError("分镜图片与时长数量不一致。")
+    missing = [path for path in image_paths if not Path(path).is_file()]
+    if missing:
+        raise JianyingEngineError(f"找不到分镜图片：{Path(missing[0]).name}")
+    if not Path(audio_path).is_file():
+        raise JianyingEngineError("找不到漫画配音文件。")
+    if subtitles_path and not Path(subtitles_path).is_file():
+        raise JianyingEngineError("找不到字幕文件。")
+    root = Path(drafts_root)
+    if not root.is_dir():
+        raise JianyingEngineError("剪映草稿目录不存在，请在“模型与工具”中重新选择。")
+
+    def report(value: float, detail: str) -> None:
+        if on_progress is not None:
+            on_progress(min(max(value, 0.0), 1.0), detail)
+
+    name = unique_draft_name(str(root), requested_name)
+    width, height = ASPECT_SIZES.get(aspect, ASPECT_SIZES["9:16"])
+    fps = min(max(int(fps), 15), 60)
+    try:
+        report(0.03, "正在读取配音时长…")
+        voice_material = draft.AudioMaterial(audio_path)
+        target_duration = int(voice_material.duration)
+        if target_duration <= 0:
+            raise JianyingEngineError("无法读取配音时长。")
+
+        weights = [max(float(value), 0.35) for value in durations]
+        weight_total = sum(weights)
+        clip_durations = [max(1, round(target_duration * value / weight_total)) for value in weights]
+        clip_durations[-1] += target_duration - sum(clip_durations)
+
+        report(0.08, "正在建立剪映草稿…")
+        folder = draft.DraftFolder(str(root))
+        script = folder.create_draft(name, width, height, fps)
+        draft_id = str(uuid.uuid4()).upper()
+        script.content["id"] = draft_id
+        script.content["create_time"] = int(time.time())
+        script.append_track(draft.TrackSpec(draft.TrackType.video, "静态漫画"))
+
+        cursor = 0
+        panel_count = len(image_paths)
+        pan = 0.035
+        for index, (path, duration) in enumerate(zip(image_paths, clip_durations)):
+            material = draft.VideoMaterial(path)
+            clip_scale = 1.0 if motion_mode == "无关键帧" else 1.08
+            segment = draft.VideoSegment(
+                material,
+                draft.Timerange(cursor, duration),
+                source_timerange=draft.Timerange(0, duration),
+                volume=0.0,
+                clip_settings=draft.ClipSettings(scale_x=clip_scale, scale_y=clip_scale),
+            )
+            if motion_mode != "无关键帧":
+                move_up = motion_mode == "向上移动关键帧" or (motion_mode == "上下交替关键帧" and index % 2 == 0)
+                if motion_mode == "向下移动关键帧":
+                    move_up = False
+                start_y, end_y = (-pan, pan) if move_up else (pan, -pan)
+                segment.add_keyframe(draft.KeyframeProperty.position_y, 0, start_y)
+                segment.add_keyframe(draft.KeyframeProperty.position_y, max(duration - 1, 0), end_y)
+            script.add_segment(segment, "静态漫画")
+            cursor += duration
+            report(0.10 + 0.66 * (index + 1) / panel_count, f"正在写入图片 {index + 1}/{panel_count}")
+
+        script.append_track(draft.TrackSpec(draft.TrackType.audio, "配音"))
+        voice_segment = draft.AudioSegment(
+            voice_material,
+            draft.Timerange(0, target_duration),
+            source_timerange=draft.Timerange(0, target_duration),
+            volume=1.0,
+        )
+        script.add_segment(voice_segment, "配音")
+        report(0.82, "配音轨道已写入")
+
+        if subtitles_path:
+            if Path(subtitles_path).suffix.lower() != ".srt":
+                raise JianyingEngineError("当前支持导入 SRT 字幕文件。")
+            subtitle_text = Path(subtitles_path).read_text(encoding="utf-8-sig")
+            clamped = clamp_srt_text(subtitle_text, target_duration)
+            temp_path = ""
+            try:
+                with tempfile.NamedTemporaryFile("w", suffix=".srt", encoding="utf-8-sig", delete=False) as temp:
+                    temp.write(clamped)
+                    temp_path = temp.name
+                script.import_srt(temp_path, "字幕")
+            finally:
+                if temp_path:
+                    try:
+                        Path(temp_path).unlink()
+                    except OSError:
+                        pass
+            report(0.90, "字幕轨道已写入")
+
+        report(0.95, "正在保存剪映草稿…")
+        script.save()
+        draft_path = root / name
+        _update_draft_meta(draft_path, name, draft_id, target_duration)
+        report(1.0, "剪映草稿已生成")
+    except JianyingEngineError:
+        raise
+    except Exception as exc:
+        raise JianyingEngineError(f"生成静态漫剪映草稿失败：{exc}") from exc
+
+    return JianyingDraftResult(name, str(draft_path), target_duration / 1_000_000)
 
 
 def open_jianying(executable: str) -> None:

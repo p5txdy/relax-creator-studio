@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import os
 import queue
+import shutil
 import sys
 import threading
 import zipfile
+from datetime import datetime
 from pathlib import Path
 from tkinter import (
     BOTH,
@@ -15,14 +17,18 @@ from tkinter import (
     X,
     Y,
     BooleanVar,
+    Canvas,
     DoubleVar,
+    Entry,
     Frame,
     IntVar,
     Label,
     Listbox,
     Menu,
+    PhotoImage,
     StringVar,
     Text,
+    TclError,
     Tk,
     Toplevel,
     filedialog,
@@ -30,6 +36,8 @@ from tkinter import (
     ttk,
 )
 from xml.etree import ElementTree
+
+from PIL import Image, ImageDraw, ImageOps, ImageTk
 
 from core.ai_client import (
     PROVIDER_PRESETS,
@@ -40,1530 +48,380 @@ from core.ai_client import (
     infer_provider,
     provider_preset,
 )
+from core.comic_engine import (
+    ComicEngineError,
+    build_ai_split_storyboard_prompt,
+    build_character_prompt,
+    build_scene_prompt,
+    character_reference_data,
+    compose_shot_prompt,
+    default_character,
+    default_scene,
+    enforce_character_reference_prompt,
+    enforce_scene_reference_prompt,
+    export_comic_asset_pack,
+    has_local_reference,
+    import_comic_asset_pack,
+    merge_storyboard_shots,
+    parse_storyboard_response,
+    replace_character_in_shots,
+    replace_scene_in_shots,
+    safe_filename,
+    scene_reference_data,
+    split_story_source_chunks,
+    split_storyboard_shot,
+    validate_ai_storyboard_split,
+)
+from core.seedream_client import (
+    SEEDREAM_BASE_URL,
+    SEEDREAM_MODEL,
+    DoubaoSeedreamClient,
+    SeedreamConfig,
+)
+from core.comic_video_engine import allocate_shot_durations, build_comic_video_command, load_srt, probe_audio_duration
 from core.jianying_engine import (
     JianyingEngineError,
+    create_comic_jianying_draft,
     create_jianying_draft,
     detect_jianying_drafts_path,
     detect_jianying_executable,
     open_jianying,
-    probe_audio_duration,
-    probe_video_duration,
 )
-from core.novel_engine import build_post_prompt, build_rewrite_prompt, chapter_records
 from core.secret_store import SecretStoreError, delete_api_key, load_api_key, save_api_key
-from core.storage import StateStore
+from core.storage import StateStore, new_comic_project
 from core.video_engine import (
-    DEFAULT_PLAYBACK_SPEED,
-    VideoClip,
-    VideoProject,
-    build_export_command,
     find_executable,
     probe_duration,
     run_export,
 )
 
 
-APP_NAME = "è§£å‹åˆ›ä½œå·¥åŠ"
-APP_VERSION = "0.2.5"
-MIX_STRATEGIES = {
-    "å‡è¡¡æ··å‰ªï¼ˆæ¨èï¼‰": "balanced",
-    "é¡ºåºå®Œæ•´æ’­æ”¾": "sequential",
-}
-BG = "#F2F4F1"
+APP_NAME = "æ¼«ç”»æ¨æ–‡"
+APP_VERSION = "1.0"
+BG = "#F3F5F7"
 SURFACE = "#FFFFFF"
-SURFACE_ALT = "#E9EFEA"
-INK = "#18201C"
-MUTED = "#69746D"
-SIDEBAR = "#14231C"
-SIDEBAR_MUTED = "#9FB1A7"
-ACCENT = "#55D08B"
-ACCENT_DARK = "#167450"
-WARM = "#F2A55F"
-ERROR = "#C44D56"
-BORDER = "#DDE4DF"
+SURFACE_ALT = "#EDF1F4"
+INK = "#1D2935"
+MUTED = "#697785"
+SIDEBAR = "#18232D"
+SIDEBAR_MUTED = "#AAB7C2"
+ACCENT = "#45B8A4"
+ACCENT_DARK = "#237D72"
+WARM = "#E6A24F"
+ERROR = "#D65B67"
+BORDER = "#DCE3E8"
+COMIC_CANVAS = "#F3F5F7"
+COMIC_INSET = "#F8FAFB"
+COMIC_MINT = "#E2F3EF"
+COMIC_DARK_ALT = "#243743"
+COMIC_STYLE_PRESETS = (
+    "å›½é£ 3D åŠ¨æ¼«ï¼Œç”µå½±çº§å…‰å½±ï¼Œé«˜ç»†èŠ‚",
+    "æ—¥ç³» 2D åŠ¨ç”»ï¼Œæ¸…æ™°çº¿ç¨¿ï¼Œç»†è…»èµ›ç’ç’ä¸Šè‰²",
+    "å¤é£æ°´å¢¨æ¼«ç”»ï¼Œä¸œæ–¹ç¾å­¦ï¼ŒæŸ”å’Œå…‰å½±",
+    "ç°ä»£éƒ½å¸‚æ¡æ¼«ï¼Œå†™å®åŠ¨æ¼«ï¼Œé«˜çº§ç”µå½±è°ƒè‰²",
+    "éŸ©ç³»å”¯ç¾æ¼«ç”»ï¼Œç²¾è‡´äº”å®˜ï¼ŒæŸ”å…‰æ°›å›´",
+    "ç°ä»£éƒ½å¸‚éŸ©æ¼«ï¼Œç²¾è‡´é«˜é¢œå€¼äººç‰©ï¼Œä¿®é•¿è‡ªç„¶æ¯”ä¾‹ï¼Œæ¸…æ™°çº¿ç¨¿ï¼ŒæŸ”å’Œæ¸å˜ä¸Šè‰²ï¼Œç»†è…»çš®è‚¤è´¨æ„Ÿï¼Œæˆå‰§åŒ–è¡¨æƒ…ä¸æš§æ˜§æ°›å›´å…‰ï¼Œç«–å±ç½‘æ¼«æ„å›¾",
+)
 
 
-def read_document(path: str) -> str:
-    suffix = Path(path).suffix.lower()
-    if suffix == ".docx":
-        with zipfile.ZipFile(path) as archive:
-            xml = archive.read("word/document.xml")
-        root = ElementTree.fromstring(xml)
-        paragraphs: list[str] = []
-        namespace = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
-        for paragraph in root.iter(namespace + "p"):
-            text = "".join(node.text or "" for node in paragraph.iter(namespace + "t"))
-            if text.strip():
-                paragraphs.append(text.strip())
-        return "\n\n".join(paragraphs)
-    data = Path(path).read_bytes()
-    for encoding in ("utf-8-sig", "utf-8", "gb18030"):
+def _canvas_round_rect(canvas: Canvas, x1: float, y1: float, x2: float, y2: float, radius: float, **kwargs):
+    """Draw an anti-aliased rounded rectangle by supersampling with Pillow."""
+    width = max(1, int(round(x2 - x1)))
+    height = max(1, int(round(y2 - y1)))
+    radius = max(2.0, min(radius, width / 2, height / 2))
+    scale = 4 if width * height <= 160_000 else 2
+    image = Image.new("RGBA", (width * scale, height * scale), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(image)
+    fill = kwargs.pop("fill", None)
+    outline = kwargs.pop("outline", None) or None
+    line_width = max(1, int(kwargs.pop("width", 1) * scale))
+    tags = kwargs.pop("tags", None)
+    draw.rounded_rectangle(
+        (0, 0, width * scale - 1, height * scale - 1),
+        radius=int(radius * scale),
+        fill=fill,
+        outline=outline,
+        width=line_width,
+    )
+    image = image.resize((width, height), Image.Resampling.LANCZOS)
+    photo = ImageTk.PhotoImage(image, master=canvas)
+    cache = getattr(canvas, "_aa_round_images", None)
+    if cache is None:
+        cache = []
+        canvas._aa_round_images = cache
+    cache.append(photo)
+    return canvas.create_image(x1, y1, image=photo, anchor="nw", tags=tags)
+
+
+class RoundedCard(Canvas):
+    """Canvas-backed card with a real rounded outline and a normal Frame interior."""
+
+    def __init__(self, parent, *, surface: str, border: str, padx: int, pady: int, radius: int = 14) -> None:
         try:
-            return data.decode(encoding)
-        except UnicodeDecodeError:
-            continue
-    return data.decode("utf-8", errors="replace")
+            parent_bg = parent.cget("bg")
+        except TclError:
+            parent_bg = BG
+        super().__init__(parent, bg=parent_bg, highlightthickness=0, borderwidth=0, takefocus=0)
+        self.surface = surface
+        self.border = border
+        self.radius = radius
+        self.inset = 6
+        self.fixed_height: int | None = None
+        self.content = Frame(self, bg=surface, padx=padx, pady=pady)
+        self.content_window = self.create_window(self.inset, self.inset, window=self.content, anchor="nw")
+        self.bind("<Configure>", self._redraw, add="+")
+        self.content.bind("<Configure>", self._sync_request, add="+")
 
-
-class StudioApp:
-    def __init__(self, root: Tk) -> None:
-        self.root = root
-        self.store = StateStore()
-        self.state = self.store.load()
-        settings = self.state["settings"]
-        initial_provider = settings.get("provider") or infer_provider(settings.get("base_url", ""), settings.get("model", ""))
-        self.active_api_provider = initial_provider if initial_provider in {item.id for item in PROVIDER_PRESETS} else "custom"
-        self.api_keys: dict[str, str] = {}
-        self.remember_api_key = BooleanVar(value=bool(settings.get("remember_api_key", True)))
-        self.api_key = StringVar(value=self._load_provider_api_key(self.active_api_provider))
-        self.current_page = "dashboard"
-        self.nav_buttons: dict[str, object] = {}
-        self.bus: queue.Queue[tuple[str, object]] = queue.Queue()
-        self.bus_handler = None
-        self.video_tree: ttk.Treeview | None = None
-        self.novel_list: Listbox | None = None
-        self.source_editor: Text | None = None
-        self.result_editor: Text | None = None
-        self.post_editor: Text | None = None
-        self.current_chapter_index: int | None = None
-        self.is_busy = False
-
-        self.root.title(f"{APP_NAME} v{APP_VERSION}")
-        self.root.geometry("1440x900")
-        self.root.minsize(1120, 720)
-        self.root.configure(bg=BG)
-        self._configure_styles()
-        self._build_shell()
-        self.show_dashboard()
-        self.root.protocol("WM_DELETE_WINDOW", self.on_close)
-        self.root.after(120, self._drain_bus)
-
-    def _configure_styles(self) -> None:
-        style = ttk.Style()
-        if "clam" in style.theme_names():
-            style.theme_use("clam")
-        style.configure("Studio.Treeview", background=SURFACE, fieldbackground=SURFACE, foreground=INK, rowheight=34, borderwidth=0, font=("Microsoft YaHei UI", 10))
-        style.configure("Studio.Treeview.Heading", background=SURFACE_ALT, foreground=MUTED, relief="flat", font=("Microsoft YaHei UI", 9, "bold"))
-        style.map("Studio.Treeview", background=[("selected", "#DDF6E8")], foreground=[("selected", INK)])
-        style.configure("Studio.TCombobox", padding=7, fieldbackground=SURFACE, background=SURFACE, foreground=INK)
-        style.configure("Studio.Horizontal.TProgressbar", background=ACCENT, troughcolor=SURFACE_ALT, borderwidth=0)
-        style.configure("Studio.TPanedwindow", background=BG)
-
-    def _build_shell(self) -> None:
-        self.sidebar = Frame(self.root, bg=SIDEBAR, width=236)
-        self.sidebar.pack(side=LEFT, fill=Y)
-        self.sidebar.pack_propagate(False)
-
-        brand = Frame(self.sidebar, bg=SIDEBAR)
-        brand.pack(fill=X, padx=24, pady=(28, 34))
-        Label(brand, text="â—‰", bg=SIDEBAR, fg=ACCENT, font=("Segoe UI Symbol", 26)).pack(anchor="w")
-        Label(brand, text=APP_NAME, bg=SIDEBAR, fg="white", font=("Microsoft YaHei UI", 18, "bold")).pack(anchor="w", pady=(8, 2))
-        Label(brand, text="VIDEO Ã— STORY STUDIO", bg=SIDEBAR, fg=SIDEBAR_MUTED, font=("Segoe UI", 8, "bold")).pack(anchor="w")
-
-        nav_items = [
-            ("dashboard", "âŒ‚  åˆ›ä½œé¦–é¡µ"),
-            ("video", "â–¶  è§†é¢‘æ··å‰ª"),
-            ("novel", "æ–‡  å°è¯´æ”¹æ–‡"),
-            ("settings", "âš™  æ¨¡å‹ä¸å·¥å…·"),
-        ]
-        for key, label in nav_items:
-            button = Label(
-                self.sidebar,
-                text=label,
-                bg=SIDEBAR,
-                fg=SIDEBAR_MUTED,
-                font=("Microsoft YaHei UI", 11),
-                padx=24,
-                pady=13,
-                anchor="w",
-                cursor="hand2",
-            )
-            button.pack(fill=X, padx=10, pady=2)
-            button.bind("<Button-1>", lambda _event, page=key: self.navigate(page))
-            self.nav_buttons[key] = button
-
-        footer = Frame(self.sidebar, bg=SIDEBAR)
-        footer.pack(side="bottom", fill=X, padx=24, pady=24)
-        Label(footer, text=f"ç‰ˆæœ¬ {APP_VERSION}", bg=SIDEBAR, fg=SIDEBAR_MUTED, font=("Segoe UI", 8)).pack(anchor="w", pady=(0, 6))
-        Label(footer, text="æœ¬åœ°é¡¹ç›®è‡ªåŠ¨ä¿å­˜", bg=SIDEBAR, fg=SIDEBAR_MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w")
-        self.tool_status = Label(footer, text="æ­£åœ¨æ£€æŸ¥å·¥å…·â€¦", bg=SIDEBAR, fg=WARM, font=("Microsoft YaHei UI", 9))
-        self.tool_status.pack(anchor="w", pady=(6, 0))
-        self._refresh_tool_status()
-
-        self.main = Frame(self.root, bg=BG)
-        self.main.pack(side=LEFT, fill=BOTH, expand=True)
-
-    def _refresh_tool_status(self) -> None:
-        settings = self.state["settings"]
-        ready = bool(
-            detect_jianying_executable(settings.get("jianying_exe", ""))
-            and detect_jianying_drafts_path(settings.get("jianying_drafts_path", ""))
+    def _sync_request(self, _event=None) -> None:
+        self.configure(
+            width=max(20, self.content.winfo_reqwidth() + self.inset * 2),
+            height=self.fixed_height or max(20, self.content.winfo_reqheight() + self.inset * 2),
         )
-        self.tool_status.configure(text="â— å‰ªæ˜ è¿æ¥å·²å°±ç»ª" if ready else "â— å‰ªæ˜ è·¯å¾„å¾…é…ç½®", fg=ACCENT if ready else WARM)
 
-    def navigate(self, page: str) -> None:
-        if self.is_busy and page != self.current_page:
-            messagebox.showinfo("ä»»åŠ¡è¿›è¡Œä¸­", "å½“å‰ä»»åŠ¡å®Œæˆåå†åˆ‡æ¢å·¥ä½œå°ã€‚")
+    def set_fixed_height(self, height: int) -> None:
+        self.fixed_height = max(20, int(height))
+        self.configure(height=self.fixed_height)
+
+    def _redraw(self, _event=None) -> None:
+        width = max(2, self.winfo_width())
+        height = max(2, self.winfo_height())
+        self.delete("rounded_card")
+        self._aa_round_images = []
+        _canvas_round_rect(
+            self,
+            1,
+            1,
+            width - 1,
+            height - 1,
+            self.radius,
+            fill=self.surface,
+            outline=self.border,
+            width=1,
+            tags="rounded_card",
+        )
+        self.tag_lower("rounded_card")
+        self.itemconfigure(
+            self.content_window,
+            width=max(1, width - self.inset * 2),
+            height=max(1, height - self.inset * 2),
+        )
+
+
+class RoundedScrollbar(Canvas):
+    """Compact vertical scrollbar with a rounded track and draggable thumb."""
+
+    def __init__(self, parent, *, command) -> None:
+        try:
+            parent_bg = parent.cget("bg")
+        except TclError:
+            parent_bg = SURFACE
+        super().__init__(parent, width=13, bg=parent_bg, highlightthickness=0, borderwidth=0, takefocus=0, cursor="hand2")
+        self.command = command
+        self.first = 0.0
+        self.last = 1.0
+        self.drag_offset: float | None = None
+        self.hovered = False
+        self.bind("<Configure>", self._draw, add="+")
+        self.bind("<Button-1>", self._press, add="+")
+        self.bind("<B1-Motion>", self._drag, add="+")
+        self.bind("<ButtonRelease-1>", self._release, add="+")
+        self.bind("<Enter>", lambda _event: self._set_hover(True), add="+")
+        self.bind("<Leave>", lambda _event: self._set_hover(False), add="+")
+
+    def set(self, first, last) -> None:
+        self.first = max(0.0, min(float(first), 1.0))
+        self.last = max(self.first, min(float(last), 1.0))
+        self._draw()
+
+    def _thumb_bounds(self) -> tuple[float, float]:
+        height = max(1, self.winfo_height())
+        track_top, track_bottom = 3.0, max(4.0, height - 3.0)
+        track_height = track_bottom - track_top
+        visible = max(0.0, self.last - self.first)
+        thumb_height = min(track_height, max(28.0, track_height * visible))
+        travel = max(0.0, track_height - thumb_height)
+        denominator = max(0.0001, 1.0 - visible)
+        top = track_top + travel * min(1.0, self.first / denominator)
+        return top, top + thumb_height
+
+    def _draw(self, _event=None) -> None:
+        self.delete("all")
+        self._aa_round_images = []
+        width = max(8, self.winfo_width())
+        height = max(8, self.winfo_height())
+        _canvas_round_rect(self, 3, 2, width - 3, height - 2, 4, fill=SURFACE_ALT, outline="")
+        if self.last - self.first < 0.999:
+            top, bottom = self._thumb_bounds()
+            color = ACCENT_DARK if self.hovered else "#86AAA4"
+            _canvas_round_rect(self, 3, top, width - 3, bottom, 4, fill=color, outline="")
+
+    def _set_hover(self, value: bool) -> None:
+        self.hovered = value
+        self._draw()
+
+    def _press(self, event) -> None:
+        top, bottom = self._thumb_bounds()
+        if top <= event.y <= bottom:
+            self.drag_offset = event.y - top
             return
-        self._save_current_editors()
-        self.current_page = page
-        for key, button in self.nav_buttons.items():
-            button.configure(bg="#20372D" if key == page else SIDEBAR, fg="white" if key == page else SIDEBAR_MUTED)
-        if page == "dashboard":
-            self.show_dashboard()
-        elif page == "video":
-            self.show_video()
-        elif page == "novel":
-            self.show_novel()
-        else:
-            self.show_settings()
+        visible = max(0.01, self.last - self.first)
+        self.command("moveto", max(0.0, min(1.0 - visible, event.y / max(1, self.winfo_height()) - visible / 2)))
 
-    def _clear_main(self) -> None:
-        for child in self.main.winfo_children():
-            child.destroy()
-        self.video_tree = None
-        self.novel_list = None
-        self.source_editor = None
-        self.result_editor = None
-        self.post_editor = None
-        self.bus_handler = None
+    def _drag(self, event) -> None:
+        if self.drag_offset is None:
+            return
+        visible = max(0.01, self.last - self.first)
+        top, bottom = self._thumb_bounds()
+        thumb_height = bottom - top
+        travel = max(1.0, self.winfo_height() - 6.0 - thumb_height)
+        target = (event.y - self.drag_offset - 3.0) / travel
+        self.command("moveto", max(0.0, min(1.0 - visible, target * (1.0 - visible))))
 
-    def _page_header(self, title: str, subtitle: str, actions: list[tuple[str, object, str]] | None = None) -> Frame:
-        header = Frame(self.main, bg=BG)
-        header.pack(fill=X, padx=34, pady=(28, 18))
-        text_area = Frame(header, bg=BG)
-        text_area.pack(side=LEFT)
-        Label(text_area, text=title, bg=BG, fg=INK, font=("Microsoft YaHei UI", 23, "bold")).pack(anchor="w")
-        Label(text_area, text=subtitle, bg=BG, fg=MUTED, font=("Microsoft YaHei UI", 10)).pack(anchor="w", pady=(5, 0))
-        if actions:
-            action_area = Frame(header, bg=BG)
-            action_area.pack(side=RIGHT, pady=5)
-            for label, command, kind in actions:
-                self._button(action_area, label, command, kind=kind).pack(side=LEFT, padx=(8, 0))
-        return header
+    def _release(self, _event=None) -> None:
+        self.drag_offset = None
 
-    def _card(self, parent, *, bg: str = SURFACE, padx: int = 20, pady: int = 18) -> Frame:
-        outer = Frame(parent, bg=BORDER, padx=1, pady=1)
-        inner = Frame(outer, bg=bg, padx=padx, pady=pady)
-        inner.pack(fill=BOTH, expand=True)
-        return outer
 
-    def _button(self, parent, text: str, command, *, kind: str = "primary", width: int | None = None):
-        palette = {
-            "primary": (ACCENT_DARK, "white", "#105F42"),
-            "accent": (ACCENT, SIDEBAR, "#45BE7A"),
-            "ghost": (SURFACE_ALT, INK, "#DCE7DF"),
-            "danger": ("#FBEAEC", ERROR, "#F4DADD"),
-            "dark": (SIDEBAR, "white", "#20372D"),
-        }
-        bg, fg, active = palette[kind]
-        return __import__("tkinter").Button(
-            parent,
-            text=text,
-            command=command,
-            bg=bg,
-            fg=fg,
-            activebackground=active,
-            activeforeground=fg,
-            relief="flat",
-            borderwidth=0,
-            padx=14,
-            pady=9,
+class RoundedCombobox(Canvas):
+    """Rounded shell around a themed ttk Combobox, preserving its familiar API."""
+
+    def __init__(self, parent, *, textvariable=None, values=(), state="normal", width=None, style=None, **kwargs) -> None:
+        try:
+            parent_bg = parent.cget("bg")
+        except TclError:
+            parent_bg = SURFACE
+        pixel_width = max(92, (int(width) * 8 + 38) if width else 168)
+        super().__init__(parent, width=pixel_width, height=39, bg=parent_bg, highlightthickness=0, borderwidth=0, takefocus=0)
+        self.combo = ttk.Combobox(
+            self,
+            textvariable=textvariable,
+            values=values,
+            state=state,
             width=width,
-            cursor="hand2",
-            font=("Microsoft YaHei UI", 9, "bold"),
+            style="Studio.Inner.TCombobox",
+            **kwargs,
         )
+        self.combo_window = self.create_window(3, 3, window=self.combo, anchor="nw")
+        super().bind("<Configure>", self._redraw, add="+")
 
-    def _entry(self, parent, variable: StringVar | DoubleVar | IntVar, width: int | None = None):
-        return __import__("tkinter").Entry(
-            parent,
-            textvariable=variable,
+    def _redraw(self, _event=None) -> None:
+        width = max(10, self.winfo_width())
+        height = max(10, self.winfo_height())
+        self.delete("combo_shell")
+        self._aa_round_images = []
+        _canvas_round_rect(self, 1, 1, width - 1, height - 1, 10, fill=COMIC_INSET, outline=BORDER, width=1, tags="combo_shell")
+        self.tag_lower("combo_shell")
+        self.itemconfigure(self.combo_window, width=max(1, width - 6), height=max(1, height - 6))
+
+    def bind(self, sequence=None, func=None, add=None):
+        if sequence == "<Configure>":
+            return super().bind(sequence, func, add)
+        return self.combo.bind(sequence, func, add)
+
+    def configure(self, cnf=None, **kwargs):
+        combo_keys = {"values", "state", "textvariable", "width", "height", "font", "justify"}
+        combo_options = {key: kwargs.pop(key) for key in list(kwargs) if key in combo_keys}
+        if cnf:
+            combo_options.update(cnf)
+        if combo_options:
+            self.combo.configure(**combo_options)
+        if kwargs:
+            return super().configure(**kwargs)
+        return None
+
+    config = configure
+
+    def get(self):
+        return self.combo.get()
+
+    def set(self, value) -> None:
+        self.combo.set(value)
+
+    def current(self, index=None):
+        return self.combo.current(index) if index is not None else self.combo.current()
+
+
+class RoundedEntry(Canvas):
+    """Single-line input with a rounded border and a borderless native editor."""
+
+    def __init__(self, parent, *, textvariable, width=None) -> None:
+        try:
+            parent_bg = parent.cget("bg")
+        except TclError:
+            parent_bg = SURFACE
+        pixel_width = max(96, int(width) * 9 + 28) if width else 180
+        super().__init__(parent, width=pixel_width, height=38, bg=parent_bg, highlightthickness=0, borderwidth=0, takefocus=0)
+        self.entry = Entry(
+            self,
+            textvariable=textvariable,
             width=width,
-            bg=SURFACE,
+            bg=COMIC_INSET,
             fg=INK,
             insertbackground=INK,
-            relief="solid",
-            borderwidth=1,
+            relief="flat",
+            borderwidth=0,
             highlightthickness=0,
             font=("Microsoft YaHei UI", 10),
         )
+        self.entry_window = self.create_window(10, 3, window=self.entry, anchor="nw")
+        super().bind("<Configure>", self._redraw, add="+")
 
-    def _field_label(self, parent, text: str) -> Label:
-        return Label(parent, text=text, bg=parent.cget("bg"), fg=MUTED, font=("Microsoft YaHei UI", 9))
+    def _redraw(self, _event=None) -> None:
+        width = max(10, self.winfo_width())
+        height = max(10, self.winfo_height())
+        self.delete("entry_shell")
+        self._aa_round_images = []
+        _canvas_round_rect(self, 1, 1, width - 1, height - 1, 10, fill=COMIC_INSET, outline=BORDER, width=1, tags="entry_shell")
+        self.tag_lower("entry_shell")
+        self.itemconfigure(self.entry_window, width=max(1, width - 20), height=max(1, height - 6))
 
-    def show_dashboard(self) -> None:
-        self._clear_main()
-        self.current_page = "dashboard"
-        self.navigate_highlight("dashboard")
-        self._page_header("ä»Šå¤©æƒ³åˆ›ä½œä»€ä¹ˆï¼Ÿ", "ä»ç´ æåˆ°æˆç‰‡ï¼Œä»åŸæ–‡åˆ°æ–°ç¨¿ï¼Œæ‰€æœ‰è¿›åº¦éƒ½ä¿å­˜åœ¨æœ¬æœºã€‚")
+    def bind(self, sequence=None, func=None, add=None):
+        if sequence == "<Configure>":
+            return super().bind(sequence, func, add)
+        return self.entry.bind(sequence, func, add)
 
-        body = Frame(self.main, bg=BG)
-        body.pack(fill=BOTH, expand=True, padx=34, pady=(2, 28))
+    def configure(self, cnf=None, **kwargs):
+        entry_keys = {"show", "state", "font", "justify", "validate", "validatecommand"}
+        entry_options = {key: kwargs.pop(key) for key in list(kwargs) if key in entry_keys}
+        if cnf:
+            entry_options.update(cnf)
+        if entry_options:
+            self.entry.configure(**entry_options)
+        if kwargs:
+            return super().configure(**kwargs)
+        return None
 
-        hero_outer = self._card(body, bg=SIDEBAR, padx=28, pady=26)
-        hero_outer.pack(fill=X)
-        hero = hero_outer.winfo_children()[0]
-        left = Frame(hero, bg=SIDEBAR)
-        left.pack(side=LEFT, fill=X, expand=True)
-        Label(left, text="ä¸€ä¸ªå®‰é™ã€å®Œæ•´çš„æœ¬åœ°åˆ›ä½œæµç¨‹", bg=SIDEBAR, fg="white", font=("Microsoft YaHei UI", 18, "bold")).pack(anchor="w")
-        Label(left, text="å¯¼å…¥ç´ æ Â· è®¾å®šè§„åˆ™ Â· AI è¾…åŠ© Â· æ£€æŸ¥ç»“æœ Â· æœ¬åœ°å¯¼å‡º", bg=SIDEBAR, fg=SIDEBAR_MUTED, font=("Microsoft YaHei UI", 10)).pack(anchor="w", pady=(8, 0))
-        self._button(hero, "å¼€å§‹è§†é¢‘æ··å‰ª  â†’", lambda: self.navigate("video"), kind="accent").pack(side=RIGHT, padx=(18, 0))
+    config = configure
 
-        cards = Frame(body, bg=BG)
-        cards.pack(fill=BOTH, expand=True, pady=(18, 0))
-        cards.grid_columnconfigure(0, weight=1)
-        cards.grid_columnconfigure(1, weight=1)
-        cards.grid_rowconfigure(0, weight=1)
+    def focus_set(self):
+        return self.entry.focus_set()
 
-        video_card = self._card(cards, padx=26, pady=24)
-        video_card.grid(row=0, column=0, sticky="nsew", padx=(0, 9))
-        v = video_card.winfo_children()[0]
-        Label(v, text="VIDEO MIX", bg=SURFACE, fg=ACCENT_DARK, font=("Segoe UI", 9, "bold")).pack(anchor="w")
-        Label(v, text="è§£å‹è§†é¢‘æ··å‰ª", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 19, "bold")).pack(anchor="w", pady=(8, 6))
-        Label(v, text="æ‰¹é‡æ’åˆ—ç´ æã€ç»Ÿä¸€æ¯”ä¾‹ã€æ·»åŠ è½¬åœºä¸éŸ³ä¹ï¼Œå¹¶ç”Ÿæˆå¹³å°å‘å¸ƒæ–‡æ¡ˆã€‚", bg=SURFACE, fg=MUTED, wraplength=430, justify=LEFT, font=("Microsoft YaHei UI", 10)).pack(anchor="w")
-        video = self.state["video"]
-        self._metric_row(v, [("ç´ æ", len(video["clips"])), ("ç”»å¹…", video["aspect"]), ("é¢„è®¡æ—¶é•¿", f"{self._video_duration():.1f}s")])
-        self._button(v, "è¿›å…¥å·¥ä½œå°", lambda: self.navigate("video"), kind="ghost").pack(anchor="w", pady=(22, 0))
+    def selection_range(self, start, end):
+        return self.entry.selection_range(start, end)
 
-        novel_card = self._card(cards, padx=26, pady=24)
-        novel_card.grid(row=0, column=1, sticky="nsew", padx=(9, 0))
-        n = novel_card.winfo_children()[0]
-        Label(n, text="STORY REWRITE", bg=SURFACE, fg="#B66B2E", font=("Segoe UI", 9, "bold")).pack(anchor="w")
-        Label(n, text="å°è¯´æ”¹æ–‡", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 19, "bold")).pack(anchor="w", pady=(8, 6))
-        Label(n, text="è‡ªåŠ¨æ‹†ç« ã€ç®¡ç†äººç‰©è®¾å®šã€é€ç« æˆ–æ‰¹é‡æ”¹å†™ï¼Œå¹¶ä¿ç•™åŸæ–‡å¯¹ç…§ã€‚", bg=SURFACE, fg=MUTED, wraplength=430, justify=LEFT, font=("Microsoft YaHei UI", 10)).pack(anchor="w")
-        novel = self.state["novel"]
-        self._metric_row(n, [("ç« èŠ‚", len(novel["chapters"])), ("å·²å®Œæˆ", len(novel["results"])), ("æ¨¡å¼", novel["mode"])])
-        self._button(n, "è¿›å…¥å·¥ä½œå°", lambda: self.navigate("novel"), kind="ghost").pack(anchor="w", pady=(22, 0))
+    def get(self):
+        return self.entry.get()
 
-        tips_outer = self._card(body, bg="#FFF8F0", padx=22, pady=16)
-        tips_outer.pack(fill=X, pady=(18, 0))
-        tips = tips_outer.winfo_children()[0]
-        Label(tips, text="ä½¿ç”¨æç¤º", bg="#FFF8F0", fg="#8A5527", font=("Microsoft YaHei UI", 10, "bold")).pack(anchor="w")
-        Label(tips, text="AI Key åªä¿ç•™åœ¨æœ¬æ¬¡è¿è¡Œçš„å†…å­˜ä¸­ï¼Œä¸ä¼šå†™å…¥é¡¹ç›®æ–‡ä»¶ï¼›è¯·åªæ”¹å†™ä½ æ‹¥æœ‰ç‰ˆæƒæˆ–å·²è·å¾—æˆæƒçš„å†…å®¹ã€‚", bg="#FFF8F0", fg="#8A6A4E", font=("Microsoft YaHei UI", 9)).pack(anchor="w", pady=(5, 0))
 
-    def _metric_row(self, parent, metrics: list[tuple[str, object]]) -> None:
-        row = Frame(parent, bg=SURFACE)
-        row.pack(fill=X, pady=(24, 0))
-        for label, value in metrics:
-            block = Frame(row, bg=SURFACE)
-            block.pack(side=LEFT, padx=(0, 38))
-            Label(block, text=str(value), bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 16, "bold")).pack(anchor="w")
-            Label(block, text=label, bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w")
+class RoundedButton(Canvas):
+    """Small dependency-free rounded action button."""
 
-    def navigate_highlight(self, page: str) -> None:
-        for key, button in self.nav_buttons.items():
-            button.configure(bg="#20372D" if key == page else SIDEBAR, fg="white" if key == page else SIDEBAR_MUTED)
-
-    # ---------------------------- Video workbench ----------------------------
-    def show_video(self) -> None:
-        self._clear_main()
-        self.navigate_highlight("video")
-        self._page_header(
-            "è§†é¢‘æ··å‰ª",
-            "è°ƒæ•´ç´ æé¡ºåºå’Œæˆªå–åŒºé—´ï¼Œç”Ÿæˆå‰ªæ˜ å¯ç»§ç»­ç¼–è¾‘çš„æ—¶é—´çº¿è‰ç¨¿ã€‚",
-            [
-                ("ï¼‹ æ·»åŠ ç´ æ", self.add_video_clips, "ghost"),
-                ("å¯¼å‡º MP4", self.export_video, "ghost"),
-                ("ç”Ÿæˆå¹¶æ‰“å¼€å‰ªæ˜ ", self.export_jianying_draft, "primary"),
-            ],
-        )
-        self._upgrade_video_clip_metadata()
-        body = Frame(self.main, bg=BG)
-        body.pack(fill=BOTH, expand=True, padx=34, pady=(0, 28))
-        body.grid_columnconfigure(0, weight=3)
-        body.grid_columnconfigure(1, weight=1)
-        body.grid_rowconfigure(0, weight=1)
-
-        left_outer = self._card(body, padx=0, pady=0)
-        left_outer.grid(row=0, column=0, sticky="nsew", padx=(0, 9))
-        left = left_outer.winfo_children()[0]
-        title_row = Frame(left, bg=SURFACE, padx=20, pady=16)
-        title_row.pack(fill=X)
-        self.video_project_var = StringVar(value=self.state["video"]["project_name"])
-        Label(title_row, text="é¡¹ç›®", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 9)).pack(side=LEFT)
-        project_entry = self._entry(title_row, self.video_project_var, 32)
-        project_entry.pack(side=LEFT, padx=(10, 0), ipady=6)
-        project_entry.bind("<FocusOut>", lambda _e: self._sync_video_state())
-        self.video_summary = Label(title_row, text="", bg=SURFACE, fg=ACCENT_DARK, font=("Microsoft YaHei UI", 9, "bold"))
-        self.video_summary.pack(side=RIGHT)
-
-        columns = ("order", "name", "start", "duration")
-        self.video_tree = ttk.Treeview(left, columns=columns, show="headings", style="Studio.Treeview", selectmode="browse")
-        self.video_tree.heading("order", text="#")
-        self.video_tree.heading("name", text="ç´ ææ–‡ä»¶")
-        self.video_tree.heading("start", text="èµ·ç‚¹")
-        self.video_tree.heading("duration", text="å–ç”¨ / åŸç‰‡")
-        self.video_tree.column("order", width=50, anchor="center", stretch=False)
-        self.video_tree.column("name", width=430, anchor="w")
-        self.video_tree.column("start", width=90, anchor="center", stretch=False)
-        self.video_tree.column("duration", width=145, anchor="center", stretch=False)
-        self.video_tree.pack(fill=BOTH, expand=True, padx=1)
-        self.video_tree.bind("<<TreeviewSelect>>", self.on_video_select)
-
-        edit_bar = Frame(left, bg=SURFACE_ALT, padx=16, pady=12)
-        edit_bar.pack(fill=X)
-        self.clip_start_var = DoubleVar(value=0.0)
-        self.clip_duration_var = DoubleVar(value=0.0)
-        self._field_label(edit_bar, "èµ·ç‚¹(ç§’)").pack(side=LEFT)
-        self._entry(edit_bar, self.clip_start_var, 7).pack(side=LEFT, padx=(7, 16), ipady=5)
-        self._field_label(edit_bar, "æ—¶é•¿(ç§’)").pack(side=LEFT)
-        self._entry(edit_bar, self.clip_duration_var, 7).pack(side=LEFT, padx=(7, 16), ipady=5)
-        self._button(edit_bar, "åº”ç”¨", self.update_selected_clip, kind="dark").pack(side=LEFT)
-        self._button(edit_bar, "æ¢å¤å®Œæ•´æ—¶é•¿", self.restore_selected_clip_duration, kind="ghost").pack(side=LEFT, padx=(7, 0))
-        self._button(edit_bar, "åˆ é™¤", self.remove_selected_clip, kind="danger").pack(side=RIGHT)
-        self._button(edit_bar, "ä¸‹ç§»", lambda: self.move_clip(1), kind="ghost").pack(side=RIGHT, padx=(0, 6))
-        self._button(edit_bar, "ä¸Šç§»", lambda: self.move_clip(-1), kind="ghost").pack(side=RIGHT, padx=(0, 6))
-
-        post = Frame(left, bg=SURFACE, padx=20, pady=16)
-        post.pack(fill=X)
-        post_header = Frame(post, bg=SURFACE)
-        post_header.pack(fill=X)
-        Label(post_header, text="å‘å¸ƒæ–‡æ¡ˆ", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 11, "bold")).pack(side=LEFT)
-        self._button(post_header, "å¤åˆ¶", self.copy_post, kind="ghost").pack(side=RIGHT)
-        self._button(post_header, "AI ç”Ÿæˆ", self.generate_post_copy, kind="accent").pack(side=RIGHT, padx=(0, 7))
-        self.post_editor = Text(post, height=5, wrap="word", bg="#F7F9F7", fg=INK, insertbackground=INK, relief="flat", padx=12, pady=10, font=("Microsoft YaHei UI", 10))
-        self.post_editor.pack(fill=X, pady=(10, 0))
-        self.post_editor.insert("1.0", self.state["video"].get("post_copy", ""))
-
-        settings_outer = self._card(body, padx=20, pady=18)
-        settings_outer.grid(row=0, column=1, sticky="nsew", padx=(9, 0))
-        settings = settings_outer.winfo_children()[0]
-        Label(settings, text="æˆç‰‡å‚æ•°", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 13, "bold")).pack(anchor="w")
-        Label(settings, text="ç´ æç”»é¢å›ºå®š 1.5 å€é€Ÿï¼Œè§†é¢‘åŸå£°å§‹ç»ˆé™éŸ³", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w", pady=(4, 18))
-
-        video = self.state["video"]
-        self.aspect_var = StringVar(value=video["aspect"])
-        self.fps_var = StringVar(value=str(video["fps"]))
-        self.transition_var = StringVar(value=video["transition"])
-        self.transition_duration_var = DoubleVar(value=video["transition_duration"])
-        strategy_id = video.get("mix_strategy", "balanced")
-        strategy_label = next((label for label, value in MIX_STRATEGIES.items() if value == strategy_id), "å‡è¡¡æ··å‰ªï¼ˆæ¨èï¼‰")
-        self.mix_strategy_var = StringVar(value=strategy_label)
-        self.voice_var = StringVar(value=video.get("voice_path", ""))
-        self.subtitles_var = StringVar(value=video.get("subtitles_path", ""))
-        self.music_var = StringVar(value=video["music_path"])
-        self.music_volume_var = DoubleVar(value=video["music_volume"])
-        self.mood_var = StringVar(value=video["mood"])
-        self.platform_var = StringVar(value=video["platform"])
-
-        self._combo_field(settings, "ç”»å¹…æ¯”ä¾‹", self.aspect_var, ["9:16", "16:9", "1:1", "4:5"])
-        self._combo_field(settings, "å¸§ç‡", self.fps_var, ["24", "25", "30", "60"])
-        self._combo_field(settings, "è½¬åœº", self.transition_var, ["fade", "wipeleft", "slideright", "circleopen", "smoothleft", "none"])
-        self._number_field(settings, "è½¬åœºæ—¶é•¿ï¼ˆç§’ï¼‰", self.transition_duration_var)
-        self._combo_field(settings, "ç´ æä½¿ç”¨æ–¹å¼", self.mix_strategy_var, list(MIX_STRATEGIES))
-        Label(
-            settings,
-            text="å‡è¡¡æ··å‰ªä¼šè®©æ‰€æœ‰ç´ æå°½é‡å¹³å‡å‡ºç°åœ¨ä¸»éŸ³é¢‘æ—¶é—´çº¿ä¸­ï¼›é¡ºåºå®Œæ•´æ’­æ”¾åˆ™ä¼˜å…ˆæ’­å®Œå‰ä¸€æ®µã€‚",
-            bg=SURFACE,
-            fg=MUTED,
-            wraplength=270,
-            justify=LEFT,
-            font=("Microsoft YaHei UI", 8),
-        ).pack(anchor="w", pady=(4, 0))
-        self._combo_field(settings, "æ–‡æ¡ˆæ°›å›´", self.mood_var, ["æ²»æ„ˆ", "æ²‰æµ¸", "çˆ½æ„Ÿ", "è½»æ¾", "é«˜çº§æ„Ÿ"])
-        self._combo_field(settings, "å‘å¸ƒå¹³å°", self.platform_var, ["å°çº¢ä¹¦", "æŠ–éŸ³", "è§†é¢‘å·", "Bç«™", "å¾®åš"])
-
-        self._field_label(settings, "ä¸»éŸ³é¢‘ï¼ˆå†³å®šæœ€ç»ˆæ—¶é•¿ï¼‰").pack(anchor="w", pady=(13, 5))
-        voice_row = Frame(settings, bg=SURFACE)
-        voice_row.pack(fill=X)
-        voice_entry = self._entry(voice_row, self.voice_var)
-        voice_entry.pack(side=LEFT, fill=X, expand=True, ipady=6)
-        self._button(voice_row, "å¯¼å…¥", self.choose_voice_audio, kind="accent").pack(side=RIGHT, padx=(7, 0))
-        voice_duration = float(video.get("voice_duration", 0.0))
-        self.voice_duration_label = Label(
-            settings,
-            text=(f"éŸ³é¢‘æ—¶é•¿ {voice_duration:.2f} ç§’ï¼›è§†é¢‘å°†è‡ªåŠ¨å¾ªç¯/æˆªæ–­åˆ°ç›¸åŒæ—¶é•¿" if voice_duration > 0 else "æœªå¯¼å…¥æ—¶ï¼Œæˆç‰‡æ—¶é•¿æŒ‰è§†é¢‘ç‰‡æ®µæ€»é•¿è®¡ç®—"),
-            bg=SURFACE,
-            fg=ACCENT_DARK if voice_duration > 0 else MUTED,
-            wraplength=270,
-            justify=LEFT,
-            font=("Microsoft YaHei UI", 8),
-        )
-        self.voice_duration_label.pack(anchor="w", pady=(4, 0))
-
-        self._field_label(settings, "å­—å¹•æ–‡ä»¶ï¼ˆSRTï¼‰").pack(anchor="w", pady=(13, 5))
-        subtitle_row = Frame(settings, bg=SURFACE)
-        subtitle_row.pack(fill=X)
-        subtitle_entry = self._entry(subtitle_row, self.subtitles_var)
-        subtitle_entry.pack(side=LEFT, fill=X, expand=True, ipady=6)
-        self._button(subtitle_row, "å¯¼å…¥", self.choose_subtitles, kind="ghost").pack(side=RIGHT, padx=(7, 0))
-
-        self._field_label(settings, "èƒŒæ™¯éŸ³ä¹").pack(anchor="w", pady=(13, 5))
-        music_row = Frame(settings, bg=SURFACE)
-        music_row.pack(fill=X)
-        music_entry = self._entry(music_row, self.music_var)
-        music_entry.pack(side=LEFT, fill=X, expand=True, ipady=6)
-        self._button(music_row, "é€‰æ‹©", self.choose_music, kind="ghost").pack(side=RIGHT, padx=(7, 0))
-        self._number_field(settings, "éŸ³ä¹éŸ³é‡ï¼ˆ0â€”1ï¼‰", self.music_volume_var)
-
-        self.export_progress = ttk.Progressbar(settings, style="Studio.Horizontal.TProgressbar", mode="determinate", maximum=100)
-        self.export_progress.pack(fill=X, pady=(24, 8))
-        self.export_status = Label(settings, text="ç­‰å¾…å¯¼å‡º", bg=SURFACE, fg=MUTED, wraplength=260, justify=LEFT, font=("Microsoft YaHei UI", 9))
-        self.export_status.pack(anchor="w")
-        self._button(settings, "å¯¼å‡º MP4", self.export_video, kind="primary").pack(fill=X, pady=(14, 0))
-        self._button(settings, "ç”Ÿæˆå¹¶æ‰“å¼€å‰ªæ˜ ", self.export_jianying_draft, kind="accent").pack(fill=X, pady=(8, 0))
-        self._refresh_video_tree()
-        self.bus_handler = self._handle_video_bus
-
-    def _combo_field(self, parent, label: str, variable: StringVar, values: list[str]) -> None:
-        self._field_label(parent, label).pack(anchor="w", pady=(10, 5))
-        combo = ttk.Combobox(parent, textvariable=variable, values=values, state="readonly", style="Studio.TCombobox")
-        combo.pack(fill=X)
-        combo.bind("<<ComboboxSelected>>", lambda _e: self._sync_video_state())
-
-    def _number_field(self, parent, label: str, variable: DoubleVar) -> None:
-        self._field_label(parent, label).pack(anchor="w", pady=(10, 5))
-        entry = self._entry(parent, variable)
-        entry.pack(fill=X, ipady=6)
-        entry.bind("<FocusOut>", lambda _e: self._sync_video_state())
-
-    def _video_duration(self) -> float:
-        video = self.state["video"]
-        if video.get("voice_path") and float(video.get("voice_duration", 0.0)) > 0:
-            return float(video["voice_duration"])
-        clips = video.get("clips", [])
-        speed = float(video.get("playback_speed", DEFAULT_PLAYBACK_SPEED))
-        total = sum(float(clip.get("duration", 0)) / speed for clip in clips)
-        if len(clips) > 1 and video.get("transition") != "none":
-            total -= float(video.get("transition_duration", 0.35)) * (len(clips) - 1)
-        return max(0.0, total)
-
-    def _sync_video_state(self) -> None:
-        if not hasattr(self, "video_project_var"):
-            return
-        video = self.state["video"]
-        video["project_name"] = self.video_project_var.get().strip() or "æœªå‘½åè§†é¢‘"
-        video["aspect"] = self.aspect_var.get()
-        video["fps"] = int(self.fps_var.get() or 30)
-        video["transition"] = self.transition_var.get()
-        video["transition_duration"] = max(0.1, min(float(self.transition_duration_var.get()), 2.0))
-        video["mix_strategy"] = MIX_STRATEGIES.get(self.mix_strategy_var.get(), "balanced")
-        video["playback_speed"] = DEFAULT_PLAYBACK_SPEED
-        video["voice_path"] = self.voice_var.get().strip()
-        video["subtitles_path"] = self.subtitles_var.get().strip()
-        video["music_path"] = self.music_var.get().strip()
-        video["music_volume"] = max(0.0, min(float(self.music_volume_var.get()), 1.0))
-        video["mood"] = self.mood_var.get()
-        video["platform"] = self.platform_var.get()
-        if self.post_editor:
-            video["post_copy"] = self.post_editor.get("1.0", "end-1c")
-        self.store.save(self.state)
-        if self.video_summary:
-            self.video_summary.configure(text=f"{len(video['clips'])} ä¸ªç´ æ  Â·  çº¦ {self._video_duration():.1f} ç§’")
-
-    def _refresh_video_tree(self, selected: int | None = None) -> None:
-        if not self.video_tree:
-            return
-        self.video_tree.delete(*self.video_tree.get_children())
-        for index, clip in enumerate(self.state["video"]["clips"]):
-            source_duration = float(clip.get("source_duration", 0.0))
-            duration_text = f"{float(clip['duration']):.1f}s / {source_duration:.1f}s" if source_duration > 0 else f"{float(clip['duration']):.1f}s / æœªçŸ¥"
-            self.video_tree.insert("", END, iid=str(index), values=(index + 1, Path(clip["path"]).name, f"{clip['start']:.1f}s", duration_text))
-        if selected is not None and str(selected) in self.video_tree.get_children():
-            self.video_tree.selection_set(str(selected))
-            self.video_tree.focus(str(selected))
-        self._sync_video_state()
-
-    def add_video_clips(self) -> None:
-        paths = filedialog.askopenfilenames(title="é€‰æ‹©è§†é¢‘ç´ æ", filetypes=[("è§†é¢‘æ–‡ä»¶", "*.mp4 *.mov *.mkv *.avi *.webm *.m4v"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")])
-        if not paths:
-            return
-        settings = self.state["settings"]
-        ffprobe = find_executable(settings.get("ffprobe_path", ""), "ffprobe")
-        failed: list[str] = []
-        for path in paths:
-            duration = probe_duration(path, ffprobe) or probe_video_duration(path)
-            if not duration or duration < 0.2:
-                failed.append(Path(path).name)
-                continue
-            rounded = round(float(duration), 3)
-            self.state["video"]["clips"].append(
-                {"path": path, "start": 0.0, "duration": rounded, "source_duration": rounded}
-            )
-        if self.state["video"]["clips"]:
-            self._refresh_video_tree(len(self.state["video"]["clips"]) - 1)
-        if failed:
-            messagebox.showwarning(
-                "éƒ¨åˆ†ç´ ææœªæ·»åŠ ",
-                "æ— æ³•è¯»å–ä»¥ä¸‹ç´ æçš„çœŸå®æ—¶é•¿ï¼Œå› æ­¤æ²¡æœ‰ç”¨é”™è¯¯çš„ 5 ç§’é»˜è®¤å€¼ä»£æ›¿ï¼š\n"
-                + "\n".join(failed[:8])
-                + ("\nâ€¦â€¦" if len(failed) > 8 else "")
-                + "\n\nè¯·é…ç½® FFprobeï¼Œæˆ–å°†ç´ æè½¬æ¢ä¸ºå¸¸è§çš„ MP4/MOV æ ¼å¼åé‡è¯•ã€‚",
-            )
-
-    def _upgrade_video_clip_metadata(self) -> None:
-        """Migrate old 5/8-second imports to their real full source duration."""
-        clips = self.state["video"].get("clips", [])
-        if not clips:
-            return
-        settings = self.state["settings"]
-        ffprobe = find_executable(settings.get("ffprobe_path", ""), "ffprobe")
-        changed = False
-        for clip in clips:
-            if float(clip.get("source_duration", 0.0)) > 0 or not Path(clip.get("path", "")).is_file():
-                continue
-            duration = probe_duration(clip["path"], ffprobe) or probe_video_duration(clip["path"])
-            if not duration:
-                continue
-            source_duration = round(float(duration), 3)
-            start = min(max(0.0, float(clip.get("start", 0.0))), max(0.0, source_duration - 0.2))
-            clip.update(
-                start=start,
-                duration=round(max(0.2, source_duration - start), 3),
-                source_duration=source_duration,
-            )
-            changed = True
-        if changed:
-            self.store.save(self.state)
-
-    def on_video_select(self, _event=None) -> None:
-        if not self.video_tree or not self.video_tree.selection():
-            return
-        clip = self.state["video"]["clips"][int(self.video_tree.selection()[0])]
-        self.clip_start_var.set(float(clip["start"]))
-        self.clip_duration_var.set(float(clip["duration"]))
-
-    def update_selected_clip(self) -> None:
-        if not self.video_tree or not self.video_tree.selection():
-            messagebox.showinfo("é€‰æ‹©ç´ æ", "è¯·å…ˆé€‰æ‹©ä¸€ä¸ªè§†é¢‘ç´ æã€‚")
-            return
-        index = int(self.video_tree.selection()[0])
+    def __init__(self, parent, *, text: str, command, bg: str, fg: str, active: str, width: int | None = None) -> None:
         try:
-            start = max(0.0, float(self.clip_start_var.get()))
-            duration = max(0.2, float(self.clip_duration_var.get()))
-        except (ValueError, TypeError):
-            messagebox.showerror("å‚æ•°é”™è¯¯", "èµ·ç‚¹å’Œæ—¶é•¿å¿…é¡»æ˜¯æ•°å­—ã€‚")
-            return
-        clip = self.state["video"]["clips"][index]
-        source_duration = float(clip.get("source_duration", 0.0))
-        was_clamped = False
-        if source_duration > 0:
-            if start >= source_duration:
-                messagebox.showerror("å‚æ•°é”™è¯¯", f"æˆªå–èµ·ç‚¹å¿…é¡»å°äºåŸç‰‡æ—¶é•¿ {source_duration:.2f} ç§’ã€‚")
-                return
-            available = source_duration - start
-            if duration > available:
-                duration = available
-                was_clamped = True
-        clip.update(start=start, duration=round(duration, 3))
-        self._refresh_video_tree(index)
-        if was_clamped:
-            messagebox.showinfo("å·²è‡ªåŠ¨ä¿®æ­£", "å–ç”¨æ—¶é•¿è¶…è¿‡ç´ æç»“å°¾ï¼Œå·²è‡ªåŠ¨è°ƒæ•´ä¸ºå‰©ä½™çš„å®Œæ•´æ—¶é•¿ã€‚")
-
-    def restore_selected_clip_duration(self) -> None:
-        if not self.video_tree or not self.video_tree.selection():
-            messagebox.showinfo("é€‰æ‹©ç´ æ", "è¯·å…ˆé€‰æ‹©ä¸€ä¸ªè§†é¢‘ç´ æã€‚")
-            return
-        index = int(self.video_tree.selection()[0])
-        clip = self.state["video"]["clips"][index]
-        source_duration = float(clip.get("source_duration", 0.0))
-        if source_duration <= 0:
-            messagebox.showwarning("æ— æ³•æ¢å¤", "å°šæœªè¯»å–åˆ°è¿™ä¸ªç´ æçš„åŸå§‹æ—¶é•¿ï¼Œè¯·å…ˆé…ç½® FFprobe åé‡æ–°æ·»åŠ ã€‚")
-            return
-        clip["duration"] = round(max(0.2, source_duration - float(clip.get("start", 0.0))), 3)
-        self._refresh_video_tree(index)
-
-    def remove_selected_clip(self) -> None:
-        if not self.video_tree or not self.video_tree.selection():
-            return
-        index = int(self.video_tree.selection()[0])
-        del self.state["video"]["clips"][index]
-        self._refresh_video_tree(min(index, len(self.state["video"]["clips"]) - 1) if self.state["video"]["clips"] else None)
-
-    def move_clip(self, direction: int) -> None:
-        if not self.video_tree or not self.video_tree.selection():
-            return
-        index = int(self.video_tree.selection()[0])
-        target = index + direction
-        clips = self.state["video"]["clips"]
-        if target < 0 or target >= len(clips):
-            return
-        clips[index], clips[target] = clips[target], clips[index]
-        self._refresh_video_tree(target)
-
-    def choose_music(self) -> None:
-        path = filedialog.askopenfilename(title="é€‰æ‹©èƒŒæ™¯éŸ³ä¹", filetypes=[("éŸ³é¢‘æ–‡ä»¶", "*.mp3 *.wav *.m4a *.aac *.flac"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")])
-        if path:
-            self.music_var.set(path)
-            self._sync_video_state()
-
-    def choose_voice_audio(self) -> None:
-        path = filedialog.askopenfilename(
-            title="é€‰æ‹©ä¸»éŸ³é¢‘",
-            filetypes=[("éŸ³é¢‘æ–‡ä»¶", "*.mp3 *.wav *.m4a *.aac *.flac *.ogg"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")],
-        )
-        if not path:
-            return
-        duration = probe_audio_duration(path)
-        if not duration:
-            messagebox.showerror("æ— æ³•è¯»å–éŸ³é¢‘", "æ— æ³•è¯†åˆ«è¿™ä¸ªéŸ³é¢‘æ–‡ä»¶çš„æ—¶é•¿ï¼Œè¯·æ¢ä¸€ä¸ªå¸¸è§æ ¼å¼çš„éŸ³é¢‘ã€‚")
-            return
-        self.voice_var.set(path)
-        self.state["video"]["voice_duration"] = float(duration)
-        self.voice_duration_label.configure(
-            text=f"éŸ³é¢‘æ—¶é•¿ {duration:.2f} ç§’ï¼›è§†é¢‘å°†è‡ªåŠ¨å¾ªç¯/æˆªæ–­åˆ°ç›¸åŒæ—¶é•¿",
-            fg=ACCENT_DARK,
-        )
-        self._sync_video_state()
-        self._refresh_video_tree()
-
-    def choose_subtitles(self) -> None:
-        path = filedialog.askopenfilename(title="é€‰æ‹© SRT å­—å¹•", filetypes=[("SRT å­—å¹•", "*.srt"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")])
-        if path:
-            self.subtitles_var.set(path)
-            self._sync_video_state()
-
-    def _video_project(self) -> VideoProject:
-        self._sync_video_state()
-        video = self.state["video"]
-        return VideoProject(
-            clips=[
-                VideoClip(
-                    item["path"],
-                    float(item["start"]),
-                    float(item["duration"]),
-                    float(item.get("source_duration", 0.0)),
-                )
-                for item in video["clips"]
-            ],
-            aspect=video["aspect"],
-            fps=int(video["fps"]),
-            transition=video["transition"],
-            transition_duration=float(video["transition_duration"]),
-            voice_path=video.get("voice_path", ""),
-            subtitles_path=video.get("subtitles_path", ""),
-            target_duration=float(video.get("voice_duration", 0.0)) if video.get("voice_path") else 0.0,
-            mix_strategy=video.get("mix_strategy", "balanced"),
-            playback_speed=float(video.get("playback_speed", DEFAULT_PLAYBACK_SPEED)),
-            music_path=video["music_path"],
-            music_volume=float(video["music_volume"]),
-        )
-
-    def export_video(self) -> None:
-        if self.is_busy:
-            return
-        project = self._video_project()
-        if not project.clips:
-            messagebox.showinfo("è¿˜æ²¡æœ‰ç´ æ", "è¯·å…ˆæ·»åŠ è‡³å°‘ä¸€ä¸ªè§†é¢‘ç´ æã€‚")
-            return
-        configured = self.state["settings"].get("ffmpeg_path", "")
-        ffmpeg = find_executable(configured, "ffmpeg")
-        if not ffmpeg:
-            tool_name = "ffmpeg" if sys.platform == "darwin" else "ffmpeg.exe"
-            messagebox.showwarning("éœ€è¦ FFmpeg", f"å°šæœªæ‰¾åˆ° FFmpegã€‚è¯·åœ¨â€œæ¨¡å‹ä¸å·¥å…·â€ä¸­æŒ‡å®š {tool_name}ï¼Œä¹‹åå³å¯å¯¼å‡ºè§†é¢‘ã€‚")
-            self.navigate("settings")
-            return
-        default_name = (self.state["video"]["project_name"].strip() or "è§£å‹æ··å‰ª") + ".mp4"
-        output = filedialog.asksaveasfilename(title="å¯¼å‡ºæˆç‰‡", defaultextension=".mp4", initialfile=default_name, filetypes=[("MP4 è§†é¢‘", "*.mp4")])
-        if not output:
-            return
-        try:
-            command = build_export_command(project, ffmpeg, output)
-        except ValueError as exc:
-            messagebox.showerror("æ— æ³•å¯¼å‡º", str(exc))
-            return
-        self.is_busy = True
-        self.export_progress["value"] = 0
-        self.export_status.configure(text="æ­£åœ¨å¯åŠ¨ FFmpegâ€¦", fg=ACCENT_DARK)
-
-        def worker() -> None:
-            try:
-                run_export(command, project.output_duration, lambda value, detail: self.bus.put(("video_progress", (value, detail))))
-                self.bus.put(("video_done", output))
-            except Exception as exc:  # worker boundary
-                self.bus.put(("video_error", str(exc)))
-
-        threading.Thread(target=worker, daemon=True).start()
-
-    def export_jianying_draft(self) -> None:
-        if self.is_busy:
-            return
-        project = self._video_project()
-        if not project.clips:
-            messagebox.showinfo("è¿˜æ²¡æœ‰ç´ æ", "è¯·å…ˆæ·»åŠ è‡³å°‘ä¸€ä¸ªè§†é¢‘ç´ æã€‚")
-            return
-        settings = self.state["settings"]
-        drafts_path = detect_jianying_drafts_path(settings.get("jianying_drafts_path", ""))
-        jianying_exe = detect_jianying_executable(settings.get("jianying_exe", ""))
-        if not drafts_path or not jianying_exe:
-            messagebox.showwarning("éœ€è¦å‰ªæ˜ è®¾ç½®", "æ²¡æœ‰æ‰¾åˆ°å‰ªæ˜ ç¨‹åºæˆ–è‰ç¨¿ç›®å½•ï¼Œè¯·åœ¨â€œæ¨¡å‹ä¸å·¥å…·â€ä¸­ç¡®è®¤è·¯å¾„ã€‚")
-            self.navigate("settings")
-            return
-        settings["jianying_drafts_path"] = drafts_path
-        settings["jianying_exe"] = jianying_exe
-        self.store.save(self.state)
-        self.is_busy = True
-        self.export_progress["value"] = 8
-        self.export_status.configure(text="æ­£åœ¨ç”Ÿæˆå‰ªæ˜ æ—¶é—´çº¿è‰ç¨¿â€¦", fg=ACCENT_DARK)
-        project_name = self.state["video"]["project_name"]
-
-        def worker() -> None:
-            try:
-                result = create_jianying_draft(project, drafts_path, project_name)
-                self.bus.put(("jianying_done", (result, jianying_exe)))
-            except Exception as exc:
-                self.bus.put(("jianying_error", str(exc)))
-
-        threading.Thread(target=worker, daemon=True).start()
-
-    def _handle_video_bus(self, event: str, payload: object) -> None:
-        if event == "video_progress" and self.export_progress:
-            value, _detail = payload
-            self.export_progress["value"] = float(value) * 100
-            self.export_status.configure(text=f"æ­£åœ¨å¯¼å‡ºâ€¦ {float(value) * 100:.0f}%")
-        elif event == "video_done":
-            self.is_busy = False
-            self.export_status.configure(text="å¯¼å‡ºå®Œæˆ", fg=ACCENT_DARK)
-            messagebox.showinfo("å¯¼å‡ºå®Œæˆ", f"è§†é¢‘å·²ä¿å­˜åˆ°ï¼š\n{payload}")
-        elif event == "video_error":
-            self.is_busy = False
-            self.export_status.configure(text="å¯¼å‡ºå¤±è´¥", fg=ERROR)
-            messagebox.showerror("å¯¼å‡ºå¤±è´¥", str(payload))
-        elif event == "post_done":
-            self.is_busy = False
-            if self.post_editor:
-                self.post_editor.delete("1.0", END)
-                self.post_editor.insert("1.0", str(payload))
-                self._sync_video_state()
-        elif event == "post_error":
-            self.is_busy = False
-            messagebox.showerror("æ–‡æ¡ˆç”Ÿæˆå¤±è´¥", str(payload))
-        elif event == "jianying_done":
-            self.is_busy = False
-            result, executable = payload
-            self.export_progress["value"] = 100
-            self.export_status.configure(text=f"å‰ªæ˜ è‰ç¨¿å·²ç”Ÿæˆï¼š{result.name}", fg=ACCENT_DARK)
-            try:
-                open_jianying(executable)
-            except JianyingEngineError as exc:
-                messagebox.showwarning("è‰ç¨¿å·²ç”Ÿæˆ", f"è‰ç¨¿å·²ç»ç”Ÿæˆï¼Œä½†å‰ªæ˜ æœªèƒ½è‡ªåŠ¨å¯åŠ¨ï¼š\n{exc}\n\nè‰ç¨¿ä½ç½®ï¼š\n{result.path}")
-                return
-            messagebox.showinfo(
-                "å·²æ‰“å¼€å‰ªæ˜ ",
-                f"è‰ç¨¿â€œ{result.name}â€å·²ç»ç”Ÿæˆã€‚\n\nè¯·åœ¨å‰ªæ˜ é¦–é¡µçš„â€œæœ¬åœ°è‰ç¨¿â€ä¸­æ‰“å¼€ï¼›è‹¥åˆ—è¡¨æœªåˆ·æ–°ï¼Œé‡æ–°è¿›å…¥å‰ªæ˜ é¦–é¡µå³å¯ã€‚",
-            )
-        elif event == "jianying_error":
-            self.is_busy = False
-            self.export_progress["value"] = 0
-            self.export_status.configure(text="å‰ªæ˜ è‰ç¨¿ç”Ÿæˆå¤±è´¥", fg=ERROR)
-            messagebox.showerror("å‰ªæ˜ è‰ç¨¿ç”Ÿæˆå¤±è´¥", str(payload))
-
-    def generate_post_copy(self) -> None:
-        if self.is_busy:
-            return
-        try:
-            client = self._ai_client()
-        except AIClientError as exc:
-            messagebox.showwarning("éœ€è¦æ¨¡å‹è®¾ç½®", str(exc))
-            self.navigate("settings")
-            return
-        self._sync_video_state()
-        video = self.state["video"]
-        system, user = build_post_prompt(video["project_name"], video["mood"], video["platform"], [Path(item["path"]).stem for item in video["clips"]], self._video_duration())
-        self.is_busy = True
-        if self.post_editor:
-            self.post_editor.delete("1.0", END)
-            self.post_editor.insert("1.0", "æ­£åœ¨ç”Ÿæˆæ–‡æ¡ˆâ€¦")
-
-        def worker() -> None:
-            try:
-                self.bus.put(("post_done", client.complete(system, user, temperature=0.8)))
-            except Exception as exc:
-                self.bus.put(("post_error", str(exc)))
-
-        threading.Thread(target=worker, daemon=True).start()
-
-    def copy_post(self) -> None:
-        if not self.post_editor:
-            return
-        text = self.post_editor.get("1.0", "end-1c")
-        self.root.clipboard_clear()
-        self.root.clipboard_append(text)
-
-    # ---------------------------- Novel workbench ----------------------------
-    def show_novel(self) -> None:
-        self._clear_main()
-        self.navigate_highlight("novel")
-        self._page_header(
-            "å°è¯´æ”¹æ–‡",
-            "è‡ªåŠ¨æ‹†ç« å¹¶ä¿ç•™åŸæ–‡å¯¹ç…§ï¼›å»ºè®®å…ˆå®Œå–„è®¾å®šåº“ï¼Œå†é€ç« ç”Ÿæˆã€‚",
-            [("å¯¼å…¥å°è¯´", self.import_novel, "ghost"), ("æ”¹å†™å½“å‰ç« ", self.rewrite_current, "primary")],
-        )
-        body = Frame(self.main, bg=BG)
-        body.pack(fill=BOTH, expand=True, padx=34, pady=(0, 28))
-        body.grid_columnconfigure(0, weight=0, minsize=300)
-        body.grid_columnconfigure(1, weight=1)
-        body.grid_rowconfigure(0, weight=1)
-
-        control_outer = self._card(body, padx=18, pady=17)
-        control_outer.grid(row=0, column=0, sticky="nsew", padx=(0, 9))
-        control = control_outer.winfo_children()[0]
-        novel = self.state["novel"]
-        self.novel_project_var = StringVar(value=novel["project_name"])
-        self.mode_var = StringVar(value=novel["mode"])
-        self.style_var = StringVar(value=novel["style"])
-        self.perspective_var = StringVar(value=novel["perspective"])
-        self.length_var = StringVar(value=novel["target_length"])
-
-        Label(control, text="æ”¹å†™è§„åˆ™", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 12, "bold")).pack(anchor="w")
-        self._field_label(control, "é¡¹ç›®å").pack(anchor="w", pady=(12, 5))
-        self._entry(control, self.novel_project_var).pack(fill=X, ipady=6)
-        self._novel_combo(control, "æ”¹å†™æ¨¡å¼", self.mode_var, ["è½»åº¦æ¶¦è‰²", "æ·±åº¦æ”¹å†™", "æ‰©å†™ç»†èŠ‚", "ç²¾ç®€æé€Ÿ", "å½±è§†åŒ–æ”¹å†™"])
-        self._novel_combo(control, "ç›®æ ‡é£æ ¼", self.style_var, ["èŠ‚å¥ç´§å‡‘ã€ç”»é¢æ„Ÿå¼º", "è‡ªç„¶ç»†è…»ã€æƒ…ç»ªå……è¶³", "ç®€æ´çˆ½å¿«ã€å¯¹ç™½çªå‡º", "æ‚¬å¿µå¼ºã€ç« èŠ‚é’©å­æ˜æ˜¾", "è½»æ¾å¹½é»˜"])
-        self._novel_combo(control, "å™äº‹è§†è§’", self.perspective_var, ["ä¿æŒåŸè§†è§’", "ç¬¬ä¸€äººç§°", "ç¬¬ä¸‰äººç§°é™çŸ¥", "ç¬¬ä¸‰äººç§°å…¨çŸ¥"])
-        self._novel_combo(control, "ç›®æ ‡ç¯‡å¹…", self.length_var, ["ä¸åŸæ–‡æ¥è¿‘", "ç¼©çŸ­çº¦20%", "æ‰©å†™çº¦30%", "åªä¿ç•™ä¸»çº¿"])
-        self._field_label(control, "è‡ªå®šä¹‰è§„åˆ™").pack(anchor="w", pady=(10, 5))
-        self.rules_editor = Text(control, height=4, wrap="word", bg="#F7F9F7", fg=INK, relief="flat", padx=8, pady=8, font=("Microsoft YaHei UI", 9))
-        self.rules_editor.pack(fill=X)
-        self.rules_editor.insert("1.0", novel["custom_rules"])
-        button_row = Frame(control, bg=SURFACE)
-        button_row.pack(fill=X, pady=(10, 13))
-        self._button(button_row, "è®¾å®šåº“", self.edit_story_bible, kind="ghost").pack(side=LEFT)
-        self._button(button_row, "æŸ¥çœ‹æç¤ºè¯", self.preview_prompt, kind="ghost").pack(side=RIGHT)
-
-        chapter_header = Frame(control, bg=SURFACE)
-        chapter_header.pack(fill=X)
-        Label(chapter_header, text="ç« èŠ‚", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 11, "bold")).pack(side=LEFT)
-        self.chapter_progress_label = Label(chapter_header, text="", bg=SURFACE, fg=ACCENT_DARK, font=("Microsoft YaHei UI", 9))
-        self.chapter_progress_label.pack(side=RIGHT)
-        self.novel_list = Listbox(control, exportselection=False, bg="#F7F9F7", fg=INK, selectbackground="#DDF6E8", selectforeground=INK, relief="flat", highlightthickness=0, font=("Microsoft YaHei UI", 9), activestyle="none")
-        self.novel_list.pack(fill=BOTH, expand=True, pady=(8, 10))
-        self.novel_list.bind("<<ListboxSelect>>", self.on_chapter_select)
-        actions = Frame(control, bg=SURFACE)
-        actions.pack(fill=X)
-        self._button(actions, "æ‰¹é‡æ”¹å†™", self.rewrite_all, kind="dark").pack(side=LEFT, fill=X, expand=True)
-        self._button(actions, "å¯¼å‡ºç»“æœ", self.export_novel, kind="accent").pack(side=RIGHT, fill=X, expand=True, padx=(7, 0))
-
-        editors_outer = self._card(body, padx=0, pady=0)
-        editors_outer.grid(row=0, column=1, sticky="nsew", padx=(9, 0))
-        editors = editors_outer.winfo_children()[0]
-        pane = ttk.Panedwindow(editors, orient="horizontal", style="Studio.TPanedwindow")
-        pane.pack(fill=BOTH, expand=True)
-        source_panel = self._editor_panel(pane, "åŸæ–‡ç« èŠ‚", "å¯ç›´æ¥ç²˜è´´ç« èŠ‚æ­£æ–‡ï¼Œä¹Ÿå¯ä»¥å…ˆå¯¼å…¥å°è¯´æ–‡ä»¶ã€‚")
-        result_panel = self._editor_panel(pane, "æ”¹å†™ç»“æœ", "AI ç»“æœä¼šæ˜¾ç¤ºåœ¨è¿™é‡Œï¼Œä½ ä»å¯äººå·¥ç¼–è¾‘ã€‚", result=True)
-        pane.add(source_panel, weight=1)
-        pane.add(result_panel, weight=1)
-        self.novel_status = Label(editors, text="å°±ç»ª", bg=SURFACE_ALT, fg=MUTED, anchor="w", padx=16, pady=10, font=("Microsoft YaHei UI", 9))
-        self.novel_status.pack(fill=X)
-        chapter_count = len(novel["chapters"])
-        if chapter_count:
-            selected = self.current_chapter_index if self.current_chapter_index is not None and self.current_chapter_index < chapter_count else 0
-            self._refresh_novel_list(selected)
-        else:
-            self.current_chapter_index = None
-            self._refresh_novel_list()
-        self.bus_handler = self._handle_novel_bus
-
-    def _novel_combo(self, parent, label: str, variable: StringVar, values: list[str]) -> None:
-        self._field_label(parent, label).pack(anchor="w", pady=(10, 5))
-        ttk.Combobox(parent, textvariable=variable, values=values, state="readonly", style="Studio.TCombobox").pack(fill=X)
-
-    def _editor_panel(self, parent, title: str, subtitle: str, result: bool = False) -> Frame:
-        panel = Frame(parent, bg=SURFACE)
-        header = Frame(panel, bg=SURFACE_ALT, padx=16, pady=12)
-        header.pack(fill=X)
-        Label(header, text=title, bg=SURFACE_ALT, fg=INK, font=("Microsoft YaHei UI", 11, "bold")).pack(anchor="w")
-        Label(header, text=subtitle, bg=SURFACE_ALT, fg=MUTED, font=("Microsoft YaHei UI", 8)).pack(anchor="w", pady=(2, 0))
-        editor = Text(panel, wrap="word", undo=True, bg=SURFACE, fg=INK, insertbackground=INK, relief="flat", padx=18, pady=16, spacing1=2, spacing3=5, font=("Microsoft YaHei UI", 11))
-        editor.pack(fill=BOTH, expand=True)
-        if result:
-            self.result_editor = editor
-        else:
-            self.source_editor = editor
-        return panel
-
-    def import_novel(self) -> None:
-        path = filedialog.askopenfilename(title="å¯¼å…¥å°è¯´", filetypes=[("æ–‡æœ¬æ–‡æ¡£", "*.txt *.md *.docx"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")])
-        if not path:
-            return
-        try:
-            content = read_document(path)
-        except (OSError, zipfile.BadZipFile, ElementTree.ParseError, KeyError) as exc:
-            messagebox.showerror("å¯¼å…¥å¤±è´¥", f"æ— æ³•è¯»å–æ–‡ä»¶ï¼š{exc}")
-            return
-        chapters = chapter_records(content)
-        if not chapters:
-            messagebox.showwarning("æ²¡æœ‰æ­£æ–‡", "æ–‡æ¡£ä¸­æ²¡æœ‰å¯ç”¨æ–‡å­—ã€‚")
-            return
-        novel = self.state["novel"]
-        novel["source_path"] = path
-        novel["source_text"] = content
-        novel["project_name"] = Path(path).stem
-        novel["chapters"] = chapters
-        novel["results"] = {}
-        self.novel_project_var.set(novel["project_name"])
-        self.current_chapter_index = None
-        self._refresh_novel_list(0)
-        self.store.save(self.state)
-
-    def _refresh_novel_list(self, selected: int | None = None) -> None:
-        if not self.novel_list:
-            return
-        self.novel_list.delete(0, END)
-        novel = self.state["novel"]
-        for index, chapter in enumerate(novel["chapters"]):
-            done = "âœ“" if str(index) in novel["results"] and novel["results"][str(index)].strip() else "Â·"
-            self.novel_list.insert(END, f" {done}  {chapter['title']}")
-        self.chapter_progress_label.configure(text=f"{len(novel['results'])}/{len(novel['chapters'])}")
-        if selected is not None and novel["chapters"]:
-            self.novel_list.selection_set(selected)
-            self.novel_list.activate(selected)
-            self._load_chapter(selected)
-
-    def on_chapter_select(self, _event=None) -> None:
-        if not self.novel_list or not self.novel_list.curselection():
-            return
-        next_index = int(self.novel_list.curselection()[0])
-        if self.current_chapter_index == next_index:
-            return
-        self._save_chapter_editors()
-        self._load_chapter(next_index)
-
-    def _load_chapter(self, index: int) -> None:
-        chapters = self.state["novel"]["chapters"]
-        if not (0 <= index < len(chapters)) or not self.source_editor or not self.result_editor:
-            return
-        self.current_chapter_index = index
-        self.source_editor.delete("1.0", END)
-        self.source_editor.insert("1.0", chapters[index]["content"])
-        self.result_editor.delete("1.0", END)
-        self.result_editor.insert("1.0", self.state["novel"]["results"].get(str(index), ""))
-        self.novel_status.configure(text=f"æ­£åœ¨ç¼–è¾‘ï¼š{chapters[index]['title']}")
-
-    def _sync_novel_rules(self) -> None:
-        if not hasattr(self, "novel_project_var"):
-            return
-        novel = self.state["novel"]
-        novel["project_name"] = self.novel_project_var.get().strip() or "æœªå‘½åå°è¯´"
-        novel["mode"] = self.mode_var.get()
-        novel["style"] = self.style_var.get()
-        novel["perspective"] = self.perspective_var.get()
-        novel["target_length"] = self.length_var.get()
-        novel["custom_rules"] = self.rules_editor.get("1.0", "end-1c").strip()
-
-    def _save_chapter_editors(self) -> None:
-        if self.current_chapter_index is None or not self.source_editor or not self.result_editor:
-            return
-        novel = self.state["novel"]
-        if self.current_chapter_index >= len(novel["chapters"]):
-            return
-        novel["chapters"][self.current_chapter_index]["content"] = self.source_editor.get("1.0", "end-1c")
-        result = self.result_editor.get("1.0", "end-1c").strip()
-        key = str(self.current_chapter_index)
-        if result:
-            novel["results"][key] = result
-        else:
-            novel["results"].pop(key, None)
-
-    def _accept_pasted_source(self) -> bool:
-        """Turn text pasted into an otherwise empty source editor into chapters."""
-        if not self.source_editor:
-            return False
-        content = self.source_editor.get("1.0", "end-1c").strip()
-        chapters = chapter_records(content)
-        if not chapters:
-            return False
-        self._sync_novel_rules()
-        novel = self.state["novel"]
-        novel["source_path"] = ""
-        novel["source_text"] = content
-        novel["chapters"] = chapters
-        novel["results"] = {}
-        self.current_chapter_index = None
-        self._refresh_novel_list(0)
-        self.store.save(self.state)
-        self.novel_status.configure(text=f"å·²è¯†åˆ«ç²˜è´´å†…å®¹ï¼š{len(chapters)} ç« ", fg=ACCENT_DARK)
-        return True
-
-    def _chapter_prompt(self, index: int) -> tuple[str, str]:
-        self._sync_novel_rules()
-        novel = self.state["novel"]
-        chapter = novel["chapters"][index]
-        return build_rewrite_prompt(
-            chapter["title"],
-            chapter["content"],
-            mode=novel["mode"],
-            style=novel["style"],
-            perspective=novel["perspective"],
-            target_length=novel["target_length"],
-            custom_rules=novel["custom_rules"],
-            story_bible=novel["story_bible"],
-        )
-
-    def rewrite_current(self) -> None:
-        if self.is_busy:
-            return
-        self._save_chapter_editors()
-        if self.current_chapter_index is None and not self._accept_pasted_source():
-            messagebox.showinfo("æ²¡æœ‰ç« èŠ‚", "è¯·åœ¨â€œåŸæ–‡ç« èŠ‚â€ä¸­ç²˜è´´æ­£æ–‡ï¼Œæˆ–å¯¼å…¥å°è¯´æ–‡ä»¶ã€‚")
-            return
-        assert self.current_chapter_index is not None
-        if not self.state["novel"]["chapters"][self.current_chapter_index]["content"].strip():
-            messagebox.showinfo("æ²¡æœ‰æ­£æ–‡", "å½“å‰ç« èŠ‚æ²¡æœ‰æ­£æ–‡ï¼Œè¯·å…ˆç²˜è´´æˆ–è¾“å…¥å†…å®¹ã€‚")
-            return
-        try:
-            client = self._ai_client()
-        except AIClientError as exc:
-            messagebox.showwarning("éœ€è¦æ¨¡å‹è®¾ç½®", str(exc))
-            self.navigate("settings")
-            return
-        index = self.current_chapter_index
-        system, user = self._chapter_prompt(index)
-        self.is_busy = True
-        self.novel_status.configure(text="AI æ­£åœ¨æ”¹å†™å½“å‰ç« èŠ‚â€¦", fg=ACCENT_DARK)
-
-        def worker() -> None:
-            try:
-                result = client.complete(system, user, temperature=0.72)
-                self.bus.put(("novel_chapter_done", (index, result)))
-            except Exception as exc:
-                self.bus.put(("novel_error", str(exc)))
-
-        threading.Thread(target=worker, daemon=True).start()
-
-    def rewrite_all(self) -> None:
-        if self.is_busy:
-            return
-        self._save_chapter_editors()
-        chapters = self.state["novel"]["chapters"]
-        if not chapters and self._accept_pasted_source():
-            chapters = self.state["novel"]["chapters"]
-        if not chapters:
-            messagebox.showinfo("æ²¡æœ‰ç« èŠ‚", "è¯·åœ¨â€œåŸæ–‡ç« èŠ‚â€ä¸­ç²˜è´´æ­£æ–‡ï¼Œæˆ–å¯¼å…¥å°è¯´æ–‡ä»¶ã€‚")
-            return
-        if not messagebox.askyesno("æ‰¹é‡æ”¹å†™", f"å°†ä¾æ¬¡è¯·æ±‚æ¨¡å‹æ”¹å†™ {len(chapters)} ä¸ªç« èŠ‚ã€‚æ­¤æ“ä½œå¯èƒ½äº§ç”Ÿ API è´¹ç”¨ï¼Œæ˜¯å¦ç»§ç»­ï¼Ÿ"):
-            return
-        try:
-            client = self._ai_client()
-        except AIClientError as exc:
-            messagebox.showwarning("éœ€è¦æ¨¡å‹è®¾ç½®", str(exc))
-            self.navigate("settings")
-            return
-        prompts = [self._chapter_prompt(i) for i in range(len(chapters))]
-        self.is_busy = True
-
-        def worker() -> None:
-            try:
-                for index, (system, user) in enumerate(prompts):
-                    self.bus.put(("novel_batch_progress", (index, len(prompts))))
-                    result = client.complete(system, user, temperature=0.72)
-                    self.bus.put(("novel_batch_item", (index, result)))
-                self.bus.put(("novel_batch_done", len(prompts)))
-            except Exception as exc:
-                self.bus.put(("novel_error", str(exc)))
-
-        threading.Thread(target=worker, daemon=True).start()
-
-    def _handle_novel_bus(self, event: str, payload: object) -> None:
-        if event in {"novel_chapter_done", "novel_batch_item"}:
-            index, result = payload
-            self.state["novel"]["results"][str(index)] = result
-            self.store.save(self.state)
-            self._refresh_novel_list(index if event == "novel_chapter_done" else self.current_chapter_index)
-            if event == "novel_chapter_done":
-                self.is_busy = False
-                self.novel_status.configure(text="å½“å‰ç« èŠ‚æ”¹å†™å®Œæˆï¼Œå¯ç»§ç»­äººå·¥ç¼–è¾‘ã€‚", fg=ACCENT_DARK)
-        elif event == "novel_batch_progress":
-            index, total = payload
-            self.novel_status.configure(text=f"æ‰¹é‡æ”¹å†™ä¸­ï¼š{index + 1}/{total}", fg=ACCENT_DARK)
-        elif event == "novel_batch_done":
-            self.is_busy = False
-            self._refresh_novel_list(self.current_chapter_index)
-            self.novel_status.configure(text=f"æ‰¹é‡æ”¹å†™å®Œæˆï¼šå…± {payload} ç« ", fg=ACCENT_DARK)
-            messagebox.showinfo("æ‰¹é‡æ”¹å†™å®Œæˆ", "æ‰€æœ‰ç« èŠ‚å·²å¤„ç†å¹¶è‡ªåŠ¨ä¿å­˜ã€‚")
-        elif event == "novel_error":
-            self.is_busy = False
-            self.novel_status.configure(text="æ”¹å†™å¤±è´¥ï¼Œå·²ä¿ç•™å®Œæˆéƒ¨åˆ†ã€‚", fg=ERROR)
-            messagebox.showerror("æ”¹å†™å¤±è´¥", str(payload))
-
-    def preview_prompt(self) -> None:
-        self._save_chapter_editors()
-        if self.current_chapter_index is None and not self._accept_pasted_source():
-            messagebox.showinfo("æ²¡æœ‰ç« èŠ‚", "è¯·åœ¨â€œåŸæ–‡ç« èŠ‚â€ä¸­ç²˜è´´æ­£æ–‡ï¼Œæˆ–å¯¼å…¥å°è¯´æ–‡ä»¶ã€‚")
-            return
-        assert self.current_chapter_index is not None
-        system, user = self._chapter_prompt(self.current_chapter_index)
-        dialog = Toplevel(self.root)
-        dialog.title("æœ¬ç« æç¤ºè¯é¢„è§ˆ")
-        dialog.geometry("820x660")
-        dialog.configure(bg=BG)
-        editor = Text(dialog, wrap="word", bg=SURFACE, fg=INK, padx=18, pady=18, font=("Microsoft YaHei UI", 10))
-        editor.pack(fill=BOTH, expand=True, padx=18, pady=(18, 8))
-        editor.insert("1.0", f"ã€ç³»ç»Ÿæç¤ºã€‘\n{system}\n\nã€ç”¨æˆ·æç¤ºã€‘\n{user}")
-        row = Frame(dialog, bg=BG)
-        row.pack(fill=X, padx=18, pady=(0, 18))
-        self._button(row, "å¤åˆ¶å…¨éƒ¨", lambda: self._copy_text(editor.get("1.0", "end-1c")), kind="primary").pack(side=RIGHT)
-
-    def edit_story_bible(self) -> None:
-        dialog = Toplevel(self.root)
-        dialog.title("äººç‰©ä¸ä¸–ç•Œè§‚è®¾å®šåº“")
-        dialog.geometry("760x620")
-        dialog.configure(bg=BG)
-        Label(dialog, text="äººç‰©ä¸ä¸–ç•Œè§‚è®¾å®šåº“", bg=BG, fg=INK, font=("Microsoft YaHei UI", 17, "bold")).pack(anchor="w", padx=22, pady=(20, 4))
-        Label(dialog, text="è®°å½•äººç‰©ç§°è°“ã€å…³ç³»ã€èƒ½åŠ›ã€ç¦æ”¹é¡¹å’Œå‰§æƒ…æ—¶é—´çº¿ï¼Œæ¨¡å‹æ¯ç« éƒ½ä¼šå‚è€ƒã€‚", bg=BG, fg=MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w", padx=22)
-        editor = Text(dialog, wrap="word", bg=SURFACE, fg=INK, padx=18, pady=18, relief="flat", font=("Microsoft YaHei UI", 10))
-        editor.pack(fill=BOTH, expand=True, padx=22, pady=16)
-        editor.insert("1.0", self.state["novel"].get("story_bible", ""))
-
-        def save() -> None:
-            self.state["novel"]["story_bible"] = editor.get("1.0", "end-1c").strip()
-            self.store.save(self.state)
-            dialog.destroy()
-
-        self._button(dialog, "ä¿å­˜è®¾å®š", save, kind="primary").pack(anchor="e", padx=22, pady=(0, 20))
-
-    def export_novel(self) -> None:
-        self._save_chapter_editors()
-        novel = self.state["novel"]
-        if not novel["chapters"]:
-            messagebox.showinfo("æ²¡æœ‰å†…å®¹", "è¯·å…ˆå¯¼å…¥å¹¶æ”¹å†™å°è¯´ã€‚")
-            return
-        output = filedialog.asksaveasfilename(title="å¯¼å‡ºæ”¹å†™ç»“æœ", defaultextension=".txt", initialfile=(novel["project_name"] or "å°è¯´æ”¹æ–‡") + "_æ”¹å†™ç¨¿.txt", filetypes=[("TXT æ–‡æœ¬", "*.txt")])
-        if not output:
-            return
-        parts: list[str] = []
-        for index, chapter in enumerate(novel["chapters"]):
-            content = novel["results"].get(str(index), chapter["content"])
-            parts.append(f"{chapter['title']}\n\n{content.strip()}")
-        try:
-            Path(output).write_text("\n\n\n".join(parts) + "\n", encoding="utf-8-sig")
-        except OSError as exc:
-            messagebox.showerror("å¯¼å‡ºå¤±è´¥", str(exc))
-            return
-        messagebox.showinfo("å¯¼å‡ºå®Œæˆ", f"æ”¹å†™ç¨¿å·²ä¿å­˜åˆ°ï¼š\n{output}")
-
-    # ----------------------------- Settings page -----------------------------
-    def show_settings(self) -> None:
-        self._clear_main()
-        self.navigate_highlight("settings")
-        self._page_header("æ¨¡å‹ä¸å·¥å…·", "å¯ç›´æ¥é€‰æ‹© DeepSeekã€åƒé—®ã€æ™ºè°± GLMã€Kimiï¼›API Key ç”±ç³»ç»Ÿå®‰å…¨ä¿ç®¡ã€‚")
-        body = Frame(self.main, bg=BG)
-        body.pack(fill=BOTH, expand=True, padx=34, pady=(0, 28))
-        body.grid_columnconfigure(0, weight=1)
-        body.grid_columnconfigure(1, weight=1)
-
-        model_outer = self._card(body, padx=24, pady=22)
-        model_outer.grid(row=0, column=0, sticky="new", padx=(0, 9))
-        model = model_outer.winfo_children()[0]
-        Label(model, text="AI æ¨¡å‹", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 14, "bold")).pack(anchor="w")
-        Label(model, text="é€‰æ‹©æœåŠ¡å•†åä¼šè‡ªåŠ¨å¡«å†™å®˜æ–¹æ¥å£ä¸æ¨èæ¨¡å‹ï¼Œä¹Ÿå¯ç»§ç»­æ‰‹åŠ¨ä¿®æ”¹ã€‚", bg=SURFACE, fg=MUTED, wraplength=430, justify=LEFT, font=("Microsoft YaHei UI", 9)).pack(anchor="w", pady=(4, 18))
-        settings = self.state["settings"]
-        provider_id = settings.get("provider") or infer_provider(settings.get("base_url", ""), settings.get("model", ""))
-        if provider_id not in {item.id for item in PROVIDER_PRESETS}:
-            provider_id = "custom"
-        self.active_api_provider = provider_id
-        if not self.api_key.get().strip():
-            self.api_key.set(self._load_provider_api_key(provider_id))
-        self.provider_ids_by_label = {item.label: item.id for item in PROVIDER_PRESETS}
-        self.provider_labels_by_id = {item.id: item.label for item in PROVIDER_PRESETS}
-        self.provider_var = StringVar(value=self.provider_labels_by_id[provider_id])
-        self.base_url_var = StringVar(value=settings["base_url"])
-        self.model_name_var = StringVar(value=settings["model"])
-        self._field_label(model, "æ¨¡å‹æœåŠ¡å•†").pack(anchor="w", pady=(2, 5))
-        provider_box = ttk.Combobox(
-            model,
-            textvariable=self.provider_var,
-            values=[item.label for item in PROVIDER_PRESETS],
-            state="readonly",
-            style="Studio.TCombobox",
-        )
-        provider_box.pack(fill=X)
-        provider_box.bind("<<ComboboxSelected>>", self._apply_provider_selection)
-        self.provider_help = Label(model, bg=SURFACE, fg=ACCENT_DARK, wraplength=430, justify=LEFT, font=("Microsoft YaHei UI", 8))
-        self.provider_help.pack(anchor="w", pady=(6, 0))
-        self._settings_entry(model, "Base URL", self.base_url_var)
-        self._settings_entry(model, "æ¨¡å‹åç§°", self.model_name_var)
-        self._field_label(model, "API Key").pack(anchor="w", pady=(13, 5))
-        key_entry = self._entry(model, self.api_key)
-        key_entry.configure(show="â€¢")
-        key_entry.pack(fill=X, ipady=7)
-        self.api_key_hint = Label(model, bg=SURFACE, fg=MUTED, wraplength=430, justify=LEFT, font=("Microsoft YaHei UI", 8))
-        self.api_key_hint.pack(anchor="w", pady=(5, 0))
-        ttk.Checkbutton(
-            model,
-            text="å®‰å…¨è®°ä½ API Keyï¼ˆWindows å‡­æ®ç®¡ç†å™¨ / macOS é’¥åŒ™ä¸²ï¼‰",
-            variable=self.remember_api_key,
-        ).pack(anchor="w", pady=(10, 0))
-        self.ai_test_status = Label(model, text="å°šæœªæµ‹è¯•è¿æ¥", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 8))
-        self.ai_test_status.pack(anchor="w", pady=(12, 0))
-        model_actions = Frame(model, bg=SURFACE)
-        model_actions.pack(fill=X, pady=(14, 0))
-        self._button(model_actions, "æµ‹è¯•è¿æ¥", self.test_ai_connection, kind="ghost").pack(side=LEFT)
-        self._button(model_actions, "æ¸…é™¤å·²ä¿å­˜ Key", self.clear_saved_api_key, kind="ghost").pack(side=LEFT, padx=(7, 0))
-        self._button(model_actions, "ä¿å­˜æ¨¡å‹è®¾ç½®", self.save_settings, kind="primary").pack(side=RIGHT)
-        self._update_provider_help()
-        self.bus_handler = self._handle_settings_event
-
-        tool_outer = self._card(body, padx=24, pady=22)
-        tool_outer.grid(row=0, column=1, sticky="new", padx=(9, 0))
-        tool = tool_outer.winfo_children()[0]
-        Label(tool, text="è§†é¢‘å¼•æ“", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 14, "bold")).pack(anchor="w")
-        Label(tool, text="å‰ªæ˜ è‰ç¨¿å¯ç›´æ¥ç»§ç»­ç¼–è¾‘ï¼›FFmpeg ä»…ç”¨äºé¢å¤–å¯¼å‡º MP4ã€‚", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w", pady=(4, 18))
-        self.ffmpeg_var = StringVar(value=settings.get("ffmpeg_path", ""))
-        self.ffprobe_var = StringVar(value=settings.get("ffprobe_path", ""))
-        detected_jianying = detect_jianying_executable(settings.get("jianying_exe", "")) or settings.get("jianying_exe", "")
-        detected_drafts = detect_jianying_drafts_path(settings.get("jianying_drafts_path", "")) or settings.get("jianying_drafts_path", "")
-        self.jianying_exe_var = StringVar(value=detected_jianying)
-        self.jianying_drafts_var = StringVar(value=detected_drafts)
-        jianying_label = "å‰ªæ˜ ä¸“ä¸šç‰ˆåº”ç”¨ï¼ˆ.appï¼‰" if sys.platform == "darwin" else "å‰ªæ˜ ä¸“ä¸šç‰ˆç¨‹åº"
-        self._path_field(tool, jianying_label, self.jianying_exe_var, "JianyingPro")
-        self._directory_field(tool, "å‰ªæ˜ è‰ç¨¿ç›®å½•", self.jianying_drafts_var)
-        executable_suffix = "" if sys.platform == "darwin" else ".exe"
-        self._path_field(tool, f"ffmpeg{executable_suffix}", self.ffmpeg_var, "ffmpeg")
-        self._path_field(tool, f"ffprobe{executable_suffix}", self.ffprobe_var, "ffprobe")
-        detected = find_executable(self.ffmpeg_var.get(), "ffmpeg")
-        self.ffmpeg_status = Label(tool, text=(f"å·²æ‰¾åˆ°ï¼š{detected}" if detected else "å°šæœªæ‰¾åˆ° FFmpegï¼›è§†é¢‘ç¼–è¾‘å¯ä¿å­˜ï¼Œä½†ä¸èƒ½ç”Ÿæˆæˆç‰‡ã€‚"), bg=SURFACE, fg=ACCENT_DARK if detected else WARM, wraplength=430, justify=LEFT, font=("Microsoft YaHei UI", 9))
-        self.ffmpeg_status.pack(anchor="w", pady=(18, 0))
-        self._button(tool, "ä¿å­˜å·¥å…·è®¾ç½®", self.save_settings, kind="primary").pack(anchor="e", pady=(22, 0))
-
-        note_outer = self._card(body, bg="#FFF8F0", padx=22, pady=16)
-        note_outer.grid(row=1, column=0, columnspan=2, sticky="ew", pady=(18, 0))
-        note = note_outer.winfo_children()[0]
-        note_title = "Mac å…¼å®¹ä¸ FFmpeg è¯´æ˜" if sys.platform == "darwin" else "FFmpeg é…ç½®è¯´æ˜"
-        if sys.platform == "darwin":
-            note_text = "Mac åº”ç”¨ä¼šè‡ªåŠ¨æ£€æŸ¥ PATH ä¸­çš„ ffmpeg/ffprobeã€‚è‰ç¨¿å¯ä»¥ç”Ÿæˆï¼Œä½†å‰ªæ˜  Mac æ–°ç‰ˆå¯èƒ½æç¤ºå†…å®¹æŸåï¼›é‡åˆ°æ—¶è¯·å°†è‰ç¨¿äº¤ç»™ Windows ç‰ˆå‰ªæ˜ æ‰“å¼€å’Œå¯¼å‡ºã€‚"
-        else:
-            note_text = "å®‰è£…å®Œæˆåé€‰æ‹© bin æ–‡ä»¶å¤¹ä¸­çš„ ffmpeg.exe ä¸ ffprobe.exeã€‚åº”ç”¨ä¹Ÿä¼šè‡ªåŠ¨æ£€æŸ¥ PATHã€WinGet Links å’Œå¸¸è§å®‰è£…ç›®å½•ã€‚"
-        Label(note, text=note_title, bg="#FFF8F0", fg="#8A5527", font=("Microsoft YaHei UI", 10, "bold")).pack(anchor="w")
-        Label(note, text=note_text, bg="#FFF8F0", fg="#8A6A4E", wraplength=900, justify=LEFT, font=("Microsoft YaHei UI", 9)).pack(anchor="w", pady=(5, 0))
-
-    def _settings_entry(self, parent, label: str, variable: StringVar) -> None:
-        self._field_label(parent, label).pack(anchor="w", pady=(13, 5))
-        self._entry(parent, variable).pack(fill=X, ipady=7)
-
-    def _apply_provider_selection(self, _event=None) -> None:
-        previous = self.active_api_provider
-        self.api_keys[previous] = self.api_key.get().strip()
-        selected = self.provider_ids_by_label.get(self.provider_var.get(), "custom")
-        self.active_api_provider = selected
-        preset = provider_preset(selected)
-        if selected != "custom":
-            self.base_url_var.set(preset.base_url)
-            self.model_name_var.set(preset.model)
-        self.api_key.set(self._load_provider_api_key(selected))
-        self._update_provider_help()
-        if hasattr(self, "ai_test_status"):
-            self.ai_test_status.configure(text="åˆ‡æ¢æœåŠ¡å•†åè¯·é‡æ–°æµ‹è¯•è¿æ¥", fg=MUTED)
-
-    def _update_provider_help(self) -> None:
-        preset = provider_preset(self.active_api_provider)
-        self.provider_help.configure(text=preset.description)
-        names = " / ".join(preset.environment_keys)
-        self.api_key_hint.configure(text=f"ä¹Ÿå¯åœ¨å¯åŠ¨å‰è®¾ç½®ç¯å¢ƒå˜é‡ï¼š{names}")
-
-    def _load_provider_api_key(self, provider_id: str) -> str:
-        if provider_id in self.api_keys:
-            return self.api_keys[provider_id]
-        value = ""
-        if self.remember_api_key.get():
-            try:
-                value = load_api_key(provider_id)
-            except SecretStoreError:
-                value = ""
-        value = value or api_key_from_environment(provider_id)
-        self.api_keys[provider_id] = value
-        return value
-
-    def _persist_current_api_key(self) -> None:
-        provider_id = self.active_api_provider
-        value = self.api_key.get().strip()
-        self.api_keys[provider_id] = value
-        if self.remember_api_key.get() and value:
-            save_api_key(provider_id, value)
-        else:
-            delete_api_key(provider_id)
-
-    def clear_saved_api_key(self) -> None:
-        provider_id = self.active_api_provider
-        try:
-            delete_api_key(provider_id)
-        except SecretStoreError as exc:
-            messagebox.showerror("æ¸…é™¤å¤±è´¥", str(exc))
-            return
-        self.api_keys[provider_id] = ""
-        self.api_key.set("")
-        messagebox.showinfo("å·²æ¸…é™¤", f"{provider_preset(provider_id).label} çš„å·²ä¿å­˜ API Key å·²ä»ç³»ç»Ÿå‡­æ®ä¸­åˆ é™¤ã€‚")
-
-    def _path_field(self, parent, label: str, variable: StringVar, executable_name: str) -> None:
-        self._field_label(parent, label).pack(anchor="w", pady=(13, 5))
-        row = Frame(parent, bg=SURFACE)
-        row.pack(fill=X)
-        self._entry(row, variable).pack(side=LEFT, fill=X, expand=True, ipady=7)
-
-        def browse() -> None:
-            if sys.platform == "darwin" and executable_name == "JianyingPro":
-                path = filedialog.askopenfilename(
-                    title="é€‰æ‹©å‰ªæ˜ ä¸“ä¸šç‰ˆ.appï¼ˆé€šå¸¸ä½äºâ€œåº”ç”¨ç¨‹åºâ€ï¼‰",
-                    initialdir="/Applications",
-                    filetypes=[("Mac åº”ç”¨", "*.app"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")],
-                )
-            elif sys.platform == "darwin":
-                path = filedialog.askopenfilename(title=f"é€‰æ‹© {executable_name}")
-            else:
-                path = filedialog.askopenfilename(title=f"é€‰æ‹© {executable_name}.exe", filetypes=[("å¯æ‰§è¡Œæ–‡ä»¶", "*.exe"), ("æ‰€æœ‰æ–‡ä»¶", "*.*")])
-            if path:
-                variable.set(path)
-
-        self._button(row, "é€‰æ‹©", browse, kind="ghost").pack(side=RIGHT, padx=(7, 0))
-
-    def _directory_field(self, parent, label: str, variable: StringVar) -> None:
-        self._field_label(parent, label).pack(anchor="w", pady=(13, 5))
-        row = Frame(parent, bg=SURFACE)
-        row.pack(fill=X)
-        self._entry(row, variable).pack(side=LEFT, fill=X, expand=True, ipady=7)
-
-        def browse() -> None:
-            path = filedialog.askdirectory(title="é€‰æ‹©å‰ªæ˜ è‰ç¨¿ç›®å½•")
-            if path:
-                variable.set(path)
-
-        self._button(row, "é€‰æ‹©", browse, kind="ghost").pack(side=RIGHT, padx=(7, 0))
-
-    def save_settings(self) -> None:
-        settings = self.state["settings"]
-        secret_error = ""
-        if hasattr(self, "base_url_var"):
-            settings["provider"] = self.active_api_provider
-            settings["base_url"] = self.base_url_var.get().strip().rstrip("/")
-            settings["model"] = self.model_name_var.get().strip()
-            settings["remember_api_key"] = self.remember_api_key.get()
-            try:
-                self._persist_current_api_key()
-            except SecretStoreError as exc:
-                secret_error = str(exc)
-            settings["ffmpeg_path"] = self.ffmpeg_var.get().strip()
-            settings["ffprobe_path"] = self.ffprobe_var.get().strip()
-            settings["jianying_exe"] = self.jianying_exe_var.get().strip()
-            settings["jianying_drafts_path"] = self.jianying_drafts_var.get().strip()
-        self.store.save(self.state)
-        self._refresh_tool_status()
-        if hasattr(self, "ffmpeg_status"):
-            detected = find_executable(settings["ffmpeg_path"], "ffmpeg")
-            self.ffmpeg_status.configure(text=(f"å·²æ‰¾åˆ°ï¼š{detected}" if detected else "å°šæœªæ‰¾åˆ° FFmpegï¼›è§†é¢‘ç¼–è¾‘å¯ä¿å­˜ï¼Œä½†ä¸èƒ½ç”Ÿæˆæˆç‰‡ã€‚"), fg=ACCENT_DARK if detected else WARM)
-        if secret_error:
-            messagebox.showwarning("è®¾ç½®å·²ä¿å­˜", f"æ¨¡å‹å’Œå·¥å…·è®¾ç½®å·²ä¿å­˜ï¼Œä½† API Key æœªèƒ½å®‰å…¨ä¿å­˜ï¼š\n{secret_error}")
-        elif self.remember_api_key.get():
-            messagebox.showinfo("å·²ä¿å­˜", "æ¨¡å‹ã€å‰ªæ˜ å’Œè§†é¢‘å·¥å…·è·¯å¾„å·²ä¿å­˜ã€‚API Key å·²ç”±ç³»ç»Ÿå®‰å…¨ä¿ç®¡ï¼Œä¸‹æ¬¡æ‰“å¼€ä¼šè‡ªåŠ¨å¡«å…¥ã€‚")
-        else:
-            messagebox.showinfo("å·²ä¿å­˜", "æ¨¡å‹ã€å‰ªæ˜ å’Œè§†é¢‘å·¥å…·è·¯å¾„å·²ä¿å­˜ã€‚API Key æœªè¢«è®°ä½ã€‚")
-
-    def _ai_client(self, use_form: bool = False) -> OpenAICompatibleClient:
-        settings = self.state["settings"]
-        if use_form and hasattr(self, "base_url_var"):
-            base_url = self.base_url_var.get()
-            model = self.model_name_var.get()
-            provider_id = self.active_api_provider
-        else:
-            base_url = settings.get("base_url", "")
-            model = settings.get("model", "")
-            provider_id = settings.get("provider") or infer_provider(base_url, model)
-        config = AIConfig(base_url, model, self.api_key.get(), provider=provider_id)
-        if not config.base_url:
-            raise AIClientError("è¯·å…ˆå¡«å†™æ¨¡å‹ Base URLã€‚")
-        if not config.api_key:
-            raise AIClientError("è¯·å…ˆåœ¨â€œæ¨¡å‹ä¸å·¥å…·â€ä¸­å¡«å†™ API Keyã€‚")
-        return OpenAICompatibleClient(config)
-
-    def test_ai_connection(self) -> None:
-        if self.is_busy:
-            return
-        try:
-            client = self._ai_client(use_form=True)
-        except AIClientError as exc:
-            messagebox.showwarning("æ— æ³•æµ‹è¯•", str(exc))
-            return
-        self.is_busy = True
-        self.ai_test_status.configure(text=f"æ­£åœ¨è¿æ¥ {provider_preset(self.active_api_provider).label}â€¦", fg=ACCENT_DARK)
-
-        def worker() -> None:
-            try:
-                reply = client.complete("ä½ æ˜¯æ¥å£è¿é€šæ€§æµ‹è¯•åŠ©æ‰‹ã€‚", "è¯·åªå›å¤ï¼šè¿æ¥æˆåŠŸ", temperature=0.0)
-                self.bus.put(("ai_test_complete", reply))
-            except Exception as exc:  # noqa: BLE001 - display provider error in the UI
-                self.bus.put(("ai_test_error", exc))
-
-        threading.Thread(target=worker, daemon=True).start()
-
-    def _handle_settings_event(self, event: str, payload: object) -> None:
-        if event == "ai_test_complete":
-            self.is_busy = False
-            self.ai_test_status.configure(text=f"è¿æ¥æˆåŠŸï¼š{str(payload)[:50]}", fg=ACCENT_DARK)
-            secret_error = ""
-            if self.remember_api_key.get():
-                try:
-                    self._persist_current_api_key()
-                except SecretStoreError as exc:
-                    secret_error = str(exc)
-            message = f"{provider_preset(self.active_api_provider).label} æ¥å£å¯ä»¥æ­£å¸¸ä½¿ç”¨ã€‚"
-            if self.remember_api_key.get() and not secret_error:
-                message += "\nAPI Key å·²å®‰å…¨è®°ä½ã€‚"
-            elif secret_error:
-                message += f"\nä½† API Key ä¿å­˜å¤±è´¥ï¼š{secret_error}"
-            messagebox.showinfo("è¿æ¥æˆåŠŸ", message)
-        elif event == "ai_test_error":
-            self.is_busy = False
-            self.ai_test_status.configure(text="è¿æ¥å¤±è´¥ï¼Œè¯·æ£€æŸ¥ Keyã€æ¨¡å‹åå’Œç½‘ç»œ", fg=ERROR)
-            messagebox.showerror("è¿æ¥å¤±è´¥", str(payload))
-
-    # ------------------------------- Utilities -------------------------------
-    def _copy_text(self, value: str) -> None:
-        self.root.clipboard_clear()
-        self.root.clipboard_append(value)
-
-    def _save_current_editors(self) -> None:
-        if self.current_page == "video" and self.post_editor:
-            self._sync_video_state()
-        elif self.current_page == "novel":
-            self._sync_novel_rules()
-            self._save_chapter_editors()
-            self.store.save(self.state)
-
-    def _drain_bus(self) -> None:
-        try:
-            while True:
-                event, payload = self.bus.get_nowait()
-                if self.bus_handler:
-                    self.bus_handler(event, payload)
-        except queue.Empty:
-            pass
-        self.root.after(120, self._drain_bus)
-
-    def on_close(self) -> None:
-        if self.is_busy and not messagebox.askyesno("ä»»åŠ¡ä»åœ¨è¿›è¡Œ", "å…³é—­åº”ç”¨ä¼šä¸­æ–­å½“å‰ä»»åŠ¡ï¼Œç¡®å®šé€€å‡ºå—ï¼Ÿ"):
-            return
-        self._save_current_editors()
-        if hasattr(self, "remember_api_key"):
-            self.state["settings"]["remember_api_key"] = self.remember_api_key.get()
-            try:
-                self._persist_current_api_key()
-            except SecretStoreError:
-                pass
-        self.store.save(self.state)
-        self.root.destroy()
-
-
-def main() -> None:
-    root = Tk()
-    StudioApp(root)
-    root.mainloop()
-
-
-def packaged_self_test() -> None:
-    """Exercise resources and native media parsing inside a packaged desktop app."""
-    from core import jianying_engine
-    from pymediainfo import MediaInfo
-
-    if jianying_engine.draft is None:
-        raise RuntimeError(str(jianying_engine.DRAFT_IMPORT_ERROR))
-    if not callable(getattr(MediaInfo, "parse", None)):
-        raise RuntimeError("MediaInfo parser unavailable")
-    script = jianying_engine.draft.ScriptFile(1080, 1920, 30, True)
-    if script.width != 1080 or script.height != 1920:
-        raise RuntimeError("draft template unavailable")
-
-
-if __name__ == "__main__":
-    if "--self-test" in sys.argv:
-        packaged_self_test()
-    else:
-        main()
+            parent_bg = parent.cget("bg")
+        except TclError:
+            parent_bg = SURFACE
+        text_width = sum(14 if ord(character) > 127 else 8 for character in text)
+        pixel_width = width * 13 + 28 if width else max(74, text_width + 30)
+        super().__init__(parent, width=pixel_width, height=38, bg=parent_bg, highlightthickness=0, borderwidth=0, cursor="hand2", takefocus=1)
+        self.label_text = text
+        self.command = command
+        self.normal_bg = bg
+        self.active_bg = active
+        self.fg = fg
+        self.hovered = False
+        self.bind("<Configure>", self._draw, add="+")
+        self.bind("<Enter>", lambda _event: self._set_hover(True), add="+")
+        self.bind("<Leave>", lambda _event: self._set_hover(False), add="+÷6ÚÚ$z{-®éÜj×âÂ¶–æCÒ&v†÷7B"’ç6²‡6–FSÔÄTeB¢6VÆbåö'WGFöâ†ÖöFVÅö7F–öç2Â.kˆ^™šN[{.KùŞZÙ‚¶W’"Â6VÆbæ6ÆV%÷6fVEö•ö¶W’Â¶–æCÒ&v†÷7B"’ç6²‡6–FSÔÄTeBÂGƒÒƒrÂ’¢6VÆbåö'WGFöâ†ÖöFVÅö7F–öç2Â.KùŞZÙjŠYè¾Šëî{Úâ"Â6VÆbç6fU÷6WGF–æw2Â¶–æCÒ'&–Ö'’"’ç6²‡6–FSÕ$”t…B¢6VÆbå÷WFFU÷&÷f–FW%ö†VÇ‚¢6VÆbæ'W5ö†æFÆW"Ò6VÆbåö†æFÆU÷6WGF–æw5öWfVç@ ¢FööÅö÷WFW"Ò6VÆbåö6&B†&öG’ÂGƒÓ#BÂG“Ó#"¢FööÅö÷WFW"æw&–B‡&÷sÓÂ6öÇVÖãÓÂ7F–6·“Ò&æWr"ÂGƒÒƒ’Â’¢FööÂÒFööÅö÷WFW"çv–æfõö6†–ÆG&Vâ‚•³Ğ¢Æ&VÂ‡FööÂÂFW‡CÒ.Xš®iŠˆØz‹şKˆîŠxnš)[z^X[r"Â&sÕ5U$d4RÂfsÔ”ä²ÂföçCÒ‚$Ö–7&÷6ögB–†V’T’"ÂBÂ&&öÆB"’’ç6²†æ6†÷#Ò'r"¢Æ&VÂ‡FööÂÂFW‡CÒ.™ÙhkÊ¾KÉ®y»Nhê^yIşh‰Xúş{Én‹éXš®iŠˆØz‹şûÉ´df×VrK¸^yJK¨îXúş˜y¨BÕBš(NŠxZûÎX{®8""Â&sÕ5U$d4RÂfsÔÕUDTBÂw&ÆVæwFƒÓC3Â§W7F–g“ÔÄTeBÂföçCÒ‚$Ö–7&÷6ögB–†V’T’"Â’’’ç6²†æ6†÷#Ò'r"ÂG“ÒƒBÂ‚’¢6VÆbæff×Vu÷f"Ò7G&–æuf"‡fÇVS×6WGF–æw2ævWB‚&ff×Vu÷F‚"Â""’¢6VÆbæfg&ö&U÷f"Ò7G&–æuf"‡fÇVS×6WGF–æw2ævWB‚&fg&ö&U÷F‚"Â""’¢6VÆbæ¦–ç––æu÷f"Ò7G&–æuf"‡fÇVS×6WGF–æw2ævWB‚&¦–ç––æuöW†R"Â""’÷"FWFV7Eö¦–ç––æuöW†V7WF&ÆR‚""’÷"""¢6VÆbæ¦–ç––æuöG&gG5÷f"Ò7G&–æuf"‡fÇVS×6WGF–æw2ævWB‚&¦–ç––æuöG&gG5÷F‚"Â""’÷"FWFV7Eö¦–ç––æuöG&gG5÷F‚‚""’÷"""¢W†V7WF&ÆU÷7Vff—‚Ò""–b7—2çÆFf÷&ÒÓÒ&F'v–â"VÇ6R"æW†R ¢6VÆbå÷F…öf–VÆB‡FööÂÂb&ff×Vw¶W†V7WF&ÆU÷7Vff—‡Ò"Â6VÆbæff×Vu÷f"Â&ff×Vr"¢6VÆbå÷F…öf–VÆB‡FööÂÂb&fg&ö&W¶W†V7WF&ÆU÷7Vff—‡Ò"Â6VÆbæfg&ö&U÷f"Â&fg&ö&R"¢6VÆbå÷F…öf–VÆB‡FööÂÂ.Xš®iŠK‰>K‰®x˜‚"Â6VÆbæ¦–ç––æu÷f"Â$¦–ç––æu&ò"¢6VÆbåöF—&V7F÷'•öf–VÆB‡FööÂÂ.Xš®iŠiÊÎYËˆØz‹şyºî[ÙR"Â6VÆbæ¦–ç––æuöG&gG5÷f"¢FWFV7FVBÒf–æEöW†V7WF&ÆR‡6VÆbæff×Vu÷f"ævWB‚’Â&ff×Vr"¢6VÆbæff×Vu÷7FGW2ÒÆ&VÂ‡FööÂÂFW‡CÒ†b.[{.h›îX‹ûÉ§¶FWFV7FVGÒ"–bFWFV7FVBVÇ6R.[	®iÊ®h›îX‹df×V~ûÉ¾K¸ŞXúşX‹nKÙÎY»îx˜~ûÈÎKØnKˆŞˆ;ŞYh‰™ÙhkÊ¾Šxnš)8""’Â&sÕ5U$d4RÂfsÔ44TåEôD$²–bFWFV7FVBVÇ6Rt$ÒÂw&ÆVæwFƒÓC3Â§W7F–g“ÔÄTeBÂföçCÒ‚$Ö–7&÷6ögB–†V’T’"Â’’¢6VÆbæff×Vu÷7FGW2ç6²†æ6†÷#Ò'r"ÂG“Òƒ‚Â’¢6VÆbåö'WGFöâ‡FööÂÂ.KùŞZÙ[z^X[~Šëî{Úâ"Â6VÆbç6fU÷6WGF–æw2Â¶–æCÒ'&–Ö'’"’ç6²†æ6†÷#Ò&R"ÂG“Òƒ#"Â’ ¢æ÷FUö÷WFW"Ò6VÆbåö6&B†&öG’Â&sÔ4ôÔ”5ôÔ”åBÂGƒÓ#"ÂG“Ób¢æ÷FUö÷WFW"æw&–B‡&÷sÓÂ6öÇVÖãÓÂ6öÇVÖç7ãÓ"Â7F–6·“Ò&Wr"ÂG“Òƒ‚Â’¢æ÷FRÒæ÷FUö÷WFW"çv–æfõö6†–ÆG&Vâ‚•³Ğ¢æ÷FU÷F—FÆRÒ$Ö2X[ÎZëKˆâdf×VrŠûNiˆâ"–b7—2çÆFf÷&ÒÓÒ&F'v–â"VÇ6R$df×Vr˜XŞ{ÚîŠûNiˆâ ¢–b7—2çÆFf÷&ÒÓÒ&F'v–â# ¢æ÷FU÷FW‡BÒ$Ö2[©NyJKÉ®ˆz®Xªj8iúRD‚KŠŞy¨Bff×Vröfg&ö&^ûÉ¾K™şXúşKº^YÊ‹ù˜xÎh˜¾Xª˜hºXúşhš~ŠÎih~K»n8" ¢VÇ6S ¢æ÷FU÷FW‡BÒ.ZèŠ8^ZèÎh‰Yî˜hº’&–âih~K»nZKKŠŞy¨Bff×VræW†RKˆâfg&ö&RæW†^8.[©NyJK™şKÉ®ˆz®Xªj8iúRD8v–ävWBÆ–æ·2Y(Î[‹ŠxZèŠ8^yºî[Ù^8" ¢Æ&VÂ†æ÷FRÂFW‡CÖæ÷FU÷F—FÆRÂ&sÔ4ôÔ”5ôÔ”åBÂfsÔ44TåEôD$²ÂföçCÒ‚$Ö–7&÷6ögB–†V’T’"ÂÂ&&öÆB"’’ç6²†æ6†÷#Ò'r"¢Æ&VÂ†æ÷FRÂFW‡CÖæ÷FU÷FW‡BÂ&sÔ4ôÔ”5ôÔ”åBÂfsÔÕUDTBÂw&ÆVæwFƒÓ“Â§W7F–g“ÔÄTeBÂföçCÒ‚$Ö–7&÷6ögB–†V’T’"Â’’’ç6²†æ6†÷#Ò'r"ÂG“ÒƒRÂ’ ¢FVb÷6WGF–æw5öVçG'’‡6VÆbÂ&VçBÂÆ&VÃ¢7G"Âf&–&ÆS¢7G&–æuf"’ÓâæöæS ¢6VÆbåöf–VÆEöÆ&VÂ‡&VçBÂÆ&VÂ’ç6²†æ6†÷#Ò'r"ÂG“Òƒ2ÂR’¢6VÆbåöVçG'’‡&VçBÂf&–&ÆR’ç6²†f–ÆÃÕ‚Â—G“Ór ¢FVböÇ•÷&÷f–FW%÷6VÆV7F–öâ‡6VÆbÂöWfVçCÔæöæR’ÓâæöæS ¢&Wf–÷W2Ò6VÆbæ7F—fUö•÷&÷f–FW ¢6VÆbæ•ö¶W—5·&Wf–÷W5ÒÒ6VÆbæ•ö¶W’ævWB‚’ç7G&—‚¢6VÆV7FVBÒ6VÆbç&÷f–FW%ö–G5ö'•öÆ&VÂævWB‡6VÆbç&÷f–FW%÷f"ævWB‚’Â&7W7FöÒ"¢6VÆbæ7F—fUö•÷&÷f–FW"Ò6VÆV7FV@¢&W6WBÒ&÷f–FW%÷&W6WB‡6VÆV7FVB¢–b6VÆV7FVBÒ&7W7FöÒ# ¢6VÆbæ&6U÷W&Å÷f"ç6WB‡&W6WBæ&6U÷W&Â¢6VÆbæÖöFVÅöæÖU÷f"ç6WB‡&W6WBæÖöFVÂ¢6VÆbæ•ö¶W’ç6WB‡6VÆbåöÆöE÷&÷f–FW%ö•ö¶W’‡6VÆV7FVB’¢6VÆbå÷WFFU÷&÷f–FW%ö†VÇ‚¢–b†6GG"‡6VÆbÂ&•÷FW7E÷7FGW2"“ ¢6VÆbæ•÷FW7E÷7FGW2æ6öæf–wW&R‡FW‡CÒ.Xˆ~hÚ.iÈŞXªYXnYîŠû~˜xŞikkX¾Šù^‹ùîhêR"ÂfsÔÕUDTB ¢FVb÷WFFU÷&÷f–FW%ö†VÇ‡6VÆb’ÓâæöæS ¢&W6WBÒ&÷f–FW%÷&W6WB‡6VÆbæ7F—fUö•÷&÷f–FW"¢6VÆbç&÷f–FW%ö†VÇæ6öæf–wW&R‡FW‡C×&W6WBæFW67&—F–öâ¢æÖW2Ò"ò"æ¦ö–â‡&W6WBæVçf—&öæÖVçEö¶W—2¢6VÆbæ•ö¶W•ö†–çBæ6öæf–wW&R‡FW‡CÖb.K™şXúşYÊY
+şXªX˜ŞŠëî{ÚîxêşZ(>Xù˜xşûÉ§¶æÖW7Ò" ¢FVböÆöE÷&÷f–FW%ö•ö¶W’‡6VÆbÂ&÷f–FW%ö–C¢7G"’Óâ7G# ¢–b&÷f–FW%ö–B–â6VÆbæ•ö¶W—3 ¢&WGW&â6VÆbæ•ö¶W—5·&÷f–FW%ö–EĞ¢fÇVRÒ" ¢–b6VÆbç&VÖVÖ&W%ö•ö¶W’ævWB‚“ ¢G'“ ¢fÇVRÒÆöEö•ö¶W’‡&÷f–FW%ö–B¢W†6WB6V7&WE7F÷&TW'&÷# ¢fÇVRÒ" ¢fÇVRÒfÇVR÷"•ö¶W•ög&öÕöVçf—&öæÖVçB‡&÷f–FW%ö–B¢6VÆbæ•ö¶W—5·&÷f–FW%ö–EÒÒfÇVP¢&WGW&âfÇVP ¢FVb÷W'6—7Eö7W'&VçEö•ö¶W’‡6VÆb’ÓâæöæS ¢&÷f–FW%ö–BÒ6VÆbæ7F—fUö•÷&÷f–FW ¢fÇVRÒ6VÆbæ•ö¶W’ævWB‚’ç7G&—‚¢6VÆbæ•ö¶W—5·&÷f–FW%ö–EÒÒfÇVP¢–b6VÆbç&VÖVÖ&W%ö•ö¶W’ævWB‚’æBfÇVS ¢6fUö•ö¶W’‡&÷f–FW%ö–BÂfÇVR¢VÇ6S ¢FVÆWFUö•ö¶W’‡&÷f–FW%ö–B ¢FVb6ÆV%÷6fVEö•ö¶W’‡6VÆb’ÓâæöæS ¢&÷f–FW%ö–BÒ6VÆbæ7F—fUö•÷&÷f–FW ¢G'“ ¢FVÆWFUö•ö¶W’‡&÷f–FW%ö–B¢W†6WB6V7&WE7F÷&TW'&÷"2W†3 ¢ÖW76vV&÷‚ç6†÷vW'&÷"‚.kˆ^™šNZK‹JR"Â7G"†W†2’¢&WGW&à¢6VÆbæ•ö¶W—5·&÷f–FW%ö–EÒÒ" ¢6VÆbæ•ö¶W’ç6WB‚""¢ÖW76vV&÷‚ç6†÷v–æfò‚.[{.kˆ^™šB"Âb'·&÷f–FW%÷&W6WB‡&÷f–FW%ö–B’æÆ&VÇÒy¨N[{.KùŞZÙ‚’¶W’[{.K¸î{;¾{¹şXzŞhÚîKŠŞXŠ™šN8"" ¢FVb÷F…öf–VÆB‡6VÆbÂ&VçBÂÆ&VÃ¢7G"Âf&–&ÆS¢7G&–æuf"ÂW†V7WF&ÆUöæÖS¢7G"’ÓâæöæS ¢6VÆbåöf–VÆEöÆ&VÂ‡&VçBÂÆ&VÂ’ç6²†æ6†÷#Ò'r"ÂG“Òƒ2ÂR’¢&÷rÒg&ÖR‡&VçBÂ&sÕ5U$d4R¢&÷rç6²†f–ÆÃÕ‚¢6VÆbåöVçG'’‡&÷rÂf&–&ÆR’ç6²‡6–FSÔÄTeBÂf–ÆÃÕ‚ÂW‡æCÕG'VRÂ—G“Ór ¢FVb'&÷w6R‚’ÓâæöæS ¢–b7—2çÆFf÷&ÒÓÒ&F'v–â"æBW†V7WF&ÆUöæÖRÓÒ$¦–ç––æu&ò# ¢F‚Òf–ÆVF–Æöræ6¶÷Væf–ÆVæÖR€¢F—FÆSÒ.˜hºXš®iŠK‰>K‰®x˜‚æûÈ˜	®[‹KØŞK¨î(	Î[©NyJzˆ¾[¨ş(	ŞûÈ’"À¢–æ—F–ÆF—#Ò"ôÆ–6F–öç2"À¢f–ÆWG—W3Õ²‚$Ö2[©NyJ‚"Â"¢æ"’Â‚.h˜iÈih~K»b"Â"¢â¢"•ÒÀ¢¢VÆ–b7—2çÆFf÷&ÒÓÒ&F'v–â# ¢F‚Òf–ÆVF–Æöræ6¶÷Væf–ÆVæÖR‡F—FÆSÖb.˜hº’¶W†V7WF&ÆUöæÖWÒ"¢VÇ6S ¢F‚Òf–ÆVF–Æöræ6¶÷Væf–ÆVæÖR‡F—FÆSÖb.˜hº’¶W†V7WF&ÆUöæÖWÒæW†R"Âf–ÆWG—W3Õ²‚.Xúşhš~ŠÎih~K»b"Â"¢æW†R"’Â‚.h˜iÈih~K»b"Â"¢â¢"•Ò¢–bFƒ ¢f&–&ÆRç6WB‡F‚ ¢6VÆbåö'WGFöâ‡&÷rÂ.˜hº’"Â'&÷w6RÂ¶–æCÒ&v†÷7B"’ç6²‡6–FSÕ$”t…BÂGƒÒƒrÂ’ ¢FVböF—&V7F÷'•öf–VÆB‡6VÆbÂ&VçBÂÆ&VÃ¢7G"Âf&–&ÆS¢7G&–æuf"’ÓâæöæS ¢6VÆbåöf–VÆEöÆ&VÂ‡&VçBÂÆ&VÂ’ç6²†æ6†÷#Ò'r"ÂG“Òƒ2ÂR’¢&÷rÒg&ÖR‡&VçBÂ&sÕ5U$d4R¢&÷rç6²†f–ÆÃÕ‚¢6VÆbåöVçG'’‡&÷rÂf&–&ÆR’ç6²‡6–FSÔÄTeBÂf–ÆÃÕ‚ÂW‡æCÕG'VRÂ—G“Ór ¢FVb'&÷w6R‚’ÓâæöæS ¢F‚Òf–ÆVF–Æöræ6¶F—&V7F÷'’‡F—FÆSÒ.˜hºXš®iŠˆØz‹şyºî[ÙR"¢–bFƒ ¢f&–&ÆRç6WB‡F‚ ¢6VÆbåö'WGFöâ‡&÷rÂ.˜hº’"Â'&÷w6RÂ¶–æCÒ&v†÷7B"’ç6²‡6–FSÕ$”t…BÂGƒÒƒrÂ’ ¢FVb6fU÷6WGF–æw2‡6VÆb’ÓâæöæS ¢6WGF–æw2Ò6VÆbç7FFU²'6WGF–æw2%Ğ¢6V7&WEöW'&÷"Ò" ¢–b†6GG"‡6VÆbÂ&&6U÷W&Å÷f""“ ¢6WGF–æw5²'&÷f–FW"%ÒÒ6VÆbæ7F—fUö•÷&÷f–FW ¢6WGF–æw5²&&6U÷W&Â%ÒÒ6VÆbæ&6U÷W&Å÷f"ævWB‚’ç7G&—‚’ç'7G&—‚"ò"¢6WGF–æw5²&ÖöFVÂ%ÒÒ6VÆbæÖöFVÅöæÖU÷f"ævWB‚’ç7G&—‚¢6WGF–æw5²'&VÖVÖ&W%ö•ö¶W’%ÒÒ6VÆbç&VÖVÖ&W%ö•ö¶W’ævWB‚¢G'“ ¢6VÆbå÷W'6—7Eö7W'&VçEö•ö¶W’‚¢W†6WB6V7&WE7F÷&TW'&÷"2W†3 ¢6V7&WEöW'&÷"Ò7G"†W†2¢6WGF–æw5²&ff×Vu÷F‚%ÒÒ6VÆbæff×Vu÷f"ævWB‚’ç7G&—‚¢6WGF–æw5²&fg&ö&U÷F‚%ÒÒ6VÆbæfg&ö&U÷f"ævWB‚’ç7G&—‚¢6WGF–æw5²&¦–ç––æuöW†R%ÒÒ6VÆbæ¦–ç––æu÷f"ævWB‚’ç7G&—‚¢6WGF–æw5²&¦–ç––æuöG&gG5÷F‚%ÒÒ6VÆbæ¦–ç––æuöG&gG5÷f"ævWB‚’ç7G&—‚¢6VÆbç7F÷&Rç6fR‡6VÆbç7FFR¢6VÆbå÷&Vg&W6…÷FööÅ÷7FGW2‚¢–b†6GG"‡6VÆbÂ&ff×Vu÷7FGW2"“ ¢FWFV7FVBÒf–æEöW†V7WF&ÆR‡6WGF–æw5²&ff×Vu÷F‚%ÒÂ&ff×Vr"¢6VÆbæff×Vu÷7FGW2æ6öæf–wW&R‡FW‡CÒ†b.[{.h›îX‹ûÉ§¶FWFV7FVGÒ"–bFWFV7FVBVÇ6R.[	®iÊ®h›îX‹df×V~ûÉ¾K¸ŞXúşX‹nKÙÎY»îx˜~ûÈÎKØnKˆŞˆ;ŞYh‰™ÙhkÊ¾Šxnš)8""’ÂfsÔ44TåEôD$²–bFWFV7FVBVÇ6Rt$Ò¢–b6V7&WEöW'&÷# ¢ÖW76vV&÷‚ç6†÷wv&æ–ær‚.Šëî{Úî[{.KùŞZÙ‚"Âb.jŠYè¾Y(Î[z^X[~Šëî{Úî[{.KùŞZÙûÈÎKØb’¶W’iÊ®ˆ;ŞZèXZKùŞZÙûÉ¥Æç·6V7&WEöW'&÷'Ò"¢VÆ–b6VÆbç&VÖVÖ&W%ö•ö¶W’ævWB‚“ ¢ÖW76vV&÷‚ç6†÷v–æfò‚.[{.KùŞZÙ‚"Â.jŠYè¾8Xš®iŠˆØz‹şKˆîŠxnš)[z^X[~Šëî{Úî[{.KùŞZÙ8$’¶W’[{.yK{;¾{¹şZèXZKùŞzêûÈÎKˆ¾jÊh™>[ÈKÉ®ˆz®XªZ¾XZ^8""¢VÇ6S ¢ÖW76vV&÷‚ç6†÷v–æfò‚.[{.KùŞZÙ‚"Â.jŠYè¾8Xš®iŠˆØz‹şKˆîŠxnš)[z^X[~Šëî{Úî[{.KùŞZÙ8$’¶W’iÊ®Š*¾ŠëKØş8"" ¢FVbö•ö6Æ–VçB‡6VÆbÂW6Uöf÷&Ó¢&ööÂÒfÇ6R’Óâ÷Vä”6ö×F–&ÆT6Æ–VçC ¢6WGF–æw2Ò6VÆbç7FFU²'6WGF–æw2%Ğ¢–bW6Uöf÷&ÒæB†6GG"‡6VÆbÂ&&6U÷W&Å÷f""“ ¢&6U÷W&ÂÒ6VÆbæ&6U÷W&Å÷f"ævWB‚¢ÖöFVÂÒ6VÆbæÖöFVÅöæÖU÷f"ævWB‚¢&÷f–FW%ö–BÒ6VÆbæ7F—fUö•÷&÷f–FW ¢VÇ6S ¢&6U÷W&ÂÒ6WGF–æw2ævWB‚&&6U÷W&Â"Â""¢ÖöFVÂÒ6WGF–æw2ævWB‚&ÖöFVÂ"Â""¢&÷f–FW%ö–BÒ6WGF–æw2ævWB‚'&÷f–FW""’÷"–æfW%÷&÷f–FW"†&6U÷W&ÂÂÖöFVÂ¢6öæf–rÒ”6öæf–r†&6U÷W&ÂÂÖöFVÂÂ6VÆbæ•ö¶W’ævWB‚’Â&÷f–FW#×&÷f–FW%ö–B¢–bæ÷B6öæf–ræ&6U÷W&Ã ¢&—6R”6Æ–VçDW'&÷"‚.Šû~XXZ¾XijŠYè²&6RU$Î8""¢–bæ÷B6öæf–ræ•ö¶W“ ¢&—6R”6Æ–VçDW'&÷"‚.Šû~XXYÊ(	ÎjŠYè¾Kˆî[z^X[~(	ŞKŠŞZ¾Xi’’¶W8""¢&WGW&â÷Vä”6ö×F–&ÆT6Æ–VçB†6öæf–r ¢FVbFW7Eö•ö6öææV7F–öâ‡6VÆb’ÓâæöæS ¢–b6VÆbæ—5ö'W7“ ¢&WGW&à¢G'“ ¢6Æ–VçBÒ6VÆbåö•ö6Æ–VçB‡W6Uöf÷&ÓÕG'VR¢W†6WB”6Æ–VçDW'&÷"2W†3 ¢ÖW76vV&÷‚ç6†÷wv&æ–ær‚.izk9^kX¾ŠùR"Â7G"†W†2’¢&WGW&à¢6VÆbæ—5ö'W7’ÒG'VP¢6VÆbæ•÷FW7E÷7FGW2æ6öæf–wW&R‡FW‡CÖb.jÚ>YÊ‹ùîhêR·&÷f–FW%÷&W6WB‡6VÆbæ7F—fUö•÷&÷f–FW"’æÆ&VÇŞ(
+b"ÂfsÔ44TåEôD$² ¢FVbv÷&¶W"‚’ÓâæöæS ¢G'“ ¢&WÇ’Ò6Æ–VçBæ6ö×ÆWFR‚.KÚiŠşhê^Xú>‹ùî˜	®h
+~kX¾Šù^Xªh˜¾8""Â.Šû~Xú®Y¹îZHŞûÉ®‹ùîhê^h‰X©ò"ÂFV×W&GW&SÓã¢6VÆbæ'W2çWB‚‚&•÷FW7Eö6ö×ÆWFR"Â&WÇ’’¢W†6WBW†6WF–öâ2W†3¢2æ÷¢$ÄSÒF—7Æ’&÷f–FW"W'&÷"–âF†RT¢6VÆbæ'W2çWB‚‚&•÷FW7EöW'&÷""ÂW†2’ ¢F‡&VF–æråF‡&VB‡F&vWC×v÷&¶W"ÂFVÖöãÕG'VR’ç7F'B‚ ¢FVbö†æFÆU÷6WGF–æw5öWfVçB‡6VÆbÂWfVçC¢7G"Â–ÆöC¢ö&¦V7B’ÓâæöæS ¢–bWfVçBÓÒ&•÷FW7Eö6ö×ÆWFR# ¢6VÆbæ—5ö'W7’ÒfÇ6P¢6VÆbæ•÷FW7E÷7FGW2æ6öæf–wW&R‡FW‡CÖb.‹ùîhê^h‰X©şûÉ§·7G"‡–ÆöB•³£S×Ò"ÂfsÔ44TåEôD$²¢6V7&WEöW'&÷"Ò" ¢–b6VÆbç&VÖVÖ&W%ö•ö¶W’ævWB‚“ ¢G'“ ¢6VÆbå÷W'6—7Eö7W'&VçEö•ö¶W’‚¢W†6WB6V7&WE7F÷&TW'&÷"2W†3 ¢6V7&WEöW'&÷"Ò7G"†W†2¢ÖW76vRÒb'·&÷f–FW%÷&W6WB‡6VÆbæ7F—fUö•÷&÷f–FW"’æÆ&VÇÒhê^Xú>XúşKº^jÚ>[‹KÛşyJ8" ¢–b6VÆbç&VÖVÖ&W%ö•ö¶W’ævWB‚’æBæ÷B6V7&WEöW'&÷# ¢ÖW76vR³Ò%Æä’¶W’[{.ZèXZŠëKØş8" ¢VÆ–b6V7&WEöW'&÷# ¢ÖW76vR³Òb%ÆîKØb’¶W’KùŞZÙZK‹J^ûÉ§·6V7&WEöW'&÷'Ò ¢ÖW76vV&÷‚ç6†÷v–æfò‚.‹ùîhê^h‰X©ò"ÂÖW76vR¢VÆ–bWfVçBÓÒ&•÷FW7EöW'&÷"# ¢6VÆbæ—5ö'W7’ÒfÇ6P¢6VÆbæ•÷FW7E÷7FGW2æ6öæf–wW&R‡FW‡CÒ.‹ùîhê^ZK‹J^ûÈÎŠû~j8iúR¶W8jŠYè¾YŞY(Î{Ù{¹Â"ÂfsÔU%$õ"¢ÖW76vV&÷‚ç6†÷vW'&÷"‚.‹ùîhê^ZK‹JR"Â7G"‡–ÆöB’ ¢2ÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒWF–Æ—F–W2ÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒÒĞ¢FVbö6÷•÷FW‡B‡6VÆbÂfÇVS¢7G"’ÓâæöæS ¢6VÆbç&ö÷Bæ6Æ—&ö&Eö6ÆV"‚¢6VÆbç&ö÷Bæ6Æ—&ö&EöVæB‡fÇVR ¢FVb÷6fUö7W'&VçEöVF—F÷'2‡6VÆb’ÓâæöæS ¢–b6VÆbæ7W'&VçE÷vRÓÒ'f–FVò"æB6VÆbç÷7EöVF—F÷# ¢6VÆbå÷7–æ5÷f–FVõ÷7FFR‚¢VÆ–b6VÆbæ7W'&VçE÷vRÓÒ&æ÷fVÂ# ¢6VÆbå÷7–æ5öæ÷fVÅ÷'VÆW2‚¢6VÆbå÷6fUö6†FW%öVF—F÷'2‚¢6VÆbç7F÷&Rç6fR‡6VÆbç7FFR¢VÆ–b6VÆbæ7W'&VçE÷vRÓÒ&6öÖ–2# ¢6VÆbç6fUö6öÖ–5÷6WGF–æw2‡6–ÆVçCÕG'VR ¢FVböG&–åö'W2‡6VÆb’ÓâæöæS ¢G'“ ¢v†–ÆRG'VS ¢WfVçBÂ–ÆöBÒ6VÆbæ'W2ævWEöæ÷v—B‚¢–b6VÆbæ'W5ö†æFÆW# ¢6VÆbæ'W5ö†æFÆW"†WfVçBÂ–ÆöB¢W†6WBVWVRäV×G“ ¢70¢6VÆbç&ö÷BægFW"ƒ#Â6VÆbåöG&–åö'W2 ¢FVböåö6Æ÷6R‡6VÆb’ÓâæöæS ¢–b6VÆbæ—5ö'W7’æBæ÷BÖW76vV&÷‚æ6·–W6æò‚.K»¾XªK¸ŞYÊ‹ù¾ŠÂ"Â.X[>™zŞ[©NyJKÉ®KŠŞijŞ[Ù>X˜ŞK»¾XªûÈÎzîZé®˜X{®Y	~ûÉò"“ ¢&WGW&à¢6VÆbå÷6fUö7W'&VçEöVF—F÷'2‚¢–b†6GG"‡6VÆbÂ'&VÖVÖ&W%ö•ö¶W’"“ ¢6VÆbç7FFU²'6WGF–æw2%Õ²'&VÖVÖ&W%ö•ö¶W’%ÒÒ6VÆbç&VÖVÖ&W%ö•ö¶W’ævWB‚¢G'“ ¢6VÆbå÷W'6—7Eö7W'&VçEö•ö¶W’‚¢W†6WB6V7&WE7F÷&TW'&÷# ¢70¢–b†6GG"‡6VÆbÂ'&VÖVÖ&W%ö&µö•ö¶W’"“ ¢6VÆbç7FFU²'6WGF–æw2%Õ²'&VÖVÖ&W%ö&µö•ö¶W’%ÒÒ6VÆbç&VÖVÖ&W%ö&µö•ö¶W’ævWB‚¢G'“ ¢–b6VÆbç&VÖVÖ&W%ö&µö•ö¶W’ævWB‚’æB6VÆbæ&µö•ö¶W’ævWB‚’ç7G&—‚“ ¢6fUö•ö¶W’‚&&²"Â6VÆbæ&µö•ö¶W’ævWB‚’ç7G&—‚’¢VÇ6S ¢FVÆWFUö•ö¶W’‚&&²"¢W†6WB6V7&WE7F÷&TW'&÷# ¢70¢6VÆbç7F÷&Rç6fR‡6VÆbç7FFR¢6VÆbç7F÷&Rç&VÆV6Uö–ç7Fæ6UöÆö6²‚¢6VÆbç&ö÷BæFW7G&÷’‚  ¦FVbÖ–â‚’ÓâæöæS ¢&ö÷BÒF²‚¢G'“ ¢7GVF–ô‡&ö÷B¢W†6WB7GVF–ô–ç7Fæ6U'Vææ–ætW'&÷"2W†3 ¢&ö÷Bçv—F†G&r‚¢ÖW76vV&÷‚ç6†÷wv&æ–ær‚.zˆ¾[¨ş[{.YÊ‹ùŠÂ"Â7G"†W†2’Â&VçC×&ö÷B¢&ö÷BæFW7G&÷’‚¢&WGW&à¢&ö÷BæÖ–æÆö÷‚  ¦FVb6¶vVE÷6VÆe÷FW7B‚’ÓâæöæS ¢""$W†W&6—6RæF—fRÖVF–'6–æræB¦–ç––ærG&gB76WG2–â6¶vRâ"" ¢–×÷'BFV×f–ÆP ¢g&öÒ–ÖVF––æfò–×÷'BÖVF––æfğ¢–×÷'B”¦–å––ætG&gB2G&g@ ¢–bæ÷B6ÆÆ&ÆR†vWFGG"„ÖVF––æfòÂ''6R"ÂæöæR’“ ¢&—6R'VçF–ÖTW'&÷"‚$ÖVF––æfò'6W"Væf–Æ&ÆR"¢v—F‚FV×f–ÆRåFV×÷&'”F—&V7F÷'’‚’2FV× ¢67&—BÒG&gBäG&gDföÆFW"‡FV×’æ7&VFUöG&gB‚'6VÆb×FW7B"ÂƒÂ“#Â3¢67&—Bç6fR‚¢–bæ÷B…F‚‡FV×’ò'6VÆb×FW7B"ò&G&gEö6öçFVçBæ§6öâ"’æ—5öf–ÆR‚“ ¢&—6R'VçF–ÖTW'&÷"‚$¦–ç––ærG&gB76WG2Væf–Æ&ÆR"  ¦–bõöæÖUõòÓÒ%õöÖ–åõò# ¢–b"Ò×6VÆb×FW7B"–â7—2æ&wc ¢6¶vVE÷6VÆe÷FW7B‚¢VÇ6S ¢Ö–â‚ 

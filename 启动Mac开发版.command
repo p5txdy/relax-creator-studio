@@ -4,8 +4,8 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR"
 
-if [[ -d "dist-macos/解压创作工坊-v0.2.5.app" ]]; then
-  open "dist-macos/解压创作工坊-v0.2.5.app"
+if [[ -d "dist-macos/漫画推文-v1.0.app" ]]; then
+  open "dist-macos/漫画推文-v1.0.app"
   exit 0
 fi
 

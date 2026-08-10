@@ -1,2 +1,3 @@
-pyJianYingDraft==0.3.0
 pyinstaller==6.19.0
+pymediainfo==7.0.1
+pyJianYingDraft==0.3.0

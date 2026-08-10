@@ -18,7 +18,7 @@ if ! command -v brew >/dev/null 2>&1; then
 fi
 
 if ! brew --prefix mediainfo >/dev/null 2>&1; then
-  echo "正在安装草稿读取所需的 MediaInfo..."
+  echo "正在安装音频时长读取所需的 MediaInfo..."
   brew install mediainfo
 fi
 
@@ -52,9 +52,9 @@ python -m PyInstaller \
   --workpath "build-macos" \
   "解压创作工坊-mac.spec"
 
-APP_PATH="$SCRIPT_DIR/dist-macos/解压创作工坊-v0.2.5.app"
+APP_PATH="$SCRIPT_DIR/dist-macos/漫画推文-v1.0.app"
 echo "[5/6] 验证应用资源"
-"$APP_PATH/Contents/MacOS/解压创作工坊" --self-test
+"$APP_PATH/Contents/MacOS/漫画推文" --self-test
 codesign --force --deep --sign - "$APP_PATH"
 
 echo "[6/6] 生成 DMG 安装包"
@@ -63,15 +63,15 @@ trap 'rm -rf "$DMG_STAGE"' EXIT
 cp -R "$APP_PATH" "$DMG_STAGE/"
 ln -s /Applications "$DMG_STAGE/Applications"
 hdiutil create \
-  -volname "解压创作工坊 v0.2.5" \
+  -volname "漫画推文 v1.0" \
   -srcfolder "$DMG_STAGE" \
   -ov \
   -format UDZO \
-  "$SCRIPT_DIR/dist-macos/解压创作工坊-v0.2.5-macOS.dmg"
+  "$SCRIPT_DIR/dist-macos/漫画推文-v1.0-macOS.dmg"
 
 echo ""
 echo "打包完成："
 echo "  $APP_PATH"
-echo "  $SCRIPT_DIR/dist-macos/解压创作工坊-v0.2.5-macOS.dmg"
+echo "  $SCRIPT_DIR/dist-macos/漫画推文-v1.0-macOS.dmg"
 echo "首次打开若被系统拦截，请在 Finder 中右键应用并选择“打开”。"
 read -k 1 "?按任意键结束..."

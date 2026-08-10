@@ -5,6 +5,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable
@@ -16,7 +17,7 @@ ASPECT_SIZES = {
     "1:1": (1080, 1080),
     "4:5": (1080, 1350),
 }
-DEFAULT_PLAYBACK_SPEED = 1.5
+DEFAULT_PLAYBACK_SPEED = 1.75
 
 
 @dataclass
@@ -175,7 +176,19 @@ def find_executable(configured: str, name: str) -> str | None:
     located = shutil.which(name)
     if located:
         return located
+    executable_name = name if sys.platform != "win32" else f"{name}.exe"
+    bundled_roots: list[Path] = []
+    if getattr(sys, "frozen", False):
+        bundled_roots.extend(
+            [
+                Path(getattr(sys, "_MEIPASS", Path(sys.executable).parent)),
+                Path(sys.executable).resolve().parent,
+            ]
+        )
+    bundled_roots.append(Path(__file__).resolve().parent.parent)
     candidates = [
+        *(root / "ffmpeg" / executable_name for root in bundled_roots),
+        *(root / "vendor" / "ffmpeg" / "bin" / executable_name for root in bundled_roots),
         Path(os.getenv("LOCALAPPDATA", "")) / "Microsoft" / "WinGet" / "Links" / f"{name}.exe",
         Path("C:/ffmpeg/bin") / f"{name}.exe",
         Path("C:/Program Files/ffmpeg/bin") / f"{name}.exe",
@@ -183,6 +196,33 @@ def find_executable(configured: str, name: str) -> str | None:
         Path("/usr/local/bin") / name,
         Path("/opt/local/bin") / name,
     ]
+    if sys.platform == "win32":
+        # Reuse an existing static build from a locally installed creator
+        # tool so the user does not have to download a duplicate copy.
+        drive_roots = {
+            Path.cwd().anchor,
+            Path(sys.executable).anchor,
+            Path.home().anchor,
+            os.getenv("SystemDrive", "C:") + "\\",
+        }
+        for drive in sorted(item for item in drive_roots if item):
+            root = Path(drive)
+            candidates.extend(
+                [
+                    root / "ffmpeg" / "bin" / executable_name,
+                    root / "Program Files" / "ffmpeg" / "bin" / executable_name,
+                    root / "Program Files" / "creative-painting" / "resources" / "bin" / "win32" / "x64" / executable_name,
+                    root
+                    / "Program Files"
+                    / "dougepediyin"
+                    / "resources"
+                    / "app.asar.unpacked"
+                    / "node_modules"
+                    / ("@ffmpeg-installer" if name == "ffmpeg" else "@ffprobe-installer")
+                    / "win32-x64"
+                    / executable_name,
+                ]
+            )
     return str(next((path for path in candidates if path.is_file()), "")) or None
 
 
