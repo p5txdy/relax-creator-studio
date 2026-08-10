@@ -1,0 +1,68 @@
+name: Build macOS v1.1
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - app.py
+      - core/**
+      - requirements-macos.txt
+      - 打包Mac版.command
+      - 启动Mac开发版.command
+      - 解压创作工坊-mac.spec
+      - .github/workflows/build-macos.yml
+
+permissions:
+  contents: read
+
+jobs:
+  build-macos:
+    name: ${{ matrix.label }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-14
+            python-arch: arm64
+            label: Apple Silicon
+            artifact: 漫画推文-v1.1-macOS-Apple-Silicon
+          - runner: macos-15-intel
+            python-arch: x64
+            label: Intel
+            artifact: 漫画推文-v1.1-macOS-Intel
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          architecture: ${{ matrix.python-arch }}
+          cache: pip
+          cache-dependency-path: requirements-macos.txt
+
+      - name: Install native dependencies
+        run: brew install libmediainfo ffmpeg
+
+      - name: Build and test app
+        run: zsh ./打包Mac版.command
+
+      - name: Verify package
+        run: |
+          test -d "dist-macos/漫画推文-v1.1.app"
+          test -f "dist-macos/漫画推文-v1.1-macOS.dmg"
+          codesign --verify --deep --strict "dist-macos/漫画推文-v1.1.app"
+
+      - name: Upload DMG
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: dist-macos/漫画推文-v1.1-macOS.dmg
+          if-no-files-found: error
+          retention-days: 30

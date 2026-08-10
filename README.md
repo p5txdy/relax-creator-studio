@@ -82,6 +82,18 @@ python .\app.py
 
 本地状态保存在 `%APPDATA%\ComicPostStudio\state.json`，最近 20 份历史位于同目录的 `backups` 文件夹。首次运行会从旧版 `RelaxCreatorStudio` 目录迁移状态，并扫描仍存在的角色/场景图片恢复索引。程序使用单实例锁，避免多个窗口互相覆盖。API Key 不写入状态文件，启用安全记住后保存在 Windows 凭据管理器。
 
+## macOS 运行
+
+GitHub 自动构建会同时生成 Apple 芯片（M1/M2/M3/M4 等）和 Intel 两个 DMG。下载与自己 Mac 处理器对应的产物后：
+
+1. 双击 `漫画推文-v1.1-macOS.dmg`，把 `漫画推文-v1.1.app` 拖入“应用程序”。
+2. 首次启动时在 Finder 的“应用程序”中右键该应用，选择“打开”，再确认一次“打开”。
+3. 后续可以像普通应用一样从启动台运行。
+
+macOS 状态保存在 `~/Library/Application Support/ComicPostStudio/state.json`，API Key 启用安全记住后保存在系统钥匙串。应用已内置 MediaInfo；生成剪映草稿不要求安装 Python 或 Homebrew。可选 MP4 预览需要另外安装 FFmpeg，或在“模型与工具”中指定现有的 FFmpeg。
+
+需要在 Mac 本机自行构建时，安装 Python 3.12 与 Homebrew，然后双击 `打包Mac版.command`。脚本会安装构建依赖、生成应用并执行 MediaInfo 实际解析与剪映草稿写出自检，产物位于 `dist-macos`。
+
 ## 配置模型
 
 “模型与 API”页面可配置 DeepSeek、千问、智谱 GLM、Kimi、OpenAI 或其他 Chat Completions 兼容服务，用于角色、场景和分镜分析。
@@ -98,6 +110,8 @@ python -m unittest discover -s tests -v
 ```
 
 Windows 单文件产物位于 `dist\漫画推文-v1.1.exe`。
+
+推送相关变更或创建拉取请求后，`.github/workflows/build-macos.yml` 会在原生 Apple Silicon 与 Intel macOS 运行器上分别构建并上传 DMG。
 
 ## 内容权利
 
