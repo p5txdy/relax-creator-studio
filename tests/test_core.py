@@ -305,4 +305,941 @@ class ComicEngineTests(unittest.TestCase):
 
     def test_fallback_storyboard_links_named_characters(self) -> None:
         characters = [{"name": "Х▀▐Ф≥ ", "description": "Г≥╫Х┴╡И∙©Е▐▒"}]
-        shots = fallback_storyboard("Х▀▐Ф≥ Г╚Г╫4╤┴·кk╨w╣Г@┴ы╫╔█■╧╣юл┬(───────────│ы╔▒∙╪╧щи╔я∙}┴Ея∙л║┬┴а╠┘█∙║╫╠▒∙х┬╓(───────────│ы╫╔█■╧щи╔я∙}┴Ея∙л║┬┴а╠┘█∙║╫╠▒∙х┬╓(───────────│аи╫╘∙█п─Т│Y╔▒∙╫Aи╫╘∙█п═(───────────────│█╠╔алУmY╔▒∙╫╠╔ю║мях║ы╔▒∙╪╓╟│▒уи┘я╔╫╦Тдт╦ю╔t╟(───────────────│ы╫╔█∙}а┘я═Умях║ы╫╔█■╓╟(───────────────│я┘и²∙я}▒уи┘я╔╫╦Тдх╦ю╟(───────────────│яи┘╧м╔я╔╫╦Т┴╧╫╧■┬╟(────────────╓(───────────│╘╫╔╧∙░─Т─┬─┬╧╘╫╔╦║┴у╔╠▒}∙Аа╫ия}█╫╣╣┘╧░║аи╫╘∙█п╟─┴≥≥╣а∙°┬╟│мях║и╫╫п─╪─┴╫уп╧╣юп┬╓╓╓(───────────│м∙╠≤╧┘мм∙ия╠╣╫мяеу┘╟║аи╫╘∙█п╧╫уяауя}▒уи┘я╔╫╦╟─дх╦ю╓(───────────│м∙╠≤╧┘мм∙ия%╦═┴м∙яаялТ║AQL╣MQIQAQL╓╪д╦этюююю┬╟│╘╫╔╧∙░╓(───────────│м∙╠≤╧┘мм∙ия%╦═┴┘яи╔╢У▒уи┘я╔╫╦Тдх╦ююю┬╟│╘╫╔╧∙░╓(───────────│м∙╠≤╧┘мм∙ия%╦═┴яи╔╢У▒уи┘я╔╫╦Тдх╦ююю┬╟│╘╫╔╧∙░╓((───│▒∙≤│я∙мя}█╫╧█┘я}щ╔я║╫уя}яи┘╧м╔я╔╫╦║м∙╠≤╓─╢Ь│9╫╧■Х(───────│щ╔я═│я∙╣а≥╔╠■╧Q∙╣а╫и┘иЕ╔и∙█я╫иД═╓│┘л│я∙╣юХ(───────────│м╫уи█■─Т│A┘я═║я∙╣ю╓─╪─┴█╠╔ю╧╣юп┬(───────────│м╫уи█■╧щи╔я∙}┴Ея∙л║┬┴а╠┘█∙║╫╠▒∙х┬╓(───────────│аи╫╘∙█п─Т│Y╔▒∙╫Aи╫╘∙█п║█╠╔алУmY╔▒∙╫╠╔ю║мях║м╫уи█■╓╟│▒уи┘я╔╫╦Тх╦т╔t╟│яи┘╧м╔я╔╫╦Т┴╧╫╧■┬╓(───────────│█╫╣╣┘╧░─Т│┴у╔╠▒}∙Аа╫ия}█╫╣╣┘╧░║аи╫╘∙█п╟─┴≥≥╣а∙°┬╟│мях║A┘я═║я∙╣ю╓─╪─┴╫уп╧╣юп┬╓╓(───────────│м∙╠≤╧┘мм∙ия%╦═┬╣┘╦┬╟│█╫╣╣┘╧░╓(───────────│м∙╠≤╧┘мм∙ия9╫я%╦═┴А≥┘▒■┬╟─┬─┬╧╘╫╔╦║█╫╣╣┘╧░╓╓(()█╠┘мл│Mя╫и┘²∙Q∙мял║у╧╔яя∙мп╧Q∙мя┘м■╓Х(───│▒∙≤│я∙мя}и╫у╧▒яи╔а}┘╧▒}м∙█и∙я}╔м}и∙╣╫ы∙░║м∙╠≤╓─╢Ь│9╫╧■Х(───────│щ╔я═│я∙╣а≥╔╠■╧Q∙╣а╫и┘иЕ╔и∙█я╫иД═╓│┘л│я∙╣юХ(───────────│мя╫и■─Т│Mя┘я∙Mя╫и■║A┘я═║я∙╣ю╓╓(───────────│мя┘я■─Т│╘м╫╦╧╠╫┘▒л║╘м╫╦╧▒у╣ал║U1Q}MQQ╓╓(───────────│аи╫╘∙█п─Т│╧∙щ}█╫╣╔█}аи╫╘∙█п═▀ ж/╒╬W╕├Г·n╦┬╓(───────────│мя┘я∙l┴аи╫╘∙█ял┴t─Т│mаи╫╘∙█яt(───────────│мя┘я∙l┴┘█я╔ы∙}аи╫╘∙█я}╔░┴t─Т│аи╫╘∙█яl┴аи╫╘∙█я}╔░┴t(───────────│мя┘я∙l┴█╫╣╔▄┴t─Т│аи╫╘∙█п(───────────│мя┘я∙l┴м∙яя╔╧²л┴ul┴┘а╔}╜∙Д┴t─Т─┴м∙█и∙п┬(───────────│мя┘я∙l┴м∙яя╔╧²л┴ul┴┘и╜}┘а╔}╜∙Д┴t─Т─┴┘и╛╣м∙█и∙п┬(───────────│мя┘я∙l┴м∙яя╔╧²л┴ul┴Еу╧щу}┴┘м∙}уи╟┴t─Т─┴║яяалХ╪╫╠∙²┘█Д╧∙А┘╣а╠■┬(───────────│мя┘я∙l┴█╫╣╔▄┴ul┴┴╫я}яЕа■┴t─Т─┴9%)%})=UI9d┬(───────────│мя┘я∙l┴█╫╣╔▄┴ul┴уам█┘╠∙}╔╧▒∙Ю┴t─Т─л(───────────│мя╫и■╧м┘ы■║мя┘я■╓(───────────│и┘э─Т│мя╫и■╧а┘я═╧и∙┘▒}я∙Ап║∙╧█╫▒╔╧°Т┴уя≤╢Ю┬╓(───────────│м∙╠≤╧┘мм∙ия9╫я%╦═┴м∙█и∙п┬╟│и┘э╓(───────────│м∙╠≤╧┘мм∙ия9╫я%╦═┴┘и╛╣м∙█и∙п┬╟│и┘э╓(───────────│м∙╠≤╧┘мм∙ияеу┘╟║мя╫и■╧╠╫┘░═╔l┴█╫╣╔▄┴ul┴аи╫╘∙█я}╧┘╣■┴t╟─▀ ж/╒╬W╕├Г·n╦┬╓(───────────│м∙╠≤╧┘мм∙ияQиу■║мя╫и■╧╠╫┘░═╔l┴м∙яя╔╧²л┴ul┴и∙╣∙╣┴∙и}┘а╔}╜∙Д┴t╓(───────────│м∙╠≤╧┘мм∙ия%╦═┴█╫╣╔▄┬╟│мя╫и■╧╠╫┘░═╓╓(───────────│м∙╠≤╧┘мм∙ия9╫я%╦═┴Еу╧щу}┴┘м∙}уи╟┬╟│мя╫и■╧╠╫┘░═╔l┴м∙яя╔╧²л┴t╓(───────────│м∙╠≤╧┘мм∙ия9╫я%╦═┴┴╫я}яЕа■┬╟│мя╫и■╧╠╫┘░═╔l┴█╫╣╔▄┴t╓(───────────│м∙╠≤╧┘мм∙ия9╫я%╦═┴уам█┘╠∙}╔╧▒∙Ю┬╟│мя╫и■╧╠╫┘░═╔l┴█╫╣╔▄┴t╓(───────────│м∙╠≤╧┘мм∙ия9╫я%╦═┴ы╔▒∙╪┬╟│мя╫и■╧╠╫┘░═╓╓(───────────│м∙╠≤╧┘мм∙ия%╦═┴╧╫ы∙╟┬╟│мя╫и■╧╠╫┘░═╓╓(───────────│м∙╠≤╧┘мм∙ияеу┘╟║мя╫и■╧╠╫┘░═╔l┴╧╫ы∙╟┴ul┴╣╫▒■┴t╟─▀ чг√Й⌡ RГ√d┬╓((───│▒∙≤│я∙мя}╣у╠я╔а╠∙}аи╫╘∙█ям}м║┘и∙}╫╧∙}█║┘и┘█я∙и}╠╔┴и┘иД║м∙╠≤╓─╢Ь│9╫╧■Х(───────│щ╔я═│я∙╣а≥╔╠■╧Q∙╣а╫и┘иЕ╔и∙█я╫иД═╓│┘л│я∙╣юХ(───────────│мя╫и■─Т│Mя┘я∙Mя╫и■║A┘я═║я∙╣ю╓╓(───────────│мя┘я■─Т│╘м╫╦╧╠╫┘▒л║╘м╫╦╧▒у╣ал║U1Q}MQQ╓╓(───────────│≥╔имп─Т│╧∙щ}█╫╣╔█}аи╫╘∙█п═▀·╡Ё▓Б v┤ :ё Z┬╓(───────────│м∙█╫╧░─Т│╧∙щ}█╫╣╔█}аи╫╘∙█п═▀·╡Ё▓Й3 v┤ :ё Z┬╓(───────────│мя┘я∙l┴аи╫╘∙█ял┴t─Т│m≥╔имп╟│м∙█╫╧▒t(───────────│мя┘я∙l┴┘█я╔ы∙}аи╫╘∙█я}╔░┴t─Т│м∙█╫╧▒l┴аи╫╘∙█я}╔░┴t(───────────│мя┘я∙l┴м║┘и∙▒}█║┘и┘█я∙ил┴t─Т│mЛ┴╧┘╣■┬Х─▀ z_√чt┬╟─┴▒∙м█и╔ая╔╫╦┬Х─▀╕НG√>D┬╟─┴аи╫╣ап┬Х─▀ z_√чw ╤▐╕v▀√ё╒Й╞√╨k√ ╬Р3·Й©╒&к╒3 f╪┴Уt(───────────│мя┘я∙l┴█╫╣╔▄┴t─Т│м∙█╫╧░(───────────│мя╫и■╧м┘ы■║мя┘я■╓(───────────│╠╫┘▒∙░─Т│мя╫и■╧╠╫┘░═╓(───────────│м∙╠≤╧┘мм∙ияеу┘╟║╠∙╦║╠╫┘▒∙▒l┴аи╫╘∙█ял┴t╓╟─х╓(───────────│м∙╠≤╧┘мм∙ияеу┘╟║╠╫┘▒∙▒l┴█╫╣╔▄┴ul┴аи╫╘∙█я}╧┘╣■┴t╟─▀·╡Ё▓Й3 v┤ :ё Z┬╓(───────────│м∙╠≤╧┘мм∙ия%л║╠╫┘▒∙▒l┴█╫╣╔▄┴ul┴█║┘и┘█я∙ил┴t╟│╠╫┘▒∙▒l┴м║┘и∙▒}█║┘и┘█я∙ил┴t╓(───────────│м∙╠≤╧┘мм∙ия%л║╠╫┘▒∙▒l┴аи╫╘∙█ял┴ulаul┴█║┘и┘█я∙ил┴t╟│╠╫┘▒∙▒l┴м║┘и∙▒}█║┘и┘█я∙ил┴t╓(───────────│м∙╠≤╧┘мм∙ияеу┘╟║╠╫┘▒∙▒l┴аи╫╘∙█ял┴ulеul┴█║┘и┘█я∙ил┴ulаul┴╧┘╣■┴t╟─▀ z_√чt┬╓(───────────│м∙╠≤╧┘мм∙ияеу┘╟║╠╫┘▒∙▒l┴м║┘и∙▒}█║┘и┘█я∙ил┴ulаul┴аи╫╣ап┴t╟─▀ z_√чw ╤▐╕v▀√ё╒Й╞√╨k√ ╬Р3·Й©╒&к╒3 f╪┬╓((───│▒∙≤│я∙мя}╠∙²┘█Е}м╔╧²╠∙}█╫╣╔█}╔м}╣╔²и┘я∙▒}я╫}аи╫╘∙█я}┘╧▒}м║┘и∙▒}и╫╠∙л║м∙╠≤╓─╢Ь│9╫╧■Х(───────│щ╔я═│я∙╣а≥╔╠■╧Q∙╣а╫и┘иЕ╔и∙█я╫иД═╓│┘л│я∙╣юХ(───────────│мя╫и■─Т│Mя┘я∙Mя╫и■║A┘я═║я∙╣ю╓╓(───────────│мя╫и■╧┴┘м∙}▒╔х╧╣╜▒╔х║а┘и∙╧ялУQиу■╟│∙А╔мя}╫╛УQиу■╓(───────────│мя╫и■╧а┘я═╧щи╔я∙}я∙Ап═(───────────────│╘м╫╦╧▒у╣ал═(───────────────────│Л(────────────────────────┴м∙яя╔╧²л┬Х│МТ╟(────────────────────────┴█╫╣╔▄┬Х│Л(────────────────────────────┴аи╫╘∙█я}╧┘╣■┬Х─▀ ^÷·&# :ё Z┬╟(────────────────────────────┴м╫уи█∙}я∙Ап┬Х─▀ ^÷ ╤▐ Z┬╟(────────────────────────────┴█║┘и┘█я∙ил┬Х│mЛ┴╧┘╣■┬Х─▀╒.? fh┬╟─┴▒∙м█и╔ая╔╫╦┬Х─▀·fВ√>D┴Уt╟(────────────────────────────┴м█∙╧∙л┬Х│mt╟(────────────────────────────┴м║╫ял┬Х│mt╟(───────────────────────│Т╟(───────────────────│Т╟(───────────────────│∙╧муи∙}┘м█╔╓У┘╠м■╟(────────────────╓╟(───────────────│∙╧█╫▒╔╧°Т┴уя≤╢Ю┬╟(────────────╓(───────────│╠╫┘▒∙░─Т│мя╫и■╧╠╫┘░═╓(───────────│м∙╠≤╧┘мм∙ияеу┘╟║╠∙╦║╠╫┘▒∙▒l┴аи╫╘∙█ял┴t╓╟─д╓(───────────│м∙╠≤╧┘мм∙ияеу┘╟║╠╫┘▒∙▒l┴█╫╣╔▄┴ul┴аи╫╘∙█я}╧┘╣■┴t╟─▀ ^÷·&# :ё Z┬╓(───────────│м∙╠≤╧┘мм∙ияеу┘╟║╠╫┘▒∙▒l┴м║┘и∙▒}█║┘и┘█я∙ил┴ulаul┴╧┘╣■┴t╟─▀╒.? fh┬╓((───│▒∙≤│я∙мя}╫иа║┘╧∙▒}█║┘и┘█я∙и}┘╧▒}м█∙╧∙}╔╣┘²∙м}┘и∙}и∙█╫ы∙и∙░║м∙╠≤╓─╢Ь│9╫╧■Х(───────│щ╔я═│я∙╣а≥╔╠■╧Q∙╣а╫и┘иЕ╔и∙█я╫иД═╓│┘л│я∙╣юХ(───────────│┴┘м■─Т│A┘я═║я∙╣ю╓(───────────│и╫╠∙}▒╔х─Т│┴┘м■─╪─┴м║┘и∙▒}┘мм∙ял┬─╪─┴█║┘и┘█я∙ил┬(───────────│м█∙╧∙}▒╔х─Т│┴┘м■─╪─┴аи╫╘∙█п╣╫уяауп┬─╪─┴м█∙╧∙л┬(───────────│и╫╠∙}▒╔х╧╣╜▒╔х║а┘и∙╧ялУQиу■╓(───────────│м█∙╧∙}▒╔х╧╣╜▒╔х║а┘и∙╧ялУQиу■╓(───────────│и╫╠∙}и∙≥∙и∙╧█■─Т│и╫╠∙}▒╔х─╪─▀╒.? fi}и∙≥∙и∙╧█■╧а╧°┬(───────────│и╫╠∙}█┘╧▒╔▒┘я■─Т│и╫╠∙}▒╔х─╪─▀╒.? fi}█┘╧▒╔▒┘я■╧а╧°┬(───────────│м█∙╧∙}и∙≥∙и∙╧█■─Т│м█∙╧∙}▒╔х─╪─▀√╨▀√:}и∙≥∙и∙╧█■╧а╧°┬(───────────│и╫╠∙}и∙≥∙и∙╧█■╧щи╔я∙}┴Ея∙л║┬┴и∙≥∙и∙╧█■┬╓(───────────│и╫╠∙}█┘╧▒╔▒┘я■╧щи╔я∙}┴Ея∙л║┬┴█┘╧▒╔▒┘я■┬╓(───────────│м█∙╧∙}и∙≥∙и∙╧█■╧щи╔я∙}┴Ея∙л║┬┴м█∙╧■┬╓(───────────│мя╫и■─Т│Mя┘я∙Mя╫и■║┴┘м■╓(───────────│мя┘я■─Т│╘м╫╦╧╠╫┘▒л║╘м╫╦╧▒у╣ал║U1Q}MQQ╓╓(───────────│аи╫╘∙█п─Т│╧∙щ}█╫╣╔█}аи╫╘∙█п═▀ ▀√▓7 ж/╒╬T┬╓(───────────│аи╫╘∙█яl┴╫уяауя}▒╔х┴t─Т│мях║┴┘м■─╪─┴аи╫╘∙█п╣╫уяауп┬╓(───────────│мя┘я∙l┴аи╫╘∙█ял┴t─Т│mаи╫╘∙█яt(───────────│мя┘я∙l┴┘█я╔ы∙}аи╫╘∙█я}╔░┴t─Т│аи╫╘∙█яl┴аи╫╘∙█я}╔░┴t(───────────│мя┘я∙l┴█╫╣╔▄┴t─Т│аи╫╘∙█п(───────────│мя╫и■╧м┘ы■║мя┘я■╓((───────────│╠╫┘▒∙░─Т│мя╫и■╧╠╫┘░═╓(───────────│и╫╠■─Т│╧∙Ап║╔я∙╢│≥╫х│╔я∙╢│╔╦│╠╫┘▒∙▒l┴м║┘и∙▒}█║┘и┘█я∙ил┴t│╔≤│╔я∙╣l┴╧┘╣■┴t─ТТ─▀╒.? fh┬╓(───────────│м█∙╧■─Т│╧∙Ап║╔я∙╢│≥╫х│╔я∙╢│╔╦│╠╫┘▒∙▒l┴█╫╣╔▄┴ul┴м█∙╧∙л┴t│╔≤│╔я∙╣l┴╧┘╣■┴t─ТТ─▀√╨▀√:┬╓(───────────│м∙╠≤╧┘мм∙ияеу┘╟║и╫╠∙l┴мя┘яул┴t╟─▀√╨k√ √чк·├╩╒╨░┬╓(───────────│м∙╠≤╧┘мм∙ияеу┘╟║и╫╠∙l┴╠╫█┘╠}а┘я═┴t╟│мях║и╫╠∙}и∙≥∙и∙╧█■╓╓(───────────│м∙╠≤╧┘мм∙ияеу┘╟║и╫╠∙l┴█┘╧▒╔▒┘я∙}а┘я═┴t╟│мях║и╫╠∙}█┘╧▒╔▒┘я■╓╓(───────────│м∙╠≤╧┘мм∙ияеу┘╟║м█∙╧∙l┴мя┘яул┴t╟─▀√╨k f©√чк·├╩╒╨░┬╓(───────────│м∙╠≤╧┘мм∙ияеу┘╟║м█∙╧∙l┴╠╫█┘╠}а┘я═┴t╟│мях║м█∙╧∙}и∙≥∙и∙╧█■╓╓((───│▒∙≤│я∙мя}мя┘я∙}┴┘█╜уам}┘╧▒}м╔╧²╠∙}╔╧мя┘╧█∙}╠╫█╛║м∙╠≤╓─╢Ь│9╫╧■Х(───────│щ╔я═│я∙╣а≥╔╠■╧Q∙╣а╫и┘иЕ╔и∙█я╫иД═╓│┘л│я∙╣юХ(───────────│┴┘м■─Т│A┘я═║я∙╣ю╓(───────────│≥╔имп─Т│Mя┘я∙Mя╫и■║┴┘м■╓(───────────│м∙█╫╧░─Т│Mя┘я∙Mя╫и■║┴┘м■╓(───────────│м∙╠≤╧┘мм∙ияQиу■║≥╔имп╧┘█еу╔и∙}╔╧мя┘╧█∙}╠╫█╛═╓╓(───────────│м∙╠≤╧┘мм∙ия┘╠м■║м∙█╫╧░╧┘█еу╔и∙}╔╧мя┘╧█∙}╠╫█╛═╓╓(───────────│≥╔имп╧и∙╠∙┘м∙}╔╧мя┘╧█∙}╠╫█╛═╓(───────────│м∙╠≤╧┘мм∙ияQиу■║м∙█╫╧░╧┘█еу╔и∙}╔╧мя┘╧█∙}╠╫█╛═╓╓(───────────│м∙█╫╧░╧и∙╠∙┘м∙}╔╧мя┘╧█∙}╠╫█╛═╓(───────────│мя┘я■─Т│╘м╫╦╧╠╫┘▒л║╘м╫╦╧▒у╣ал║U1Q}MQQ╓╓(───────────│≥╔имп╧м┘ы■║мя┘я■╓(───────────│≥╔имп╧м┘ы■║мя┘я■╓(───────────│м∙╠≤╧┘мм∙ияQиу■║┘╧Д═║┴┘м■─╪─┴┴┘█╜уал┬╓╧²╠╫┬═┴мя┘я■╢╗╧╘м╫╦┬╓╓╓((───│▒∙≤│я∙мя}╠∙²┘█Е}┘мм∙ям}┘и∙}█╫а╔∙▒}╔╧я╫}я║∙}╧∙щ}▒┘я┘}▒╔и∙█я╫иД║м∙╠≤╓─╢Ь│9╫╧■Х(───────│щ╔я═│я∙╣а≥╔╠■╧Q∙╣а╫и┘иЕ╔и∙█я╫иД═╓│┘л│я∙╣юХ(───────────│и╫╫п─Т│A┘я═║я∙╣ю╓(───────────│╫╠▒}┴┘м■─Т│и╫╫п─╪─┴I∙╠┘Аи∙┘я╫иMяу▒╔╪┬(───────────│╧∙щ}┴┘м■─Т│и╫╫п─╪─┴╫╣╔█A╫мяMяу▒╔╪┬(───────────│╫╠▒}и╫╠■─Т│╫╠▒}┴┘м■─╪─┴м║┘и∙▒}┘мм∙ял┬─╪─┴█║┘и┘█я∙ил┬─╪─▀╒.? fi}и∙≥∙и∙╧█■╧а╧°┬(───────────│╫╠▒}м█∙╧■─Т│╫╠▒}┴┘м■─╪─┴█╫╣╔█}аи╫╘∙█ял┬─╪─▀ ^÷╕├Г·n╦┬─╪─┴м█∙╧∙л┬─╪─▀√╨▀√:}и∙≥∙и∙╧█■╧а╧°┬(───────────│╫╠▒}и╫╠■╧а┘и∙╧п╧╣╜▒╔х║а┘и∙╧ялУQиу■╓(───────────│╫╠▒}м█∙╧■╧а┘и∙╧п╧╣╜▒╔х║а┘и∙╧ялУQиу■╓(───────────│╫╠▒}и╫╠■╧щи╔я∙}┴Ея∙л║┬┴и╫╠■┬╓(───────────│╫╠▒}м█∙╧■╧щи╔я∙}┴Ея∙л║┬┴м█∙╧■┬╓(───────────│╫╠▒}мя┘я■─Т│Л(────────────────┴м∙яя╔╧²л┬Х│МТ╟(────────────────┴█╫╣╔▄┬Х│Л(────────────────────┴аи╫╘∙█я}╧┘╣■┬Х─▀ ^÷╕├Г·n╦┬╟(────────────────────┴╫уяауя}▒╔х┬Х│мях║╫╠▒}┴┘м■─╪─┴█╫╣╔█}аи╫╘∙█ял┬─╪─▀ ^÷╕├Г·n╦┬╓╟(────────────────────┴█║┘и┘█я∙ил┬Х│mt╟(────────────────────┴м█∙╧∙л┬Х│mt╟(────────────────────┴м║╫ял┬Х│mt╟(───────────────│Т╟(───────────│Т(────────────║╫╠▒}┴┘м■─╪─┴мя┘я■╧╘м╫╦┬╓╧щи╔я∙}я∙Ап║╘м╫╦╧▒у╣ал║╫╠▒}мя┘я■╟│∙╧муи∙}┘м█╔╓У┘╠м■╓╟│∙╧█╫▒╔╧°Т┴уя≤╢Ю┬╓(───────────│мя╫и■─Т│Mя┘я∙Mя╫и■║╧∙щ}┴┘м■╓(───────────│мя╫и■╧╠∙²┘█Е}┴┘м∙}▒╔х─Т│╫╠▒}┴┘м■(───────────│╠╫┘▒∙░─Т│мя╫и■╧╠╫┘░═╓(───────────│и╫╠■─Т│╧∙Ап║╔я∙╢│≥╫х│╔я∙╢│╔╦│╠╫┘▒∙▒l┴м║┘и∙▒}█║┘и┘█я∙ил┴t│╔≤│╔я∙╣l┴╧┘╣■┴t─ТТ─▀╒.? fh┬╓(───────────│м█∙╧■─Т│╧∙Ап║╔я∙╢│≥╫х│╔я∙╢│╔╦│╠╫┘▒∙▒l┴█╫╣╔▄┴ul┴м█∙╧∙л┴t│╔≤│╔я∙╣l┴╧┘╣■┴t─ТТ─▀√╨▀√:┬╓(───────────│м∙╠≤╧┘мм∙ияQиу■║A┘я═║и╫╠∙l┴╠╫█┘╠}а┘я═┴t╓╧╔м}и∙╠┘я╔ы∙}я╪║╧∙щ}┴┘м■╓╓(───────────│м∙╠≤╧┘мм∙ияQиу■║A┘я═║м█∙╧∙l┴╠╫█┘╠}а┘я═┴t╓╧╔м}и∙╠┘я╔ы∙}я╪║╧∙щ}┴┘м■╓╓(───────────│м∙╠≤╧┘мм∙ияQиу■║A┘я═║и╫╠∙l┴╠╫█┘╠}а┘я═┴t╓╧╔м}≥╔╠■═╓╓(───────────│м∙╠≤╧┘мм∙ияQиу■║A┘я═║м█∙╧∙l┴╠╫█┘╠}а┘я═┴t╓╧╔м}≥╔╠■═╓╓(()█╠┘мл│M∙█и∙яMя╫и∙Q∙мял║у╧╔яя∙мп╧Q∙мя┘м■╓Х(───│▒∙≤│я∙мя}щ╔╧▒╫щм}и╫уя∙м}я╫}█и∙▒∙╧я╔┘╠}╣┘╧┘²∙х║м∙╠≤╓─╢Ь│9╫╧■Х(───────│щ╔я═│а┘я█══┴█╫и■╧м∙█и∙я}мя╫и■╧мЕл╧а╠┘я≥╫и╢┬╟─┴щ╔╦лх┬╓Х(───────────│щ╔я═│а┘я█══┴█╫и■╧м∙█и∙я}мя╫и■╧}щ╔╧▒╫щм}и∙┘░┬╟│и∙яуи╧}ы┘╠у■Т┴м┘ы∙░╣╜∙Д┬╓│┘л│и∙┘░Х(───────────────│м∙╠≤╧┘мм∙ияеу┘╟║╠╫┘▒}┘а╔}╜∙Д═┴╜╔╣╓┬╓╟─┴м┘ы∙░╣╜∙Д┬╓(───────────────│и∙┘░╧┘мм∙ия}█┘╠╠∙▒}╫╧█∙}щ╔я══┴╜╔╣╓┬╓(───────────│щ╔я═│а┘я█══┴█╫и■╧м∙█и∙я}мя╫и■╧}щ╔╧▒╫щм}щи╔я■┬╓│┘л│щи╔я■Х(───────────────│м┘ы∙}┘а╔}╜∙Д═┴╜╔╣╓┬╟─┬─│╧∙э╣╜∙Д──┬╓(───────────────│щи╔я■╧┘мм∙ия}█┘╠╠∙▒}╫╧█∙}щ╔я══┴╜╔╣╓┬╟─┴╧∙э╣╜∙Д┬╓(───────────│щ╔я═│а┘я█══┴█╫и■╧м∙█и∙я}мя╫и■╧}щ╔╧▒╫щм}▒∙╠∙я■┬╓│┘л│▒∙╠∙я■Х(───────────────│▒∙╠∙я∙}┘а╔}╜∙Д═┴╜╔╣╓┬╓(───────────────│▒∙╠∙я■╧┘мм∙ия}█┘╠╠∙▒}╫╧█∙}щ╔я══┴╜╔╣╓┬╓((───│▒∙≤│я∙мя}╣┘█╫м}╜∙Е█║┘╔╧}и∙┘▒}яи╔╣м}╫╧╠Е}╠╔╧∙}┴и∙┘╛║м∙╠≤╓─╢Ь│9╫╧■Х(───────│и∙му╠п─Т│му┴аи╫█∙мл╧╫╣а╠∙я∙▒Aи╫█∙мл║mt╟─ю╟─┬│╜∙Д╣щ╔я═╣ма┘█∙л│q╦┬╟─┬┬╓(───────│щ╔я═│а┘я█══┴█╫и■╧м∙█и∙я}мя╫и■╧мЕл╧а╠┘я≥╫и╢┬╟─┴▒┘ищ╔╦┬╓Х(───────────│щ╔я═│а┘я█══┴█╫и■╧м∙█и∙я}мя╫и■╧}иу╧}м∙█уи╔яД┬╟│и∙яуи╧}ы┘╠у■Уи∙му╠п╓│┘л│м∙█уи╔яДХ(───────────────│м∙╠≤╧┘мм∙ияеу┘╟║╠╫┘▒}┘а╔}╜∙Д═┴▒∙∙ам∙∙╛┬╓╟─┬│╜∙Д╣щ╔я═╣ма┘█∙л─┬╓(───────│м∙█уи╔яД╧┘мм∙ия}█┘╠╠∙▒}╫╧█∙}щ╔я══(───────────│l┴≥╔╧░╣²∙╧∙и╔▄╣а┘ммщ╫и░┬╟─┬╣л┬╟─┴I∙╠┘Аи∙┘я╫иMяу▒╔╪┬╟─┬╣└┬╟─┴▒∙∙ам∙∙╛┬╟─┬╣э┴t(────────╓((───│▒∙≤│я∙мя}╔╧ы┘╠╔▒}аи╫ы╔▒∙и}╔▒}╔м}и∙╘∙█я∙░║м∙╠≤╓─╢Ь│9╫╧■Х(───────│щ╔я═│м∙╠≤╧┘мм∙ияI┘╔м∙л║M∙█и∙яMя╫и∙ии╫х╓Х(───────────│╠╫┘▒}┘а╔}╜∙Д═┬╦╦╫у╧м┘≥■┬╓((───│▒∙≤│я∙мя}у╧муаа╫ия∙▒}а╠┘я≥╫и╣}▒╫∙м}╧╫я}≥┘╜∙}м∙█уи∙}мя╫и┘²■║м∙╠≤╓─╢Ь│9╫╧■Х(───────│щ╔я═│а┘я█══┴█╫и■╧м∙█и∙я}мя╫и■╧мЕл╧а╠┘я≥╫и╢┬╟─┴╠╔╧уЮ┬╓Х(───────────│м∙╠≤╧┘мм∙ияеу┘╟║╠╫┘▒}┘а╔}╜∙Д═┴ещ∙╦┬╓╟─┬┬╓(───────────│щ╔я═│м∙╠≤╧┘мм∙ияI┘╔м∙л║M∙█и∙яMя╫и∙ии╫х╓Х(───────────────│м┘ы∙}┘а╔}╜∙Д═┴ещ∙╦┬╟─┴м∙█и∙п┬╓(()█╠┘мл│)╔┘╧Е╔╧²╧²╔╧∙Q∙мял║у╧╔яя∙мп╧Q∙мя┘м■╓Х(───│▒∙≤│я∙мя}╠╔²║ящ∙╔²║я}╠┘у╧█║∙и}а┘мм∙м}²∙╧∙и┘я∙▒}ы╔▒∙╫}я╫}╘╔┘╧Е╔╧°║м∙╠≤╓─╢Ь│9╫╧■Х(───────│щ╔я═│я∙╣а≥╔╠■╧Q∙╣а╫и┘иЕ╔и∙█я╫иД═╓│┘л│я∙╣юХ(───────────│и╫╫п─Т│A┘я═║я∙╣ю╓(───────────│∙А∙█уя┘┴╠■─Т│и╫╫п─╪─┴)╔┘╧Е╔╧²Aи╪╧∙А■┬(───────────│ы╔▒∙╪─Т│и╫╫п─╪─▀╕vg  Р╛╧╣юп┬(───────────│∙А∙█уя┘┴╠■╧щи╔я∙}┴Ея∙л║┬┴∙А■┬╓(───────────│ы╔▒∙╪╧щи╔я∙}┴Ея∙л║┬┴ы╔▒∙╪┬╓(───────────│м∙╠≤╧┘мм∙ияеу┘╟║▒∙я∙█я}╘╔┘╧Е╔╧²}╠┘у╧█║∙х║мях║∙А∙█уя┘┴╠■╓╓╟│мях║∙А∙█уя┘┴╠■╓╓(───────────│щ╔я═│а┘я█══┴█╫и■╧╘╔┘╧Е╔╧²}╠┘у╧█║∙х╧му┴аи╫█∙мл╧A╫а∙╦┬╓│┘л│а╫а∙╦Х(───────────────│╫а∙╧}╘╔┘╧Е╔╧²}╠┘у╧█║∙х║мях║∙А∙█уя┘┴╠■╓╟│мях║ы╔▒∙╪╓╓(───────────│█╫╣╣┘╧░─Т│а╫а∙╦╧█┘╠╠}┘и²л╧┘и²мlаt(───────────│м∙╠≤╧┘мм∙ияеу┘╟║█╫╣╣┘╧░╟│mмях║∙А∙█уя┘┴╠■╓╟│мях║ы╔▒∙╪╔t╓((───│▒∙≤│я∙мя}╔╣а╫ия∙▒}ы╔▒∙╫}┘у▒╔╫}╔м}╣уя∙░║м∙╠≤╓─╢Ь│9╫╧■Х(───────│м∙╠≤╧┘мм∙ияеу┘╟║M=UI}Y%=}Y=1U5╟─ю╦ю╓((───│▒∙≤│я∙мя}█╫╣╔█}▒и┘≥я}╜∙∙ам}а║╫я╫м}┘╧▒}ы∙ия╔█┘╠}╜∙Е≥и┘╣∙м}∙▒╔я┘┴╠■║м∙╠≤╓─╢Ь│9╫╧■Х(───────│а╧°─Т│┴┘м■ьп╧┬ья▒∙█╫▒■═(────────────┴╔Y	=Iэа-²╫9MU║U²%%Де)аИ╠EYHя╧@АХАщ5А5щ5щ≤я	еMMUY=I,уe%$Т┬(────────╓(───────│щ╔я═│я∙╣а≥╔╠■╧Q∙╣а╫и┘иЕ╔и∙█я╫иД═╓│┘л│я∙╣юХ(───────────│и╫╫п─Т│A┘я═║я∙╣ю╓(───────────│╔╣┘²∙л─Т│mи╫╫п─╪─┬юд╧а╧°┬╟│и╫╫п─╪─┬юх╧а╧°┴t(───────────│≥╫х│╔╣┘²■│╔╦│╔╣┘²∙лХ(───────────────│╔╣┘²■╧щи╔я∙}┴Ея∙л║а╧°╓(───────────│┘у▒╔╪─Т│и╫╫п─╪─┴ы╫╔█■╧щ┘ь┬(───────────│щ╔я═│щ┘ы■╧╫а∙╦║мях║┘у▒╔╪╓╟─┴щ┬┬╓│┘л│║┘╧▒╠■Х(───────────────│║┘╧▒╠■╧м∙я╧█║┘╧╧∙╠л═д╓(───────────────│║┘╧▒╠■╧м∙ям┘╣ащ╔▒я══х╓(───────────────│║┘╧▒╠■╧м∙я≥и┘╣∙и┘я■═Юююю╓(───────────────│║┘╧▒╠■╧щи╔я∙≥и┘╣∙л║┬┴pаpю┬─╗─Юююю╓(───────────│аи╫²и∙млХ│╠╔мяm≥╠╫┘яt─Т│mt(───────────│и∙му╠п─Т│█и∙┘я∙}█╫╣╔█}╘╔┘╧Е╔╧²}▒и┘≥п═(───────────────│mмях║а┘я═╓│≥╫х│а┘я═│╔╦│╔╣┘²∙мt╟(───────────────│lю╦п╟─ю╦ыt╟(───────────────│┘у▒╔╫}а┘я═Умях║┘у▒╔╪╓╟(───────────────│▒и┘≥ям}и╫╫пУмях║и╫╫п╓╟(───────────────│и∙еу∙мя∙▒}╧┘╣■Т▀╕vg  Р╞ ж/╒╬T┬╟(───────────────│╣╫я╔╫╧}╣╫▒■Т▀▓Б+▓Б/▓Й⌠ nЪ√о╕R╩√Б°┬╟(───────────────│╫╧}аи╫²и∙млУ╠┘╣┴▒└│ы┘╠у■╟│}▒∙я┘╔╟Х│аи╫²и∙мл╧┘аа∙╧░║ы┘╠у■╓╟(────────────╓(───────────│█╫╧я∙╧п─Т│╘м╫╦╧╠╫┘▒л═║A┘я═║и∙му╠п╧а┘я═╓─╪─┴▒и┘≥я}█╫╧я∙╧п╧╘м╫╦┬╓╧и∙┘▒}я∙Ап║∙╧█╫▒╔╧°Т┴уя≤╢Ю┬╓╓(───────────│ы╔▒∙╫}яи┘█╛─Т│╧∙Ап║яи┘█╛│≥╫х│яи┘█╛│╔╦│█╫╧я∙╧яl┴яи┘█╜л┴t│╔≤│яи┘█╜l┴╧┘╣■┴t─ТТ─▀╕vg  Р╞·RЛ┬╓(───────────│м∙╠≤╧┘мм∙ияеу┘╟║╠∙╦║ы╔▒∙╫}яи┘█╜l┴м∙²╣∙╧ял┴t╓╟─х╓(───────────│≥╫х│м∙²╣∙╧п│╔╦│ы╔▒∙╫}яи┘█╜l┴м∙²╣∙╧ял┴tХ(───────────────│а╫м╔я╔╫╦─Т│╧∙Ап║╔я∙╢│≥╫х│╔я∙╢│╔╦│м∙²╣∙╧яl┴█╫╣╣╫╧}╜∙Е≥и┘╣∙л┴t│╔≤│╔я∙╣l┴аи╫а∙ияЕ}яЕа■┴t─ТТ─┴-QЕа∙A╫м╔я╔╫╧d┬╓(───────────────│м∙╠≤╧┘мм∙ияеу┘╟║╠∙╦║а╫м╔я╔╫╧l┴╜∙Е≥и┘╣∙}╠╔мп┴t╓╟─х╓(───────────│м∙╠≤╧┘мм∙ияеу┘╟║аи╫²и∙ммl╢еt╟─д╦ю╓(───────────│м∙╠≤╧┘мм∙ия╠╣╫мяеу┘╟║и∙му╠п╧▒уи┘я╔╫╧}м∙█╫╧▒л╟─д╦ю╟│а╠┘█∙лТх╓((───│▒∙≤│я∙мя}м┘╧╔я╔И∙}┘╧▒}у╧╔еу∙}╧┘╣■║м∙╠≤╓─╢Ь│9╫╧■Х(───────│щ╔я═│я∙╣а≥╔╠■╧Q∙╣а╫и┘иЕ╔и∙█я╫иД═╓│┘л│я∙╣юХ(───────────│м∙╠≤╧┘мм∙ияеу┘╟║м┘╧╔я╔И∙}▒и┘≥я}╧┘╣■═÷ ж/╒╬TХ©╒6'·╒ЭЭ°╓╟─▀ ж/╒╬U}╒6'·╒Щ|┬╓(────────────║A┘я═║я∙╣ю╓─╪─▀ чъ√&╗┬╓╧╣╜▒╔х═╓(───────────│м∙╠≤╧┘мм∙ияеу┘╟║у╧╔еу∙}▒и┘≥я}╧┘╣■║я∙╣ю╟─▀ чъ√&╗┬╓╟─▀ чъ√&╚╬Р к╬Р$┬╓((───│▒∙≤│я∙мя}█╫╧≥╔²уи∙▒}▒и┘≥я}≥╫╠▒∙и}║┘м}аи╔╫и╔яД║м∙╠≤╓─╢Ь│9╫╧■Х(───────│щ╔я═│я∙╣а≥╔╠■╧Q∙╣а╫и┘иЕ╔и∙█я╫иД═╓│┘л│я∙╣юХ(───────────│м∙╠≤╧┘мм∙ияеу┘╟║▒∙я∙█я}╘╔┘╧Е╔╧²}▒и┘≥ям}а┘я═║я∙╣ю╓╟│я∙╣ю╓((───│▒∙≤│я∙мя}╣┘█╫м}┘аа}┴у╧▒╠∙}╔м}▒∙я∙█я∙▒}┘╧▒}╫а∙╧∙░║м∙╠≤╓─╢Ь│9╫╧■Х(───────│щ╔я═│я∙╣а≥╔╠■╧Q∙╣а╫и┘иЕ╔и∙█я╫иД═╓│┘л│я∙╣юХ(───────────│┘аа}┴у╧▒╠■─Т│A┘я═║я∙╣ю╓─╪─▀√&╚ b┐▓БO▓Бk·& ╧┘аю┬(───────────│┘аа}┴у╧▒╠■╧╣╜▒╔х═╓(───────────│щ╔я═│а┘я█══┴█╫и■╧╘╔┘╧Е╔╧²}∙╧²╔╧■╧мЕл╧а╠┘я≥╫и╢┬╟─┴▒┘ищ╔╦┬╓Х(───────────────│м∙╠≤╧┘мм∙ияеу┘╟║▒∙я∙█я}╘╔┘╧Е╔╧²}∙А∙█уя┘┴╠■║мях║┘аа}┴у╧▒╠■╓╓╟│мях║┘аа}┴у╧▒╠■╓╓(───────────────│щ╔я═│а┘я█══┴█╫и■╧╘╔┘╧Е╔╧²}∙╧²╔╧■╧му┴аи╫█∙мл╧A╫а∙╦┬╓│┘л│а╫а∙╦Х(───────────────────│╫а∙╧}╘╔┘╧Е╔╧°║мях║┘аа}┴у╧▒╠■╓╓(───────────────────│а╫а∙╦╧┘мм∙ия}█┘╠╠∙▒}╫╧█∙}щ╔я═║l┬╫умх╫┴╔╦╫╫а∙╦┬╟│мях║┘аа}┴у╧▒╠■╔t╟│█╠╫м∙}≥▒лУQиу■╓((───│▒∙≤│я∙мя}му┴я╔я╠∙м}┘и∙}█╠┘╣а∙▒}я╫}┘у▒╔╫}▒уи┘я╔╫╦║м∙╠≤╓─╢Ь│9╫╧■Х(───────│м╫уи█■─Т─═(────────────┬еq╦ююХююХюю╟дюю─╢╢Ь─ююХююХюд╟тюаq╩·╡Ё▓Б√>∙q╧q╦┬(────────────┬иq╦ююХююХюх╟ююю─╢╢Ь─ююХююХют╟ююаq╩·╡Ё▓Й3√>∙q╧q╦┬(────────────┬мq╦ююХююХюь╟ююю─╢╢Ь─ююХююХюэ╟ююаq╩╒з√К╒2√nяq╦┬(────────╓(───────│и∙му╠п─Т│█╠┘╣а}мия}я∙Ап║м╫уи█■╟─м|хюа|ююю╓(───────│м∙╠≤╧┘мм∙ия%╦═┬ююХююХюл╟хюю┬╟│и∙му╠п╓(───────│м∙╠≤╧┘мм∙ия9╫я%╦═▀╒з√К╒2√nп┬╟│и∙му╠п╓(()╔≤│}}╧┘╣∙}|─ТТ─┴}}╣┘╔╧}|┬Х(───│у╧╔яя∙мп╧╣┘╔╦═╓(
+        shots = fallback_storyboard("Х▀▐Ф≥ Г╚≥Е°╗Г╙≈Е┴█Ц─┌\n\nИ⌡╗Е│°Д╨├Ц─┌", art_style="Е⌡╫Иё▌Е┼╗Ф╪╚", target_chars=60, characters=characters)
+        self.assertEqual(shots[0]["characters"], ["Х▀▐Ф≥ "])
+        self.assertTrue(shots[0]["prompt"])
+        self.assertTrue(str(shots[0]["prompt"]).startswith("Х▀▐Ф≥ О╪ "))
+
+    def test_character_and_shot_prompts_lock_identity(self) -> None:
+        character_prompt = build_character_prompt("Х▀▐Ф≥ ", "Г≥╫Х┴╡И∙©Е▐▒О╪▄И²▓Х┴╡И∙©Хё≥", "Е⌡╫Иё▌Е┼╗Ф╪╚")
+        self.assertIn("Е⌡╨Е╝ Е▐▒Е·▀Д╦▌Ф°█Хё┘", character_prompt)
+        self.assertIn("Г╨╞Г≥╫Ф┬√Ф╣┘Г│╟Ф≈═Г╪²Х┐▄Ф≥╞", character_prompt)
+        self.assertIn("Д╦█Е╬≈Е┤╨Г▌╟Д╩╩Д╫∙Е╝╓Е├┘Е╓√Е°╨Ф≥╞", character_prompt)
+        self.assertIn("Е╝╤Е┘╥", character_prompt)
+        prompt = compose_shot_prompt(
+            {"prompt": "Х▀▐Ф≥ Е⌡·Е╓╢О╪▄Д╦╜Ф≥╞", "characters": ["Х▀▐Ф≥ "], "scene": "Ф≈╖Д╧╕Е╨≈"},
+            art_style="Е⌡╫Иё▌Е┼╗Ф╪╚",
+            aspect="9:16",
+            characters=[{"name": "Х▀▐Ф≥ ", "description": "Г≥╫Х┴╡И∙©Е▐▒О╪▄И²▓Х┴╡И∙©Хё≥", "image_url": "https://example.com/suwan.png"}],
+            scenes=[{"name": "Ф≈╖Д╧╕Е╨≈", "description": "Ф°╗И≈╗Е°╗Е╥╕О╪▄Ф÷°Е▐╟Е°╗Е▐Ё", "image_url": "https://example.com/bookstore.png"}],
+        )
+        self.assertIn("Д╨╨Г┴╘Д╫©Г■╗Х▀▐Ф≥ Е▐┌Х─┐Е⌡╬", prompt)
+        self.assertIn("Е°╨Ф≥╞Д╫©Г■╗Б─°Ф≈╖Д╧╕Е╨≈Б─²Е▐┌Х─┐Е⌡╬", prompt)
+        self.assertIn("И²≥Ф─│Ф╪╚Г■╩Е█∙Е╧┘Г■╩И²╒О╪▄Е▐╙Х║╗Г▌╟Х©≥Д╦─Е┬╩", prompt)
+        self.assertNotIn("Г≥╫Х┴╡И∙©Е▐▒", prompt)
+        self.assertNotIn("Ф°╗И≈╗Е°╗Е╥╕", prompt)
+        self.assertIn("Г■╩И²╒Е╝╫И╚≤Ф╞■Д╦╨ 9:16", prompt)
+        self.assertNotIn("--cref", prompt)
+
+    def test_batch_character_and_scene_replacement_updates_bindings(self) -> None:
+        shots = [
+            {"characters": ["Ф·≈Е╥²", "Х▀▐Ф≥ "], "scene": "Е╝╒Е▌┘"},
+            {"characters": ["Ф·≈Е╥²"], "scene": "Е╝╒Е▌┘"},
+            {"characters": ["Х▀▐Ф≥ "], "scene": "Е▌╗Ф┬©"},
+        ]
+        self.assertEqual(replace_character_in_shots(shots, "Ф·≈Е╥²", "Х▀▐Ф≥ "), 2)
+        self.assertEqual(shots[0]["characters"], ["Х▀▐Ф≥ "])
+        self.assertEqual(shots[1]["characters"], ["Х▀▐Ф≥ "])
+        self.assertEqual(replace_scene_in_shots(shots, "Е╝╒Е▌┘", "Е▌╗Ф┬©"), 2)
+        self.assertEqual([shot["scene"] for shot in shots], ["Е▌╗Ф┬©", "Е▌╗Ф┬©", "Е▌╗Ф┬©"])
+        self.assertEqual(replace_character_in_shots(shots, "Х▀▐Ф≥ ", ""), 3)
+        self.assertTrue(all(not shot["characters"] for shot in shots))
+
+    def test_scene_prompt_and_reference_are_reusable(self) -> None:
+        prompt = build_scene_prompt("Ф≈╖Д╧╕Е╨≈", "Ф°╗И≈╗Е°╗Е╥╕О╪▄Ф÷°Е▐╟Е°╗Е▐Ё", "Г▌╟Д╩ёИ┐╫Е╦┌И÷╘Ф╪╚", "16:9")
+        self.assertIn("Ф≈═Д╨╨Г┴╘", prompt)
+        self.assertIn("Е⌡╨Е╝ Е╩╨Г╜▒Г╩⌠Ф·└Ц─│Г╘╨И≈╢Е╦┐Е╠─", prompt)
+        self.assertIn("Г■╩И²╒Иё▌Ф═╪Е©┘И║╩Д╦▌Х╖▓Х┴╡Е╝ Е╕├Д©²Ф▄│Д╦─Х┤╢", prompt)
+        self.assertIn("Г╩÷Д╦─И┤┤Г■╗Г▌╟Д╩ёИ┐╫Е╦┌И÷╘Ф╪╚", prompt)
+        self.assertIn("16:9", prompt)
+        self.assertEqual(scene_reference_data({"image_url": "https://example.com/bookstore.png"}), ["https://example.com/bookstore.png"])
+
+    def test_manual_storyboard_merge_and_split_preserve_order_and_reset_images(self) -> None:
+        first = {
+            "title": "И≈╗Е╓√",
+            "source": "Х▀▐Ф≥ Х╣╟Е┬╟И≈╗Е▐ёЦ─┌",
+            "narration": "Е╔╧Ф²╔Е┬╟И≈╗Е▐ёЦ─┌",
+            "characters": ["Х▀▐Ф≥ "],
+            "scene": "Х╣╟Е╩┼",
+            "prompt": "Х▀▐Ф≥ Ф┼╛Ф┴▀",
+            "local_path": "first.png",
+            "image_url": "https://example.com/first.png",
+        }
+        second = {
+            "title": "Е╪─И≈╗",
+            "source": "Ф·≈Е╥²Д╩▌И≈╗Е░▌Е┤╨Г▌╟Ц─┌",
+            "narration": "И≈╗Е░▌Г╚≥Г²─Ф·≈Е╥²Ц─┌",
+            "characters": ["Ф·≈Е╥²", "Х▀▐Ф≥ "],
+            "scene": "Ф┬©И≈╢",
+            "prompt": "Ф·≈Е╥²Г ╠Г°┴",
+            "local_path": "second.png",
+        }
+        merged = merge_storyboard_shots(first, second)
+        self.assertEqual(merged["source"], "Х▀▐Ф≥ Х╣╟Е┬╟И≈╗Е▐ёЦ─┌Ф·≈Е╥²Д╩▌И≈╗Е░▌Е┤╨Г▌╟Ц─┌")
+        self.assertEqual(merged["characters"], ["Х▀▐Ф≥ ", "Ф·≈Е╥²"])
+        self.assertEqual(merged["scene"], "")
+        self.assertEqual(merged["local_path"], "")
+        self.assertEqual(merged["status"], "Е╬┘И┤█Ф√╟Г■÷Ф┬░")
+
+        upper, lower = split_storyboard_shot(merged, len("Х▀▐Ф≥ Х╣╟Е┬╟И≈╗Е▐ёЦ─┌"))
+        self.assertEqual(upper["source"], "Х▀▐Ф≥ Х╣╟Е┬╟И≈╗Е▐ёЦ─┌")
+        self.assertEqual(lower["source"], "Ф·≈Е╥²Д╩▌И≈╗Е░▌Е┤╨Г▌╟Ц─┌")
+        self.assertEqual(upper["characters"], ["Х▀▐Ф≥ ", "Ф·≈Е╥²"])
+        self.assertEqual(lower["characters"], ["Х▀▐Ф≥ ", "Ф·≈Е╥²"])
+        self.assertEqual(upper["status"], "Е╬┘И┤█Ф√╟Г■÷Ф┬░")
+        with self.assertRaises(ValueError):
+            split_storyboard_shot(merged, 0)
+
+    def test_character_and_scene_asset_pack_roundtrip_copies_local_references(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            role_image = root / "role.png"
+            scene_image = root / "scene.webp"
+            role_image.write_bytes(b"\x89PNG\r\n\x1a\nrole")
+            scene_image.write_bytes(b"RIFFxxxxWEBPscene")
+            package = root / "assets.zip"
+            summary = export_comic_asset_pack(
+                package,
+                characters=[{"name": "Ф·≈Е╥²", "description": "И╩▒Е▐▒", "prompt": "Х╖▓Х┴╡Ф▐░Г╓╨", "local_path": str(role_image)}],
+                scenes=[{"name": "Ф≈╖Д╧╕Е╨≈", "description": "Ф°╗И≈╗Е°╗Е╥╕", "prompt": "Е°╨Ф≥╞Ф▐░Г╓╨", "local_path": str(scene_image)}],
+                metadata={"project_name": "Ф╣▀Х╞∙Ф╪╚Г■╩"},
+            )
+            self.assertEqual(summary, {"characters": 1, "scenes": 1, "references": 2})
+            imported = import_comic_asset_pack(package, root / "imported")
+            self.assertEqual(imported["characters"][0]["name"], "Ф·≈Е╥²")
+            self.assertEqual(imported["scenes"][0]["name"], "Ф≈╖Д╧╕Е╨≈")
+            self.assertEqual(imported["metadata"]["project_name"], "Ф╣▀Х╞∙Ф╪╚Г■╩")
+            self.assertTrue(has_local_reference(imported["characters"][0]))
+            self.assertTrue(has_local_reference(imported["scenes"][0]))
+            self.assertNotEqual(imported["characters"][0]["local_path"], str(role_image))
+            self.assertEqual(Path(imported["characters"][0]["local_path"]).read_bytes(), role_image.read_bytes())
+
+    def test_asset_pack_rejects_unsafe_reference_paths(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            package = root / "unsafe.zip"
+            manifest = {
+                "format": "relax-creator-studio/comic-assets",
+                "version": 1,
+                "characters": [{"name": "Ф·≈Е╥²", "description": "", "prompt": "", "reference": "../outside.png"}],
+                "scenes": [],
+            }
+            with zipfile.ZipFile(package, "w") as archive:
+                archive.writestr("manifest.json", json.dumps(manifest, ensure_ascii=False))
+                archive.writestr("../outside.png", b"unsafe")
+            with self.assertRaisesRegex(ComicEngineError, "Д╦█Е╝┴Е┘╗"):
+                import_comic_asset_pack(package, root / "imported")
+            self.assertFalse((root / "outside.png").exists())
+
+    def test_seedream_generation_request_matches_official_schema(self) -> None:
+        client = DoubaoSeedreamClient(SeedreamConfig("ark-key"))
+        response = _FakeResponse(
+            {
+                "model": "doubao-seedream-5-0-pro-260628",
+                "created": 1786248000,
+                "data": [{"url": "https://example.com/generated.png"}],
+            }
+        )
+        references = ["data:image/png;base64,AAAA", "https://example.com/role-2.png"]
+        with patch("core.seedream_client.urllib.request.urlopen", return_value=response) as urlopen:
+            result = client.generate_image("И⌡╗Е╓°Х║≈И│⌠О╪▄Г■╩И²╒Е╝╫И╚≤Ф╞■Д╦╨ 9:16", images=references, size="2K")
+        request = urlopen.call_args.args[0]
+        payload = json.loads(request.data.decode("utf-8"))
+        self.assertEqual(request.full_url, "https://ark.cn-beijing.volces.com/api/v3/images/generations")
+        self.assertEqual(request.get_header("Authorization"), "Bearer ark-key")
+        self.assertEqual(payload["model"], "doubao-seedream-5-0-pro-260628")
+        self.assertEqual(payload["image"], references)
+        self.assertEqual(payload["size"], "2K")
+        self.assertEqual(payload["response_format"], "url")
+        self.assertEqual(payload["output_format"], "png")
+        self.assertFalse(payload["watermark"])
+        self.assertEqual(payload["optimize_prompt_options"], {"mode": "standard"})
+        self.assertEqual(result["imageUrl"], "https://example.com/generated.png")
+
+    def test_seedream_connection_check_is_non_generating(self) -> None:
+        client = DoubaoSeedreamClient(SeedreamConfig("ark-key"))
+        with patch("core.seedream_client.urllib.request.urlopen", return_value=_FakeResponse({"data": []})) as urlopen:
+            self.assertEqual(client.check_connection(), {"data": []})
+        request = urlopen.call_args.args[0]
+        self.assertEqual(request.full_url, "https://ark.cn-beijing.volces.com/api/v3/models")
+        self.assertEqual(request.method, "GET")
+        self.assertIsNone(request.data)
+
+
+class ComicVideoEngineTests(unittest.TestCase):
+    def test_subtitle_timeline_controls_shot_durations(self) -> None:
+        cues = parse_srt_text(
+            "1\n00:00:00,000 --> 00:00:02,000\nГ╛╛Д╦─Е▐╔\n\n"
+            "2\n00:00:02,000 --> 00:00:05,000\nГ╛╛Д╨▄Е▐╔\n"
+        )
+        self.assertEqual(len(cues), 2)
+        self.assertEqual(allocate_shot_durations(5.0, 2, cues), [2.0, 3.0])
+
+    def test_storyboard_source_text_aligns_images_to_spoken_plot(self) -> None:
+        cues = parse_srt_text(
+            "1\n00:00:00,000 --> 00:00:01,000\nЕ╪─Е╓╢\n\n"
+            "2\n00:00:01,000 --> 00:00:05,000\nД╦╜И≈╢Е├┘Е╝╧Е╬┬Е╓ \n\n"
+            "3\n00:00:05,000 --> 00:00:09,000\nГ╩⌠Е╟╬\n"
+        )
+        durations = allocate_shot_durations(
+            9.0,
+            3,
+            cues,
+            ["Е╪─Е╓╢О╪▄Д╦╜И≈╢", "Е├┘Е╝╧Е╬┬Е╓ Ц─┌", "Г╩⌠Е╟╬"],
+        )
+        self.assertAlmostEqual(durations[0], 1.0 + 4.0 * 2 / 6)
+        self.assertAlmostEqual(sum(durations[:2]), 5.0)
+        self.assertAlmostEqual(durations[2], 4.0)
+
+    def test_storyboard_text_length_controls_timing_without_subtitles(self) -> None:
+        durations = allocate_shot_durations(12.0, 3, shot_texts=["Г÷╜", "Д╦╜Г╜┴", "Х©≥Ф≤╞Ф⌡╢И∙©Г └Д╦─Ф╝╣"])
+        self.assertAlmostEqual(sum(durations), 12.0)
+        self.assertLess(durations[0], durations[1])
+        self.assertLess(durations[1], durations[2])
+
+    def test_comic_video_command_adds_motion_audio_and_subtitles(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            images = [root / "shot1.png", root / "shot2.png"]
+            for image in images:
+                image.write_bytes(b"image")
+            audio = root / "voice.mp3"
+            audio.write_bytes(b"audio")
+            subtitles = root / "voice.srt"
+            subtitles.write_text("1\n00:00:00,000 --> 00:00:02,000\nЕ╜≈Е╧∙\n", encoding="utf-8")
+            command = build_comic_video_command(
+                [str(item) for item in images],
+                [2.0, 3.0],
+                audio_path=str(audio),
+                subtitles_path=str(subtitles),
+                output_path=str(root / "out.mp4"),
+            )
+        joined = " ".join(command)
+        self.assertEqual(command.count("-i"), 3)
+        self.assertNotIn("-loop", command)
+        self.assertIn("zoompan=", joined)
+        self.assertIn("(ih-ih/zoom)*on/", joined)
+        self.assertIn("(ih-ih/zoom)*(1-on/", joined)
+        self.assertNotIn("zoom+", joined)
+        self.assertIn("subtitles=filename=", joined)
+        self.assertIn("atrim=duration=5.000", joined)
+        self.assertIn("libx264", command)
+
+    def test_no_keyframe_mode_keeps_static_image_centered(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            image = root / "shot.png"
+            audio = root / "voice.mp3"
+            image.write_bytes(b"image")
+            audio.write_bytes(b"audio")
+            command = build_comic_video_command(
+                [str(image)],
+                [2.0],
+                audio_path=str(audio),
+                motion_mode="Ф≈═Е┘ЁИ■╝Е╦╖",
+                output_path=str(root / "out.mp4"),
+            )
+        joined = " ".join(command)
+        self.assertIn("zoompan=z='1.0':x='0':y='0'", joined)
+
+    def test_find_executable_supports_bundled_vendor_directory(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            executable = root / "vendor" / "ffmpeg" / "bin" / ("ffmpeg.exe" if __import__("sys").platform == "win32" else "ffmpeg")
+            executable.parent.mkdir(parents=True)
+            executable.write_bytes(b"placeholder")
+            with patch("core.video_engine.shutil.which", return_value=None), patch(
+                "core.video_engine.__file__", str(root / "core" / "video_engine.py")
+            ):
+                self.assertEqual(find_executable("", "ffmpeg"), str(executable))
+
+
+class VideoEngineTests(unittest.TestCase):
+    def test_clips_repeat_and_trim_to_audio_duration(self) -> None:
+        clips = [VideoClip("a.mp4", duration=2.0), VideoClip("b.mp4", duration=3.0)]
+        fitted = fit_clips_to_duration(clips, 7.25)
+        self.assertEqual([clip.path for clip in fitted], ["a.mp4", "b.mp4", "a.mp4", "b.mp4"])
+        self.assertAlmostEqual(sum(clip.duration for clip in fitted), 7.25)
+
+    def test_balanced_mix_uses_every_source_instead_of_only_the_first(self) -> None:
+        clips = [
+            VideoClip("a.mp4", duration=60.0, source_duration=60.0),
+            VideoClip("b.mp4", duration=60.0, source_duration=60.0),
+            VideoClip("c.mp4", duration=60.0, source_duration=60.0),
+        ]
+        fitted = fit_clips_to_duration(clips, 30.0, overlap=0.35, strategy="balanced")
+        self.assertEqual([clip.path for clip in fitted], ["a.mp4", "b.mp4", "c.mp4"])
+        self.assertAlmostEqual(sum(clip.duration for clip in fitted) - 0.35 * 2, 30.0)
+        self.assertTrue(all(clip.source_duration == 60.0 for clip in fitted))
+
+    def test_sequential_mix_can_keep_a_long_clip_intact(self) -> None:
+        clips = [VideoClip("a.mp4", duration=60.0), VideoClip("b.mp4", duration=60.0)]
+        fitted = fit_clips_to_duration(clips, 30.0, strategy="sequential")
+        self.assertEqual(len(fitted), 1)
+        self.assertEqual(fitted[0].path, "a.mp4")
+        self.assertAlmostEqual(fitted[0].duration, 30.0)
+
+    def test_balanced_timeline_hits_target_across_short_and_long_sources(self) -> None:
+        cases = [
+            ([60.0, 60.0, 60.0], 30.0, 0.35),
+            ([2.0, 3.0], 7.25, 0.35),
+            ([1.0, 4.0, 9.0, 2.0], 12.0, 0.5),
+            ([0.4, 0.6, 1.2], 5.0, 0.1),
+            ([120.0], 45.0, 0.35),
+        ]
+        for durations, target, requested_overlap in cases:
+            clips = [VideoClip(str(index), duration=duration) for index, duration in enumerate(durations)]
+            fitted = fit_clips_to_duration(clips, target, requested_overlap, "balanced")
+            overlap = min(requested_overlap, min(durations) / 2)
+            effective = sum(clip.duration for clip in fitted) - overlap * max(0, len(fitted) - 1)
+            self.assertAlmostEqual(effective, target, places=3)
+
+    def test_build_command_with_transition_and_music(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            first = root / "a.mp4"
+            second = root / "b.mp4"
+            music = root / "music.mp3"
+            for path in (first, second, music):
+                path.write_bytes(b"placeholder")
+            project = VideoProject(
+                clips=[VideoClip(str(first), 1.0, 5.0), VideoClip(str(second), 0.0, 6.0)],
+                aspect="9:16",
+                transition="fade",
+                transition_duration=0.5,
+                music_path=str(music),
+            )
+            command = build_export_command(project, "ffmpeg", str(root / "out.mp4"))
+            joined = " ".join(command)
+            self.assertIn("scale=1080:1920", joined)
+            self.assertIn("setpts=(PTS-STARTPTS)/1.750000", joined)
+            self.assertIn("xfade=transition=fade", joined)
+            self.assertIn("volume=0.28", joined)
+            self.assertAlmostEqual(project.output_duration, 5.0 / 1.75 + 6.0 / 1.75 - 0.5)
+
+    def test_default_playback_speed_shortens_visual_timeline(self) -> None:
+        project = VideoProject(
+            clips=[VideoClip("a.mp4", duration=15.0)],
+            transition="none",
+        )
+        self.assertEqual(project.playback_speed, 1.75)
+        self.assertAlmostEqual(project.output_duration, 15.0 / 1.75)
+
+    def test_voice_audio_keeps_exact_output_duration_at_normal_speed(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            video = root / "video.mp4"
+            voice = root / "voice.mp3"
+            video.write_bytes(b"placeholder")
+            voice.write_bytes(b"placeholder")
+            project = VideoProject(
+                clips=[VideoClip(str(video), duration=15.0)],
+                voice_path=str(voice),
+                target_duration=12.0,
+                transition="none",
+            )
+            joined = " ".join(build_export_command(project, "ffmpeg", str(root / "out.mp4")))
+            self.assertAlmostEqual(project.output_duration, 12.0)
+            self.assertIn("setpts=(PTS-STARTPTS)/1.750000", joined)
+            self.assertIn("atrim=duration=12.000", joined)
+            self.assertIn("trim=duration=12.000", joined)
+
+    def test_concat_without_transition(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            source = Path(temp) / "clip.mp4"
+            source.write_bytes(b"placeholder")
+            project = VideoProject(clips=[VideoClip(str(source), duration=2.5)], transition="none")
+            command = build_export_command(project, "ffmpeg", str(Path(temp) / "out.mp4"))
+            self.assertIn("-an", command)
+            self.assertNotIn("xfade", " ".join(command))
+
+
+class StorageTests(unittest.TestCase):
+    def test_roundtrip_and_secret_is_removed(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            store = StateStore(Path(temp))
+            state = json.loads(json.dumps(DEFAULT_STATE))
+            project = new_comic_project("Ф╣▀Х╞∙И║╧Г⌡╝")
+            state["projects"] = [project]
+            state["active_project_id"] = project["project_id"]
+            state["comic"] = project
+            state["settings"]["api_key"] = "secret"
+            state["settings"]["ark_api_key"] = "ark-secret"
+            state["settings"]["yunwu_base_url"] = "https://legacy.example"
+            state["comic"]["bot_type"] = "NIJI_JOURNEY"
+            state["comic"]["upscale_index"] = 3
+            store.save(state)
+            raw = store.path.read_text(encoding="utf-8")
+            self.assertNotIn("secret", raw)
+            self.assertNotIn("ark-secret", raw)
+            self.assertEqual(store.load()["comic"]["project_name"], "Ф╣▀Х╞∙И║╧Г⌡╝")
+            self.assertTrue(store.load()["settings"]["remember_api_key"])
+            self.assertIn("comic", store.load())
+            self.assertNotIn("yunwu_base_url", store.load()["settings"])
+            self.assertNotIn("bot_type", store.load()["comic"])
+            self.assertNotIn("upscale_index", store.load()["comic"])
+            self.assertNotIn("video", store.load())
+            self.assertIn("novel", store.load())
+            self.assertEqual(store.load()["novel"]["mode"], "Ф╥╠Е╨╕Ф■╧Е├≥")
+
+    def test_multiple_projects_share_one_character_library(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            store = StateStore(Path(temp))
+            state = json.loads(json.dumps(DEFAULT_STATE))
+            first = new_comic_project("Г╛╛Д╦─Ф²║Ф▌╗Ф√┤")
+            second = new_comic_project("Г╛╛Д╨▄Ф²║Ф▌╗Ф√┤")
+            state["projects"] = [first, second]
+            state["active_project_id"] = second["project_id"]
+            state["shared_characters"] = [{"name": "Ф·≈Е╥²", "description": "И╩▒Е▐▒", "prompt": "Ф·≈Е╥²Ф╜ёИ²╒Е┘╗Х╨╚Е╝ Е╕├О╪▄Г╨╞Х┴╡Х┐▄Ф≥╞"}]
+            state["comic"] = second
+            store.save(state)
+            loaded = store.load()
+            self.assertEqual(len(loaded["projects"]), 2)
+            self.assertEqual(loaded["comic"]["project_name"], "Г╛╛Д╨▄Ф²║Ф▌╗Ф√┤")
+            self.assertIs(loaded["comic"]["characters"], loaded["shared_characters"])
+            self.assertIs(loaded["projects"][0]["characters"], loaded["shared_characters"])
+            self.assertEqual(loaded["projects"][1]["characters"][0]["name"], "Ф·≈Е╥²")
+            self.assertEqual(loaded["shared_characters"][0]["prompt"], "Ф·≈Е╥²Ф╜ёИ²╒Е┘╗Х╨╚Е╝ Е╕├О╪▄Г╨╞Х┴╡Х┐▄Ф≥╞")
+
+    def test_legacy_single_comic_is_migrated_to_project_and_shared_roles(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            store = StateStore(Path(temp))
+            store.base_dir.mkdir(parents=True, exist_ok=True)
+            store.path.write_text(
+                json.dumps(
+                    {
+                        "settings": {},
+                        "comic": {
+                            "project_name": "Ф≈╖Г┴┬Ф▌╗Ф√┤",
+                            "source_text": "Ф≈╖Ф╜ёФ√┤",
+                            "characters": [{"name": "Х▀▐Ф≥ ", "description": "Г≥╫Е▐▒"}],
+                            "scenes": [],
+                            "shots": [],
+                        },
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            loaded = store.load()
+            self.assertEqual(len(loaded["projects"]), 1)
+            self.assertEqual(loaded["comic"]["project_name"], "Ф≈╖Г┴┬Ф▌╗Ф√┤")
+            self.assertEqual(loaded["shared_characters"][0]["name"], "Х▀▐Ф≥ ")
+
+    def test_orphaned_character_and_scene_images_are_recovered(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            role_dir = base / "shared_assets" / "characters"
+            scene_dir = base / "project-output" / "scenes"
+            role_dir.mkdir(parents=True)
+            scene_dir.mkdir(parents=True)
+            role_reference = role_dir / "Х▀▐Ф≥ _reference.png"
+            role_candidate = role_dir / "Х▀▐Ф≥ _candidate.png"
+            scene_reference = scene_dir / "Е╝╒Е▌┘_reference.png"
+            role_reference.write_bytes(b"reference")
+            role_candidate.write_bytes(b"candidate")
+            scene_reference.write_bytes(b"scene")
+            store = StateStore(base)
+            state = json.loads(json.dumps(DEFAULT_STATE))
+            project = new_comic_project("Ф│╒Е╓█Ф╣▀Х╞∙")
+            project["output_dir"] = str(base / "project-output")
+            state["projects"] = [project]
+            state["active_project_id"] = project["project_id"]
+            state["comic"] = project
+            store.save(state)
+
+            loaded = store.load()
+            role = next(item for item in loaded["shared_characters"] if item["name"] == "Х▀▐Ф≥ ")
+            scene = next(item for item in loaded["comic"]["scenes"] if item["name"] == "Е╝╒Е▌┘")
+            self.assertEqual(role["status"], "Е╝ Е╕├Е╥╡Г║╝Х╝╓")
+            self.assertEqual(role["local_path"], str(role_reference))
+            self.assertEqual(role["candidate_path"], str(role_candidate))
+            self.assertEqual(scene["status"], "Е╝ Ф≥╞Е╥╡Г║╝Х╝╓")
+            self.assertEqual(scene["local_path"], str(scene_reference))
+
+    def test_state_backups_and_single_instance_lock(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            first = StateStore(base)
+            second = StateStore(base)
+            self.assertTrue(first.acquire_instance_lock())
+            self.assertFalse(second.acquire_instance_lock())
+            first.release_instance_lock()
+            self.assertTrue(second.acquire_instance_lock())
+            second.release_instance_lock()
+            state = json.loads(json.dumps(DEFAULT_STATE))
+            first.save(state)
+            first.save(state)
+            self.assertTrue(any((base / "backups").glob("state-*.json")))
+
+    def test_legacy_assets_are_copied_into_the_new_data_directory(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            old_base = root / "RelaxCreatorStudio"
+            new_base = root / "ComicPostStudio"
+            old_role = old_base / "shared_assets" / "characters" / "Х▀▐Ф≥ _reference.png"
+            old_scene = old_base / "comic_projects" / "Ф≈╖И║╧Г⌡╝" / "scenes" / "Е╝╒Е▌┘_reference.png"
+            old_role.parent.mkdir(parents=True)
+            old_scene.parent.mkdir(parents=True)
+            old_role.write_bytes(b"role")
+            old_scene.write_bytes(b"scene")
+            old_state = {
+                "settings": {},
+                "comic": {
+                    "project_name": "Ф≈╖И║╧Г⌡╝",
+                    "output_dir": str(old_base / "comic_projects" / "Ф≈╖И║╧Г⌡╝"),
+                    "characters": [],
+                    "scenes": [],
+                    "shots": [],
+                },
+            }
+            (old_base / "state.json").write_text(json.dumps(old_state, ensure_ascii=False), encoding="utf-8")
+            store = StateStore(new_base)
+            store.legacy_base_dir = old_base
+            loaded = store.load()
+            role = next(item for item in loaded["shared_characters"] if item["name"] == "Х▀▐Ф≥ ")
+            scene = next(item for item in loaded["comic"]["scenes"] if item["name"] == "Е╝╒Е▌┘")
+            self.assertTrue(Path(role["local_path"]).is_relative_to(new_base))
+            self.assertTrue(Path(scene["local_path"]).is_relative_to(new_base))
+            self.assertTrue(Path(role["local_path"]).is_file())
+            self.assertTrue(Path(scene["local_path"]).is_file())
+
+
+class SecretStoreTests(unittest.TestCase):
+    def test_windows_routes_to_credential_manager(self) -> None:
+        with patch("core.secret_store.sys.platform", "win32"):
+            with patch("core.secret_store._windows_read", return_value="saved-key") as read:
+                self.assertEqual(load_api_key("kimi"), "saved-key")
+                read.assert_called_once_with("kimi")
+            with patch("core.secret_store._windows_write") as write:
+                save_api_key("kimi", "  new-key  ")
+                write.assert_called_once_with("kimi", "new-key")
+            with patch("core.secret_store._windows_delete") as delete:
+                delete_api_key("kimi")
+                delete.assert_called_once_with("kimi")
+
+    def test_macos_keychain_read_trims_only_line_break(self) -> None:
+        result = subprocess.CompletedProcess([], 0, " key-with-spaces \n", "")
+        with patch("core.secret_store.sys.platform", "darwin"):
+            with patch("core.secret_store._run_security", return_value=result) as security:
+                self.assertEqual(load_api_key("deepseek"), " key-with-spaces ")
+        security.assert_called_once_with(
+            ["find-generic-password", "-s", "RelaxCreatorStudio", "-a", "deepseek", "-w"]
+        )
+
+    def test_invalid_provider_id_is_rejected(self) -> None:
+        with self.assertRaises(SecretStoreError):
+            load_api_key("../unsafe")
+
+    def test_unsupported_platform_does_not_fake_secure_storage(self) -> None:
+        with patch("core.secret_store.sys.platform", "linux"):
+            self.assertEqual(load_api_key("qwen"), "")
+            with self.assertRaises(SecretStoreError):
+                save_api_key("qwen", "secret")
+
+
+class JianyingEngineTests(unittest.TestCase):
+    def test_lightweight_launcher_passes_generated_video_to_jianying(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            executable = root / "JianyingPro.exe"
+            video = root / "И²≥Ф─│Ф╪╚.mp4"
+            executable.write_bytes(b"exe")
+            video.write_bytes(b"video")
+            self.assertEqual(detect_jianying_launcher(str(executable)), str(executable))
+            with patch("core.jianying_launcher.subprocess.Popen") as popen:
+                open_jianying_launcher(str(executable), str(video))
+            command = popen.call_args.args[0]
+            self.assertEqual(command, [str(executable), str(video)])
+
+    def test_imported_video_audio_is_muted(self) -> None:
+        self.assertEqual(SOURCE_VIDEO_VOLUME, 0.0)
+
+    def test_comic_draft_keeps_photos_and_vertical_keyframes_editable(self) -> None:
+        png = base64.b64decode(
+            "iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAFElEQVR4nGP8z8DAwMDAxMDAwMAAAAwAAf4BqSAAAAAASUVORK5CYII="
+        )
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            images = [root / "01.png", root / "02.png"]
+            for image in images:
+                image.write_bytes(png)
+            audio = root / "voice.wav"
+            with wave.open(str(audio), "wb") as handle:
+                handle.setnchannels(1)
+                handle.setsampwidth(2)
+                handle.setframerate(8000)
+                handle.writeframes(b"\0\0" * 8000)
+            progress: list[float] = []
+            result = create_comic_jianying_draft(
+                [str(path) for path in images],
+                [0.4, 0.6],
+                audio_path=str(audio),
+                drafts_root=str(root),
+                requested_name="И²≥Ф─│Ф╪╚Ф╣▀Х╞∙",
+                motion_mode="Д╦┼Д╦▀Д╨╓Ф⌡©Е┘ЁИ■╝Е╦╖",
+                on_progress=lambda value, _detail: progress.append(value),
+            )
+            content = json.loads((Path(result.path) / "draft_content.json").read_text(encoding="utf-8"))
+            video_track = next(track for track in content["tracks"] if track["name"] == "И²≥Ф─│Ф╪╚Г■╩")
+            self.assertEqual(len(video_track["segments"]), 2)
+            for segment in video_track["segments"]:
+                position = next(item for item in segment["common_keyframes"] if item["property_type"] == "KFTypePositionY")
+                self.assertEqual(len(position["keyframe_list"]), 2)
+            self.assertEqual(progress[-1], 1.0)
+            self.assertAlmostEqual(result.duration_seconds, 1.0, places=2)
+
+    def test_sanitize_and_unique_name(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            self.assertEqual(sanitize_draft_name('Ф╣▀Х╞∙:/Х█┴Г╗©?'), "Ф╣▀Х╞∙__Х█┴Г╗©_")
+            (Path(temp) / "Ф╥╥Е┴╙").mkdir()
+            self.assertEqual(unique_draft_name(temp, "Ф╥╥Е┴╙"), "Ф╥╥Е┴╙О╪┬2О╪┴")
+
+    def test_configured_draft_folder_has_priority(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            self.assertEqual(detect_jianying_drafts_path(temp), temp)
+
+    def test_macos_app_bundle_is_detected_and_opened(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            app_bundle = Path(temp) / "Е┴╙Ф≤═Д╦⌠Д╦ Г┴┬.app"
+            app_bundle.mkdir()
+            with patch("core.jianying_engine.sys.platform", "darwin"):
+                self.assertEqual(detect_jianying_executable(str(app_bundle)), str(app_bundle))
+                with patch("core.jianying_engine.subprocess.Popen") as popen:
+                    open_jianying(str(app_bundle))
+                    popen.assert_called_once_with(["/usr/bin/open", str(app_bundle)], close_fds=True)
+
+    def test_subtitles_are_clamped_to_audio_duration(self) -> None:
+        source = (
+            "1\n00:00:00,100 --> 00:00:01,500\nГ╛╛Д╦─Е▐╔\n\n"
+            "2\n00:00:02,000 --> 00:00:05,000\nГ╛╛Д╨▄Е▐╔\n\n"
+            "3\n00:00:06,000 --> 00:00:07,000\nХ╤┘Е┤╨Х▄┐Е⌡╢\n"
+        )
+        result = clamp_srt_text(source, 3_200_000)
+        self.assertIn("00:00:03,200", result)
+        self.assertNotIn("Х╤┘Е┤╨Х▄┐Е⌡╢", result)
+
+
+if __name__ == "__main__":
+    unittest.main()
+from __future__ import annotations
+
+import json
+import base64
+import subprocess
+import tempfile
+import unittest
+import wave
+import zipfile
+from pathlib import Path
+from unittest.mock import patch
+
+from core.ai_client import (
+    AIConfig,
+    OpenAICompatibleClient,
+    api_key_from_environment,
+    infer_provider,
+    provider_preset,
+)
+from core.comic_engine import (
+    ComicEngineError,
+    batch_story_segments,
+    build_ai_split_storyboard_prompt,
+    build_character_prompt,
+    build_scene_prompt,
+    build_storyboard_batch_prompt,
+    compose_shot_prompt,
+    export_comic_asset_pack,
+    fallback_storyboard,
+    has_local_reference,
+    import_comic_asset_pack,
+    numbered_story_segments,
+    parse_storyboard_response,
+    merge_storyboard_shots,
+    replace_character_in_shots,
+    replace_scene_in_shots,
+    scene_reference_data,
+    split_story_segments,
+    split_storyboard_shot,
+    split_story_source_chunks,
+    validate_ai_storyboard_split,
+    validate_storyboard_batch,
+)
+from core.seedream_client import DoubaoSeedreamClient, SeedreamConfig
+from core.comic_video_engine import allocate_shot_durations, build_comic_video_command, parse_srt_text
+from core.jianying_launcher import detect_jianying_executable as detect_jianying_launcher, open_jianying as open_jianying_launcher
+from core.novel_engine import build_post_prompt, build_rewrite_prompt, chapter_records, split_chapters
+from core.jianying_engine import (
+    SOURCE_VIDEO_VOLUME,
+    clamp_srt_text,
+    create_comic_jianying_draft,
+    detect_jianying_drafts_path,
+    detect_jianying_executable,
+    open_jianying,
+    sanitize_draft_name,
+    unique_draft_name,
+)
+from core.storage import DEFAULT_STATE, StateStore, new_comic_project
+from core.secret_store import SecretStoreError, delete_api_key, load_api_key, save_api_key
+from core.video_engine import VideoClip, VideoProject, build_export_command, find_executable, fit_clips_to_duration
+
+
+class _FakeResponse:
+    def __init__(self, payload: dict) -> None:
+        self.payload = payload
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, _exc_type, _exc, _traceback) -> None:
+        return None
+
+    def read(self) -> bytes:
+        return json.dumps(self.payload, ensure_ascii=False).encode("utf-8")
+
+
+class AIClientTests(unittest.TestCase):
+    def test_official_provider_presets(self) -> None:
+        expected = {
+            "deepseek": ("https://api.deepseek.com", "deepseek-v4-flash"),
+            "qwen": ("https://dashscope.aliyuncs.com/compatible-mode/v1", "qwen-plus"),
+            "zhipu": ("https://open.bigmodel.cn/api/paas/v4", "glm-5.2"),
+            "kimi": ("https://api.moonshot.cn/v1", "kimi-k3"),
+        }
+        for provider_id, values in expected.items():
+            preset = provider_preset(provider_id)
+            self.assertEqual((preset.base_url, preset.model), values)
+            self.assertEqual(infer_provider(preset.base_url, preset.model), provider_id)
+
+    def test_provider_specific_environment_keys(self) -> None:
+        values = {
+            "DEEPSEEK_API_KEY": "deepseek-secret",
+            "DASHSCOPE_API_KEY": "qwen-secret",
+            "ZHIPUAI_API_KEY": "glm-secret",
+            "MOONSHOT_API_KEY": "kimi-secret",
+        }
+        self.assertEqual(api_key_from_environment("deepseek", values), "deepseek-secret")
+        self.assertEqual(api_key_from_environment("qwen", values), "qwen-secret")
+        self.assertEqual(api_key_from_environment("zhipu", values), "glm-secret")
+        self.assertEqual(api_key_from_environment("kimi", values), "kimi-secret")
+
+    def test_chat_completion_request_uses_selected_provider(self) -> None:
+        config = AIConfig("https://api.moonshot.cn/v1", "kimi-k3", "test-key", provider="kimi")
+        client = OpenAICompatibleClient(config)
+        response = _FakeResponse({"choices": [{"message": {"content": "И╓┬Н╣╔Н█■О©╫Н⌠▌О©╫"}}]})
+        with patch("core.ai_client.urllib.request.urlopen", return_value=response) as urlopen:
+            result = client.complete("Х²÷И╓▄О©╫О©╫Н⌠░Е┘╖", "О©╫Е├╫О█≤О©╫Н⌠░Е┘╖", temperature=0.2)
+        request = urlopen.call_args.args[0]
+        payload = json.loads(request.data.decode("utf-8"))
+        self.assertEqual(request.full_url, "https://api.moonshot.cn/v1/chat/completions")
+        self.assertEqual(payload["model"], "kimi-k3")
+        self.assertEqual(payload["messages"][1]["content"], "О©╫Е├╫О█≤О©╫Н⌠░Е┘╖")
+        self.assertNotIn("temperature", payload)
+        self.assertEqual(request.get_header("Authorization"), "Bearer test-key")
+        self.assertEqual(result, "И╓┬Н╣╔Н█■О©╫Н⌠▌О©╫")
+
+    def test_non_kimi_provider_keeps_requested_temperature(self) -> None:
+        config = AIConfig("https://api.deepseek.com", "deepseek-v4-flash", "test-key", provider="deepseek")
+        client = OpenAICompatibleClient(config)
+        response = _FakeResponse({"choices": [{"message": {"content": "Ф▒╟О≈╩О©╫"}}]})
+        with patch("core.ai_client.urllib.request.urlopen", return_value=response) as urlopen:
+            client.complete("Х²÷И╓▄О©╫О©╫Н⌠░Е┘╖", "О©╫Е├╫О█≤О©╫Н⌠░Е┘╖", temperature=0.72)
+        payload = json.loads(urlopen.call_args.args[0].data.decode("utf-8"))
+        self.assertEqual(payload["temperature"], 0.72)
+
+
+class NovelEngineTests(unittest.TestCase):
+    def test_split_chinese_chapters(self) -> None:
+        text = "Ф▒╗Н░╢О©╫О©╫О├╞Ф█├\n\nХ² Г═▄О©╫Х²║О©╫ О©╫ХЁ┼О©╫\n\nИ╓┬Н╘■Н╕─Х² Г═▄О©╫Х²║Н╨°б─Н╫╠n\nХ² Г═▄О©╫Х²║О©╫ И═╖Г╔├О©╫\n\nИ╓┬Н╘■Н╕─Х² Г═▄О©╫Х²║Н╨°б─О©╫"
+        chapters = split_chapters(text)
+        self.assertEqual([chapter.title for chapter in chapters], ["Ф▒╗Н░ЁО©╫", "Х² Г═▄О©╫Х²║О©╫ О©╫ХЁ┼О©╫", "Х² Г═▄О©╫Х²║О©╫ И═╖Г╔├О©╫"])
+        self.assertIn("Х² Г═▄О©╫Х²║О©╫", chapters[1].content)
+
+    def test_fallback_chunking(self) -> None:
+        text = "Х² Г═▄О©╫Г∙╬Х░└О©╫Ф▒╟Е╚≤б─Н╫╠n\nХ² Г═▄О©╫Г∙╬Х░└О©╫Ф▒╟Е╜╣О©╫О©╫Х╦╢б─Н╫╠n\nХ² Г═▄О©╫Г∙╬Х░└О©╫Ф▒╟Е╚≤б─О©╫"
+        chapters = split_chapters(text, fallback_size=12)
+        self.assertGreaterEqual(len(chapters), 2)
+        self.assertEqual(chapters[0].title, "О©╫О▀╙Ф▄╬ 1")
+
+    def test_directly_pasted_text_becomes_editable_chapters(self) -> None:
+        records = chapter_records("Х² Г═▄О©╫Х²║О©╫ О©╫ХЁ┼О©╫\n\nФ├÷Е╜╣Н╞╜О©╫Е┘╦О©╫О©╫Е┘╦О©╫О©╫Е┘╥б─Н╫╠n\nХ² Г═▄О©╫Х²║О©╫ И═╖Г╔├О©╫\n\nО©╫Х┬░О©╫О©╫Е≈╔О©╫О©╫Е┤├б─О©╫")
+        self.assertEqual([item["title"] for item in records], ["Х² Г═▄О©╫Х²║О©╫ О©╫ХЁ┼О©╫", "Х² Г═▄О©╫Х²║О©╫ И═╖Г╔├О©╫"])
+        self.assertEqual(records[0]["content"], "Ф├÷Е╜╣Н╞╜О©╫Е┘╦О©╫О©╫Е┘╦О©╫О©╫Е┘╥б─О©╫")
+
+    def test_rewrite_prompt_contains_rules_and_text(self) -> None:
+        system, user = build_rewrite_prompt(
+            "Х² Г═▄О©╫Х²║О©╫",
+            "О©╫Н╦│О©╫Г■┤О©╫О©╫",
+            mode="Г≤⌡Е▀≈Ф╪╡О©╫Е╜╣О©╫",
+            style="О©╫Н©≤О©╫Х²²Ф┴╧О©╫",
+            perspective="Х² Г═▄О©╫И┬╜Г╝┤Е╕█",
+            target_length="И┼²Н▌■О©╫О©╫О▀╙Н█■И╓┬О©╫",
+            custom_rules="О©╫О ≈О©╫И┼²О  О│█О©╫О©╫",
+            story_bible="И┼²И╓┴О©╫О©╫Ф─╔О©╫Ф▓▄О©╫",
+        )
+        self.assertIn("Ф▓═Н░╢Г╖╘Х²╩Н║©О©╫", system)
+        for expected in ("О©╫Н╦│О©╫Г■┤О©╫О©╫", "О©╫О ≈О©╫И┼²О  О│█О©╫О©╫", "И┼²И╓┴О©╫О©╫Ф─╔О©╫Ф▓▄О©╫", "Х² Г═▄О©╫И┬╜Г╝┤Е╕█"):
+            self.assertIn(expected, user)
+
+    def test_post_prompt_uses_metadata(self) -> None:
+        _system, user = build_post_prompt("О©╫Е┘╦О©╫О©╫ХЁ╒Н╗≤О©╫О©╫", "Г≤²И╓┘О©╫", "Ф▓═Н░ЁФ╩╞И┼▀О©╫", ["О©╫О▀╛Н╬≤О©╫О©╫", "О©╫Ф╦║О©╫О©╫Е■ЁГ╖╓"], 28)
+        self.assertIn("Ф▓═Н░ЁФ╩╞И┼▀О©╫", user)
+        self.assertIn("28", user)
+        self.assertIn("О©╫О▀╛Н╬≤О©╫О©╫", user)
+
+
+class ComicEngineTests(unittest.TestCase):
+    def test_transport_chunks_do_not_define_storyboard_length(self) -> None:
+        text = "".join(f"Х² Ф╢▄index}О©╫Д╨≥О▐╔О©╫О├╟Н█≈И╓┬Н╝▀б─О©╫" for index in range(1, 501))
+        chunks = split_story_source_chunks(text, max_chars=900)
+        self.assertGreater(len(chunks), 1)
+        self.assertTrue(all(len(item) <= 900 for item in chunks))
+        self.assertEqual("".join(item.replace("\n", "") for item in chunks), text)
+
+    def test_ai_split_prompt_and_validation_leave_boundaries_to_model(self) -> None:
+        source = "О©╫Н╓≥О©╫О©╫Е┘╦О©╫О©╫Е┘╥б─Н©⌡О©╫О©╫Н╚╟О©╫Ф├╜Ф╟╛б─Н© Н°▓И°┌НЁ┴О©╫О©╫Е≈┘О©╫И┬╜О┴┼б─О©╫"
+        _system, user = build_ai_split_storyboard_prompt(
+            source,
+            art_style="О©╫Е■╛Х╙╗О©╫ХЁ╒О©╫О©╫Ф▀┤Ф├╓",
+            existing_characters=[{"name": "О©╫Н╓≥О©╫", "description": "Ф ╨Н∙╚О©╫"}],
+            generation_mode="shots",
+            batch_index=1,
+            batch_total=2,
+        )
+        self.assertIn("И┼²О ≤О©╫О©╫Г╝▐О©╫Ф▒╝Н╓ Н·╙", user)
+        self.assertIn("О©╫Ф⌡╧О©╫О©╫Е√ЁО©╫ shots О©╫Е°┬О©╫", user)
+        self.assertIn("О©╫Н÷÷О©╫О©╫Н╘■Х©╚О©╫Ф⌡└О©╫О©╫ХЁ╒Н▓▐Ф▒╟О≈╩Н·╝И°┬Х└╚О©╫", user)
+        self.assertIn("И┼²О ≈О©╫О©╫О⌠└О©╫И√╛Н╪╬О©╫Х²▐Е┴°Н≈░О©╫Ф ╧О©╫О©╫ХЁ°О©╫И√╚О©╫О©╫О©╫Е┘╤О©╫И╓┬О▀╚О©╫О©╫О∙÷Ф├╛О©╫Н⌠█О©╫Ф▓≤Н╨·Н╜╕", user)
+        self.assertIn("И┼²б─И┼²Х┼╬Б─²О©╫О├╟О©╫И┼²б─И┼²Х┼╦О▓┐И⌡©О©╫", user)
+        self.assertIn("О©╫Ф┴╧О█≈О©╫О©╫ 8Е  О©╫30 И┼²Х┼ёО©╫Ф▒╝О©╫", user)
+        self.assertIn("Х²ЁН╪╪Х©╚О©╫Е├╫О©╫О©╫О▀╚Е╝▐О©╫Н╪╬О©╫О©╫О©╫", user)
+        shots = validate_ai_storyboard_split(
+            [
+                {"source": "О©╫Н╓≥О©╫О©╫Е┘╦О©╫О©╫Е┘╥б─О©╫", "title": "О©╫Е┬╦Нё°"},
+                {"source": "О©╫Н░╡О©╫О©╫Н╣╓Д╩█О©╫Н© Н°▓И°┌НЁ┴О©╫О©╫Е≈┘О©╫И┬╜О┴┼б─О©╫", "title": "О©╫Д╨╕Н°▓"},
+            ],
+            source,
+            start_index=4,
+        )
+        self.assertEqual([item["segment_id"] for item in shots], ["S00004", "S00005"])
+        with self.assertRaisesRegex(ComicEngineError, "О©╫Х┼╦О©╫О©╫Ф╦╡О©╫О©╫О©╫"):
+            validate_ai_storyboard_split([{"source": "О©╫Н╓≥О©╫О©╫Е┘╦О©╫О©╫Е┘╥б─О©╫"}], source)
+
+    def test_story_segments_keep_text_and_target_readable_shots(self) -> None:
+        text = "О©╫Н╓≥О©╫О©╫Е┘╦О©╫О©╫Е┘╥б─Н©°Н╜░Г≤·Ф╧╖Б≈┤О©╫б─Ф├╜Н║╪О©╫Г ⌡Ф╦╡Н▓╕О©╫Н╫╠n\nФ▓┘О∙║О©╫Г≤²Б┼╔О©╫Ф▓≤б─О©╫Х┐╞б─Н©⌡О©╫О©╫Н╚╡О©╫О©╫Е┤╫О©╫О©╫О ∙б─Н╫╠n\nО©╫Х▐■О©╫Х²▓Н╪╫О┐ёО©╫О √О©╫О©╫О©╫"
+        segments = split_story_segments(text, target_chars=24)
+        self.assertGreaterEqual(len(segments), 2)
+        self.assertEqual("".join(item.replace("\n", "") for item in segments), text.replace("\n", ""))
+
+    def test_numbered_segments_are_batched_without_omission(self) -> None:
+        text = "".join(f"Х² Ф╢▄index}О©╫Д╨≥О▐╔О©╫О├╟Н█≈И╓┬Н╝▀б─О©╫" for index in range(1, 401))
+        segments = numbered_story_segments(text, target_chars=120)
+        batches = batch_story_segments(segments, max_chars=900)
+        flattened = [item for batch in batches for item in batch]
+        self.assertGreater(len(batches), 1)
+        self.assertEqual([item["segment_id"] for item in flattened], [f"S{index:05d}" for index in range(1, len(segments) + 1)])
+        self.assertEqual("".join(item["source"].replace("\n", "") for item in flattened), text)
+
+    def test_storyboard_only_prompt_requires_one_result_per_segment(self) -> None:
+        segments = [
+            {"segment_id": "S00001", "source": "О©╫Н╓≥О©╫О©╫Е┘╦О©╫О©╫Е┘╥б─О©╫"},
+            {"segment_id": "S00002", "source": "О©╫Н░╡О©╫Х²║Н╘⌠Н╞╜Х²▓Н╓≥О©╫О©╫О©╫"},
+        ]
+        _system, user = build_storyboard_batch_prompt(
+            segments,
+            art_style="О©╫Е■╛Х╙╗О©╫ХЁ╒О©╫О©╫Ф▀┤Ф├╓",
+            existing_characters=[{"name": "О©╫Н╓≥О©╫", "description": "Ф ╨Н∙╚О©╫"}],
+            generation_mode="shots",
+            batch_index=2,
+            batch_total=4,
+        )
+        self.assertIn("О©╫Х┼╟О©╫О©╫Н⌠▌О©╫О©╫О©╫", user)
+        self.assertIn("shots Ф∙╧О├ЁБ≈├О©╫Е∙ёФ°╚И╓┬Н²┌О©╫ 2 Ф├©О©╫", user)
+        self.assertIn("S00001О©╫Н╩▀00002", user)
+        self.assertIn("characters Ф∙╧О├ЁБ≈├И╓┬Н²┌О©╫Х²⌡Г╝╦Н·╙Х²▐О©╫", user)
+        self.assertIn("scenes Ф∙╧О├ЁБ≈├И╓┬Н²┌О©╫Х²⌡Г╝╦Н·╙Х²▐О©╫", user)
+
+    def test_all_prompt_builds_fixed_scene_library_and_binding(self) -> None:
+        _system, user = build_storyboard_batch_prompt(
+            [{"segment_id": "S00001", "source": "О©╫Н╓≥О©╫И÷▐Е∙≈О©╫О©╫Ф┴╬И╚║Ф▒╗Н╓≈б─О©╫"}],
+            art_style="О©╫Е■╛Х╙╗О©╫ХЁ╒О©╫О©╫Ф▀┤Ф├╓",
+            existing_characters=[{"name": "О©╫Н╓≥О©╫", "description": "Ф ╨Н∙╚О©╫"}],
+            existing_scenes=[{"name": "О©╫Ф┴╬И╚║Ф▒╗О©╫", "description": "О©╫Е┬╦Нё°О©╫Е┘╦Ф╓╟Е ≈О≈╩О©╫О©╫Е∙ёН╞╜О©╫О©╫"}],
+            generation_mode="all",
+            batch_index=1,
+            batch_total=1,
+        )
+        self.assertIn("Ф▓▄Х└╚О©╫О©╫Г╝▐О©╫О©╫Г╝╦Н╗²", user)
+        self.assertIn("О©╫Ф┴╬И╚║Ф▒╗Н╓ёО©╫О©╫Е┬╦Нё°О©╫Е┘╦Ф╓╟Е ≈О≈╩О©╫О©╫Е∙ёН╞╜О©╫О©╫", user)
+        self.assertIn("И┬╜Г╝┤О▐╖ prompt О©╫Х┼╬О│█О©╫Н░╢Х├╘И√╚Н≤▀О▐╟О©╫Г╔┬Ф╬┬И┼²Н▌√Ф╩╡О©╫Х└╟О©╫О©╫О©╫", user)
+        self.assertIn("О©╫Н╨·Н╞©О©╫Х┐╞б─Н╪╪О©╫Ф▓╠Г╝┤О©╫О©╫Н╪╪О©╫Ф▒╟Е≈┘О├│", user)
+        self.assertIn('"scenes"', user)
+        self.assertIn('"scene": "О©╫Г╝▐О©╫О©╫Г╝╦Н╗²О©╫О©╫"', user)
+
+    def test_storyboard_batch_validation_orders_repairs_source_and_rejects_missing_shots(self) -> None:
+        expected = [
+            {"segment_id": "S00001", "source": "Х² Г═▄О©╫Г∙╬Х░╦б─О©╫"},
+            {"segment_id": "S00002", "source": "Х² Г═▄О©╫Г∙╬Х░╦б─О©╫"},
+        ]
+        ordered = validate_storyboard_batch(
+            [
+                {"segment_id": "S00002", "source": "Х² Г═▄О©╫Г∙╬Х░╦б─О©╫"},
+                {"segment_id": "S00001", "source": "Х² Г═▄О©╫Г∙╬Х░╦б─О©╫"},
+            ],
+            expected,
+        )
+        self.assertEqual([item["segment_id"] for item in ordered], ["S00001", "S00002"])
+        repaired = validate_storyboard_batch(
+            [
+                {"segment_id": "S1", "source": "Г▓┘Б┬╙О©╫О©╫Е╜╣О©╫И┬╜О┴▌Ф╢╣И┼²б─Г∙╬О©╫"},
+                {"segment_id": "S2", "source": "Х² Г═▄О©╫"},
+            ],
+            expected,
+        )
+        self.assertEqual([item["source"] for item in repaired], ["Х² Г═▄О©╫Г∙╬Х░╦б─О©╫", "Х² Г═▄О©╫Г∙╬Х░╦б─О©╫"])
+        positional = validate_storyboard_batch([{"source": "О©╫О©╫"}, {"source": "И┼▀О©╫"}], expected)
+        self.assertEqual([item["segment_id"] for item in positional], ["S00001", "S00002"])
+        with self.assertRaisesRegex(ComicEngineError, "Х²╩Г╝▐О©╫"):
+            validate_storyboard_batch(
+                [
+                    {"segment_id": "S00001", "source": "Х² Г═▄О©╫Г∙╬Х░╦б─О©╫"},
+                ],
+                expected,
+            )
+
+    def test_parse_storyboard_json_creates_editable_records(self) -> None:
+        raw = """```json
+        {"characters":[{"name":"О©╫Н╓≥О©╫","description":"Ф ╨Н∙╚О©╫Е ≈О≈╬О©╫О©╫Х└╓О©╫И┼╣О©╫"}],"scenes":[{"name":"О©╫Ф┴╬И╚║Ф▒╗О©╫","description":"О©╫Е┬╦Нё°О©╫Е┘╦Ф╓╟Е ≈О≈╩О©╫О©╫Е∙ёН╞╜О©╫О©╫"}],"shots":[{"title":"О©╫Е┘╦О©╫","source":"О©╫Н╓≥О©╫О©╫Е┬╦Нё°","narration":"О©╫Е┘╦О©╫И┬╜О©╫","characters":["О©╫Н╓≥О©╫"],"scene":"О©╫Ф┴╬И╚║Ф▒╗О©╫","prompt":"О©╫Е┘╦О©╫О©╫Е┬╦Нё°Е ≈О≈╧Х▒┴О©╫О©╫"}]}
+        ```"""
+        result = parse_storyboard_response(raw, art_style="О©╫Д╨╕И═┌О©╫Е├╫Ф├╓")
+        self.assertEqual(result["characters"][0]["name"], "О©╫Н╓≥О©╫")
+        self.assertIn("И┼²О ≈О©╫О©╫Г╝┤Н█÷И ·И╒╠О©╫Ф▒╟Ф√┤О©╫Ф├╜Н║╪Н╞©О©╫О©╫", result["characters"][0]["prompt"])
+        self.assertIn("О©╫Х┼╦О┼╬О©╫Е∙≈Г═╡И√╚Н≤▀О▐╟И┼²б─И┬╜О©╫", result["characters"][0]["prompt"])
+        self.assertEqual(result["scenes"][0]["name"], "О©╫Ф┴╬И╚║Ф▒╗О©╫")
+        self.assertIn("О©╫Н╨²Г┼√О©╫О©╫", result["scenes"][0]["prompt"])
+        self.assertIn("О©╫Н╓≥О©╫", result["shots"][0]["characters"])
+        self.assertEqual(result["shots"][0]["scene"], "О©╫Ф┴╬И╚║Ф▒╗О©╫")
+        self.assertEqual(result["shots"][0]["status"], "Ф∙╨О├╠О©╫О©╫О©╫")
+        self.assertEqual(result["shots"][0]["prompt"], "О©╫Е┘╦О©╫О©╫Е┬╦Нё°Е ≈О≈╧Х▒┴О©╫О©╫")
+
+    def test_dynamic_camera_storyboard_is_rejected_for_static_comic(self) -> None:
+        raw = '{"characters":[],"scenes":[],"shots":[{"source":"О©╫Н╓≥О©╫И╓┬Н╝▒Нё°О©╫О©╫","prompt":"О©╫Н╟╙Д╩█И═²Н╦┌О©╫О©╫Н╓≥О©╫И÷▐Е∙≈О©╫О©╫Х╪╦Нё╗"}]}'
+        with self.assertRaisesRegex(ComicEngineError, "О©╫Е├╫б─Н╪╬О©╫О©╫О©╫"):
+            parse_storyboard_response(raw, art_style="О©╫Е■╛Х╙╗О©╫ХЁ╒О©╫О©╫Ф▀┤Ф├╓", generation_mode="shots")
+
+    def test_fallback_storyboard_links_named_characters(self) -> None:
+        characters = [{"name": "О©╫Н░╡О©╫", "description": "О©╫ХЁ╙О▐╟О©╫Х╦╧О©╫"}]
+        shots = fallback_storyboard("О©╫Н░╡О©╫Х²║Х²╣4О©╫Н╣┼kФ╩╢Х░┤@О░≈Х├²О©╫Е┐╠Ф╙°О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪╞О©╫Н·╤Е╔╘Г┼╝О©╫}О░ёО©╫Ф─╢О©╫Х·╚О©╫Н·⌡Х■ёО©╫О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪╞Х├²О©╫Е╔╘Г┼╝О©╫}О░ёО©╫Ф─╢О©╫Х·╚О©╫Н·⌡Х■ёО©╫О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪≈Е┬⌠О©╫О ┌б─О©╫YО©╫Н·╥AЕ┬⌠О©╫О ┌О©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─О©╫Ф┌╪ХЁ╩И╟┘YО©╫Н·╥
+Ф┌╪Е ▐Х©∙О÷╚Ф≥╠О©╫Ф┘╬О©╫Н∙⌡О©╫Ф┌▓Х·┌Х═≥Е═▀Её▌tО©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╪╞Х├²О©╫}О©╫О©╫Ф■⌡Ф█▒Б┴╖Х├²О©╫Д╩─(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╪╖О├⌠О©╫Ф│ Н∙⌡О©╫Ф┌▓Х·┌Х═≥О═┌Е╧╚(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╪╖О©╫Е≈╤Г■╠Ф°╚Х╥╞О▐╥Х²╢О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─б─О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╩©Х├²О©╫О©╫О©╫О©╫О█ Е©²Ф√╔О©╫Ф▌█О©╫}Н÷⌡Х╛≈Е╔╥}О≥╞Г╢╚О├┐Н▓┼ХЁ╫Х■≈О©╫Х╗└б─О©╫Н╗ёО©╫О©╫О©╫Х©∙О÷╚Е┬⌠Х╚▀б─О©╫О▐╩Ф║╦Е┐╠Ф╙≈О█┘Д╦╜(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Ф▌╔Х╚┤О©╫Г╨⌠О┘╨Б└┘Е┬⌠О©╫О ┌Е▌╜Ф║╩Х╫┘Ф│ Н∙⌡О©╫Ф┌▓Х·┌О©╫И╔▒Х⌡╩О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥%О©╫О░▀Н÷▀Х╧┼ФЁ■О╪▄QLГ└╤QIQAQLЕ┘╝Х╜╚Е≈╘Ф⌠╛Ф⌠╛О█▒Н╩©Х├²О©╫Н▓█(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥%О©╫О©╫Ф▄╦Ф┴⌠О©╫Ф║╬О├⌡Ф°╚Х╥╞И╔▒Х⌡╩Ф⌠╛О█▒Н╩©Х├²О©╫Н▓█(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥%О©╫О░▐Г┼╝Ф╦╕Н∙⌡О©╫Ф┌▓Х·┌Х═≥О═┌Ф⌠╛О©╫О©╫Е©²Ф≈╕О©╫О©╫((б─б─б─О©╫О©╫Н╪╖Н÷┤Ф│ О≥╞О©╫О├⌡}Ф░≤Ф││Х╙©Ф│ Ф▄╦О├┐Г╘╦Ф┌▓Х·┌О╧═Н·╚Н╔╣б─Ф╧█О©╫9Х²╢Н²┘(б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫Х│▓Н╗⌠О©╫И└▓Н·╞Х╛≈О©╫Ф┴╓Г▌┴О©╫Ф▄╪Ф┴·Н╧²О©╫О©╫О©╫Х─▀О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёХ╙©О©╫О©╫О©╫AО├⌡Н╧ О©╫Х─▀О©╫О©╫О©╫Ф┌╪Ф┬╢Х─▀О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёХ╙©О©╫Н°√Ф╔╕Г■╠Н·≥О░ёО©╫Ф─╢О©╫Х·╚О©╫Н·⌡Х■ёО©╫О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪≈Е┬⌠О©╫О ┌б─О©╫YО©╫Н·╥AЕ┬⌠О©╫О ┌О©╫Ф┌╪ХЁ╩И╟┘YО©╫Н·╥
+Ф┌╪Е ▐Х©∙О÷╚Х┼╨Ф║╬О©╫Д╩─О©╫Ф║╬О├⌡Ф°╚Х╥╞О═┌Е■╧tО©╫Ф▄╦О├┐Г╘╦Ф┌▓Х·┌О©╫Е▌╜О©╫О█┘(б─б─б─б─б─б─б─б─б─б─б─О©╫Х■╔О©╫О©╫б─О©╫О░⌠Е╪≈Н■╔Н÷⌡Х╛≈Е╔╥}О≥╞Г╢╚О├┐Н▓┼ХЁ╫Х■≈О©╫Х╗└б─О©╫Н╗ёО©╫О©╫О©╫Х©∙О÷╚AО├⌡Н╧ О©╫Х─▀О©╫О©╫О▐╩Ф║╦Е┐╠Ф╙≈О█┘О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥%О©╫О█√О├┌О█▒О©╫Х■╔О©╫О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥9Х╚╦%О©╫О░÷О©╫О©╫О█▒б─О©╫О█ Е©²Ф√╔О©╫Х■╔О©╫О©╫Д╦╜(()О≥ёО├≈О©╫MФ▄╪О©╫О©╫QН÷┤Ф█┬О╪°И╕╢Ф≈└Н÷┤И┌©QН÷┤О©╫
+О├≈Н°│О©╫(б─б─б─О©╫О©╫Н╪╖Н÷┤Ф│ Е┬⌠Ф║╞Н∙≈Г┼╝Х┴╠О├┐Н■╔О©╫О≥╩Н÷▀}Г■÷}О©╫Е√└О©╫Н▓┼О©╫О©╫О©╫Ф╧█О©╫9Х²╢Н²┘(б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫Х│▓Н╗⌠О©╫И└▓Н·╞Х╛≈О©╫Ф┴╓Г▌┴О©╫Ф▄╪Ф┴·Н╧²О©╫О©╫О©╫Х─▀О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёФ▄╪О©╫б─О©╫MО©╫О©╫MФ▄╪О©╫О╪▄О├⌡Н╧ О©╫Х─▀Д╦╜(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫б─О©╫Ф─⌡Х·┌Е┐ О©╫Н∙▓Ц─²Х┼╨Х≥÷Н∙⌡Х│▓Ф─╢U1Q}MQQД╦╜(б─б─б─б─б─б─б─б─б─б─б─Н╪≈Е┬⌠О©╫О ┌б─О©╫О©╫Ф░═О≥╞Г╜┴О≥▒ХЁ╫Х■≈О©╫О©╫О©╫О©╫/Б┘╔WО©╫О©╫nО©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫lО▐©Е┬⌠О©╫О ┐О©╫tб─О©╫mХЁ╫Х■≈О©╫Е╦╗(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫lО©╫О ┐Г÷⌡Н·≥ХЁ╫Х■≈О©╫Ф│ О©╫О▐■б─О©╫ХЁ╫Х■≈О©╫ЕЁ╛О▐©Е┬⌠О©╫О ┐}О©╫О▐■(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫lО©╫Х■╔О©╫О▐■б─О©╫ХЁ╫Х■≈О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫lО░▀Н÷▀Ф┌▓О©╫О©╫ulО©╫Х√■}О©╫О©╫tб─О©╫О░▀О©╫О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫lО░▀Н÷▀Ф┌▓О©╫О©╫ulО©╫Д╪╛}О├▀Е⌡ О©╫О©╫tб─О©╫О©╫Д╪≤Х┘╢О©╫О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫lО░▀Н÷▀Ф┌▓О©╫О©╫ulО░ёФ║╞Ф╔≥}О©╫О©╫}Ф║╬О©╫tб─О©╫О▐÷Ф≈└ХЁ╩И═⌡Х■ёО©╫О©╫И┼▀Н÷⌡О┘©Х·╚О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫lО©╫Х■╔О©╫О▐∙lО©╫Х╚╦}Ф═╚О©╫О▐■б─О©╫О©╫9%)%})=UI9dО©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫lО©╫Х■╔О©╫О▐∙lО░⌠Х╤╗О©╫О©╫}Ф≈╕О©╫О©╫tб─О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёФ▄╪О©╫Е≈╤О├ёН⌡╬Х©∙О├⌡Н°│(б─б─б─б─б─б─б─б─б─б─б─Н╪÷О├╕б─О©╫Х©∙Х╓∙Н°√О©╫О©╫Е≤√О©╫Н■╔О©╫Ф┘⌡О©╫О©╫О©╫Ф≈╕Н╟╧О░⌠О©╫Ф╞╞О█┘(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥9Х╚╦%О©╫О░▀О©╫О©╫О©╫О©╫О©╫И⌡┌(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥9Х╚╦%О©╫О©╫Д╪≤Х┘╢О©╫О©╫О©╫О©╫О©╫И⌡┌(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨О╧═Ф▄╪О©╫Е┐ О©╫О©╫Е▐╛О©╫Х■╔О©╫О▐∙lО▐©Е┬⌠О©╫О ┐}О©╫О©╫О▐■О©╫О©╫О©╫/Б┘╔WО©╫О©╫nО©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥QЕ╟╔Н⌡╬Х©∙Х╓∙Н°√Ф▌┐О©╫Н╧·lО░▀Н÷▀Ф┌▓О©╫О©╫ulО░┤Н·╞Н·╞О©╫Ф┴░О├▀Е⌡ О©╫О©╫tО©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥%О©╫О©╫Х■╔О©╫О█▒Н╪ёФ▄╪О©╫Е┐ О©╫О©╫Д╦╜(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥9Х╚╦%О©╫О░ёФ║╞Ф╔≥}О©╫О©╫}Ф║╬О©╫О©╫Х©∙Х╓∙Н°√Ф▌┐О©╫Н╧·lО░▀Н÷▀Ф┌▓О©╫О©╫tО©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥9Х╚╦%О©╫О©╫Х╚╦}Ф═╚О©╫О█▒Н╪ёФ▄╪О©╫Е┐ О©╫О©╫Е▐╛О©╫Х■╔О©╫О▐■О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥9Х╚╦%О©╫О░⌠Х╤╗О©╫О©╫}Ф≈╕О©╫О©╫О©╫Х©∙Х╓∙Н°√Ф▌┐О©╫Н╧·lО©╫Х■╔О©╫О▐■О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥9Х╚╦%О©╫О░≈О©╫Н·╤О█▒Н╪ёФ▄╪О©╫Е┐ О©╫О©╫Д╦╜(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥%О©╫О▐╥Х╙╤Н·╙О█▒Н╪ёФ▄╪О©╫Е┐ О©╫О©╫Д╦╜(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨О╧═Ф▄╪О©╫Е┐ О©╫О©╫Е▐╛О▐╥Х╙╤Н·╙О▐∙lО▐ЁО©╫О©╫tО©╫О©╫Г≈╞Н╒│О©╫RО©╫dО█┘((б─б─б─О©╫О©╫Н╪╖Н÷┤Ф│ Х▐┘Ф∙≈Ф╟▒О©╫}ХЁ╫Х■≈О©╫Ф∙┼}Г÷╥О├⌠Н·≥Х²╢Н·≥О≥⌠О├⌠О©╫О©╫Ф┴░Ф┌╪О░┤О├⌠И┼╕О©╫О©╫О©╫Ф╧█О©╫9Х²╢Н²┘(б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫Х│▓Н╗⌠О©╫И└▓Н·╞Х╛≈О©╫Ф┴╓Г▌┴О©╫Ф▄╪Ф┴·Н╧²О©╫О©╫О©╫Х─▀О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёФ▄╪О©╫б─О©╫MО©╫О©╫MФ▄╪О©╫О╪▄О├⌡Н╧ О©╫Х─▀Д╦╜(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫б─О©╫Ф─⌡Х·┌Е┐ О©╫Н∙▓Ц─²Х┼╨Х≥÷Н∙⌡Х│▓Ф─╢U1Q}MQQД╦╜(б─б─б─б─б─б─б─б─б─б─б─О©╫Г▌┴Х©√б─О©╫О©╫Ф░═О≥╞Г╜┴О≥▒ХЁ╫Х■≈О©╫О©╫О©╫Г°╬Н≤┘Н╙ёО©╫:О©╫ZО█┘(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫Х²╢О©╫О©╫О©╫Ф░═О≥╞Г╜┴О≥▒ХЁ╫Х■≈О©╫О©╫О©╫Г°╬Н≤█3Н╙ёО©╫:О©╫ZО█┘(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫lО▐©Е┬⌠О©╫О ┐О©╫tб─О©╫mН╗⌠Е╔╪Х╗└Н╪ёО©╫Х²╢Н■°(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫lО©╫О ┐Г÷⌡Н·≥ХЁ╫Х■≈О©╫Ф│ О©╫О▐■б─О©╫О©╫О≥╞О©╫lО▐©Е┬⌠О©╫О ┐}О©╫О▐■(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫lО░▀О©╫О©╫Н■╔О≥⌠О├⌠О©╫О©╫Е╕─О▐■б─О©╫mО©╫О©╫О©╫О▌┴б─О©╫z_Н║╣tО█▒б─О©╫Н÷┤О≥╩Ф╟▒Ф┌▓Х·┌О▌┴б─О■·Х√▌О©╫>DО█▒б─О▐©Е┬⌠Х│▓О©╫О©╫О©╫z_Н║╣wН╚│Н▐╡vО©╫Ц└▒Г╘└Н║▒kО©╫Ф╘╒3Н╣╘Г╦┬&Х┼┐3Н╙⌠О©╫И╟≈(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫lО©╫Х■╔О©╫О▐■б─О©╫О©╫О≥╞О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёФ▄╪О©╫Е≈╤О├ёН⌡╬Х©∙О├⌡Н°│(б─б─б─б─б─б─б─б─б─б─б─Н╪┤О©╫О©╫О©╫О©╫Х©∙Х╓∙Н°√Ф▌┐О©╫Н╧²(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨б╖Н·╡б╖О©╫О©╫Н■■О▐©Е┬⌠О©╫О ┐О©╫tД╩─б─О÷╝(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨б╖О©╫О©╫Н■■О©╫Х■╔О©╫О▐∙lО▐©Е┬⌠О©╫О ┐}О©╫О©╫О▐■О©╫О©╫Г°╬Н≤█3Н╙ёО©╫:О©╫ZО█┘(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥%Ф─╢Ф▌┐О©╫О©╫lО©╫Х■╔О©╫О▐∙lО©╫О©╫О©╫О ┐Н÷┐О©╫tО©╫Ф▌┐О©╫О©╫lО░▀О©╫О©╫Н■╔О≥⌠О├⌠О©╫О©╫Е╕─О▐■О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥%Ф─╢Ф▌┐О©╫О©╫lО▐©Е┬⌠О©╫О ┐О©╫ulХ┤┌lО©╫О©╫О©╫О ┐Н÷┐О©╫tО©╫Ф▌┐О©╫О©╫lО░▀О©╫О©╫Н■╔О≥⌠О├⌠О©╫О©╫Е╕─О▐■О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨б╖О©╫О©╫Н■■О▐©Е┬⌠О©╫О ┐О©╫ulФ■╓lО©╫О©╫О©╫О ┐Н÷┐О©╫ulХ┤┌lО▐╥О┘©О©╫tО©╫О©╫z_Н║╣tО█┘(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨б╖О©╫О©╫Н■■О░▀О©╫О©╫Н■╔О≥⌠О├⌠О©╫О©╫Е╕─О▐∙lХ┤┌lО▐©Е┬⌠Х│▓О©╫tО©╫О©╫z_Н║╣wН╚│Н▐╡vО©╫Ц└▒Г╘└Н║▒kО©╫Ф╘╒3Н╣╘Г╦┬&Х┼┐3Н╙⌠О©╫О©╫((б─б─б─О©╫О©╫Н╪╖Н÷┤Ф│ О©╫О©╫О ≈}Г╘╦О©╫О©╫}О≥╞Г╜┴О≥▒Г■÷}Г╜┴Н╡╚О├⌡О©╫}Ф▄╪}ХЁ╫Х■≈О©╫Ф│ О├┐Н■╔Г÷╥О├⌠О©╫}Е┬⌠О©╫Ф─╢О©╫О©╫О©╫Ф╧█О©╫9Х²╢Н²┘(б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫Х│▓Н╗⌠О©╫И└▓Н·╞Х╛≈О©╫Ф┴╓Г▌┴О©╫Ф▄╪Ф┴·Н╧²О©╫О©╫О©╫Х─▀О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёФ▄╪О©╫б─О©╫MО©╫О©╫MФ▄╪О©╫О╪▄О├⌡Н╧ О©╫Х─▀Д╦╜(б─б─б─б─б─б─б─б─б─б─б─Н╪ёФ▄╪О©╫О©╫О├≈Н·≥Н■╚О═┐Г╜▐Н■╚О÷╚О©╫О©╫Е║╬Ф╡╜QЕ╟╔Н°█О©╫Е╣╫Х©∙}Х⌠╝И║÷Е╟╔Н°│(б─б─б─б─б─б─б─б─б─б─б─Н╪ёФ▄╪О©╫Е≤≈О├⌡Н╧╡Ф╔╕Г■╠Н·≥О©╫Ф┘⌡О©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╩©Х┼╨Х≥÷Н∙⌡Х│▓О©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╫┌(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─О░▀Н÷▀Ф┌▓О©╫О©╫О©╫Х√─О©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─О©╫Х■╔О©╫О▌┴Н╫┌(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─О▐©Е┬⌠О©╫О ┐}О©╫О©╫О▌┴б─О©╫^О©╫&#О©╫:О©╫ZО█▒(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─О░▀Х╙©О©╫Н·≥О©╫Ф┘⌡О▌┴б─О©╫^О©╫О©╫Н╙┤О█▒(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─О©╫О©╫О©╫О ┐Н÷┐О©╫О©╫mО©╫О©╫О©╫О▌┴б─О■ .?Н╙⌠hО█▒б─О©╫Н÷┤О≥╩Ф╟▒Ф┌▓Х·┌О▌┴б─О©╫fО©╫>DО░ЁtО©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─О░▀О©╫О©╫О©╫О©╫mtО©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─О░▀Б√═Ф█┬О▌┴Н╩╔tО©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╫┼О©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╫┼О©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─О©╫Е≈╤Ф║╬Н·≥О├≈О≥≈Г│╚О┘╩О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Д╩─(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─О©╫О©╫О©╫Ф≈╕Н╟╧О░⌠О©╫Ф╞╞О█▒(б─б─б─б─б─б─б─б─б─б─б─б─О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪┤О©╫О©╫О©╫О©╫Х©∙Х╓∙Н°√Ф▌┐О©╫Н╧²(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨б╖Н·╡б╖О©╫О©╫Н■■О▐©Е┬⌠О©╫О ┐О©╫tД╩─б─Х┤ (б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨б╖О©╫О©╫Н■■О©╫Х■╔О©╫О▐∙lО▐©Е┬⌠О©╫О ┐}О©╫О©╫О▐■О©╫О©╫^О©╫&#О©╫:О©╫ZО█┘(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨б╖О©╫О©╫Н■■О░▀О©╫О©╫Н■╔О≥⌠О├⌠О©╫О©╫Е╕─О▐∙lХ┤┌lО▐╥О┘©О©╫tО©╫О■ .?Н╙⌠hО█┘((б─б─б─О©╫О©╫Н╪╖Н÷┤Ф│ Х╓∙Х√└О├┐О©╫}О≥⌠О├⌠О©╫О©╫Ф┴░О├┐Н■╔О©╫Н·ЁН·≥Ф┴■О©╫Н÷┤}О├⌠Н·≥О©╫О≥╞О©╫О©╫Н▓┼О©╫О©╫О©╫Ф╧█О©╫9Х²╢Н²┘(б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫Х│▓Н╗⌠О©╫И└▓Н·╞Х╛≈О©╫Ф┴╓Г▌┴О©╫Ф▄╪Ф┴·Н╧²О©╫О©╫О©╫Х─▀О©╫(б─б─б─б─б─б─б─б─б─б─б─О©╫О├≈О©╫О©╫AО├⌡Н╧ О©╫Х─▀О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪÷Х■ёН·≥Н■╚О©╫О©╫О©╫О©╫б─О©╫О░▀О©╫О©╫Н■╔О├≈О©╫Ф█┬О©╫О©╫О©╫О©╫О©╫О ┐Н÷┐О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫}Н■╚О©╫О©╫О©╫О©╫б─О©╫О▐©Е┬⌠О©╫О ┌Е√└Ф║╩Х╫┘О©╫б─О©╫О░▀О©╫О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪÷Х■ёН·≥Н■╚О═┐Г╜▐Н■╚О÷╚О©╫О©╫Е║╬Ф╡╜QЕ╟╔Н°│(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫}Н■╚О═┐Г╜▐Н■╚О÷╚О©╫О©╫Е║╬Ф╡╜QЕ╟╔Н°│(б─б─б─б─б─б─б─б─б─б─б─Н╪÷Х■ёН·≥О©╫О©╫О©╫О©╫О©╫О©╫Е┬⌠О©╫}Н■╚О©╫О©╫О■ .?Н╙⌠i}О©╫О©╫О©╫О©╫Н°√Х╓╦О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪÷Х■ёН·≥О©╫О©╫О©╫О├⌡О©╫О©╫Е┬⌠О©╫}Н■╚О©╫О©╫О■ .?Н╙⌠i}О©╫О©╫О©╫О├⌡Н°√Х╓╦О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫}О©╫О©╫О©╫О©╫О©╫О©╫О©╫Н·ЁН·≥Н■╚О©╫О©╫О©╫О©╫О©╫:}О©╫О©╫О©╫О©╫Н°√Х╓╦О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪÷Х■ёН·≥О©╫О©╫О©╫О©╫Н°√Ф╔╕Г■╠Н·≥О░ёО©╫Ф─╢О©╫О©╫О©╫О©╫О©╫О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪÷Х■ёН·≥О©╫О©╫О©╫О├⌡Н°√Ф╔╕Г■╠Н·≥О░ёО©╫Ф─╢О©╫О©╫О©╫О©╫О├⌡О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫}О©╫О©╫О©╫О©╫Н°√Ф╔╕Г■╠Н·≥О░ёО©╫Ф─╢О©╫О©╫Н·ЁО©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёФ▄╪О©╫б─О©╫MО©╫О©╫MФ▄╪О©╫О©╫О├≈Н°│(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫б─О©╫Ф─⌡Х·┌Е┐ О©╫Н∙▓Ц─²Х┼╨Х≥÷Н∙⌡Х│▓Ф─╢U1Q}MQQД╦╜(б─б─б─б─б─б─б─б─б─б─б─Н╪≈Е┬⌠О©╫О ┌б─О©╫О©╫Ф░═О≥╞Г╜┴О≥▒ХЁ╫Х■≈О©╫О©╫О©╫О©╫О©╫7Н╚║/Б┘╔TО█┘(б─б─б─б─б─б─б─б─б─б─б─Н╪≈Е┬⌠О©╫О ┐lО▐╩Ф║╩Х╫┘Ф│ Н■╚О©╫tб─О©╫Х©∙О÷╚О©╫О©╫б─О©╫О▐©Е┬⌠О©╫О ┌Е√└Ф║╩Х╫┘О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫lО▐©Е┬⌠О©╫О ┐О©╫tб─О©╫mХЁ╫Х■≈О©╫Е╦╗(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫lО©╫О ┐Г÷⌡Н·≥ХЁ╫Х■≈О©╫Ф│ О©╫О▐■б─О©╫ХЁ╫Х■≈О©╫ЕЁ╛О▐©Е┬⌠О©╫О ┐}О©╫О▐■(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫lО©╫Х■╔О©╫О▐■б─О©╫ХЁ╫Х■≈О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёФ▄╪О©╫Е≈╤О├ёН⌡╬Х©∙О├⌡Н°│((б─б─б─б─б─б─б─б─б─б─б─Н╪┤О©╫О©╫О©╫О©╫Х©∙Х╓∙Н°√Ф▌┐О©╫Н╧²(б─б─б─б─б─б─б─б─б─б─б─Н╪÷Х■ёО©╫О©╫О©╫Ф┘⌡Б─≤О©╫О©╫Н╗╚О©╫Г■╠Н·╝Н╩╩О©╫Ф▌┐О©╫О©╫lО░▀О©╫О©╫Н■╔О≥⌠О├⌠О©╫О©╫Е╕─О▐■Н╩╩О©╫Г■╠Н·╞lО▐╥О┘©О©╫tб─И░─б─О■ .?Н╙⌠hО█┘(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫б─О©╫О©╫Ф┘⌡Б─≤О©╫О©╫Н╗╚О©╫Г■╠Н·╝Н╩╩О©╫Ф▌┐О©╫О©╫lО©╫Х■╔О©╫О▐∙lО░▀О©╫О©╫О©╫tН╩╩О©╫Г■╠Н·╞lО▐╥О┘©О©╫tб─И░─б─О©╫О©╫О©╫:О█┘(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨О╧▌Х■ёН·┬О░▀О©╫Ф≥┤О©╫tО©╫О©╫Ф╕╜О©╫Н║╣О©╫О┬╒Б┘║О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨О╧▌Х■ёН·┬О▐╞О©╫О┘╩}О©╫О©╫О▐■О©╫Х©∙О÷╚Е┬⌠О©╫}О©╫О©╫О©╫О©╫Н°│О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨О╧▌Х■ёН·┬О©╫О├┐Н■╚О©╫О©╫}О©╫О©╫О▐■О©╫Х©∙О÷╚Е┬⌠О©╫}О©╫О©╫О©╫О├⌡Н°│О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨О╧═О©╫О©╫lО░▀О©╫Ф≥┤О©╫tО©╫О©╫Ф╕╜Н╙⌠О©╫Г≈╬О©╫Х╙╔О©╫О█┘(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨О╧═О©╫О©╫lО▐╞О©╫О┘╩}О©╫О©╫О▐■О©╫Х©∙О÷╚О©╫Н·ЁН·≥О©╫О©╫О©╫О©╫Н°│О©╫((б─б─б─О©╫О©╫Н╪╖Н÷┤Ф│ Х©∙О├⌡Н·≥О©╫О≥÷Ф║╥Г÷╩О├┐Н■╔Г╘╦О©╫О©╫}Ф≈╕Х©∙О├┐О©╫}Ф▌┐О≥·О╧═Н·╚Н╔╣б─Ф╧█О©╫9Х²╢Н²┘(б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫Х│▓Н╗⌠О©╫И└▓Н·╞Х╛≈О©╫Ф┴╓Г▌┴О©╫Ф▄╪Ф┴·Н╧²О©╫О©╫О©╫Х─▀О©╫(б─б─б─б─б─б─б─б─б─б─б─О©╫О├≈О©╫О©╫AО├⌡Н╧ О©╫Х─▀О©╫(б─б─б─б─б─б─б─б─б─б─б─О©╫Г▌┴Х©√б─О©╫MО©╫О©╫MФ▄╪О©╫О©╫О├≈Н°│(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫Х²╢О©╫О©╫MО©╫О©╫MФ▄╪О©╫О©╫О├≈Н°│(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥QЕ╟╔Н⌡╬Н╗⌠Е╔╪И┌©О©╫Г╨⌠Г▌┴Н·≥Ф≈╕Х©∙О├┐О©╫}Ф▌┐О≥·Н╧²О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥О┘╩О©╫О╧═О©╫Х²╢Н▓╒О©╫Г╨⌠Г▌┴Н·≥Ф≈╕Х©∙О├┐О©╫}Ф▌┐О≥·Н╧²О©╫(б─б─б─б─б─б─б─б─б─б─б─О©╫Г▌┴Х©√Е≤√Н·╚О©╫О©╫}Ф≈╕Х©∙О├┐О©╫}Ф▌┐О≥·Н╧²(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥QЕ╟╔Н⌡╬О©╫О≥╞О©╫О©╫О≥╥Ф▌█О©╫}Ф≈╕Х©∙О├┐О©╫}Ф▌┐О≥·Н╧²О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫Х²╢Н▓╒О©╫О©╫О├≈Н·≥Ф≈╕Х©∙О├┐О©╫}Ф▌┐О≥·Н╧²(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫б─О©╫Ф─⌡Х·┌Е┐ О©╫Н∙▓Ц─²Х┼╨Х≥÷Н∙⌡Х│▓Ф─╢U1Q}MQQД╦╜(б─б─б─б─б─б─б─б─б─б─б─О©╫Г▌┴Х©√Е≈╤О├ёН⌡╬Х©∙О├⌡Н°│(б─б─б─б─б─б─б─б─б─б─б─О©╫Г▌┴Х©√Е≈╤О├ёН⌡╬Х©∙О├⌡Н°│(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥QЕ╟╔Н⌡╬О├┐О©╫О©╫О├≈О©╫О©╫О©╫О©╫Е─≤ХЁ╩О█┘О©╫Ф▌┐О©╫О░▀О©╫О©╫Ф█╤И╪▌Х┼╨О©╫Д╦╜О©╫((б─б─б─О©╫О©╫Н╪╖Н÷┤Ф│ О©╫О©╫О ≈}О├≈О©╫Ф∙┼}О├⌠Н·≥О≥╞Х√■О©╫}Ф≈╕Ф▄╪}Ф││Н·≥О©╫Ф░═О©╫О©╫}Н■╚О©╫О ┐Х╓∙И┼╕О©╫О©╫О©╫Ф╧█О©╫9Х²╢Н²┘(б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫Х│▓Н╗⌠О©╫И└▓Н·╞Х╛≈О©╫Ф┴╓Г▌┴О©╫Ф▄╪Ф┴·Н╧²О©╫О©╫О©╫Х─▀О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪÷Х²╦О©╫О©╫AО├⌡Н╧ О©╫Х─▀О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪⌠О©╫}О©╫О©╫б─О©╫Е┬⌠Х╚▀б─О©╫О▌╘Н·╚О├╚
+О©╫О├⌡Х╓∙MФ≥┤Н■╚О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪▐Н÷≈}О©╫О©╫б─О©╫Е┬⌠Х╚▀б─О©╫О©╫
+Х■╔О©╫AХ╚┤Е÷▓Ф≥┤Н■╚О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪⌠О©╫}Е┬⌠О©╫б─О©╫Х■ёН■╔О©╫О©╫б─О©╫О░▀О©╫О©╫Н■╔О├≈О©╫Ф█┬О©╫О©╫О©╫О©╫О©╫О ┐Н÷┐О©╫б─О©╫О■ .?Н╙⌠i}О©╫О©╫О©╫О©╫Н°√Х╓╦О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪⌠О©╫}О©╫Н·ЁО©╫О©╫Х■ёН■╔О©╫О©╫б─О©╫О©╫Х■╔О©╫}ХЁ╫Х■≈О©╫Ф█┬О©╫О©╫О©╫^Н╥┌О┴▌Н╢▐О©╫б─О©╫О░▀О©╫О©╫О©╫б─О©╫О©╫О©╫О©╫:}О©╫О©╫О©╫О©╫Н°√Х╓╦О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪⌠О©╫}Е┬⌠О©╫Е≤≈О├⌠Н·ЁИ┌©Г╜▐Н■╚О÷╚О©╫О©╫Е║╬Ф╡╜QЕ╟╔Н°│(б─б─б─б─б─б─б─б─б─б─б─Н╪⌠О©╫}О©╫Н·ЁН°√О©╫О©╫Е║╣Е┐╠О©╫Г▌└Б└┘О├⌠Н·ЁФ█┬И║÷Е╟╔Н°│(б─б─б─б─б─б─б─б─б─б─б─Н╪⌠О©╫}Е┬⌠О©╫Е╔╘Г┼╝О©╫}О░ёО©╫Ф─╢О©╫Е┬⌠О©╫О█┘(б─б─б─б─б─б─б─б─б─б─б─Н╪⌠О©╫}О©╫Н·ЁН°√Ф╔╕Г■╠Н·≥О░ёО©╫Ф─╢О©╫О©╫Н·ЁО©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪⌠О©╫}Х©∙О├⌡О©╫О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─О░▀Н÷▀Ф┌▓О©╫О©╫О©╫Х√─О©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─О©╫Х■╔О©╫О▌┴Н╫┌(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─О▐©Е┬⌠О©╫О ┐}О©╫О©╫О▌┴б─О©╫^Н╥┌О┴▌Н╢▐О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─О▐╩Ф║╩Х╫┘Ф│ Н■╚О©╫О©╫Х©∙О÷╚Х■ёН■╔О©╫О©╫б─О©╫О©╫Х■╔О©╫}ХЁ╫Х■≈О©╫Ф█┬О©╫О©╫О©╫^Н╥┌О┴▌Н╢▐О©╫Д╩─(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─О©╫О©╫О©╫О ┐Н÷┐О©╫О©╫mtО©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─О░▀О©╫О©╫О©╫О©╫mtО©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─О░▀Б√═Ф█┬О▌┴Н╩╔tО©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╫┼О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╫┼(б─б─б─б─б─б─б─б─б─б─б─б─Б√═О©╫}О©╫О©╫б─О©╫О░▀О©╫О©╫И╪▌Х┼╨О©╫Е┘│Ф╔╕Г■╠Н·≥О©╫Ф┘⌡Ц─²Х┼╨Х≥÷Н∙⌡Х│▓Ф─╢Х■ёН■╔Х©∙О├⌡Н°█О©╫Е≈╤Ф║╬Н·≥О├≈О≥≈Г│╚О┘╩О©╫Д╩─О©╫О©╫О©╫Ф≈╕Н╟╧О░⌠О©╫Ф╞╞О█┘(б─б─б─б─б─б─б─б─б─б─б─Н╪ёФ▄╪О©╫б─О©╫MО©╫О©╫MФ▄╪О©╫Б≤┘Н÷≈}О©╫О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёФ▄╪О©╫Е┐ О©╫О©╫Ф├╒О©╫О©╫}Н■╚О©╫О©╫Х■ёН■╔О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪┤О©╫О©╫О©╫О©╫Х©∙Х╓∙Н°√Ф▌┐О©╫Н╧²(б─б─б─б─б─б─б─б─б─б─б─Н╪÷Х■ёО©╫О©╫О©╫Ф┘⌡Б─≤О©╫О©╫Н╗╚О©╫Г■╠Н·╝Н╩╩О©╫Ф▌┐О©╫О©╫lО░▀О©╫О©╫Н■╔О≥⌠О├⌠О©╫О©╫Е╕─О▐■Н╩╩О©╫Г■╠Н·╞lО▐╥О┘©О©╫tб─И░─б─О■ .?Н╙⌠hО█┘(б─б─б─б─б─б─б─б─б─б─б─Н╪ёО©╫О©╫б─О©╫О©╫Ф┘⌡Б─≤О©╫О©╫Н╗╚О©╫Г■╠Н·╝Н╩╩О©╫Ф▌┐О©╫О©╫lО©╫Х■╔О©╫О▐∙lО░▀О©╫О©╫О©╫tН╩╩О©╫Г■╠Н·╞lО▐╥О┘©О©╫tб─И░─б─О©╫О©╫О©╫:О█┘(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥QЕ╟╔Н⌡╬AО├⌡Н╧ Е┬⌠О©╫lО▐╞О©╫О┘╩}О©╫О©╫О▐■Е┘│Г■÷}О©╫О©╫Ф┌▓О©╫}Ф█┼Б≤┘Н÷≈}О©╫О©╫Д╦╜(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥QЕ╟╔Н⌡╬AО├⌡Н╧ О©╫Н·ЁН·┬О▐╞О©╫О┘╩}О©╫О©╫О▐■Е┘│Г■÷}О©╫О©╫Ф┌▓О©╫}Ф█┼Б≤┘Н÷≈}О©╫О©╫Д╦╜(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥QЕ╟╔Н⌡╬AО├⌡Н╧ Е┬⌠О©╫lО▐╞О©╫О┘╩}О©╫О©╫О▐■Е┘│Г■÷}Н╗⌠О©╫Н╧²О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥QЕ╟╔Н⌡╬AО├⌡Н╧ О©╫Н·ЁН·┬О▐╞О©╫О┘╩}О©╫О©╫О▐■Е┘│Г■÷}Н╗⌠О©╫Н╧²О©╫(()О≥ёО├≈О©╫MО©╫О©╫Е÷▓Ф▄╪О©╫QН÷┤Ф█┬О╪°И╕╢Ф≈└Н÷┤И┌©QН÷┤О©╫
+О├≈Н°│О©╫(б─б─б─О©╫О©╫Н╪╖Н÷┤Ф│ Ф░≤О©╫Х╠▌Г÷╩Е┬⌠Ф║╩Н÷┤}Ф▄╪}О≥╩О©╫Н·ЁФ┌▓О┘╩}О©╫О©╫О©╫О÷╚О©╫О©╫О©╫Ф╧█О©╫9Х²╢Н²┘(б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫О©╫О©╫О©╫Х╓∙Н°√О©╫О≥╩Н÷▀}Х©∙Х╓∙Н°√Д©°Ф▀┼Х·╚О├⌡Н╗╚Д╪²О█▒б─О░⌡Ф√╔Ф≤┬О█┘О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫О©╫О©╫О©╫Х╓∙Н°√О©╫О≥╩Н÷▀}Х©∙Х╓∙Н°√}Ф░≤О©╫Х╠▌Г÷╩О©╫О©╫О█▒Н╪÷Н÷▀Ф║╬Иё╪О©╫Ф∙∙Н²▒О░▀О├ёО©╫Г╜▐Н÷·О█┘О©╫О©╫О©╫О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨б╖О©╫Н■╔О├▀Е⌡ О©╫О©╫О▐╚Ф┴■О©╫Д╩─б─О░▀О├ёО©╫Г╜▐Н÷·О█┘(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╪÷О©╫Н▓╒О├≈О©╫Е╔╥}О©╫Ф▌╖О©╫}Х²╢О©╫}Ф░≤О©╫О©╫И┐┼Г╚ёО█┘(б─б─б─б─б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫О©╫О©╫О©╫Х╓∙Н°√О©╫О≥╩Н÷▀}Х©∙Х╓∙Н°√}Ф░≤О©╫Х╠▌Г÷╩Ф╔╕Г■╠О©╫О©╫О├√Н╪ЁГ┼╝О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╪ёО├ёН·≥О├▀Е⌡ О©╫О©╫О▐╚Ф┴■О©╫О©╫О©╫Н╪▐Н÷√Г╜▐Н÷·б─б─О█┘(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╪ЁГ┼╝О©╫О©╫Х©▀Н÷┐Ф│ О©╫Ф▌╖О©╫}Х²╢О©╫}Ф░≤О©╫О©╫И┐┼Г╚ёО█▒б─О▐╥Н÷√Г╜▐Н÷·О█┘(б─б─б─б─б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫О©╫О©╫О©╫Х╓∙Н°√О©╫О≥╩Н÷▀}Х©∙Х╓∙Н°√}Ф░≤О©╫Х╠▌Г÷╩О©╫О©╫О©╫О█┘О©╫О©╫О©╫О©╫О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─О©╫Н·╚Н÷▀Н·≥О├▀Е⌡ О©╫О©╫О▐╚Ф┴■О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─О©╫Н·╚Н÷▀Н°√О├≈О©╫Е╔╥}О©╫Ф▌╖О©╫}Х²╢О©╫}Ф░≤О©╫О©╫И┐┼Г╚ёО█┘((б─б─б─О©╫О©╫Н╪╖Н÷┤Ф│ О©╫О≥╞Г÷╩О©╫О©╫О©╫Ф≈╕}О©╫О©╫}Ф▄╦Ф┴■Г÷╩Х²╢Е▀≈}Ф┌╪О©╫}О░┤О©╫Ф╢╩О©╫О©╫О©╫Ф╧█О©╫9Х²╢Н²┘(б─б─б─б─б─б─б─Н╪÷Н÷┤Ф╒┤О©╫О©╫И┌╞О▐©Е┬⌠О©╫Х©▓О©╫
+Х■╔Х·╚Н÷▀О©╫AЕ┬⌠О©╫Х©▓Ц─┼tО©╫Е╧╚б─О©╫О©╫И┴╬Ф░≤О©╫Х┘╢О©╫О©╫О©╫qО©╫О©╫О©╫О©╫(б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫О©╫О©╫О©╫Х╓∙Н°√О©╫О≥╩Н÷▀}Х©∙Х╓∙Н°√Д©°Ф▀┼Х·╚О├⌡Н╗╚Д╪²О█▒б─О©╫О├⌠Ф░≤О©╫Ф√╧(б─б─б─б─б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫О©╫О©╫О©╫Х╓∙Н°√О©╫О≥╩Н÷▀}Х©∙Х╓∙Н°√}Е╟╔Иё╪О©╫О ┤Г┼╝Ф═╣О█▒Н╪÷Н÷▀Ф║╬Иё╪О©╫Ф∙∙Н²▓О©╫И┌╞Ф∙≥О©╫О├√Н╪ёО©╫Ф║╬Г■╠Е└╟(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨б╖О©╫Н■╔О├▀Е⌡ О©╫О©╫О©╫О©╫Х╤╗О©╫О©╫Д╩─б─О©╫О©╫И┴╬Ф░≤О©╫Х┘╢О©╫О©╫О©╫О█┘(б─б─б─б─б─б─б─Н╪ёО©╫Ф║╬Г■╠И┼▀О├≈О©╫Е╔╥}О©╫Ф▌╖О©╫}Х²╢О©╫}Ф░≤О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╩╓О©╫Ф≈╕Н▓·О©╫О©╫Г┼╝О≈┼О©╫Х©▀Ф√▓О©╫О█▒б─О█√О©╫О©╫О▌╘Н·╚О├╚
+О©╫О├⌡Х╓∙MФ≥┤Н■╚О©╫О©╫О█√О©╫О©╫О©╫О©╫Х╤╗О©╫О©╫О©╫О█√О©╫t(б─б─б─б─б─б─б─б─О©╫((б─б─б─О©╫О©╫Н╪╖Н÷┤Ф│ Ф≈╕О©╫Ф┌╪Н■╔ХЁ╫Х╙╤О©╫Н÷┐}О©╫}Г■÷}О©╫О©╫О ┐О©╫О╧═Н·╚Н╔╣б─Ф╧█О©╫9Х²╢Н²┘(б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫О©╫О©╫Х©▀Н÷┐Е°┌О┘╞О©╫Ф─╢MО©╫О©╫Е÷▓Ф▄╪О©╫Е°╙Х╓⌠Ф√╧(б─б─б─б─б─б─б─б─б─б─б─Н╪┤О©╫Н■╔О├▀Е⌡ О©╫О©╫О█≥Х°┤Ф║╞О©╫О©╫О█┘((б─б─б─О©╫О©╫Н╪╖Н÷┤Ф│ Ф║╞И┌╞Х╛═Х╓∙О©╫Н■╔Х·╚О├⌡Н╗╚Д╪┌}Н∙┐Н÷┤}Е▌╜Ф│ О©╫О©╫}О©╫О ┤О©╫}Х©∙Х╓∙О©╫Н⌡╬О©╫О©╫О©╫Ф╧█О©╫9Х²╢Н²┘(б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫О©╫О©╫О©╫Х╓∙Н°√О©╫О≥╩Н÷▀}Х©∙Х╓∙Н°√Д©°Ф▀┼Х·╚О├⌡Н╗╚Д╪²О█▒б─О▐╞Ф≈╕Ф╥─О█┘О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨б╖О©╫Н■╔О├▀Е⌡ О©╫О©╫О░┐О©╫О©╫Д╩─б─О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫О©╫О©╫Х©▀Н÷┐Е°┌О┘╞О©╫Ф─╢MО©╫О©╫Е÷▓Ф▄╪О©╫Е°╙Х╓⌠Ф√╧(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╪ёО├ёН·≥О├▀Е⌡ О©╫О©╫О░┐О©╫О©╫О©╫О░▀О©╫О©╫О©╫О©╫(()О≥ёО├≈О©╫)О©╫Е╜╣Ф≈╕О©╫О©╫Ф≈╕Н²╜Н÷┤Ф█┬О╪°И╕╢Ф≈└Н÷┤И┌©QН÷┤О©╫
+О├≈Н°│О©╫(б─б─б─О©╫О©╫Н╪╖Н÷┤Ф│ Ф┌╪Н╡┐Ф═ЁН·÷Н╡┐Ф│ О©╫Ф║╞О≥⌠Н÷┐}О©╫Х©▀Н÷┤}О©╫О©╫О©╫О©╫Н■╔Ф≥╠О©╫Г╫╥Ф▄╪}Е╡╘О├┐Ф├÷О©╫О╧═Н·╚Н╔╣б─Ф╧█О©╫9Х²╢Н²┘(б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫Х│▓Н╗⌠О©╫И└▓Н·╞Х╛≈О©╫Ф┴╓Г▌┴О©╫Ф▄╪Ф┴·Н╧²О©╫О©╫О©╫Х─▀О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪÷Х²╦О©╫О©╫AО├⌡Н╧ О©╫Х─▀О©╫(б─б─б─б─б─б─б─б─б─б─б─О©╫О©╫О ┤О©╫О▐╞О©╫О©╫Е┬⌠Х╚▀б─О©╫О©╫)О©╫Е╜╣Ф≈╕Н╠┘Е├╠О©╫О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪╞О©╫Н·╤б─О©╫Е┬⌠Х╚▀б─О©╫О■·vgО©╫Н╚╫Г┴╡Х─▀О©╫(б─б─б─б─б─б─б─б─б─б─б─О©╫О©╫О ┤О©╫О▐╞Н°√Ф╔╕Г■╠Н·≥О░ёО©╫Ф─╢О©╫Н÷⌡О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪╞О©╫Н·╤Е╔╘Г┼╝О©╫}О░ёО©╫Ф─╢О©╫Ф≥╠О©╫О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨О©╫Н÷▀О©╫Ф│ Е╡╘О├┐Ф├÷О©╫}О©╫Ф║╞О≥⌠Н÷┌О╧═Ф█▒О©╫О©╫О ┤О©╫О▐╞Н°│Д╩─Н╪ёФ█▒О©╫О©╫О ┤О©╫О▐╞Н°│О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫О©╫О©╫О©╫Х╓∙Н°√Е╡╘О├┐Ф├÷О©╫}О©╫Ф║╞О≥⌠Н÷┌Е≈╤О©╫ХЁ╫О©╫Н÷┤Ф▀┼AХ²▄Н·╡О█┘О©╫О©╫Х╛≈О©╫Х╡┴(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╪⌠О©╫Иё╪Е╡╘О├┐Ф├÷О©╫}О©╫Ф║╞О≥⌠Н÷┌О╧═Ф█▒О©╫О©╫О ┤О©╫О▐╞Н°│О©╫Х©∙О÷╚Ф≥╠О©╫Ф┘╬О©╫(б─б─б─б─б─б─б─б─б─б─б─О©╫Х■╔О©╫О©╫б─О©╫Х╛≈О©╫Х≥÷О©╫Ф▌╖}О├⌠Н╡╝О©╫О©╫Г▌╛Х├╨(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨О©╫Х■╔О©╫О©╫О©╫mХ©∙О÷╚Н÷⌡О©╫Ф║╩О©╫О©╫Д╩─Н╪ёФ█▒Б┴╖О©╫Н·╤Е▐╕О©╫((б─б─б─О©╫О©╫Н╪╖Н÷┤Ф│ Ф┴■Х╛≈Е╔╥О©╫}Ф≥╠О©╫Г╫╥О├÷Н■╚Г╫╥Г■÷}Х▐┘О©╫Н▓┼О©╫О©╫О©╫Ф╧█О©╫9Х²╢Н²┘(б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨О╧░=UI
+}Y%=}Y=1U5О©╫Ф┬╡Её▒((б─б─б─О©╫О©╫Н╪╖Н÷┤Ф│ О≥╞Г╜┴О≥▒Н∙▐О©╫Ф│ О©╫Н·╩Г÷╩Х√└Х╚╦Х╚┤}О├┐Н■╔О©╫Е╔╥О©╫О┘╩}О©╫О©╫О©╫О©╫Г÷╩О©╫Г■╠О©╫О©╫О╧═Н·╚Н╔╣б─Ф╧█О©╫9Х²╢Н²┘(б─б─б─б─б─б─б─Н╪≈О©╫б─О©╫О©╫О©╫Е╞╙О©╫Е╞█О©╫О≥╞О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─б─О▐ёY	=IЕ┐▀-Н╡÷9MUО©╫UО©╫%
+
+%И²╩)И█╬О©╫EYHФ▐╓@Ф▒°О©╫О©╫5О©╫5О©╫5О©╫Н╕╒	И░╦MUY=I,О©╫
+e%$О©╫(б─б─б─б─б─б─б─б─О©╫(б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫Х│▓Н╗⌠О©╫И└▓Н·╞Х╛≈О©╫Ф┴╓Г▌┴О©╫Ф▄╪Ф┴·Н╧²О©╫О©╫О©╫Х─▀О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪÷Х²╦О©╫О©╫AО├⌡Н╧ О©╫Х─▀О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╩╩О©╫О©╫О©╫О©╫mЕ┬⌠Х╚▀б─О©╫О█║Х╢▐Х╓╦О©╫О©╫Е┬⌠Х╚▀б─О©╫О█║О═┐Х╓╦О©╫t(б─б─б─б─б─б─б─б─б─б─б─О©╫Х╓⌠Н╩╩О©╫О©╫Н╩╩О©╫Ф┴■О©╫Н÷├О©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╩╩О©╫О©╫Е╔╘Г┼╝О©╫}О░ёО©╫Ф─╢Х╓╦Н╞╘(б─б─б─б─б─б─б─б─б─б─б─О©╫О©╫Ф°╙б─О©╫Е┬⌠Х╚▀б─О©╫О░≈Х├²О©╫Е╔╘О├╒О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫О©╫Е▌╜О©╫Х┘╧Х©∙О÷╚О├÷Н■╚Ф┘╬О©╫О░⌡О©╫О©╫О├√Н╩╥О├┐Н■╥Н²┘(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╩╥О├┐Н■╥Н°√О©╫Ф▐╓О≥⌠О├┐О©╫Ф█╨Н╧╫О©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╩╥О├┐Н■╥Н°√О©╫Ф∙┼О┘©И└╧О©╫О©╫Н╨│О©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╩╥О├┐Н■╥Н°√О©╫О©╫О©╫О©╫О©╫О©╫Н╨≥Ф⌠╛Её▒(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╩╥О├┐Н■╥Н°√Ф╔╕Г■╠О©╫О©╫О©╫Ф─╢О©╫pХ│╞О©╫б─О©╫И┬╤Ф⌠╛О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪≈Е┬⌠Н╡╚Н÷┤Ф·■Н╪┤Г■÷ЕЁ©Н╗÷О©╫Е╦╗б─О©╫mt(б─б─б─б─б─б─б─б─б─б─б─Н╪÷Н÷┤Ф╒┤О©╫О©╫О≥╩О©╫О©╫}О≥╞Г╜┴О≥▒Е╡╘О├┐Ф├÷О©╫}Н∙▐О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╩╔Х©∙О÷╚О©╫О©╫О©╫Н╗╚О©╫О©╫О©╫Н╩╩О©╫Ф┴■О©╫Н÷┤tО©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╩╓Ф┬╡Х╗└б─Ф┬╡Ф∙╙О©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─О©╫О©╫Ф°╚}О©╫О©╫Ф■⌡Ф█▒О©╫О©╫Ф°╙Д╩─(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─О©╫О©╫Н╗©Г÷╩Е┬⌠Х╚▀Ф■⌡Ф█▒О╧▌Х²╦Х▀ЁО©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╪÷Н·©О©╫Х©∙О©╫}О©╫О©╫О©╫Е╝┘gО©╫Н╚╫О©╫О©╫/Б┘╔TО█▒(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╪▀Х╚╦Ф°╚Иё╪Е√└О©╫О©╫Н≤┘+Н≤┘/Н≤█О©╫nОё╦О©╫Ф╣─RО©╫О©╫О█▒(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╪⌠Иё╪ХЁ╫О©╫О©╫Х©▓И╨≥О┘©О©╫О©╫О©╫Ф∙∙Н°█Н╩╣О©╫О©╫Е╪≤О©╫ХЁ╫О©╫О©╫Х©▓О©╫Х╛═Н·ЁН▓┼О©╫Ф∙∙Н°│О©╫(б─б─б─б─б─б─б─б─б─б─б─б─О©╫(б─б─б─б─б─б─б─б─б─б─б─О©╫Х²╢О©╫Е║╣б─О©╫Ф─⌡Х·┌Е┐ О©╫Н∙▓Н╧ AО├⌡Н╧ О©╫И┌╞Ф∙≥Е≤≈О├⌡Н╧²б─О©╫О©╫О©╫Н╗©}О≥╞Е║╬Н·ЁИ┌©Ф─⌡Х·┌О█┘Е≤√О©╫Н■╔О©╫Ф┘⌡О©╫О©╫О©╫Ф≈╕Н╟╧О░⌠О©╫Ф╞╞О█┘О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪╞О©╫Н·╥}Ф▄╦О©╫О©╫О©╫О©╫Ф┘⌡ц≈О©╫О≥·О©╫Х╓⌠Н╪╖О©╫О≥·Н╩╩О©╫О≥╞Е║╬Н·ЁЕЁ╛О░▐О©╫О≥÷О©╫tН╩╩О©╫Ф▄╦О©╫Х║█О▐╥О┘©О©╫tб─И░─б─О■·vgО©╫Н╚╫О©╫RО©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨б╖Н·╡Б┴╖О©╫Н·╥}Ф▄╦О©╫Х║█О░▀О©╫О©╫Е║╬О©╫tД╩─б─О÷╝(б─б─б─б─б─б─б─б─б─б─б─О©╫Х╓⌠Н╪ёО©╫О©╫Е║╣Н╩╩О©╫Ф≥╠О©╫Г╫╥Ф▄╦О©╫Х║█О░▀О©╫О©╫Е║╬О©╫tО©╫(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╪≈Х╚┤Г■╠Ф°╚О©╫О©╫О©╫Ф┘⌡Б─≤О©╫О©╫Н╗╚О©╫Г■╠Н·╝Н╩╩О©╫О©╫Н╡≈Н·ЁЕЁ╛О©╫Х■╔Е√└Иё╪О©╫О©╫О©╫О©╫О©╫tН╩╩О©╫Г■╠Н·╞lО▐©Е┬⌠О©╫Е╔╥Ф├╒Ф═╚О©╫О▐■б─И░─б─О©╫-QФ√╡Н²²Х╚┤Г■╠Ф°╚И┴┘О█┘(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨б╖Н·╡Б└┘Х╚┤Г■╠Ф°╚И⌡█О▐╚Н÷÷Н╗╥О┘©Н·≥Ф┌╪Х©√О▐■Д╩─б─О÷╝(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨Б└┘Е┬⌠Н╡╚Н÷┤Г▌╛Фё═tО©╫Х╜╚Её▒(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Ф▌╔Х╚┤О©╫Г╨⌠О┘╨О╧▌Н÷┤Ф╒┤И┌©Н∙⌡О©╫Ф┌▓Х²╢}О©╫О≥╞О©╫Ф─°б─Х╜╚Е╧╚Н╪≈О©╫О©╫ФЁ■О÷╝((б─б─б─О©╫О©╫Н╪╖Н÷┤Ф│ О©╫И╕╢Ф┌▓О©╫}О├┐Н■╔Ф║╞Ф╠─О©╫}О©╫О©╫О╧═Н·╚Н╔╣б─Ф╧█О©╫9Х²╢Н²┘(б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫Х│▓Н╗⌠О©╫И└▓Н·╞Х╛≈О©╫Ф┴╓Г▌┴О©╫Ф▄╪Ф┴·Н╧²О©╫О©╫О©╫Х─▀О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨О╧═О├┐Г■╠Д╩©Н·≥Н∙▐О©╫Ф│ О©╫О©╫О©╫Н╚║/Б┘╔TИ╓┬О©╫6'Н╢║Н┤■Н╞╘О©╫О©╫О©╫/Б┘╔U}О©╫6'Н╢║Н┬⌠О█┘(б─б─б─б─б─б─б─б─б─б─б─б─О╪▄О├⌡Н╧ О©╫Х─▀О©╫О©╫О©╫Г²╖О©╫&О©╫Е┘│Г╜▐Н■╚О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨О╪°И╕╢Г╨⌠Н·≥Н∙▐О©╫Ф│ О©╫О©╫ц≈Н·╞Е╧╚б─О©╫Г²╖О©╫&О©╫Д╩─б─О©╫Г²╖О©╫&Е╖╔О©╫ Д╬≈О©╫$О█┘((б─б─б─О©╫О©╫Н╪╖Н÷┤Ф│ О≥╞О©╫О©╫Ф║╬О©╫}Н∙▐О©╫Ф│ Н╗╚О©╫Н÷┐}О©╫Г÷╩ХЁ╫Ф°╚Г┼╝Ф═╣О╧═Н·╚Н╔╣б─Ф╧█О©╫9Х²╢Н²┘(б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫Х│▓Н╗⌠О©╫И└▓Н·╞Х╛≈О©╫Ф┴╓Г▌┴О©╫Ф▄╪Ф┴·Н╧²О©╫О©╫О©╫Х─▀О©╫(б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨О©╫Н÷▀О©╫Ф│ Е╡╘О├┐Ф├÷О©╫}Н∙▐О©╫Ф∙┼}О©╫О©╫ц≈Н·╞Её▒О©╫О©╫Х─▀О©╫((б─б─б─О©╫О©╫Н╪╖Н÷┤Ф│ О©╫О≥╞Г÷╩О├▀Х┴╠О░⌠О©╫О©╫}Г■÷}О©╫О©╫О ┐О©╫}О├┐Н■╔Х²▄Н·ЁО©╫О╧═Н·╚Н╔╣б─Ф╧█О©╫9Х²╢Н²┘(б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫Х│▓Н╗⌠О©╫И└▓Н·╞Х╛≈О©╫Ф┴╓Г▌┴О©╫Ф▄╪Ф┴·Н╧²О©╫О©╫О©╫Х─▀О©╫(б─б─б─б─б─б─б─б─б─б─б─О©╫Х╛═}О░⌠О©╫О©╫б─О©╫AО├⌡Н╧ О©╫Х─▀О©╫О©╫О©╫&О©╫bО©╫Ф╖└Н≤┘kО©╫& О©╫Х╛┼О©╫(б─б─б─б─б─б─б─б─б─б─б─О©╫Х╛═}О░⌠О©╫О©╫Е┐╠О©╫Г▌└Н╧²(б─б─б─б─б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫О©╫О©╫О©╫Х╓∙Н°√Е╡╘О├┐Ф├÷О©╫}Н·ЁН╡┤О©╫Е≈╤Ф╗≈Е≤≈О©╫О©╫Х╓∙О©╫О©╫О©╫О├⌠Ф░≤О©╫Ф√╧(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥Г╨⌠О┘╨О©╫Н÷▀О©╫Ф│ Е╡╘О├┐Ф├÷О©╫}Н÷⌡О©╫Ф║╩О©╫О©╫О╧═Ф█▒О©╫Х╛═}О░⌠О©╫О©╫Д╦╜О©╫Х©∙О÷╚О├▀Х┴╠О░⌠О©╫О©╫Д╦╜(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╪ЁГ■╠О©╫О©╫О©╫О©╫О©╫Х╓∙Н°√Е╡╘О├┐Ф├÷О©╫}Н·ЁН╡┤О©╫Е≈╤О©╫ХЁ╫О©╫Н÷┤Ф▀┼AХ²▄Н·╡О█┘О©╫О©╫Х╛≈О©╫Х╡┴(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╪⌠О©╫Иё╪Е╡╘О├┐Ф├÷О©╫О╧═Ф█▒О©╫Х╛═}О░⌠О©╫О©╫Д╦╜(б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─б─Н╪≈Х²▄Н·╡О©╫Х©▀Н÷┐Ф│ О©╫Ф▌╖О©╫}Х²╢О©╫}Ф░≤О©╫О╦╪О█·Ф╒═О═┤О▐ёХ°┤Х²▄Н·╡О█▒Н╪ёФ█▒О©╫Х╛═}О░⌠О©╫О©╫Е▐╕О©╫О≥ёХ╚┤Н·≥О©╫Ф╡╜QЕ╟╔Н°│((б─б─б─О©╫О©╫Н╪╖Н÷┤Ф│ И┌╞О░▐Г■╠О©╫Г÷╩О├⌠Н·≥О≥ёО┘©О©╫Н■╔Ф▄╪}О├÷Н■╚Г╫╥Н∙⌡О©╫Ф┌▓Х·┌О╧═Н·╚Н╔╣б─Ф╧█О©╫9Х²╢Н²┘(б─б─б─б─б─б─б─Н╪ёХ╙©О©╫О©╫О©╫О©╫(б─б─б─б─б─б─б─б─б─б─б─б─О█╕qХ⌡╩Г┤╝Ф⌠╛Иё╨Е╧╚И┤▀О©╫Ф√░О©╫Ф⌠╛Иё╨Г┤╝Ф√┌Е∙╙Ф⌠╠qО©╫Г°╬Н≤┘О©╫>Н·█И⌡╩О©╫(б─б─б─б─б─б─б─б─б─б─б─б─О█╙qХ⌡╩Г┤╝Ф⌠╛Иё╨О÷╨Ф⌠╛О©╫Ф√░О©╫Ф⌠╛Иё╨Г┤╝Ф╝╝Е│╞Ф⌠╠qО©╫Г°╬Н≤█3О©╫>Н·█И⌡╩О©╫(б─б─б─б─б─б─б─б─б─б─б─б─О█╝qХ⌡╩Г┤╝Ф⌠╛Иё╨Е═╦Ф⌠╛О©╫Ф√░О©╫Ф⌠╛Иё╨Г┤╝Ф©╓Е│╞Ф⌠╠qХ╙╔О©╫О©╫Х╚╡2Н═╖Е╢─О©╫(б─б─б─б─б─б─б─б─О©╫(б─б─б─б─б─б─б─Н╪÷Н÷┤Ф╒┤О©╫О©╫О≥ёО┘©Х┴╠Х≥╜Ф│ О©╫Ф┘⌡О╧═Х╙©О©╫Н°█б─Г÷╧О═┼Х┬┴Ф⌠╛Её▒(б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥%О©╫О█║Г┤╝Ф⌠╛Иё╨Ф─°О═┼О©╫О©╫О©╫И┌╞Ф∙≥О©╫(б─б─б─б─б─б─б─Н╪ёН·╚Н╕┼О├≈О©╫Е╔╥9Х╚╦%О©╫О■ О©╫О©╫Х╚╡2Н═╖О©╫О©╫О©╫И┌╞Ф∙≥О©╫(()О©╫Н╩╣}О©╫О©╫}|б─И░─б─О▐²}О©╫Ф≈╕}|О▌┴(б─б─б─Н╪╚И╕╢Ф≈└Н÷┤И┌©О©╫Ф√╔Н╧²(
