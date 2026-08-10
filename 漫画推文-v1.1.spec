@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='漫画推文-v1.0',
+    name='漫画推文-v1.1',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

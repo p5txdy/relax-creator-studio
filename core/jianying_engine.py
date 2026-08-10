@@ -13,6 +13,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, Sequence
 
+from .comic_presentation import STATIC_MOTION, moves_up, normalize_motion_mode
 from .video_engine import ASPECT_SIZES, VideoClip, VideoProject, fit_clips_to_duration
 
 
@@ -384,7 +385,7 @@ def create_comic_jianying_draft(
     audio_path: str,
     subtitles_path: str = "",
     aspect: str = "9:16",
-    motion_mode: str = "上下交替关键帧",
+    motion_mode: str = "抖音漫画推文效果",
     drafts_root: str,
     requested_name: str,
     fps: int = 30,
@@ -418,6 +419,7 @@ def create_comic_jianying_draft(
     name = unique_draft_name(str(root), requested_name)
     width, height = ASPECT_SIZES.get(aspect, ASPECT_SIZES["9:16"])
     fps = min(max(int(fps), 15), 60)
+    motion_mode = normalize_motion_mode(motion_mode)
     try:
         report(0.03, "正在读取配音时长…")
         voice_material = draft.AudioMaterial(audio_path)
@@ -440,10 +442,10 @@ def create_comic_jianying_draft(
 
         cursor = 0
         panel_count = len(image_paths)
-        pan = 0.035
+        pan = 0.045
         for index, (path, duration) in enumerate(zip(image_paths, clip_durations)):
             material = draft.VideoMaterial(path)
-            clip_scale = 1.0 if motion_mode == "无关键帧" else 1.08
+            clip_scale = 1.0 if motion_mode == STATIC_MOTION else 1.10
             segment = draft.VideoSegment(
                 material,
                 draft.Timerange(cursor, duration),
@@ -451,11 +453,9 @@ def create_comic_jianying_draft(
                 volume=0.0,
                 clip_settings=draft.ClipSettings(scale_x=clip_scale, scale_y=clip_scale),
             )
-            if motion_mode != "无关键帧":
-                move_up = motion_mode == "向上移动关键帧" or (motion_mode == "上下交替关键帧" and index % 2 == 0)
-                if motion_mode == "向下移动关键帧":
-                    move_up = False
-                start_y, end_y = (-pan, pan) if move_up else (pan, -pan)
+            if motion_mode != STATIC_MOTION:
+                upward = moves_up(motion_mode, index)
+                start_y, end_y = (-pan, pan) if upward else (pan, -pan)
                 segment.add_keyframe(draft.KeyframeProperty.position_y, 0, start_y)
                 segment.add_keyframe(draft.KeyframeProperty.position_y, max(duration - 1, 0), end_y)
             script.add_segment(segment, "静态漫画")
@@ -482,7 +482,21 @@ def create_comic_jianying_draft(
                 with tempfile.NamedTemporaryFile("w", suffix=".srt", encoding="utf-8-sig", delete=False) as temp:
                     temp.write(clamped)
                     temp_path = temp.name
-                script.import_srt(temp_path, "字幕")
+                subtitle_template = draft.TextSegment(
+                    "字幕",
+                    draft.Timerange(0, 1),
+                    style=draft.TextStyle(
+                        size=7.2,
+                        bold=True,
+                        color=(1.0, 0.80, 0.08),
+                        align=1,
+                        auto_wrapping=True,
+                        max_line_width=0.82,
+                    ),
+                    clip_settings=draft.ClipSettings(transform_y=-0.68),
+                    border=draft.TextBorder(alpha=1.0, color=(0.0, 0.0, 0.0), width=55.0),
+                )
+                script.import_srt(temp_path, "字幕", style_reference=subtitle_template, clip_settings=None)
             finally:
                 if temp_path:
                     try:

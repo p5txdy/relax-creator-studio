@@ -51,13 +51,13 @@ collect = COLLECT(
 
 app = BUNDLE(
     collect,
-    name="漫画推文-v1.0.app",
+    name="漫画推文-v1.0.3.app",
     icon=None,
     bundle_identifier="com.comicpost.studio",
     info_plist={
         "CFBundleDisplayName": "漫画推文",
-        "CFBundleShortVersionString": "1.0",
-        "CFBundleVersion": "1.0",
+        "CFBundleShortVersionString": "1.0.3",
+        "CFBundleVersion": "1.0.3",
         "NSHighResolutionCapable": True,
         "NSHumanReadableCopyright": "Copyright © 2026 Comic Post Studio",
     },

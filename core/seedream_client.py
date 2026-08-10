@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import base64
 import json
+import re
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
@@ -11,9 +12,12 @@ from typing import Callable, Mapping, Sequence
 from .comic_engine import ComicEngineError
 
 
-SEEDREAM_MODEL = "doubao-seedream-5-0-pro-260628"
+SEEDREAM_PRO_MODEL = "doubao-seedream-5-0-260128"
+SEEDREAM_LITE_MODEL = "doubao-seedream-5-0-lite-260128"
+LEGACY_SEEDREAM_PRO_MODEL = "doubao-seedream-5-0-pro-260628"
+SEEDREAM_MODEL = SEEDREAM_PRO_MODEL
 SEEDREAM_BASE_URL = "https://ark.cn-beijing.volces.com/api/v3"
-SEEDREAM_SIZES = ("1K", "1.5K", "2K")
+SEEDREAM_SIZES = ("2K", "3K", "4K")
 
 
 @dataclass(frozen=True)
@@ -40,6 +44,17 @@ def _error_detail(payload: object, fallback: str) -> str:
     return str(error or payload.get("message") or fallback)
 
 
+def _api_size(value: str) -> str:
+    """Translate the UI resolution label to Seedream 5.0's API spelling."""
+    normalized = value.strip()
+    preset = normalized.upper()
+    if preset in SEEDREAM_SIZES:
+        return preset.lower()
+    if re.fullmatch(r"\d{3,5}x\d{3,5}", normalized.lower()):
+        return normalized.lower()
+    raise ComicEngineError("Seedream 5.0 分辨率只支持 2K、3K、4K 或明确的宽x高像素。")
+
+
 class DoubaoSeedreamClient:
     """Dependency-free client for Volcengine Ark's Seedream image API."""
 
@@ -56,7 +71,7 @@ class DoubaoSeedreamClient:
             headers={
                 "Authorization": f"Bearer {self.config.api_key.strip()}",
                 "Content-Type": "application/json",
-                "User-Agent": "ComicPostStudio/1.0",
+                "User-Agent": "ComicPostStudio/1.1",
             },
             method=method,
         )
@@ -70,6 +85,18 @@ class DoubaoSeedreamClient:
             except json.JSONDecodeError:
                 parsed = None
             detail = _error_detail(parsed, raw or str(exc))
+            if exc.code == 404 and "has not activated" in detail.lower():
+                model_name = "Seedream 5.0 Lite" if self.config.model == SEEDREAM_LITE_MODEL else "Seedream 5.0"
+                detail = (
+                    f"当前火山方舟账号尚未开通 {model_name}（{self.config.model}）。"
+                    "请在火山方舟控制台的“开通管理 → 视觉模型”中开通该模型，"
+                    "或回到批量出图页改选已经开通的模型。"
+                )
+            elif exc.code == 400 and "parameter `size`" in detail.lower():
+                detail = (
+                    "图片分辨率参数不受当前 Seedream 5.0 接口支持。"
+                    "请使用 2K、3K 或 4K；程序会自动转换为接口要求的小写格式。"
+                )
             raise ComicEngineError(f"火山方舟接口返回错误（{exc.code}）：{detail}") from exc
         except urllib.error.URLError as exc:
             raise ComicEngineError(f"无法连接火山方舟接口：{exc.reason}") from exc
@@ -95,8 +122,7 @@ class DoubaoSeedreamClient:
     ) -> dict[str, object]:
         if not prompt.strip():
             raise ComicEngineError("图片提示词不能为空。")
-        if size not in SEEDREAM_SIZES:
-            raise ComicEngineError("Seedream 分辨率只支持 1K、1.5K 或 2K。")
+        api_size = _api_size(size)
         if output_format not in {"png", "jpeg"}:
             raise ComicEngineError("Seedream 输出格式只支持 png 或 jpeg。")
         if optimize_mode not in {"standard", "fast"}:
@@ -108,7 +134,7 @@ class DoubaoSeedreamClient:
         request_payload: dict[str, object] = {
             "model": self.config.model.strip() or SEEDREAM_MODEL,
             "prompt": prompt.strip(),
-            "size": size,
+            "size": api_size,
             "response_format": "url",
             "output_format": output_format,
             "watermark": bool(watermark),
@@ -155,7 +181,7 @@ class DoubaoSeedreamClient:
         else:
             request = urllib.request.Request(
                 image_url,
-                headers={"User-Agent": "ComicPostStudio/1.0"},
+                headers={"User-Agent": "ComicPostStudio/1.1"},
                 method="GET",
             )
             try:

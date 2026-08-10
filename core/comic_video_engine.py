@@ -6,6 +6,7 @@ from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Sequence
 
+from .comic_presentation import STATIC_MOTION, moves_up, normalize_motion_mode
 from .video_engine import ASPECT_SIZES
 
 
@@ -186,24 +187,23 @@ def _subtitle_filter_path(path: str | Path) -> str:
 
 
 def _motion_filter(index: int, frames: int, width: int, height: int, mode: str, fps: int) -> str:
-    source_width = int(width * 1.10) // 2 * 2
-    source_height = int(height * 1.10) // 2 * 2
+    mode = normalize_motion_mode(mode)
+    source_width = int(width) // 2 * 2
+    source_height = int(height) // 2 * 2
     base = (
         f"scale={source_width}:{source_height}:force_original_aspect_ratio=increase,"
         f"crop={source_width}:{source_height}"
     )
     denominator = max(frames - 1, 1)
     x = "iw/2-(iw/zoom/2)"
-    if mode == "无关键帧":
+    if mode == STATIC_MOTION:
         zoom = "1.0"
         x = "0"
         y = "0"
     else:
-        zoom = "1.08"
-        move_up = mode == "向上移动关键帧" or (mode == "上下交替关键帧" and index % 2 == 0)
-        if mode == "向下移动关键帧":
-            move_up = False
-        y = f"(ih-ih/zoom)*on/{denominator}" if move_up else f"(ih-ih/zoom)*(1-on/{denominator})"
+        zoom = "1.10"
+        upward = moves_up(mode, index)
+        y = f"(ih-ih/zoom)*on/{denominator}" if upward else f"(ih-ih/zoom)*(1-on/{denominator})"
     return (
         f"{base},zoompan=z='{zoom}':x='{x}':y='{y}':d={frames}:s={width}x{height}:fps={fps},"
         f"trim=duration={frames / fps:.3f},setpts=PTS-STARTPTS,format=yuv420p"
@@ -217,7 +217,7 @@ def build_comic_video_command(
     audio_path: str,
     subtitles_path: str = "",
     aspect: str = "9:16",
-    motion_mode: str = "上下交替关键帧",
+    motion_mode: str = "抖音漫画推文效果",
     ffmpeg_path: str = "ffmpeg",
     output_path: str,
     fps: int = 30,
@@ -254,7 +254,7 @@ def build_comic_video_command(
     video_map = "[vcat]"
     if subtitles_path:
         subtitle_path = _subtitle_filter_path(subtitles_path)
-        style = "FontName=Microsoft YaHei,FontSize=18,PrimaryColour=&H00FFFFFF,OutlineColour=&H90000000,Outline=2,Shadow=0,Alignment=2,MarginV=90"
+        style = "FontName=Microsoft YaHei,FontSize=34,Bold=1,PrimaryColour=&H0014CCFF,OutlineColour=&H00000000,Outline=4,Shadow=0,Alignment=2,MarginV=180"
         filters.append(f"[vcat]subtitles=filename='{subtitle_path}':force_style='{style}'[vsub]")
         video_map = "[vsub]"
     filters.append(f"[{audio_index}:a]atrim=duration={total_duration:.3f},asetpts=PTS-STARTPTS[voice]")

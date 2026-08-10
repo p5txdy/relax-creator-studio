@@ -11,6 +11,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from .comic_presentation import DOUYIN_COMIC_MOTION, normalize_motion_mode
+from .seedream_client import LEGACY_SEEDREAM_PRO_MODEL, SEEDREAM_LITE_MODEL, SEEDREAM_PRO_MODEL, SEEDREAM_SIZES
+
 
 COMIC_PROJECT_DEFAULT: dict[str, Any] = {
     "project_id": "",
@@ -24,12 +27,13 @@ COMIC_PROJECT_DEFAULT: dict[str, Any] = {
     "analysis_chunk_chars": 3500,
     "resolution": "2K",
     "optimize_mode": "standard",
+    "shot_image_model": "doubao-seedream-5-0-lite-260128",
     "workspace_step": 0,
     "output_dir": "",
     "audio_path": "",
     "audio_duration": 0.0,
     "subtitles_path": "",
-    "motion_mode": "上下交替关键帧",
+    "motion_mode": DOUYIN_COMIC_MOTION,
     "video_output_path": "",
     "jianying_draft_path": "",
     "jianying_draft_name": "",
@@ -80,7 +84,7 @@ DEFAULT_STATE: dict[str, Any] = {
         "jianying_exe": "",
         "jianying_drafts_path": "",
         "ark_base_url": "https://ark.cn-beijing.volces.com/api/v3",
-        "ark_model": "doubao-seedream-5-0-pro-260628",
+        "ark_model": SEEDREAM_PRO_MODEL,
         "remember_ark_api_key": True,
     },
     "projects": [],
@@ -149,6 +153,8 @@ class StateStore:
                         if key == "api_key" or key.endswith("_api_key"):
                             settings.pop(key, None)
                     settings.pop("yunwu_base_url", None)
+                    if str(settings.get("ark_model", "")).strip() == LEGACY_SEEDREAM_PRO_MODEL:
+                        settings["ark_model"] = SEEDREAM_PRO_MODEL
                 comic = saved.get("comic", {})
                 if isinstance(comic, dict):
                     comic.pop("bot_type", None)
@@ -173,8 +179,15 @@ class StateStore:
                     project.pop("bot_type", None)
                     project.pop("upscale_index", None)
                     project.pop("segment_chars", None)
-                    if str(project.get("motion_mode", "")) not in {"上下交替关键帧", "向上移动关键帧", "向下移动关键帧", "无关键帧"}:
-                        project["motion_mode"] = "上下交替关键帧"
+                    shot_model = str(project.get("shot_image_model", "")).strip()
+                    if shot_model == LEGACY_SEEDREAM_PRO_MODEL:
+                        shot_model = SEEDREAM_PRO_MODEL
+                    if shot_model not in {SEEDREAM_LITE_MODEL, SEEDREAM_PRO_MODEL}:
+                        shot_model = SEEDREAM_LITE_MODEL
+                    project["shot_image_model"] = shot_model
+                    if str(project.get("resolution", "")).strip().upper() not in SEEDREAM_SIZES:
+                        project["resolution"] = "2K"
+                    project["motion_mode"] = normalize_motion_mode(project.get("motion_mode"))
                     project["project_id"] = str(project.get("project_id", "")).strip() or uuid.uuid4().hex
                     now = datetime.now().isoformat(timespec="seconds")
                     project["created_at"] = str(project.get("created_at", "")).strip() or now

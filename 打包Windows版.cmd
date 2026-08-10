@@ -16,7 +16,7 @@ if not exist ".\vendor\pyJianYingDraft\__init__.py" (
   python -m pip install --disable-pip-version-check --upgrade --target ".\vendor" "pyJianYingDraft==0.3.0"
   if errorlevel 1 exit /b 1
 )
-python -m PyInstaller --noconfirm --clean --windowed --onefile --paths ".\vendor" --add-binary ".\vendor\pymediainfo\MediaInfo.dll;pymediainfo" --add-data ".\vendor\pyJianYingDraft\assets;pyJianYingDraft\assets" --exclude-module "uiautomation" --exclude-module "comtypes" --exclude-module "imageio" --exclude-module "numpy" --name "漫画推文-v1.0" --distpath "dist" --workpath "build-v1.0" --specpath "." "app.py"
+python -m PyInstaller --noconfirm --clean --windowed --onefile --paths ".\vendor" --add-binary ".\vendor\pymediainfo\MediaInfo.dll;pymediainfo" --add-data ".\vendor\pyJianYingDraft\assets;pyJianYingDraft\assets" --exclude-module "uiautomation" --exclude-module "comtypes" --exclude-module "imageio" --exclude-module "numpy" --name "漫画推文-v1.1" --distpath "dist" --workpath "build-v1.1" --specpath "." "app.py"
 if errorlevel 1 (
   echo.
   echo 打包失败，请检查上面的错误信息。
@@ -24,5 +24,5 @@ if errorlevel 1 (
   exit /b 1
 )
 echo.
-echo 打包完成：%CD%\dist\漫画推文-v1.0.exe
+echo 打包完成：%CD%\dist\漫画推文-v1.1.exe
 pause

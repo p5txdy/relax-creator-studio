@@ -156,7 +156,7 @@ class OpenAICompatibleClient:
             headers={
                 "Authorization": f"Bearer {self.config.api_key.strip()}",
                 "Content-Type": "application/json",
-                "User-Agent": "ComicPostStudio/1.0",
+                "User-Agent": "ComicPostStudio/1.0.3",
             },
             method="POST",
         )
