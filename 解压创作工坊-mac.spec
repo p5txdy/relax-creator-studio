@@ -1,17 +1,24 @@
 # -*- mode: python ; coding: utf-8 -*-
 
 import os
+from pathlib import Path
+
+import pyJianYingDraft
 
 
 mediainfo_library = os.environ.get("CREATOR_MEDIAINFO_LIB", "")
 if not mediainfo_library or not os.path.isfile(mediainfo_library):
     raise SystemExit("CREATOR_MEDIAINFO_LIB 未指向有效的 libmediainfo.dylib")
 
+draft_assets = Path(pyJianYingDraft.__file__).resolve().parent / "assets"
+if not draft_assets.is_dir():
+    raise SystemExit(f"未找到 pyJianYingDraft 资源目录：{draft_assets}")
+
 a = Analysis(
     ["app.py"],
     pathex=[],
     binaries=[(mediainfo_library, "pymediainfo")],
-    datas=[("./vendor/pyJianYingDraft/assets", "pyJianYingDraft/assets")],
+    datas=[(str(draft_assets), "pyJianYingDraft/assets")],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -51,13 +58,13 @@ collect = COLLECT(
 
 app = BUNDLE(
     collect,
-    name="漫画推文-v1.0.3.app",
+    name="漫画推文-v1.1.app",
     icon=None,
     bundle_identifier="com.comicpost.studio",
     info_plist={
         "CFBundleDisplayName": "漫画推文",
-        "CFBundleShortVersionString": "1.0.3",
-        "CFBundleVersion": "1.0.3",
+        "CFBundleShortVersionString": "1.1",
+        "CFBundleVersion": "1.1",
         "NSHighResolutionCapable": True,
         "NSHumanReadableCopyright": "Copyright © 2026 Comic Post Studio",
     },
