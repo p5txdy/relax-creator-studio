@@ -2,6 +2,17 @@ name: Build macOS v1.1
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - app.py
+      - core/**
+      - requirements-macos.txt
+      - 打包Mac版.command
+      - 启动Mac开发版.command
+      - 解压创作工坊-mac.spec
+      - .github/workflows/build-macos.yml
   pull_request:
     branches:
       - main
@@ -15,7 +26,7 @@ on:
       - .github/workflows/build-macos.yml
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build-macos:
@@ -30,10 +41,12 @@ jobs:
             python-arch: arm64
             label: Apple Silicon
             artifact: 漫画推文-v1.1-macOS-Apple-Silicon
+            dmg-name: 漫画推文-v1.1-macOS-Apple-Silicon.dmg
           - runner: macos-15-intel
             python-arch: x64
             label: Intel
             artifact: 漫画推文-v1.1-macOS-Intel
+            dmg-name: 漫画推文-v1.1-macOS-Intel.dmg
 
     steps:
       - name: Checkout
@@ -58,11 +71,35 @@ jobs:
           test -d "dist-macos/漫画推文-v1.1.app"
           test -f "dist-macos/漫画推文-v1.1-macOS.dmg"
           codesign --verify --deep --strict "dist-macos/漫画推文-v1.1.app"
+          mv "dist-macos/漫画推文-v1.1-macOS.dmg" "dist-macos/${{ matrix.dmg-name }}"
 
       - name: Upload DMG
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact }}
-          path: dist-macos/漫画推文-v1.1-macOS.dmg
+          path: dist-macos/${{ matrix.dmg-name }}
           if-no-files-found: error
           retention-days: 30
+
+  publish-release:
+    name: Publish permanent downloads
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build-macos
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download both packages
+        uses: actions/download-artifact@v4
+        with:
+          pattern: 漫画推文-v1.1-macOS-*
+          path: release-assets
+          merge-multiple: true
+
+      - name: Create or update v1.1 release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view v1.1 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload v1.1 release-assets/*.dmg --clobber --repo "$GITHUB_REPOSITORY"
+          else
+            gh release create v1.1 release-assets/*.dmg --target "$GITHUB_SHA" --title "漫画推文 v1.1" --notes "Windows v1.1 源码与 macOS Apple Silicon / Intel 原生安装包。" --repo "$GITHUB_REPOSITORY"
+          fi

@@ -84,7 +84,7 @@ python .\app.py
 
 ## macOS 运行
 
-GitHub 自动构建会同时生成 Apple 芯片（M1/M2/M3/M4 等）和 Intel 两个 DMG。下载与自己 Mac 处理器对应的产物后：
+GitHub Releases 会同时提供 Apple 芯片（M1/M2/M3/M4 等）和 Intel 两个 DMG。下载与自己 Mac 处理器对应的安装包后：
 
 1. 双击 `漫画推文-v1.1-macOS.dmg`，把 `漫画推文-v1.1.app` 拖入“应用程序”。
 2. 首次启动时在 Finder 的“应用程序”中右键该应用，选择“打开”，再确认一次“打开”。
@@ -111,7 +111,7 @@ python -m unittest discover -s tests -v
 
 Windows 单文件产物位于 `dist\漫画推文-v1.1.exe`。
 
-推送相关变更或创建拉取请求后，`.github/workflows/build-macos.yml` 会在原生 Apple Silicon 与 Intel macOS 运行器上分别构建并上传 DMG。
+推送相关变更或创建拉取请求后，`.github/workflows/build-macos.yml` 会在原生 Apple Silicon 与 Intel macOS 运行器上分别构建并上传 DMG；合并至 `main` 后会把两个安装包永久发布到 v1.1 Release。
 
 ## 内容权利
 
