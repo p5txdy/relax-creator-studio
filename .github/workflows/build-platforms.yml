@@ -1,0 +1,97 @@
+name: Build Windows and macOS
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    name: Windows x64
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          architecture: x64
+          cache: pip
+          cache-dependency-path: requirements-windows.txt
+
+      - name: Build Windows EXE
+        shell: cmd
+        run: |
+          set CI=1
+          call 打包Windows版.cmd
+
+      - name: Verify Windows EXE
+        shell: cmd
+        run: "dist\\漫画推文-v1.1.exe --self-test"
+
+      - name: Upload Windows package
+        uses: actions/upload-artifact@v4
+        with:
+          name: ComicPostStudio-v1.1-Windows-x64
+          path: dist/漫画推文-v1.1.exe
+          if-no-files-found: error
+          retention-days: 30
+
+  macos:
+    name: macOS ${{ matrix.label }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-14
+            python-arch: arm64
+            label: Apple Silicon
+            artifact: ComicPostStudio-v1.1-macOS-Apple-Silicon
+          - runner: macos-15-intel
+            python-arch: x64
+            label: Intel
+            artifact: ComicPostStudio-v1.1-macOS-Intel
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          architecture: ${{ matrix.python-arch }}
+          cache: pip
+          cache-dependency-path: requirements-macos.txt
+
+      - name: Install native dependencies
+        run: brew install libmediainfo ffmpeg
+
+      - name: Build macOS application
+        run: |
+          chmod +x 启动Mac开发版.command 打包Mac版.command
+          zsh ./打包Mac版.command
+
+      - name: Verify macOS package
+        run: |
+          test -d "dist-macos/漫画推文-v1.1.app"
+          test -f "dist-macos/漫画推文-v1.1-macOS.dmg"
+          codesign --verify --deep --strict "dist-macos/漫画推文-v1.1.app"
+
+      - name: Upload macOS package
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: dist-macos/漫画推文-v1.1-macOS.dmg
+          if-no-files-found: error
+          retention-days: 30

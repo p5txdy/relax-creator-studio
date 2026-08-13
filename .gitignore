@@ -1,10 +1,15 @@
 __pycache__/
 *.py[cod]
 .venv*/
+.venv-windows/
+.venv-macos/
 build*/
 dist/
+dist-macos/
 dist-macos/*.app/
 dist-macos/*.dmg
 vendor/
 *.log
 state.json
+*.tmp
+.DS_Store

@@ -5,6 +5,7 @@ import os
 import shutil
 import sys
 import tempfile
+import time
 import uuid
 from copy import deepcopy
 from datetime import datetime
@@ -12,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from .comic_presentation import DOUYIN_COMIC_MOTION, normalize_motion_mode
+from .novel_engine import NOVEL_COMMENTARY_MODE, NOVEL_COMMENTARY_STYLE
 from .seedream_client import LEGACY_SEEDREAM_PRO_MODEL, SEEDREAM_LITE_MODEL, SEEDREAM_PRO_MODEL, SEEDREAM_SIZES
 
 
@@ -37,6 +39,21 @@ COMIC_PROJECT_DEFAULT: dict[str, Any] = {
     "video_output_path": "",
     "jianying_draft_path": "",
     "jianying_draft_name": "",
+    "cover": {
+        "title": "",
+        "prompt": "",
+        "character": "",
+        "scene": "",
+        "task_id": "",
+        "status": "未生成",
+        "progress": "0%",
+        "image_url": "",
+        "local_path": "",
+        "error": "",
+        "final_prompt": "",
+        "image_model": "",
+        "images": [],
+    },
     "characters": [],
     "scenes": [],
     "shots": [],
@@ -47,8 +64,8 @@ NOVEL_DEFAULT: dict[str, Any] = {
     "project_name": "未命名小说",
     "source_path": "",
     "source_text": "",
-    "mode": "深度改写",
-    "style": "节奏紧凑、画面感强",
+    "mode": NOVEL_COMMENTARY_MODE,
+    "style": NOVEL_COMMENTARY_STYLE,
     "perspective": "保持原视角",
     "target_length": "与原文接近",
     "custom_rules": "保留核心剧情，不改变关键因果。",
@@ -73,7 +90,7 @@ def new_comic_project(name: str = "未命名漫画推文") -> dict[str, Any]:
 
 
 DEFAULT_STATE: dict[str, Any] = {
-    "schema_version": 3,
+    "schema_version": 4,
     "settings": {
         "provider": "openai",
         "base_url": "https://api.openai.com/v1",
@@ -107,11 +124,14 @@ def _merge(default: Any, saved: Any) -> Any:
 class StateStore:
     """Small JSON store. API keys are deliberately never persisted."""
 
+    BACKUP_INTERVAL_SECONDS = 30.0
+
     def __init__(self, base_dir: Path | None = None) -> None:
         explicit_base = base_dir is not None
         self.legacy_base_dir: Path | None = None
         self._migration_source: Path | None = None
         self._lock_handle = None
+        self._last_backup_at = 0.0
         if base_dir is None:
             if sys.platform == "darwin":
                 app_support = Path.home() / "Library" / "Application Support"
@@ -160,6 +180,12 @@ class StateStore:
                     comic.pop("bot_type", None)
                     comic.pop("upscale_index", None)
                     comic.pop("segment_chars", None)
+                novel = saved.get("novel", {})
+                if isinstance(novel, dict) and int(saved.get("schema_version", 0) or 0) < 4:
+                    if str(novel.get("mode", "")).strip() == "深度改写":
+                        novel["mode"] = NOVEL_COMMENTARY_MODE
+                    if str(novel.get("style", "")).strip() == "节奏紧凑、画面感强":
+                        novel["style"] = NOVEL_COMMENTARY_STYLE
                 state = _merge(DEFAULT_STATE, saved)
                 projects = state.get("projects", [])
                 if not isinstance(projects, list):
@@ -456,10 +482,10 @@ class StateStore:
             pass
         self._lock_handle = None
 
-    def _backup_current_state(self) -> None:
+    def _backup_current_state(self) -> bool:
         source = self.path if self.path.exists() else self._migration_source
         if source is None or not source.exists():
-            return
+            return False
         backups = self.base_dir / "backups"
         backups.mkdir(parents=True, exist_ok=True)
         timestamp = datetime.now().strftime("%Y%m%d-%H%M%S-%f")
@@ -472,10 +498,11 @@ class StateStore:
             except OSError:
                 pass
         self._migration_source = None
+        return True
 
     def save(self, state: dict[str, Any]) -> None:
         payload = deepcopy(state)
-        payload["schema_version"] = 3
+        payload["schema_version"] = 4
         settings = payload.get("settings", {})
         if isinstance(settings, dict):
             for key in list(settings):
@@ -495,9 +522,13 @@ class StateStore:
             comic["characters"] = []
         try:
             self.base_dir.mkdir(parents=True, exist_ok=True)
-            self._backup_current_state()
+            now = time.monotonic()
+            migration_pending = self._migration_source is not None
+            if migration_pending or now - self._last_backup_at >= self.BACKUP_INTERVAL_SECONDS:
+                if self._backup_current_state():
+                    self._last_backup_at = now
             temp_path = self.path.with_suffix(".tmp")
-            temp_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+            temp_path.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
             temp_path.replace(self.path)
         except OSError:
             # A read-only corporate profile should not make the creative UI unusable.

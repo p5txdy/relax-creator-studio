@@ -20,10 +20,12 @@ from core.ai_client import (
     provider_preset,
 )
 from core.comic_engine import (
+    COMIC_COVER_OUTPUT_PLAN,
     ComicEngineError,
     batch_story_segments,
     build_ai_split_storyboard_prompt,
     build_character_prompt,
+    build_cover_prompt,
     build_scene_prompt,
     build_storyboard_batch_prompt,
     compose_shot_prompt,
@@ -52,7 +54,14 @@ from core.seedream_client import (
 from core.comic_video_engine import allocate_shot_durations, build_comic_video_command, parse_srt_text
 from core.comic_presentation import DOUYIN_COMIC_MOTION, normalize_motion_mode
 from core.jianying_launcher import detect_jianying_executable as detect_jianying_launcher, open_jianying as open_jianying_launcher
-from core.novel_engine import build_post_prompt, build_rewrite_prompt, chapter_records, split_chapters
+from core.novel_engine import (
+    NOVEL_COMMENTARY_MODE,
+    NOVEL_COMMENTARY_STYLE,
+    build_post_prompt,
+    build_rewrite_prompt,
+    chapter_records,
+    split_chapters,
+)
 from core.jianying_engine import (
     SOURCE_VIDEO_VOLUME,
     clamp_srt_text,
@@ -163,6 +172,22 @@ class NovelEngineTests(unittest.TestCase):
         )
         self.assertIn("小说编辑", system)
         for expected in ("原始正文", "名字不能改", "主角叫林川", "第一人称"):
+            self.assertIn(expected, user)
+
+    def test_commentary_mode_builds_suspenseful_voiceover_prompt_without_fake_plot(self) -> None:
+        system, user = build_rewrite_prompt(
+            "第一章",
+            "林川推开房门，看见失踪三年的姐姐。",
+            mode=NOVEL_COMMENTARY_MODE,
+            style=NOVEL_COMMENTARY_STYLE,
+            perspective="第三人称限知",
+            target_length="与原文接近",
+            custom_rules="名字不能改",
+            story_bible="林川不知道姐姐失踪的真相",
+        )
+        self.assertIn("可直接配音", system)
+        self.assertIn("不得为了制造悬念捏造", system)
+        for expected in ("开头前两句", "每 2—4 句", "短句和中短句", "下一段钩子", "不提前泄露"):
             self.assertIn(expected, user)
 
     def test_post_prompt_uses_metadata(self) -> None:
@@ -338,6 +363,38 @@ class ComicEngineTests(unittest.TestCase):
         self.assertNotIn("木门在左", prompt)
         self.assertIn("画面宽高比为 9:16", prompt)
         self.assertNotIn("--cref", prompt)
+
+    def test_cover_prompt_uses_title_references_style_and_close_framing(self) -> None:
+        prompt = build_cover_prompt(
+            "豪门千金归来",
+            "苏晚冷静回头，眼神坚定",
+            art_style="现代都市韩漫",
+            aspect="3:4",
+            character_name="苏晚",
+            scene_name="豪宅客厅",
+        )
+        self.assertIn("中文封面标题“豪门千金归来”", prompt)
+        self.assertIn("主要人物使用“苏晚”参考图", prompt)
+        self.assertIn("环境使用“豪宅客厅”固定场景参考图", prompt)
+        self.assertIn("中近景或近景为主", prompt)
+        self.assertIn("禁止远景和大全景", prompt)
+        self.assertIn("二维韩系网络漫画", prompt)
+        self.assertIn("画面宽高比为 3:4", prompt)
+        self.assertIn("水平方向居中", prompt)
+        self.assertIn("中间偏下", prompt)
+        self.assertIn("65%～75%", prompt)
+
+    def test_cover_output_plan_has_two_images_per_required_aspect(self) -> None:
+        self.assertEqual(COMIC_COVER_OUTPUT_PLAN, (("3:4", 1), ("3:4", 2), ("4:3", 1), ("4:3", 2)))
+        self.assertEqual(sum(1 for aspect, _ordinal in COMIC_COVER_OUTPUT_PLAN if aspect == "3:4"), 2)
+        self.assertEqual(sum(1 for aspect, _ordinal in COMIC_COVER_OUTPUT_PLAN if aspect == "4:3"), 2)
+
+    def test_new_project_has_persistent_cover_record(self) -> None:
+        project = new_comic_project("封面项目")
+        self.assertEqual(project["cover"]["status"], "未生成")
+        self.assertEqual(project["cover"]["local_path"], "")
+        self.assertEqual(project["cover"]["prompt"], "")
+        self.assertEqual(project["cover"]["images"], [])
 
     def test_linked_character_variant_changes_clothing_only(self) -> None:
         prompt = build_character_prompt(
@@ -548,6 +605,48 @@ class ComicEngineTests(unittest.TestCase):
         self.assertEqual(result["model"], SEEDREAM_LITE_MODEL)
         self.assertEqual(SeedreamConfig("ark-key").model, SEEDREAM_PRO_MODEL)
 
+    def test_seedream_lite_rejects_unsupported_4k_before_request(self) -> None:
+        client = DoubaoSeedreamClient(SeedreamConfig("ark-key", model=SEEDREAM_LITE_MODEL))
+        with patch("core.seedream_client.urllib.request.urlopen") as urlopen:
+            with self.assertRaisesRegex(ComicEngineError, "Lite 只支持 2K、3K"):
+                client.generate_image("苏晚皱眉，中近景", size="4K")
+        urlopen.assert_not_called()
+
+    def test_seedream_pro_converts_1k_to_explicit_size_for_aspect(self) -> None:
+        client = DoubaoSeedreamClient(SeedreamConfig("ark-key", model=SEEDREAM_PRO_MODEL))
+        response = _FakeResponse({"model": SEEDREAM_PRO_MODEL, "data": [{"url": "https://example.com/pro-1k.png"}]})
+        with patch("core.seedream_client.urllib.request.urlopen", return_value=response) as urlopen:
+            client.generate_image("苏晚皱眉，中近景", size="1K", aspect="9:16")
+        payload = json.loads(urlopen.call_args.args[0].data.decode("utf-8"))
+        self.assertEqual(payload["size"], "1440x2560")
+
+    def test_seedream_pro_1k_sizes_meet_documented_minimum_for_every_aspect(self) -> None:
+        expected = {
+            "9:16": "1440x2560",
+            "4:5": "1728x2160",
+            "3:4": "1680x2240",
+            "1:1": "1920x1920",
+            "4:3": "2240x1680",
+            "16:9": "2560x1440",
+        }
+        for aspect, size in expected.items():
+            with self.subTest(aspect=aspect):
+                client = DoubaoSeedreamClient(SeedreamConfig("ark-key", model=SEEDREAM_PRO_MODEL))
+                response = _FakeResponse({"model": SEEDREAM_PRO_MODEL, "data": [{"url": "https://example.com/pro-1k.png"}]})
+                with patch("core.seedream_client.urllib.request.urlopen", return_value=response) as urlopen:
+                    client.generate_image("中近景", size="1K", aspect=aspect)
+                payload = json.loads(urlopen.call_args.args[0].data.decode("utf-8"))
+                self.assertEqual(payload["size"], size)
+                width, height = (int(part) for part in size.split("x"))
+                self.assertGreaterEqual(width * height, 3_686_400)
+
+    def test_seedream_rejects_custom_size_below_documented_minimum_before_request(self) -> None:
+        client = DoubaoSeedreamClient(SeedreamConfig("ark-key", model=SEEDREAM_PRO_MODEL))
+        with patch("core.seedream_client.urllib.request.urlopen") as urlopen:
+            with self.assertRaisesRegex(ComicEngineError, "至少需要 3686400 像素"):
+                client.generate_image("中近景", size="1024x1824")
+        urlopen.assert_not_called()
+
     def test_unactivated_seedream_model_error_is_actionable(self) -> None:
         client = DoubaoSeedreamClient(SeedreamConfig("ark-key", model=SEEDREAM_LITE_MODEL))
         payload = {"error": {"message": "Your account has not activated the model service in the Ark Console."}}
@@ -580,7 +679,7 @@ class ComicEngineTests(unittest.TestCase):
         with patch("core.seedream_client.urllib.request.urlopen", side_effect=response_error):
             with self.assertRaisesRegex(ComicEngineError, "图片分辨率参数不受当前 Seedream 5.0 接口支持"):
                 client.generate_image("苏晚回头", size="2K")
-        with self.assertRaisesRegex(ComicEngineError, "只支持 2K、3K、4K"):
+        with self.assertRaisesRegex(ComicEngineError, "只支持 1K、2K、3K、4K"):
             client.generate_image("苏晚回头", size="1.5K")
 
     def test_seedream_connection_check_is_non_generating(self) -> None:
@@ -788,6 +887,19 @@ class VideoEngineTests(unittest.TestCase):
 
 
 class StorageTests(unittest.TestCase):
+    def test_legacy_novel_defaults_migrate_to_commentary_mode(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            state = json.loads(json.dumps(DEFAULT_STATE))
+            state["schema_version"] = 3
+            state["novel"]["mode"] = "深度改写"
+            state["novel"]["style"] = "节奏紧凑、画面感强"
+            base.mkdir(parents=True, exist_ok=True)
+            (base / "state.json").write_text(json.dumps(state, ensure_ascii=False), encoding="utf-8")
+            loaded = StateStore(base).load()
+            self.assertEqual(loaded["novel"]["mode"], NOVEL_COMMENTARY_MODE)
+            self.assertEqual(loaded["novel"]["style"], NOVEL_COMMENTARY_STYLE)
+
     def test_legacy_image_resolution_is_migrated_to_seedream_5_minimum(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             store = StateStore(Path(temp))
@@ -828,7 +940,7 @@ class StorageTests(unittest.TestCase):
             self.assertNotIn("upscale_index", store.load()["comic"])
             self.assertNotIn("video", store.load())
             self.assertIn("novel", store.load())
-            self.assertEqual(store.load()["novel"]["mode"], "深度改写")
+            self.assertEqual(store.load()["novel"]["mode"], NOVEL_COMMENTARY_MODE)
 
     def test_multiple_projects_share_one_character_library(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -918,7 +1030,10 @@ class StorageTests(unittest.TestCase):
             state = json.loads(json.dumps(DEFAULT_STATE))
             first.save(state)
             first.save(state)
-            self.assertTrue(any((base / "backups").glob("state-*.json")))
+            backups_after_second_save = list((base / "backups").glob("state-*.json"))
+            self.assertTrue(backups_after_second_save)
+            first.save(state)
+            self.assertEqual(len(list((base / "backups").glob("state-*.json"))), len(backups_after_second_save))
 
     def test_legacy_assets_are_copied_into_the_new_data_directory(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
