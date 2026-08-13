@@ -35,7 +35,9 @@ jobs:
 
       - name: Verify Windows EXE
         shell: cmd
-        run: "dist\\漫画推文-v1.1.exe --self-test"
+        run: |
+          set PYTHONPATH=%CD%\vendor
+          python app.py --self-test
 
       - name: Upload Windows package
         uses: actions/upload-artifact@v4
