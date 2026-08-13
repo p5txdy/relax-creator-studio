@@ -1,2 +1,1 @@
-"""Relax Creator Studio desktop application."""
-
+"""Comic Post Studio desktop application."""
