@@ -17,7 +17,16 @@ SEEDREAM_LITE_MODEL = "doubao-seedream-5-0-lite-260128"
 LEGACY_SEEDREAM_PRO_MODEL = "doubao-seedream-5-0-pro-260628"
 SEEDREAM_MODEL = SEEDREAM_PRO_MODEL
 SEEDREAM_BASE_URL = "https://ark.cn-beijing.volces.com/api/v3"
-SEEDREAM_SIZES = ("2K", "3K", "4K")
+SEEDREAM_SIZES = ("1K", "2K", "3K", "4K")
+SEEDREAM_MIN_CUSTOM_PIXELS = 3_686_400
+SEEDREAM_PRO_1K_SIZES = {
+    "9:16": "1440x2560",
+    "4:5": "1728x2160",
+    "3:4": "1680x2240",
+    "1:1": "1920x1920",
+    "4:3": "2240x1680",
+    "16:9": "2560x1440",
+}
 
 
 @dataclass(frozen=True)
@@ -44,15 +53,23 @@ def _error_detail(payload: object, fallback: str) -> str:
     return str(error or payload.get("message") or fallback)
 
 
-def _api_size(value: str) -> str:
+def _api_size(value: str, aspect: str = "1:1") -> str:
     """Translate the UI resolution label to Seedream 5.0's API spelling."""
     normalized = value.strip()
     preset = normalized.upper()
+    if preset == "1K":
+        return SEEDREAM_PRO_1K_SIZES.get(aspect.strip(), SEEDREAM_PRO_1K_SIZES["1:1"])
     if preset in SEEDREAM_SIZES:
         return preset.lower()
     if re.fullmatch(r"\d{3,5}x\d{3,5}", normalized.lower()):
+        width, height = (int(part) for part in normalized.lower().split("x", 1))
+        if width * height < SEEDREAM_MIN_CUSTOM_PIXELS:
+            raise ComicEngineError(
+                f"Seedream 5.0 自定义尺寸至少需要 {SEEDREAM_MIN_CUSTOM_PIXELS} 像素，"
+                f"当前 {width}×{height} 只有 {width * height} 像素。"
+            )
         return normalized.lower()
-    raise ComicEngineError("Seedream 5.0 分辨率只支持 2K、3K、4K 或明确的宽x高像素。")
+    raise ComicEngineError("Seedream 5.0 分辨率只支持 1K、2K、3K、4K 或明确的宽x高像素。")
 
 
 class DoubaoSeedreamClient:
@@ -93,10 +110,11 @@ class DoubaoSeedreamClient:
                     "或回到批量出图页改选已经开通的模型。"
                 )
             elif exc.code == 400 and "parameter `size`" in detail.lower():
-                detail = (
-                    "图片分辨率参数不受当前 Seedream 5.0 接口支持。"
-                    "请使用 2K、3K 或 4K；程序会自动转换为接口要求的小写格式。"
-                )
+                if self.config.model.strip() == SEEDREAM_LITE_MODEL:
+                    supported = "2K、3K"
+                else:
+                    supported = "1K（按画幅转换为明确宽高）、2K、3K 或 4K"
+                detail = f"图片分辨率参数不受当前 Seedream 5.0 接口支持。请使用 {supported}。接口原始提示：{detail}"
             raise ComicEngineError(f"火山方舟接口返回错误（{exc.code}）：{detail}") from exc
         except urllib.error.URLError as exc:
             raise ComicEngineError(f"无法连接火山方舟接口：{exc.reason}") from exc
@@ -115,6 +133,7 @@ class DoubaoSeedreamClient:
         *,
         images: Sequence[str] | None = None,
         size: str = "2K",
+        aspect: str = "1:1",
         output_format: str = "png",
         watermark: bool = False,
         optimize_mode: str = "standard",
@@ -122,7 +141,9 @@ class DoubaoSeedreamClient:
     ) -> dict[str, object]:
         if not prompt.strip():
             raise ComicEngineError("图片提示词不能为空。")
-        api_size = _api_size(size)
+        api_size = _api_size(size, aspect)
+        if self.config.model.strip() == SEEDREAM_LITE_MODEL and api_size not in {"2k", "3k"}:
+            raise ComicEngineError("Seedream 5.0 Lite 只支持 2K、3K 分辨率，不支持 1K 或 4K。")
         if output_format not in {"png", "jpeg"}:
             raise ComicEngineError("Seedream 输出格式只支持 png 或 jpeg。")
         if optimize_mode not in {"standard", "fast"}:

@@ -1,2 +1,1 @@
-"""Core services for Relax Creator Studio."""
-
+"""Core services for Comic Post Studio."""

@@ -36,7 +36,7 @@
 - 静态分镜的表头和每个镜头行共用同一组七列宽度，选择、画面、原文、提示词、角色、场景与状态上下严格对齐。
 - 静态分镜采用扁平表格布局：移除重复外层卡片和行内多层卡片，提示词、角色、场景直接位于同一镜头行中，只保留必要的滚动条和选择状态。
 - 人物与场景替换区固定显示在分镜列表上方，无需先点击某个镜头；可作用于全部分镜或跨页保留的已选分镜。
-- 大型项目每页显示 20 个镜头并保留独立滚动条，避免一百多个提示词编辑器同时加载造成卡顿。
+- 大型项目每页显示 12 个镜头并保留独立滚动条，避免一百多个提示词编辑器同时加载造成卡顿。
 - 支持人工合并两个相邻镜头，以及在原文中点击精确位置把一个镜头拆成两个；这些操作只调整当前镜头，不会整批重做或重新调用 AI。
 - 角色或场景改名会自动保存并实时同步到镜头清单，不再保留失效的旧名称。
 - 角色定妆提示词自动持久化，并支持当前角色提示词的 TXT/Markdown 导入和 TXT 导出。
@@ -44,7 +44,9 @@
 - 批量分镜可通过 Lite / Pro 双按钮直接切换生图模型；Lite 使用 `doubao-seedream-5-0-lite-260128`，高质量模型使用官方 ID `doubao-seedream-5-0-260128`。
 - 批量出图支持普通单击连续多选镜头，并只重新绘制选中项；已有图片仅在新图成功下载后替换。
 - 分镜构图以中近景和近景为主，人物优先胸像、半身或腰部以上并占据画面主体；仅在剧情必须交代环境时使用中景，不使用远景或大全景。
-- 支持 Seedream 5.0 当前接受的 2K、3K、4K 输出（请求时自动转为 API 要求的小写格式），以及现代都市韩漫等画风预设。
+- 批量出图的输出分辨率改为可直接点击的常驻按钮，选择后立即保存到当前项目；Lite 提供 2K/3K，Pro 提供 1K/2K/3K/4K。Pro 的 1K 会按照项目画幅转换为满足接口最低 3,686,400 像素要求的明确宽高，其余预设自动转为小写格式。
+- 批量出图页新增项目封面制作：可填写封面标题和画面提示词，选择已确认人物与固定场景作为参考；每次固定生成 3:4 两张和 4:3 两张不同构图，标题位于画面水平居中、垂直中间偏下，四张结果按项目保存并可逐张预览。
+- 性能优化：批量出图只按当前可见区域渐进加载缩略图，静态分镜每页显示 12 条；圆角控件与图片缩略图会复用缓存，滚动条不再反复生成高分辨率抗锯齿图片，连续编辑会合并保存并限制备份频率。
 - 角色与场景参考图合计最多 10 张；绑定资产缺少本地参考图时会在调用 API 前提示。
 - 场景提示词会在生成前强制沿用当前项目画风，确保场景定景与角色定妆保持同一种视觉风格；旧提示词和手动提示词也会自动补齐该约束。
 - 批量出图页按分镜逐行显示“对应图片、片段、角色、场景和状态”，图片不再集中混排；点击该行缩略图即可放大、缩小和拖动画面检查细节。
@@ -63,36 +65,73 @@
 
 - 侧栏“AI 小说改文”支持导入 TXT、Markdown、DOCX，或直接粘贴正文。
 - 自动拆章并保留原文对照，可单章改写或批量改写。
+- 默认使用“短视频悬念解说（推荐）”：将小说改成可直接配音的解说稿，前两句抛出真实冲突，中段持续增加有效信息、升级危机并压缩无效铺垫，结尾停在原文已有的悬念钩子上；禁止捏造人物、事件或虚假反转。
 - 支持改写模式、目标风格、叙事视角、篇幅、自定义规则和人物世界观设定库。
 - 改写结果可人工调整并导出为 TXT。
 
 ## Windows 运行
 
-直接运行：
+### 使用打包好的程序
+
+从 GitHub Actions 下载 Windows 压缩包，解压后直接运行：
 
 ```text
-dist\漫画推文-v1.1.exe
+漫画推文-v1.1.exe
 ```
 
-或双击仓库根目录下的 `启动漫画推文.cmd`。开发模式：
+也可以双击仓库根目录下的 `启动漫画推文.cmd`。
+
+### 从源码运行
+
+安装 64 位 Python 3.12，在 PowerShell 中进入仓库目录后执行：
 
 ```powershell
-python .\app.py
+py -3.12 -m venv .venv-windows
+.\.venv-windows\Scripts\python.exe -m pip install --upgrade pip
+.\.venv-windows\Scripts\python.exe -m pip install -r requirements-windows.txt
+.\.venv-windows\Scripts\python.exe .\app.py
 ```
+
+环境准备完成后，也可以双击 `启动Windows开发版.cmd`。需要生成单文件 EXE 时，双击 `打包Windows版.cmd`，产物位于 `dist\漫画推文-v1.1.exe`。
 
 本地状态保存在 `%APPDATA%\ComicPostStudio\state.json`，最近 20 份历史位于同目录的 `backups` 文件夹。首次运行会从旧版 `RelaxCreatorStudio` 目录迁移状态，并扫描仍存在的角色/场景图片恢复索引。程序使用单实例锁，避免多个窗口互相覆盖。API Key 不写入状态文件，启用安全记住后保存在 Windows 凭据管理器。
 
 ## macOS 运行
 
-GitHub Releases 会同时提供 Apple 芯片（M1/M2/M3/M4 等）和 Intel 两个 DMG。下载与自己 Mac 处理器对应的安装包后：
+Windows 的 EXE 不能直接在 Mac 上运行。macOS 版本必须在 Mac 本机生成；同一套源码同时支持 Apple 芯片和 Intel Mac，PyInstaller 会按当前 Mac 的处理器架构构建应用。
 
-1. 双击 `漫画推文-v1.1-macOS.dmg`，把 `漫画推文-v1.1.app` 拖入“应用程序”。
-2. 首次启动时在 Finder 的“应用程序”中右键该应用，选择“打开”，再确认一次“打开”。
-3. 后续可以像普通应用一样从启动台运行。
+### 一键生成 Mac 应用
+
+1. 安装 [Python 3.12](https://www.python.org/downloads/macos/) 和 [Homebrew](https://brew.sh/)。
+2. 在终端进入仓库目录，执行 `chmod +x 启动Mac开发版.command 打包Mac版.command`。
+3. 双击 `打包Mac版.command`，或在终端运行 `./打包Mac版.command`。
+4. 脚本会安装 `libmediainfo`、FFmpeg 和 Python 依赖，随后生成：
+   - `dist-macos/漫画推文-v1.1.app`
+   - `dist-macos/漫画推文-v1.1-macOS.dmg`
+5. 双击 DMG，把应用拖入“应用程序”。首次启动时在 Finder 中右键应用并选择“打开”。
+
+### 从源码直接运行
+
+不打包时可在终端执行：
+
+```bash
+brew install libmediainfo ffmpeg
+python3 -m venv .venv-macos
+source .venv-macos/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements-macos.txt
+python app.py
+```
+
+环境准备完成后，也可以双击 `启动Mac开发版.command`。如果已经构建 `.app`，该脚本会优先打开应用；否则使用 `.venv-macos` 启动源码。
 
 macOS 状态保存在 `~/Library/Application Support/ComicPostStudio/state.json`，API Key 启用安全记住后保存在系统钥匙串。应用已内置 MediaInfo；生成剪映草稿不要求安装 Python 或 Homebrew。可选 MP4 预览需要另外安装 FFmpeg，或在“模型与工具”中指定现有的 FFmpeg。
 
-需要在 Mac 本机自行构建时，安装 Python 3.12 与 Homebrew，然后双击 `打包Mac版.command`。脚本会安装构建依赖、生成应用并执行 MediaInfo 实际解析与剪映草稿写出自检，产物位于 `dist-macos`。
+Mac 打包脚本会执行 MediaInfo 实际解析和剪映草稿写出自检。由于当前应用使用本机临时签名而非 Apple 开发者公证，首次运行仍需使用 Finder 右键“打开”。
+
+### GitHub 自动生成双平台安装包
+
+仓库的 `Build Windows and macOS` 工作流会分别构建 Windows x64 EXE、macOS Apple Silicon DMG 和 macOS Intel DMG。打开仓库的 `Actions` 页面，进入一次成功的运行记录，即可在 `Artifacts` 中下载对应系统的压缩包；无需把本地生成目录提交进源码仓库。
 
 ## 配置模型
 
@@ -110,8 +149,6 @@ python -m unittest discover -s tests -v
 ```
 
 Windows 单文件产物位于 `dist\漫画推文-v1.1.exe`。
-
-推送相关变更或创建拉取请求后，`.github/workflows/build-macos.yml` 会在原生 Apple Silicon 与 Intel macOS 运行器上分别构建并上传 DMG；合并至 `main` 后会把两个安装包永久发布到 v1.1 Release。
 
 ## 内容权利
 

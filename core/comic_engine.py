@@ -17,6 +17,7 @@ class ComicEngineError(RuntimeError):
 COMIC_ASSET_PACK_FORMAT = "relax-creator-studio/comic-assets"
 COMIC_ASSET_PACK_VERSION = 1
 COMIC_ASSET_IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp"}
+COMIC_COVER_OUTPUT_PLAN = (("3:4", 1), ("3:4", 2), ("4:3", 1), ("4:3", 2))
 
 
 def safe_filename(value: str, fallback: str = "item") -> str:
@@ -158,7 +159,7 @@ def import_comic_asset_pack(source: str | Path, destination_root: str | Path) ->
                 raise ComicEngineError("漫画资产包清单过大，已拒绝导入。")
             manifest = json.loads(archive.read(manifest_info).decode("utf-8"))
             if not isinstance(manifest, Mapping) or manifest.get("format") != COMIC_ASSET_PACK_FORMAT:
-                raise ComicEngineError("所选文件不是解压创作工坊漫画资产包。")
+                raise ComicEngineError("所选文件不是漫画推文漫画资产包。")
             if int(manifest.get("version", 0)) != COMIC_ASSET_PACK_VERSION:
                 raise ComicEngineError("漫画资产包版本不受支持。")
             characters = _validated_pack_records(manifest.get("characters", []), "characters")
@@ -916,6 +917,41 @@ def compose_shot_prompt(
     )
     ratio = aspect.strip() if re.fullmatch(r"\d{1,2}:\d{1,2}", aspect.strip()) else "9:16"
     pieces.append(f"画面宽高比为 {ratio}")
+    return "，".join(piece for piece in pieces if piece)
+
+
+def build_cover_prompt(
+    title: str,
+    visual_prompt: str,
+    *,
+    art_style: str,
+    aspect: str,
+    character_name: str = "",
+    scene_name: str = "",
+) -> str:
+    """Build a static comic-post cover prompt while preserving selected references."""
+    cover_title = title.strip() or "漫画推文"
+    ratio = aspect.strip() if re.fullmatch(r"\d{1,2}:\d{1,2}", aspect.strip()) else "9:16"
+    visual = visual_prompt.strip() or "主角以强烈情绪面对镜头，画面具有悬念和剧情冲突感"
+    pieces = [
+        "短视频平台漫画推文封面，静态单幅插画",
+        visual,
+        "镜头以中近景或近景为主，采用胸像、半身或腰部以上构图，主体突出，面部表情清晰，禁止远景和大全景",
+    ]
+    if character_name.strip():
+        pieces.append(f"主要人物使用“{character_name.strip()}”参考图，严格保持同一人物的脸、发型、服装与体态")
+    if scene_name.strip():
+        pieces.append(f"环境使用“{scene_name.strip()}”固定场景参考图，保持空间与陈设一致")
+    pieces.extend(
+        [
+            expand_art_style(art_style),
+            f"画面清晰显示醒目的中文封面标题“{cover_title}”，标题字大、易读、不能遮挡人物面部；"
+            "标题整体位于画面水平方向居中、垂直方向中间偏下的位置，中心约在画面高度的 65%～75%，禁止放在顶部或紧贴底边",
+            "高点击率封面构图，强对比层次，主体与标题在手机缩略图中仍然清楚",
+            f"画面宽高比为 {ratio}",
+            "无对白气泡，无水印，无平台标志",
+        ]
+    )
     return "，".join(piece for piece in pieces if piece)
 
 

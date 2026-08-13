@@ -6,6 +6,7 @@ import shutil
 import sys
 import threading
 import zipfile
+from collections import OrderedDict
 from datetime import datetime
 from pathlib import Path
 from tkinter import (
@@ -49,9 +50,11 @@ from core.ai_client import (
     provider_preset,
 )
 from core.comic_engine import (
+    COMIC_COVER_OUTPUT_PLAN,
     ComicEngineError,
     build_ai_split_storyboard_prompt,
     build_character_prompt,
+    build_cover_prompt,
     build_scene_prompt,
     character_reference_data,
     compose_shot_prompt,
@@ -77,6 +80,7 @@ from core.seedream_client import (
     SEEDREAM_BASE_URL,
     SEEDREAM_LITE_MODEL,
     SEEDREAM_MODEL,
+    SEEDREAM_PRO_1K_SIZES,
     SEEDREAM_PRO_MODEL,
     DoubaoSeedreamClient,
     SeedreamConfig,
@@ -90,6 +94,13 @@ from core.jianying_engine import (
     detect_jianying_drafts_path,
     detect_jianying_executable,
     open_jianying,
+)
+from core.novel_engine import (
+    NOVEL_COMMENTARY_MODE,
+    NOVEL_COMMENTARY_STYLE,
+    build_post_prompt,
+    build_rewrite_prompt,
+    chapter_records,
 )
 from core.secret_store import SecretStoreError, delete_api_key, load_api_key, save_api_key
 from core.storage import StateStore, new_comic_project
@@ -136,6 +147,13 @@ SHOT_IMAGE_MODEL_IDS = {
     SHOT_IMAGE_MODEL_OPTIONS[1]: SEEDREAM_PRO_MODEL,
 }
 SHOT_IMAGE_MODEL_LABELS = {model_id: label for label, model_id in SHOT_IMAGE_MODEL_IDS.items()}
+SHOT_IMAGE_MODEL_RESOLUTIONS = {
+    SEEDREAM_LITE_MODEL: ("2K", "3K"),
+    SEEDREAM_PRO_MODEL: ("1K", "2K", "3K", "4K"),
+}
+
+_AA_ROUND_IMAGE_CACHE: OrderedDict[tuple[object, ...], ImageTk.PhotoImage] = OrderedDict()
+_AA_ROUND_IMAGE_CACHE_LIMIT = 320
 
 
 def _canvas_round_rect(canvas: Canvas, x1: float, y1: float, x2: float, y2: float, radius: float, **kwargs):
@@ -144,21 +162,31 @@ def _canvas_round_rect(canvas: Canvas, x1: float, y1: float, x2: float, y2: floa
     height = max(1, int(round(y2 - y1)))
     radius = max(2.0, min(radius, width / 2, height / 2))
     scale = 4 if width * height <= 160_000 else 2
-    image = Image.new("RGBA", (width * scale, height * scale), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(image)
     fill = kwargs.pop("fill", None)
     outline = kwargs.pop("outline", None) or None
     line_width = max(1, int(kwargs.pop("width", 1) * scale))
     tags = kwargs.pop("tags", None)
-    draw.rounded_rectangle(
-        (0, 0, width * scale - 1, height * scale - 1),
-        radius=int(radius * scale),
-        fill=fill,
-        outline=outline,
-        width=line_width,
-    )
-    image = image.resize((width, height), Image.Resampling.LANCZOS)
-    photo = ImageTk.PhotoImage(image, master=canvas)
+    cache_key = (id(canvas.tk), width, height, round(radius, 2), fill, outline, line_width, scale)
+    cacheable = width * height <= 160_000
+    photo = _AA_ROUND_IMAGE_CACHE.get(cache_key) if cacheable else None
+    if photo is None:
+        image = Image.new("RGBA", (width * scale, height * scale), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(image)
+        draw.rounded_rectangle(
+            (0, 0, width * scale - 1, height * scale - 1),
+            radius=int(radius * scale),
+            fill=fill,
+            outline=outline,
+            width=line_width,
+        )
+        image = image.resize((width, height), Image.Resampling.LANCZOS)
+        photo = ImageTk.PhotoImage(image, master=canvas)
+        if cacheable:
+            _AA_ROUND_IMAGE_CACHE[cache_key] = photo
+            if len(_AA_ROUND_IMAGE_CACHE) > _AA_ROUND_IMAGE_CACHE_LIMIT:
+                _AA_ROUND_IMAGE_CACHE.popitem(last=False)
+    elif cacheable:
+        _AA_ROUND_IMAGE_CACHE.move_to_end(cache_key)
     cache = getattr(canvas, "_aa_round_images", None)
     if cache is None:
         cache = []
@@ -181,24 +209,49 @@ class RoundedCard(Canvas):
         self.radius = radius
         self.inset = 6
         self.fixed_height: int | None = None
+        self._last_request_size: tuple[int, int] | None = None
+        self._last_draw_signature: tuple[object, ...] | None = None
+        self._draw_after_id: str | None = None
         self.content = Frame(self, bg=surface, padx=padx, pady=pady)
         self.content_window = self.create_window(self.inset, self.inset, window=self.content, anchor="nw")
-        self.bind("<Configure>", self._redraw, add="+")
+        self.bind("<Configure>", self._schedule_redraw, add="+")
         self.content.bind("<Configure>", self._sync_request, add="+")
 
     def _sync_request(self, _event=None) -> None:
-        self.configure(
-            width=max(20, self.content.winfo_reqwidth() + self.inset * 2),
-            height=self.fixed_height or max(20, self.content.winfo_reqheight() + self.inset * 2),
+        requested = (
+            max(20, self.content.winfo_reqwidth() + self.inset * 2),
+            self.fixed_height or max(20, self.content.winfo_reqheight() + self.inset * 2),
         )
+        if requested != self._last_request_size:
+            self._last_request_size = requested
+            self.configure(width=requested[0], height=requested[1])
 
     def set_fixed_height(self, height: int) -> None:
         self.fixed_height = max(20, int(height))
+        self._last_request_size = None
         self.configure(height=self.fixed_height)
 
+    def _schedule_redraw(self, _event=None) -> None:
+        if self._draw_after_id is not None:
+            return
+        try:
+            self._draw_after_id = self.after_idle(self._redraw)
+        except TclError:
+            self._draw_after_id = None
+
     def _redraw(self, _event=None) -> None:
+        self._draw_after_id = None
+        try:
+            if not self.winfo_exists():
+                return
+        except TclError:
+            return
         width = max(2, self.winfo_width())
         height = max(2, self.winfo_height())
+        signature = (width, height, self.surface, self.border, self.radius)
+        if signature == self._last_draw_signature:
+            return
+        self._last_draw_signature = signature
         self.delete("rounded_card")
         self._aa_round_images = []
         _canvas_round_rect(
@@ -235,6 +288,7 @@ class RoundedScrollbar(Canvas):
         self.last = 1.0
         self.drag_offset: float | None = None
         self.hovered = False
+        self._last_draw_signature: tuple[object, ...] | None = None
         self.bind("<Configure>", self._draw, add="+")
         self.bind("<Button-1>", self._press, add="+")
         self.bind("<B1-Motion>", self._drag, add="+")
@@ -259,15 +313,19 @@ class RoundedScrollbar(Canvas):
         return top, top + thumb_height
 
     def _draw(self, _event=None) -> None:
-        self.delete("all")
-        self._aa_round_images = []
         width = max(8, self.winfo_width())
         height = max(8, self.winfo_height())
-        _canvas_round_rect(self, 3, 2, width - 3, height - 2, 4, fill=SURFACE_ALT, outline="")
+        signature = (width, height, round(self.first, 5), round(self.last, 5), self.hovered)
+        if signature == self._last_draw_signature:
+            return
+        self._last_draw_signature = signature
+        self.delete("all")
+        center = width / 2
+        self.create_line(center, 5, center, max(5, height - 5), width=6, fill=SURFACE_ALT, capstyle="round")
         if self.last - self.first < 0.999:
             top, bottom = self._thumb_bounds()
             color = ACCENT_DARK if self.hovered else "#86AAA4"
-            _canvas_round_rect(self, 3, top, width - 3, bottom, 4, fill=color, outline="")
+            self.create_line(center, top, center, bottom, width=6, fill=color, capstyle="round")
 
     def _set_hover(self, value: bool) -> None:
         self.hovered = value
@@ -315,11 +373,16 @@ class RoundedCombobox(Canvas):
             **kwargs,
         )
         self.combo_window = self.create_window(3, 3, window=self.combo, anchor="nw")
+        self._last_draw_signature: tuple[int, int] | None = None
         super().bind("<Configure>", self._redraw, add="+")
 
     def _redraw(self, _event=None) -> None:
         width = max(10, self.winfo_width())
         height = max(10, self.winfo_height())
+        signature = (width, height)
+        if signature == self._last_draw_signature:
+            return
+        self._last_draw_signature = signature
         self.delete("combo_shell")
         self._aa_round_images = []
         _canvas_round_rect(self, 1, 1, width - 1, height - 1, 10, fill=COMIC_INSET, outline=BORDER, width=1, tags="combo_shell")
@@ -377,11 +440,16 @@ class RoundedEntry(Canvas):
             font=("Microsoft YaHei UI", 10),
         )
         self.entry_window = self.create_window(10, 3, window=self.entry, anchor="nw")
+        self._last_draw_signature: tuple[int, int] | None = None
         super().bind("<Configure>", self._redraw, add="+")
 
     def _redraw(self, _event=None) -> None:
         width = max(10, self.winfo_width())
         height = max(10, self.winfo_height())
+        signature = (width, height)
+        if signature == self._last_draw_signature:
+            return
+        self._last_draw_signature = signature
         self.delete("entry_shell")
         self._aa_round_images = []
         _canvas_round_rect(self, 1, 1, width - 1, height - 1, 10, fill=COMIC_INSET, outline=BORDER, width=1, tags="entry_shell")
@@ -433,6 +501,7 @@ class RoundedButton(Canvas):
         self.active_bg = active
         self.fg = fg
         self.hovered = False
+        self._last_draw_signature: tuple[object, ...] | None = None
         self.bind("<Configure>", self._draw, add="+")
         self.bind("<Enter>", lambda _event: self._set_hover(True), add="+")
         self.bind("<Leave>", lambda _event: self._set_hover(False), add="+")
@@ -441,11 +510,15 @@ class RoundedButton(Canvas):
         self.bind("<space>", self._invoke, add="+")
 
     def _draw(self, _event=None) -> None:
-        self.delete("all")
-        self._aa_round_images = []
         width = max(10, self.winfo_width())
         height = max(10, self.winfo_height())
         color = self.active_bg if self.hovered else self.normal_bg
+        signature = (width, height, color, self.fg, self.label_text)
+        if signature == self._last_draw_signature:
+            return
+        self._last_draw_signature = signature
+        self.delete("all")
+        self._aa_round_images = []
         _canvas_round_rect(self, 1, 1, width - 1, height - 1, 10, fill=color, outline="")
         self.create_text(width / 2, height / 2, text=self.label_text, fill=self.fg, font=("Microsoft YaHei UI", 9, "bold"))
 
@@ -531,6 +604,8 @@ class StudioApp:
         self.comic_character_base_combo: RoundedCombobox | None = None
         self.comic_shot_tree_with_previews = False
         self.comic_shot_preview_images: dict[int, ImageTk.PhotoImage] = {}
+        self.comic_shot_loaded_preview_signatures: dict[int, tuple[object, ...]] = {}
+        self.comic_shot_preview_after_id: str | None = None
         self.comic_storyboard_canvas: Canvas | None = None
         self.comic_storyboard_body: Frame | None = None
         self.comic_storyboard_window: int | None = None
@@ -539,9 +614,12 @@ class StudioApp:
         self.comic_storyboard_prompt_editors: dict[int, Text] = {}
         self.comic_storyboard_row_widgets: dict[int, dict[str, object]] = {}
         self.comic_storyboard_page = 0
-        self.comic_storyboard_page_size = 20
+        self.comic_storyboard_page_size = 12
         self.comic_storyboard_page_label: Label | None = None
         self.comic_asset_autosave_after_id: str | None = None
+        self.state_save_after_id: str | None = None
+        self.thumbnail_photo_cache: OrderedDict[tuple[object, ...], ImageTk.PhotoImage] = OrderedDict()
+        self.thumbnail_photo_cache_limit = 240
         self._loading_comic_asset_editor = False
         self._loading_comic_shot_editor = False
         self.is_busy = False
@@ -590,7 +668,9 @@ class StudioApp:
         self.root.option_add("*TCombobox*Listbox.foreground", INK)
         self.root.option_add("*TCombobox*Listbox.selectBackground", COMIC_MINT)
         self.root.option_add("*TCombobox*Listbox.selectForeground", ACCENT_DARK)
-        self.root.option_add("*TCombobox*Listbox.font", "Microsoft YaHei UI 9")
+        # Tcl parses a font with spaces as a list. Braces keep the complete
+        # Windows font family together when the native combobox posts its menu.
+        self.root.option_add("*TCombobox*Listbox.font", "{Microsoft YaHei UI} 9")
         style.configure("Studio.Horizontal.TProgressbar", background=ACCENT, troughcolor=SURFACE_ALT, borderwidth=0)
         style.configure("Studio.TPanedwindow", background=BG)
 
@@ -665,6 +745,13 @@ class StudioApp:
             self.show_settings()
 
     def _clear_main(self) -> None:
+        cover_dialog = getattr(self, "comic_cover_dialog", None)
+        if cover_dialog is not None:
+            try:
+                if cover_dialog.winfo_exists():
+                    cover_dialog.destroy()
+            except TclError:
+                pass
         for child in self.main.winfo_children():
             child.destroy()
         self.video_tree = None
@@ -685,6 +772,14 @@ class StudioApp:
         self.comic_count_label = None
         self.comic_generation_detail_label = None
         self.comic_generation_count_label = None
+        self.comic_resolution_buttons: dict[str, RoundedButton] = {}
+        self.comic_resolution_hint_var = StringVar()
+        self.comic_cover_dialog = None
+        self.comic_cover_preview_canvas = None
+        self.comic_cover_preview_canvases = {}
+        self.comic_cover_prompt_editor = None
+        self.comic_cover_status_label = None
+        self.comic_cover_dialog_status_label = None
         self.bus_handler = None
 
     def _page_header(self, title: str, subtitle: str, actions: list[tuple[str, object, str]] | None = None) -> Frame:
@@ -729,28 +824,55 @@ class StudioApp:
             outer.set_fixed_height(fixed_height)
         return outer, outer.content
 
+    def _cached_thumbnail_photo(self, key: tuple[object, ...]) -> ImageTk.PhotoImage | None:
+        photo = self.thumbnail_photo_cache.get(key)
+        if photo is not None:
+            self.thumbnail_photo_cache.move_to_end(key)
+        return photo
+
+    def _remember_thumbnail_photo(self, key: tuple[object, ...], photo: ImageTk.PhotoImage) -> ImageTk.PhotoImage:
+        self.thumbnail_photo_cache[key] = photo
+        self.thumbnail_photo_cache.move_to_end(key)
+        while len(self.thumbnail_photo_cache) > self.thumbnail_photo_cache_limit:
+            self.thumbnail_photo_cache.popitem(last=False)
+        return photo
+
     def _render_local_image(self, canvas: Canvas | None, path: str, *, placeholder: str, max_size: tuple[int, int] | None = None) -> bool:
         if not canvas:
             return False
-        canvas.delete("all")
         width = max_size[0] if max_size else max(80, canvas.winfo_width())
         height = max_size[1] if max_size else max(80, canvas.winfo_height())
         image_path = Path(path) if path else None
         if not image_path or not image_path.is_file():
+            render_key = ("placeholder", placeholder, width, height)
+            if getattr(canvas, "_preview_cache_key", None) == render_key:
+                return False
+            canvas.delete("all")
             canvas.create_text(width / 2, height / 2, text=placeholder, fill=MUTED, width=max(80, width - 28), justify="center", font=("Microsoft YaHei UI", 9))
             canvas._preview_photo = None
+            canvas._preview_cache_key = render_key
             return False
         try:
-            with Image.open(image_path) as source:
-                image = ImageOps.exif_transpose(source).convert("RGBA")
-                image.thumbnail((max(20, width - 16), max(20, height - 16)), Image.Resampling.LANCZOS)
-            photo = ImageTk.PhotoImage(image, master=canvas)
+            stat = image_path.stat()
+            render_key = ("local", str(image_path.absolute()), stat.st_mtime_ns, stat.st_size, width, height)
+            if getattr(canvas, "_preview_cache_key", None) == render_key:
+                return True
+            photo = self._cached_thumbnail_photo(render_key)
+            if photo is None:
+                with Image.open(image_path) as source:
+                    image = ImageOps.exif_transpose(source).convert("RGBA")
+                    image.thumbnail((max(20, width - 16), max(20, height - 16)), Image.Resampling.LANCZOS)
+                photo = self._remember_thumbnail_photo(render_key, ImageTk.PhotoImage(image, master=canvas))
+            canvas.delete("all")
             canvas.create_image(width / 2, height / 2, image=photo, anchor="center")
             canvas._preview_photo = photo
+            canvas._preview_cache_key = render_key
             return True
         except (OSError, ValueError):
+            canvas.delete("all")
             canvas.create_text(width / 2, height / 2, text=f"图片读取失败\n{image_path.name}", fill=ERROR, width=max(80, width - 28), justify="center", font=("Microsoft YaHei UI", 9))
             canvas._preview_photo = None
+            canvas._preview_cache_key = ("error", str(image_path), width, height)
             return False
 
     def _asset_preview_panel(self, parent, *, title: str, command) -> tuple[Canvas, Label]:
@@ -769,7 +891,7 @@ class StudioApp:
         self._button(info, "放大查看", command, kind="ghost").pack(anchor="w", pady=(14, 0))
         return preview, title_label
 
-    def _pack_vertical_scroller(self, shell: Frame, widget, *, fill=BOTH, expand: bool = True) -> None:
+    def _pack_vertical_scroller(self, shell: Frame, widget, *, fill=BOTH, expand: bool = True) -> RoundedScrollbar:
         """Pack a long-form widget with a visible vertical scrollbar."""
         scrollbar = RoundedScrollbar(shell, command=widget.yview)
         widget.configure(yscrollcommand=scrollbar.set)
@@ -779,6 +901,7 @@ class StudioApp:
             pass
         widget.pack(side=LEFT, fill=fill, expand=expand)
         scrollbar.pack(side=RIGHT, fill=Y)
+        return scrollbar
 
     def _scrollable_content(self, parent, *, bg: str = BG) -> tuple[Frame, Canvas]:
         """Create a vertically scrollable page that follows the available width."""
@@ -1552,7 +1675,11 @@ class StudioApp:
         self._page_header(
             "小说改文",
             "自动拆章并保留原文对照；建议先完善设定库，再逐章生成。",
-            [("导入小说", self.import_novel, "ghost"), ("改写当前章", self.rewrite_current, "primary")],
+            [
+                ("导入小说", self.import_novel, "ghost"),
+                ("查看提示词", self.preview_prompt, "ghost"),
+                ("改写当前章", self.rewrite_current, "primary"),
+            ],
         )
         body = Frame(self.main, bg=BG)
         body.pack(fill=BOTH, expand=True, padx=34, pady=(0, 28))
@@ -1573,8 +1700,17 @@ class StudioApp:
         Label(control, text="改写规则", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 12, "bold")).pack(anchor="w")
         self._field_label(control, "项目名").pack(anchor="w", pady=(12, 5))
         self._entry(control, self.novel_project_var).pack(fill=X, ipady=6)
-        self._novel_combo(control, "改写模式", self.mode_var, ["轻度润色", "深度改写", "扩写细节", "精简提速", "影视化改写"])
-        self._novel_combo(control, "目标风格", self.style_var, ["节奏紧凑、画面感强", "自然细腻、情绪充足", "简洁爽快、对白突出", "悬念强、章节钩子明显", "轻松幽默"])
+        self._novel_combo(control, "改写模式", self.mode_var, [NOVEL_COMMENTARY_MODE, "轻度润色", "深度改写", "扩写细节", "精简提速", "影视化改写"])
+        self._novel_combo(control, "目标风格", self.style_var, [NOVEL_COMMENTARY_STYLE, "节奏紧凑、画面感强", "自然细腻、情绪充足", "简洁爽快、对白突出", "悬念强、章节钩子明显", "轻松幽默"])
+        Label(
+            control,
+            text="推荐模式会生成可直接配音的小说解说稿：开头抛冲突、全程持续递进、结尾保留剧情钩子。",
+            bg=SURFACE,
+            fg=ACCENT_DARK,
+            wraplength=360,
+            justify=LEFT,
+            font=("Microsoft YaHei UI", 8),
+        ).pack(anchor="w", pady=(5, 0))
         self._novel_combo(control, "叙事视角", self.perspective_var, ["保持原视角", "第一人称", "第三人称限知", "第三人称全知"])
         self._novel_combo(control, "目标篇幅", self.length_var, ["与原文接近", "缩短约20%", "扩写约30%", "只保留主线"])
         self._field_label(control, "自定义规则").pack(anchor="w", pady=(10, 5))
@@ -1847,25 +1983,55 @@ class StudioApp:
             self.novel_status.configure(text="改写失败，已保留完成部分。", fg=ERROR)
             messagebox.showerror("改写失败", str(payload))
 
-    def preview_prompt(self) -> None:
+    def _novel_prompt_preview_payload(self) -> tuple[str, str, str]:
+        """Return the live chapter prompt or a useful template for an empty project."""
         self._save_chapter_editors()
-        if self.current_chapter_index is None and not self._accept_pasted_source():
-            messagebox.showinfo("没有章节", "请在“原文章节”中粘贴正文，或导入小说文件。")
-            return
-        assert self.current_chapter_index is not None
-        system, user = self._chapter_prompt(self.current_chapter_index)
+        if self.current_chapter_index is None:
+            self._accept_pasted_source()
+        if self.current_chapter_index is not None:
+            system, user = self._chapter_prompt(self.current_chapter_index)
+            chapter = self.state["novel"]["chapters"][self.current_chapter_index]
+            return system, user, f"当前章节：{chapter.get('title', f'章节 {self.current_chapter_index + 1}')}"
+
+        self._sync_novel_rules()
+        novel = self.state["novel"]
+        system, user = build_rewrite_prompt(
+            "提示词模板",
+            "（这里会自动替换为当前章节的小说正文。请先导入小说，或在“原文章节”中粘贴正文。）",
+            mode=novel["mode"],
+            style=novel["style"],
+            perspective=novel["perspective"],
+            target_length=novel["target_length"],
+            custom_rules=novel["custom_rules"],
+            story_bible=novel["story_bible"],
+        )
+        return system, user, "当前尚无章节，以下显示完整提示词模板"
+
+    def preview_prompt(self) -> Toplevel:
+        system, user, description = self._novel_prompt_preview_payload()
         dialog = Toplevel(self.root)
-        dialog.title("本章提示词预览")
+        dialog.title("小说解说提示词预览")
         dialog.geometry("820x660")
+        dialog.minsize(640, 500)
         dialog.configure(bg=BG)
+        dialog.transient(self.root)
+        header = Frame(dialog, bg=SIDEBAR, padx=20, pady=14)
+        header.pack(fill=X)
+        Label(header, text="AI 小说解说 · 实际发送提示词", bg=SIDEBAR, fg="white", font=("Microsoft YaHei UI", 13, "bold")).pack(anchor="w")
+        Label(header, text=description, bg=SIDEBAR, fg=SIDEBAR_MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w", pady=(4, 0))
         editor_outer, editor_shell = self._rounded_widget_shell(dialog, bg=SURFACE)
         editor_outer.pack(fill=BOTH, expand=True, padx=18, pady=(18, 8))
-        editor = Text(editor_shell, wrap="word", bg=SURFACE, fg=INK, padx=18, pady=18, font=("Microsoft YaHei UI", 10))
+        editor = Text(editor_shell, wrap="word", bg=SURFACE, fg=INK, padx=18, pady=18, font=("Microsoft YaHei UI", 10), undo=False)
         self._pack_vertical_scroller(editor_shell, editor)
         editor.insert("1.0", f"【系统提示】\n{system}\n\n【用户提示】\n{user}")
+        editor.configure(state="disabled")
         row = Frame(dialog, bg=BG)
         row.pack(fill=X, padx=18, pady=(0, 18))
-        self._button(row, "复制全部", lambda: self._copy_text(editor.get("1.0", "end-1c")), kind="primary").pack(side=RIGHT)
+        self._button(row, "关闭", dialog.destroy, kind="ghost").pack(side=LEFT)
+        self._button(row, "复制全部提示词", lambda: self._copy_text(editor.get("1.0", "end-1c")), kind="primary").pack(side=RIGHT)
+        dialog.after_idle(dialog.lift)
+        dialog.after_idle(dialog.focus_force)
+        return dialog
 
     def edit_story_bible(self) -> None:
         dialog = Toplevel(self.root)
@@ -1925,6 +2091,10 @@ class StudioApp:
         self.comic_motion_var = StringVar(value=normalize_motion_mode(comic.get("motion_mode")))
         self.comic_video_output_var = StringVar(value=str(comic.get("video_output_path", "")))
         self.comic_draft_output_var = StringVar(value=str(comic.get("jianying_draft_path", "")))
+        cover = comic.get("cover", {}) if isinstance(comic.get("cover"), dict) else {}
+        self.comic_cover_title_var = StringVar(value=str(cover.get("title", "")) or str(comic.get("project_name", "漫画推文")))
+        self.comic_cover_character_var = StringVar(value=str(cover.get("character", "")) or "（不使用人物参考）")
+        self.comic_cover_scene_var = StringVar(value=str(cover.get("scene", "")) or "（不使用场景参考）")
         self.open_jianying_after_video = False
         self.open_jianying_after_draft = False
         self.comic_step = min(max(int(comic.get("workspace_step", 0)), 0), 5)
@@ -1955,6 +2125,13 @@ class StudioApp:
         self.comic_scene_preview_title = None
         self.comic_shot_tree_with_previews = False
         self.comic_shot_preview_images = {}
+        self.comic_shot_loaded_preview_signatures = {}
+        if self.comic_shot_preview_after_id:
+            try:
+                self.root.after_cancel(self.comic_shot_preview_after_id)
+            except TclError:
+                pass
+        self.comic_shot_preview_after_id = None
         self.comic_storyboard_canvas = None
         self.comic_storyboard_body = None
         self.comic_storyboard_window = None
@@ -1964,6 +2141,12 @@ class StudioApp:
         self.comic_storyboard_row_widgets = {}
         self.comic_storyboard_page = 0
         self.comic_storyboard_page_label = None
+        self.comic_cover_dialog = None
+        self.comic_cover_preview_canvas = None
+        self.comic_cover_preview_canvases = {}
+        self.comic_cover_prompt_editor = None
+        self.comic_cover_status_label = None
+        self.comic_cover_dialog_status_label = None
 
         hero_outer = Frame(self.main, bg=SIDEBAR)
         hero_outer.pack(fill=X, padx=34, pady=(24, 12))
@@ -2066,6 +2249,14 @@ class StudioApp:
         return 5
 
     def _reset_comic_step_widgets(self) -> None:
+        cover_dialog = getattr(self, "comic_cover_dialog", None)
+        if cover_dialog is not None:
+            try:
+                if cover_dialog.winfo_exists():
+                    cover_dialog.destroy()
+            except TclError:
+                pass
+        self.comic_cover_dialog = None
         if self.comic_asset_autosave_after_id:
             try:
                 self.root.after_cancel(self.comic_asset_autosave_after_id)
@@ -2107,6 +2298,11 @@ class StudioApp:
         self.comic_storyboard_row_widgets = {}
         self.comic_storyboard_page = 0
         self.comic_storyboard_page_label = None
+        self.comic_cover_preview_canvas = None
+        self.comic_cover_preview_canvases = {}
+        self.comic_cover_prompt_editor = None
+        self.comic_cover_status_label = None
+        self.comic_cover_dialog_status_label = None
 
     def _switch_comic_step(self, step: int, *, save: bool = True) -> None:
         step = min(max(int(step), 0), 5)
@@ -2115,6 +2311,7 @@ class StudioApp:
             return
         if save:
             self._sync_comic_state()
+            self._cancel_scheduled_state_save()
             self.store.save(self.state)
         for child in self.comic_workspace.winfo_children():
             child.destroy()
@@ -2704,8 +2901,17 @@ class StudioApp:
             visible_range = f"{start_index + 1}-{end_index}" if shots else "0"
             self.comic_storyboard_page_label.configure(text=f"第 {self.comic_storyboard_page + 1}/{page_count} 页 · 镜头 {visible_range}")
         if self.comic_storyboard_canvas:
-            self.comic_storyboard_canvas.update_idletasks()
-            self.comic_storyboard_canvas.configure(scrollregion=self.comic_storyboard_canvas.bbox("all"))
+            storyboard_canvas = self.comic_storyboard_canvas
+
+            def update_scrollregion() -> None:
+                if self.comic_storyboard_canvas is not storyboard_canvas:
+                    return
+                try:
+                    storyboard_canvas.configure(scrollregion=storyboard_canvas.bbox("all"))
+                except TclError:
+                    pass
+
+            self.root.after_idle(update_scrollregion)
 
     @staticmethod
     def _comic_shot_status_text(shot: dict[str, object]) -> str:
@@ -2758,7 +2964,7 @@ class StudioApp:
         if shot.get("local_path") or shot.get("image_url"):
             self._mark_comic_shot_stale(shot)
             self._invalidate_comic_draft()
-        self.store.save(self.state)
+        self._schedule_state_save()
         self._update_comic_storyboard_row(index)
         if not silent and hasattr(self, "comic_status"):
             self.comic_status.configure(text=f"分镜 {index + 1:03d} 的提示词已保存。", fg=ACCENT_DARK)
@@ -2781,7 +2987,7 @@ class StudioApp:
         if shot.get("local_path") or shot.get("image_url"):
             self._mark_comic_shot_stale(shot)
             self._invalidate_comic_draft()
-        self.store.save(self.state)
+        self._schedule_state_save()
         self._update_comic_storyboard_row(index)
         if not silent and hasattr(self, "comic_status"):
             self.comic_status.configure(text=f"分镜 {index + 1:03d} 的角色已直接更新。", fg=ACCENT_DARK)
@@ -2808,7 +3014,7 @@ class StudioApp:
         if shot.get("local_path") or shot.get("image_url"):
             self._mark_comic_shot_stale(shot)
             self._invalidate_comic_draft()
-        self.store.save(self.state)
+        self._schedule_state_save()
         self._update_comic_storyboard_row(index)
         if not silent and hasattr(self, "comic_status"):
             self.comic_status.configure(text=f"分镜 {index + 1:03d} 的场景已直接更新。", fg=ACCENT_DARK)
@@ -2874,7 +3080,15 @@ class StudioApp:
         self.comic_shot_tree.tag_configure("alternate", background=COMIC_INSET)
         self.comic_shot_tree.tag_configure("done", foreground=ACCENT_DARK)
         self.comic_shot_tree.tag_configure("error", foreground=ERROR)
-        self._pack_vertical_scroller(tree_shell, self.comic_shot_tree)
+        tree_scrollbar = self._pack_vertical_scroller(tree_shell, self.comic_shot_tree)
+        if with_previews:
+            def update_preview_scroll(first, last) -> None:
+                tree_scrollbar.set(first, last)
+                self._schedule_visible_comic_shot_previews()
+
+            self.comic_shot_tree.configure(yscrollcommand=update_preview_scroll)
+            self.comic_shot_tree.bind("<Configure>", lambda _event: self._schedule_visible_comic_shot_previews(), add="+")
+            self.comic_shot_tree.bind("<KeyRelease>", lambda _event: self._schedule_visible_comic_shot_previews(), add="+")
         self.comic_shot_tree.bind("<<TreeviewSelect>>", self.on_comic_shot_select)
         self.comic_shot_tree.bind("<Button-1>", self._toggle_comic_shot_selection)
 
@@ -2943,9 +3157,47 @@ class StudioApp:
         ).pack(side=LEFT, fill=X, expand=True, padx=(4, 0))
         Label(option, textvariable=self.comic_shot_model_var, bg=COMIC_DARK_ALT, fg=ACCENT, wraplength=210, justify=LEFT, font=("Microsoft YaHei UI", 8)).pack(anchor="w", pady=(0, 10))
         Label(option, text="输出分辨率", bg=COMIC_DARK_ALT, fg=SIDEBAR_MUTED, font=("Microsoft YaHei UI", 8)).pack(anchor="w")
-        RoundedCombobox(option, textvariable=self.comic_resolution_var, values=["2K", "3K", "4K"], state="readonly", width=10).pack(anchor="w", pady=(5, 10))
+        resolution_buttons = Frame(option, bg=COMIC_DARK_ALT)
+        resolution_buttons.pack(fill=X, pady=(6, 3))
+        for resolution in ("1K", "2K", "3K", "4K"):
+            button = self._button(
+                resolution_buttons,
+                resolution,
+                lambda value=resolution: self._select_comic_resolution(value),
+                kind="glass",
+                width=3,
+            )
+            self.comic_resolution_buttons[resolution] = button
+        Label(
+            option,
+            textvariable=self.comic_resolution_hint_var,
+            bg=COMIC_DARK_ALT,
+            fg=SIDEBAR_MUTED,
+            wraplength=210,
+            justify=LEFT,
+            font=("Microsoft YaHei UI", 8),
+        ).pack(anchor="w", pady=(0, 10))
+        self._refresh_comic_resolution_controls()
         Label(option, text="提示词优化", bg=COMIC_DARK_ALT, fg=SIDEBAR_MUTED, font=("Microsoft YaHei UI", 8)).pack(anchor="w")
         RoundedCombobox(option, textvariable=self.comic_optimize_var, values=["标准质量", "极速模式"], state="readonly", width=10).pack(anchor="w", pady=(5, 0))
+        cover_control = Frame(control, bg=COMIC_DARK_ALT, padx=12, pady=11)
+        cover_control.pack(fill=X, pady=(10, 0))
+        Label(cover_control, text="项目封面", bg=COMIC_DARK_ALT, fg="white", font=("Microsoft YaHei UI", 9, "bold")).pack(anchor="w")
+        self.comic_cover_status_label = Label(
+            cover_control,
+            text="未生成",
+            bg=COMIC_DARK_ALT,
+            fg=SIDEBAR_MUTED,
+            anchor="w",
+            justify=LEFT,
+            wraplength=205,
+            font=("Microsoft YaHei UI", 8),
+        )
+        self.comic_cover_status_label.pack(fill=X, pady=(3, 7))
+        cover_actions = Frame(cover_control, bg=COMIC_DARK_ALT)
+        cover_actions.pack(fill=X)
+        self._button(cover_actions, "制作封面", self.open_comic_cover_editor, kind="accent").pack(side=LEFT, fill=X, expand=True, padx=(0, 4))
+        self._button(cover_actions, "放大预览", self.preview_comic_cover, kind="glass").pack(side=LEFT, fill=X, expand=True, padx=(4, 0))
         self.comic_generation_detail_label = Label(control, text="请选择一个分镜查看状态。", bg=SIDEBAR, fg=SIDEBAR_MUTED, justify=LEFT, wraplength=220, font=("Microsoft YaHei UI", 8))
         self.comic_generation_detail_label.pack(fill=X, pady=(18, 16))
         self._button(control, "批量生成未完成分镜", self.generate_all_comic_shots, kind="accent").pack(fill=X)
@@ -2954,19 +3206,533 @@ class StudioApp:
         Label(control, text="提示：生成前必须为出场角色和已绑定场景确认参考图，以保持人物与环境一致性。", bg=SIDEBAR, fg=SIDEBAR_MUTED, justify=LEFT, wraplength=220, font=("Microsoft YaHei UI", 8)).pack(anchor="w", pady=(18, 0))
         selected = self.current_comic_shot_index if self.current_comic_shot_index is not None else (0 if self.state["comic"]["shots"] else None)
         self._refresh_comic_shot_tree(selected)
+        self._refresh_comic_cover_widgets()
         self._bind_page_mousewheel(page, canvas)
+
+    def _comic_cover_record(self) -> dict[str, object]:
+        comic = self.state["comic"]
+        cover = comic.get("cover")
+        if not isinstance(cover, dict):
+            cover = {}
+            comic["cover"] = cover
+        defaults: dict[str, object] = {
+            "title": "",
+            "prompt": "",
+            "character": "",
+            "scene": "",
+            "task_id": "",
+            "status": "未生成",
+            "progress": "0%",
+            "image_url": "",
+            "local_path": "",
+            "error": "",
+            "final_prompt": "",
+            "image_model": "",
+            "images": [],
+        }
+        for key, value in defaults.items():
+            cover.setdefault(key, value)
+        if not isinstance(cover.get("images"), list):
+            cover["images"] = []
+        legacy_path = str(cover.get("local_path", "")).strip()
+        if legacy_path and not cover["images"]:
+            cover["images"] = [
+                {
+                    "aspect": str(self.state["comic"].get("aspect", "9:16")),
+                    "ordinal": 1,
+                    "local_path": legacy_path,
+                    "image_url": str(cover.get("image_url", "")),
+                    "status": str(cover.get("status", "已完成")),
+                    "error": str(cover.get("error", "")),
+                    "task_id": str(cover.get("task_id", "")),
+                    "image_model": str(cover.get("image_model", "")),
+                    "final_prompt": str(cover.get("final_prompt", "")),
+                }
+            ]
+        return cover
+
+    def _comic_cover_image_record(self, aspect: str, ordinal: int) -> dict[str, object]:
+        cover = self._comic_cover_record()
+        images = cover["images"]
+        record = next(
+            (
+                item
+                for item in images
+                if isinstance(item, dict)
+                and str(item.get("aspect", "")) == aspect
+                and int(item.get("ordinal", 0) or 0) == ordinal
+            ),
+            None,
+        )
+        if record is None:
+            record = {
+                "aspect": aspect,
+                "ordinal": ordinal,
+                "local_path": "",
+                "image_url": "",
+                "status": "未生成",
+                "error": "",
+                "task_id": "",
+                "image_model": "",
+                "final_prompt": "",
+            }
+            images.append(record)
+        return record
+
+    def _refresh_comic_cover_widgets(self) -> None:
+        cover = self._comic_cover_record()
+        status = str(cover.get("status", "未生成")) or "未生成"
+        title = str(cover.get("title", "")).strip() or str(self.state["comic"].get("project_name", "漫画推文"))
+        images = [item for item in cover.get("images", []) if isinstance(item, dict)]
+        planned_keys = set(COMIC_COVER_OUTPUT_PLAN)
+        ready_count = sum(
+            1
+            for item in images
+            if (str(item.get("aspect", "")), int(item.get("ordinal", 0) or 0)) in planned_keys
+            and Path(str(item.get("local_path", ""))).is_file()
+        )
+        summary = f"{status} · {ready_count}/4 张 · {title}" if ready_count else status
+        for label in (getattr(self, "comic_cover_status_label", None), getattr(self, "comic_cover_dialog_status_label", None)):
+            if label is None:
+                continue
+            try:
+                if label.winfo_exists():
+                    label.configure(text=summary, fg=ACCENT if ready_count else (ERROR if cover.get("error") else SIDEBAR_MUTED))
+            except TclError:
+                pass
+        previews = getattr(self, "comic_cover_preview_canvases", {})
+        image_map = {
+            (str(item.get("aspect", "")), int(item.get("ordinal", 0) or 0)): str(item.get("local_path", ""))
+            for item in images
+        }
+        for key, preview in previews.items():
+            try:
+                if preview.winfo_exists():
+                    aspect, ordinal = key
+                    self._render_local_image(
+                        preview,
+                        image_map.get(key, ""),
+                        placeholder=f"{aspect} · 第 {ordinal} 张\n等待生成",
+                        max_size=(170, 205),
+                    )
+            except TclError:
+                pass
+
+    def _suggest_comic_cover_visual(self) -> str:
+        character = self.comic_cover_character_var.get().strip()
+        scene = self.comic_cover_scene_var.get().strip()
+        if character.startswith("（不使用"):
+            character = ""
+        if scene.startswith("（不使用"):
+            scene = ""
+        subject = f"{character}以中近景面对镜头，呈现强烈而清晰的表情和动作" if character else "核心人物以中近景面对镜头，呈现强烈而清晰的表情和动作"
+        environment = f"，背景为{scene}并保持环境可辨识" if scene else "，背景简洁并营造剧情冲突氛围"
+        return f"{subject}{environment}，画面有悬念感和视觉冲击力，人物面部与封面标题都清楚醒目"
+
+    def _fill_comic_cover_prompt(self) -> None:
+        editor = getattr(self, "comic_cover_prompt_editor", None)
+        if editor is None:
+            return
+        editor.delete("1.0", END)
+        editor.insert("1.0", self._suggest_comic_cover_visual())
+
+    def _save_comic_cover_settings(self, *, silent: bool = False, persist: bool = True) -> None:
+        if not hasattr(self, "comic_cover_title_var"):
+            return
+        cover = self._comic_cover_record()
+        title = self.comic_cover_title_var.get().strip() or str(self.comic_project_var.get()).strip() or "漫画推文"
+        character = self.comic_cover_character_var.get().strip()
+        scene = self.comic_cover_scene_var.get().strip()
+        if character.startswith("（不使用"):
+            character = ""
+        if scene.startswith("（不使用"):
+            scene = ""
+        prompt = str(cover.get("prompt", ""))
+        editor = getattr(self, "comic_cover_prompt_editor", None)
+        if editor is not None:
+            try:
+                if editor.winfo_exists():
+                    prompt = editor.get("1.0", "end-1c").strip()
+            except TclError:
+                pass
+        cover.update({"title": title, "character": character, "scene": scene, "prompt": prompt})
+        if persist:
+            self.store.save(self.state)
+        self._refresh_comic_cover_widgets()
+        if not silent and getattr(self, "comic_status", None):
+            self.comic_status.configure(text="封面设置已保存。", fg=ACCENT_DARK)
+
+    def open_comic_cover_editor(self) -> None:
+        existing = getattr(self, "comic_cover_dialog", None)
+        if existing is not None:
+            try:
+                if existing.winfo_exists():
+                    existing.lift()
+                    existing.focus_force()
+                    return
+            except TclError:
+                pass
+        cover = self._comic_cover_record()
+        self.comic_cover_title_var.set(str(cover.get("title", "")).strip() or self.comic_project_var.get().strip() or "漫画推文")
+        self.comic_cover_character_var.set(str(cover.get("character", "")).strip() or "（不使用人物参考）")
+        self.comic_cover_scene_var.set(str(cover.get("scene", "")).strip() or "（不使用场景参考）")
+
+        dialog = Toplevel(self.root)
+        self.comic_cover_dialog = dialog
+        dialog.title("项目封面制作")
+        dialog.geometry("1040x760")
+        dialog.minsize(900, 680)
+        dialog.configure(bg=BG)
+        dialog.transient(self.root)
+
+        header = Frame(dialog, bg=SIDEBAR, padx=24, pady=17)
+        header.pack(fill=X)
+        Label(header, text="COMIC COVER · 项目封面", bg=SIDEBAR, fg=ACCENT, font=("Segoe UI", 8, "bold")).pack(anchor="w")
+        Label(header, text="使用已确认人物与场景参考图生成统一画风封面", bg=SIDEBAR, fg="white", font=("Microsoft YaHei UI", 16, "bold")).pack(anchor="w", pady=(3, 0))
+
+        body = Frame(dialog, bg=BG, padx=22, pady=20)
+        body.pack(fill=BOTH, expand=True)
+        preview_outer = self._card(body, bg=COMIC_INSET, padx=14, pady=14)
+        preview_outer.pack(side=LEFT, fill=Y, padx=(0, 16))
+        preview = preview_outer.winfo_children()[0]
+        Label(preview, text="四张封面预览", bg=COMIC_INSET, fg=INK, font=("Microsoft YaHei UI", 10, "bold")).pack(anchor="w", pady=(0, 8))
+        gallery = Frame(preview, bg=COMIC_INSET)
+        gallery.pack()
+        self.comic_cover_preview_canvases = {}
+        for plan_index, (cover_aspect, cover_ordinal) in enumerate(COMIC_COVER_OUTPUT_PLAN):
+            cell = Frame(gallery, bg=COMIC_INSET)
+            cell.grid(row=plan_index // 2, column=plan_index % 2, padx=(0 if plan_index % 2 == 0 else 5, 5 if plan_index % 2 == 0 else 0), pady=(0, 7))
+            Label(cell, text=f"{cover_aspect} · 第 {cover_ordinal} 张", bg=COMIC_INSET, fg=MUTED, font=("Microsoft YaHei UI", 8, "bold")).pack(anchor="w", pady=(0, 3))
+            canvas_widget = Canvas(cell, width=170, height=205, bg=SURFACE_ALT, highlightthickness=0, borderwidth=0, cursor="hand2")
+            canvas_widget.pack()
+            canvas_widget.bind(
+                "<Button-1>",
+                lambda _event, aspect=cover_aspect, ordinal=cover_ordinal: self.preview_comic_cover(aspect, ordinal),
+            )
+            self.comic_cover_preview_canvases[(cover_aspect, cover_ordinal)] = canvas_widget
+        self.comic_cover_preview_canvas = self.comic_cover_preview_canvases.get(COMIC_COVER_OUTPUT_PLAN[0])
+        self.comic_cover_dialog_status_label = Label(preview, text="", bg=COMIC_INSET, fg=SIDEBAR_MUTED, anchor="w", wraplength=360, font=("Microsoft YaHei UI", 8))
+        self.comic_cover_dialog_status_label.pack(fill=X, pady=(10, 0))
+        self._button(preview, "放大查看第一张封面", self.preview_comic_cover, kind="ghost").pack(fill=X, pady=(9, 0))
+
+        editor_outer = self._card(body, padx=20, pady=18)
+        editor_outer.pack(side=LEFT, fill=BOTH, expand=True)
+        editor = editor_outer.winfo_children()[0]
+        self._field_label(editor, "封面标题（会绘制在图片中）").pack(anchor="w")
+        self._entry(editor, self.comic_cover_title_var).pack(fill=X, ipady=6, pady=(5, 10))
+
+        selectors = Frame(editor, bg=SURFACE)
+        selectors.pack(fill=X, pady=(0, 10))
+        selectors.grid_columnconfigure(0, weight=1)
+        selectors.grid_columnconfigure(1, weight=1)
+        character_panel = Frame(selectors, bg=SURFACE)
+        character_panel.grid(row=0, column=0, sticky="ew", padx=(0, 6))
+        scene_panel = Frame(selectors, bg=SURFACE)
+        scene_panel.grid(row=0, column=1, sticky="ew", padx=(6, 0))
+        self._field_label(character_panel, "主要人物参考（直接点击选择）").pack(anchor="w")
+        character_values = ["（不使用人物参考）"] + [
+            str(item.get("name", "")).strip() for item in self.state["comic"].get("characters", []) if str(item.get("name", "")).strip()
+        ]
+        current_character = self.comic_cover_character_var.get()
+        if current_character not in character_values:
+            character_values.append(current_character)
+        character_shell, character_host = self._rounded_widget_shell(character_panel, bg=COMIC_INSET, fixed_height=112)
+        character_shell.pack(fill=X, pady=(5, 0))
+        character_list = Listbox(
+            character_host,
+            selectmode="browse",
+            exportselection=False,
+            bg=COMIC_INSET,
+            fg=INK,
+            selectbackground=COMIC_MINT,
+            selectforeground=ACCENT_DARK,
+            relief="flat",
+            highlightthickness=0,
+            activestyle="none",
+            font=("Microsoft YaHei UI", 8),
+        )
+        for item_index, name in enumerate(character_values):
+            character_list.insert(END, name)
+            if name == current_character:
+                character_list.selection_set(item_index)
+                character_list.activate(item_index)
+                character_list.see(item_index)
+        self._pack_vertical_scroller(character_host, character_list)
+
+        def select_cover_character(_event=None) -> None:
+            selected = character_list.curselection()
+            if selected:
+                self.comic_cover_character_var.set(str(character_list.get(selected[0])))
+
+        character_list.bind("<<ListboxSelect>>", select_cover_character, add="+")
+        self._field_label(scene_panel, "固定场景参考（直接点击选择）").pack(anchor="w")
+        scene_values = ["（不使用场景参考）"] + [
+            str(item.get("name", "")).strip() for item in self.state["comic"].get("scenes", []) if str(item.get("name", "")).strip()
+        ]
+        current_scene = self.comic_cover_scene_var.get()
+        if current_scene not in scene_values:
+            scene_values.append(current_scene)
+        scene_shell, scene_host = self._rounded_widget_shell(scene_panel, bg=COMIC_INSET, fixed_height=112)
+        scene_shell.pack(fill=X, pady=(5, 0))
+        scene_list = Listbox(
+            scene_host,
+            selectmode="browse",
+            exportselection=False,
+            bg=COMIC_INSET,
+            fg=INK,
+            selectbackground=COMIC_MINT,
+            selectforeground=ACCENT_DARK,
+            relief="flat",
+            highlightthickness=0,
+            activestyle="none",
+            font=("Microsoft YaHei UI", 8),
+        )
+        for item_index, name in enumerate(scene_values):
+            scene_list.insert(END, name)
+            if name == current_scene:
+                scene_list.selection_set(item_index)
+                scene_list.activate(item_index)
+                scene_list.see(item_index)
+        self._pack_vertical_scroller(scene_host, scene_list)
+
+        def select_cover_scene(_event=None) -> None:
+            selected = scene_list.curselection()
+            if selected:
+                self.comic_cover_scene_var.set(str(scene_list.get(selected[0])))
+
+        scene_list.bind("<<ListboxSelect>>", select_cover_scene, add="+")
+
+        prompt_header = Frame(editor, bg=SURFACE)
+        prompt_header.pack(fill=X, pady=(2, 5))
+        self._field_label(prompt_header, "封面画面提示词（描述表情、动作与氛围）").pack(side=LEFT)
+        self._button(prompt_header, "自动填写", self._fill_comic_cover_prompt, kind="ghost").pack(side=RIGHT)
+        prompt_shell, prompt_host = self._rounded_widget_shell(editor, bg="#F3F8F7", fixed_height=190)
+        prompt_shell.pack(fill=X)
+        self.comic_cover_prompt_editor = Text(prompt_host, height=7, wrap="word", undo=True, bg="#F3F8F7", fg=INK, relief="flat", padx=10, pady=9, font=("Microsoft YaHei UI", 9))
+        self._pack_vertical_scroller(prompt_host, self.comic_cover_prompt_editor)
+        self.comic_cover_prompt_editor.insert("1.0", str(cover.get("prompt", "")))
+
+        model_id = SHOT_IMAGE_MODEL_IDS.get(self.comic_shot_model_var.get(), SEEDREAM_LITE_MODEL)
+        model_label = SHOT_IMAGE_MODEL_LABELS.get(model_id, model_id)
+        Label(
+            editor,
+            text=f"固定生成 3:4 两张 + 4:3 两张，沿用批量出图设置：{model_label} · {self.comic_resolution_var.get()}。人物和场景必须已有确认参考图。",
+            bg=SURFACE,
+            fg=MUTED,
+            wraplength=520,
+            justify=LEFT,
+            font=("Microsoft YaHei UI", 8),
+        ).pack(anchor="w", pady=(10, 12))
+        actions = Frame(editor, bg=SURFACE)
+        actions.pack(fill=X, side="bottom")
+        self._button(actions, "保存设置", lambda: self._save_comic_cover_settings(), kind="ghost").pack(side=LEFT)
+        self._button(actions, "生成 / 重绘四张封面", self.generate_comic_cover, kind="accent").pack(side=RIGHT)
+
+        def close_dialog() -> None:
+            self._save_comic_cover_settings(silent=True)
+            try:
+                dialog.destroy()
+            finally:
+                self.comic_cover_dialog = None
+                self.comic_cover_preview_canvas = None
+                self.comic_cover_preview_canvases = {}
+                self.comic_cover_prompt_editor = None
+                self.comic_cover_dialog_status_label = None
+
+        dialog.protocol("WM_DELETE_WINDOW", close_dialog)
+        self._refresh_comic_cover_widgets()
+
+    def preview_comic_cover(self, aspect: str | None = None, ordinal: int | None = None) -> None:
+        cover = self._comic_cover_record()
+        images = [item for item in cover.get("images", []) if isinstance(item, dict)]
+        selected = None
+        if aspect is not None and ordinal is not None:
+            selected = next(
+                (
+                    item
+                    for item in images
+                    if str(item.get("aspect", "")) == aspect
+                    and int(item.get("ordinal", 0) or 0) == ordinal
+                ),
+                None,
+            )
+        else:
+            for planned_aspect, planned_ordinal in COMIC_COVER_OUTPUT_PLAN:
+                selected = next(
+                    (
+                        item
+                        for item in images
+                        if str(item.get("aspect", "")) == planned_aspect
+                        and int(item.get("ordinal", 0) or 0) == planned_ordinal
+                        and Path(str(item.get("local_path", ""))).is_file()
+                    ),
+                    None,
+                )
+                if selected is not None:
+                    break
+        local_path = str(selected.get("local_path", "")) if selected else str(cover.get("local_path", ""))
+        preview_aspect = str(selected.get("aspect", "")) if selected else ""
+        preview_ordinal = int(selected.get("ordinal", 0) or 0) if selected else 0
+        suffix = f" · {preview_aspect} 第 {preview_ordinal} 张" if preview_aspect and preview_ordinal else ""
+        self._show_comic_image(local_path, f"项目封面 · {cover.get('title', '漫画推文')}{suffix}")
+
+    def generate_comic_cover(self) -> None:
+        if self.is_busy:
+            messagebox.showinfo("任务进行中", "请等待当前生成任务完成后再制作封面。")
+            return
+        self._sync_comic_state()
+        cover = self._comic_cover_record()
+        comic = self.state["comic"]
+        character_name = str(cover.get("character", "")).strip()
+        scene_name = str(cover.get("scene", "")).strip()
+        character = next((item for item in comic.get("characters", []) if str(item.get("name", "")).strip() == character_name), None)
+        scene = next((item for item in comic.get("scenes", []) if str(item.get("name", "")).strip() == scene_name), None)
+        if character_name and (character is None or not has_local_reference(character)):
+            messagebox.showwarning("人物参考图不可用", f"“{character_name}”还没有已确认的人物参考图，请先完成角色定妆。")
+            return
+        if scene_name and (scene is None or not has_local_reference(scene)):
+            messagebox.showwarning("场景参考图不可用", f"“{scene_name}”还没有已确认的场景参考图，请先完成场景定景。")
+            return
+        model_id = str(comic.get("shot_image_model", SEEDREAM_LITE_MODEL))
+        try:
+            client = self._seedream_client(model_id)
+        except ComicEngineError as exc:
+            messagebox.showwarning("需要 ARK API Key", str(exc))
+            return
+        title = str(cover.get("title", "")).strip() or str(comic.get("project_name", "漫画推文"))
+        visual_prompt = str(cover.get("prompt", "")).strip() or self._suggest_comic_cover_visual()
+        references = character_reference_data([character] if character else []) + scene_reference_data(scene)
+        cover_dir = self._comic_output_dir() / "covers"
+        resolution = str(comic.get("resolution", "2K"))
+        optimize_mode = str(comic.get("optimize_mode", "standard"))
+        composition_prompts = {
+            1: "构图方案一：人物正面或三分之二侧面，以中近景突出表情和动作，情绪冲突明确，画面下半部为标题保留清晰层次",
+            2: "构图方案二：人物略微侧身或回头，以中近景制造悬念，表情和动作与方案一明显不同，画面下半部为标题保留清晰层次",
+        }
+        prompts = {
+            (aspect, ordinal): build_cover_prompt(
+                title,
+                f"{visual_prompt}。{composition_prompts[ordinal]}",
+                art_style=str(comic.get("art_style", "")),
+                aspect=aspect,
+                character_name=character_name,
+                scene_name=scene_name,
+            )
+            for aspect, ordinal in COMIC_COVER_OUTPUT_PLAN
+        }
+        for aspect, ordinal in COMIC_COVER_OUTPUT_PLAN:
+            item = self._comic_cover_image_record(aspect, ordinal)
+            item.update({"status": "等待生成", "progress": "0%", "error": "", "task_id": "", "final_prompt": prompts[(aspect, ordinal)]})
+        cover.update({"title": title, "prompt": visual_prompt, "status": "提交中", "progress": "0%", "error": ""})
+        self.store.save(self.state)
+        self.is_busy = True
+        self.comic_progress["value"] = 0
+        self.comic_status.configure(text=f"正在生成四张项目封面：{title}", fg=ACCENT_DARK)
+        self._refresh_comic_cover_widgets()
+
+        def worker() -> None:
+            completed = 0
+            failed = 0
+            total = len(COMIC_COVER_OUTPUT_PLAN)
+            for position, (aspect, ordinal) in enumerate(COMIC_COVER_OUTPUT_PLAN, start=1):
+                final_prompt = prompts[(aspect, ordinal)]
+                destination = cover_dir / f"cover_{aspect.replace(':', 'x')}_{ordinal:02d}.png"
+                self.bus.put(("comic_cover_item_started", (position, total, aspect, ordinal, final_prompt)))
+                try:
+                    def progress(task: dict[str, object], *, item_position: int = position, item_aspect: str = aspect, item_ordinal: int = ordinal) -> None:
+                        self.bus.put(
+                            (
+                                "comic_cover_progress",
+                                (
+                                    item_position,
+                                    total,
+                                    item_aspect,
+                                    item_ordinal,
+                                    str(task.get("progress", "")),
+                                    str(task.get("id", "")),
+                                ),
+                            )
+                        )
+
+                    result = client.generate_image(
+                        final_prompt,
+                        images=references or None,
+                        size=resolution,
+                        aspect=aspect,
+                        optimize_mode=optimize_mode,
+                        progress=progress,
+                    )
+                    client.download_image(str(result["imageUrl"]), destination)
+                    completed += 1
+                    self.bus.put(("comic_cover_item_done", (aspect, ordinal, result, str(destination), final_prompt)))
+                except Exception as exc:
+                    failed += 1
+                    self.bus.put(("comic_cover_item_error", (aspect, ordinal, str(exc))))
+            self.bus.put(("comic_cover_batch_done", (completed, failed, total)))
+
+        threading.Thread(target=worker, daemon=True).start()
 
     def _select_comic_shot_model(self, label: str) -> None:
         if label not in SHOT_IMAGE_MODEL_IDS:
             return
         self.comic_shot_model_var.set(label)
-        self.state["comic"]["shot_image_model"] = SHOT_IMAGE_MODEL_IDS[label]
+        model_id = SHOT_IMAGE_MODEL_IDS[label]
+        self.state["comic"]["shot_image_model"] = model_id
+        supported = SHOT_IMAGE_MODEL_RESOLUTIONS[model_id]
+        if self.comic_resolution_var.get().strip().upper() not in supported:
+            self.comic_resolution_var.set(supported[0])
+            self.state["comic"]["resolution"] = supported[0]
         self.store.save(self.state)
+        self._refresh_comic_resolution_controls()
         if self.comic_generation_detail_label:
             self.comic_generation_detail_label.configure(
                 text=f"已切换为 {label}。未开通时请到火山方舟“开通管理 → 视觉模型”启用。",
                 fg=ACCENT,
             )
+
+    def _supported_comic_resolutions(self) -> tuple[str, ...]:
+        model_id = SHOT_IMAGE_MODEL_IDS.get(self.comic_shot_model_var.get(), SEEDREAM_LITE_MODEL)
+        return SHOT_IMAGE_MODEL_RESOLUTIONS.get(model_id, ("2K", "3K"))
+
+    def _refresh_comic_resolution_controls(self) -> None:
+        supported = self._supported_comic_resolutions()
+        selected = self.comic_resolution_var.get().strip().upper()
+        if selected not in supported:
+            selected = supported[0]
+            self.comic_resolution_var.set(selected)
+        buttons = getattr(self, "comic_resolution_buttons", {})
+        for resolution, button in buttons.items():
+            button.pack_forget()
+            if resolution not in supported:
+                continue
+            button.normal_bg = ACCENT if resolution == selected else "#314C5B"
+            button.active_bg = "#379B8B" if resolution == selected else "#3C5969"
+            button.fg = SIDEBAR if resolution == selected else "white"
+            button.pack(side=LEFT, fill=X, expand=True, padx=(0, 5) if resolution != supported[-1] else 0)
+            button._draw()
+        hint = getattr(self, "comic_resolution_hint_var", None)
+        if hint is not None:
+            model_name = "Lite" if self.comic_shot_model_var.get() == SHOT_IMAGE_MODEL_OPTIONS[0] else "Pro"
+            selected_label = selected
+            if model_name == "Pro" and selected == "1K":
+                aspect_var = getattr(self, "comic_aspect_var", None)
+                aspect = aspect_var.get().strip() if aspect_var is not None else "9:16"
+                actual_size = SEEDREAM_PRO_1K_SIZES.get(aspect, SEEDREAM_PRO_1K_SIZES["1:1"])
+                selected_label = f"1K（{actual_size.replace('x', '×')}）"
+            hint.set(f"当前 {selected_label} · {model_name} 可选 {' / '.join(supported)}")
+
+    def _select_comic_resolution(self, resolution: str) -> None:
+        value = resolution.strip().upper()
+        supported = self._supported_comic_resolutions()
+        if value not in supported:
+            messagebox.showinfo("当前模型不支持", f"当前模型只能使用 {'、'.join(supported)} 分辨率。")
+            return
+        self.comic_resolution_var.set(value)
+        self.state["comic"]["resolution"] = value
+        self.store.save(self.state)
+        self._refresh_comic_resolution_controls()
+        if self.comic_generation_detail_label:
+            self.comic_generation_detail_label.configure(text=f"输出分辨率已切换为 {value}，后续生成与重绘立即生效。", fg=ACCENT)
 
     def _build_comic_video_step(self, parent) -> None:
         page, canvas = self._scrollable_content(parent)
@@ -3122,6 +3888,7 @@ class StudioApp:
         self._save_current_comic_character()
         self._save_current_comic_scene()
         self.save_comic_shot_prompt(silent=True)
+        self._save_comic_cover_settings(silent=True, persist=False)
         comic = self.state["comic"]
         comic["project_name"] = self.comic_project_var.get().strip() or "未命名漫画推文"
         comic["art_style"] = self.comic_style_var.get().strip() or COMIC_STYLE_PRESETS[0]
@@ -3185,9 +3952,15 @@ class StudioApp:
             comic["jianying_draft_name"] = ""
             self.comic_draft_output_var.set("")
         comic["aspect"] = next_aspect
-        comic["resolution"] = self.comic_resolution_var.get() if self.comic_resolution_var.get() in {"2K", "3K", "4K"} else "2K"
+        shot_model_id = SHOT_IMAGE_MODEL_IDS.get(self.comic_shot_model_var.get(), SEEDREAM_LITE_MODEL)
+        supported_resolutions = SHOT_IMAGE_MODEL_RESOLUTIONS.get(shot_model_id, ("2K", "3K"))
+        resolution = self.comic_resolution_var.get().strip().upper()
+        if resolution not in supported_resolutions:
+            resolution = supported_resolutions[0]
+            self.comic_resolution_var.set(resolution)
+        comic["resolution"] = resolution
         comic["optimize_mode"] = "fast" if self.comic_optimize_var.get() == "极速模式" else "standard"
-        comic["shot_image_model"] = SHOT_IMAGE_MODEL_IDS.get(self.comic_shot_model_var.get(), SEEDREAM_LITE_MODEL)
+        comic["shot_image_model"] = shot_model_id
         comic["source_text"] = self.comic_source_editor.get("1.0", "end-1c") if self.comic_source_editor else comic.get("source_text", "")
         comic["output_dir"] = str(self._comic_output_dir())
         self.comic_output_var.set(comic["output_dir"])
@@ -3222,13 +3995,15 @@ class StudioApp:
     def save_comic_settings(self, silent: bool = False) -> None:
         self._sync_comic_state()
         error = ""
-        try:
-            if self.remember_ark_api_key.get() and self.ark_api_key.get().strip():
-                save_api_key("ark", self.ark_api_key.get().strip())
-            else:
-                delete_api_key("ark")
-        except SecretStoreError as exc:
-            error = str(exc)
+        if not silent:
+            try:
+                if self.remember_ark_api_key.get() and self.ark_api_key.get().strip():
+                    save_api_key("ark", self.ark_api_key.get().strip())
+                else:
+                    delete_api_key("ark")
+            except SecretStoreError as exc:
+                error = str(exc)
+        self._cancel_scheduled_state_save()
         self.store.save(self.state)
         self._refresh_comic_overview()
         if silent:
@@ -3385,6 +4160,25 @@ class StudioApp:
             self._refresh_comic_shot_binding_controls()
 
         self.comic_asset_autosave_after_id = self.root.after(450, commit)
+
+    def _cancel_scheduled_state_save(self) -> None:
+        after_id = getattr(self, "state_save_after_id", None)
+        if after_id:
+            try:
+                self.root.after_cancel(after_id)
+            except TclError:
+                pass
+        self.state_save_after_id = None
+
+    def _schedule_state_save(self, delay: int = 350) -> None:
+        """Coalesce rapid inline edits into one atomic state write."""
+        self._cancel_scheduled_state_save()
+
+        def commit() -> None:
+            self.state_save_after_id = None
+            self.store.save(self.state)
+
+        self.state_save_after_id = self.root.after(max(50, int(delay)), commit)
 
     @staticmethod
     def _comic_character_list_text(item: dict[str, object]) -> str:
@@ -3840,6 +4634,7 @@ class StudioApp:
                     prompt,
                     images=reference_images or None,
                     size=resolution,
+                    aspect=str(self.state["comic"].get("aspect", "9:16")),
                     optimize_mode=optimize_mode,
                     progress=progress,
                 )
@@ -4061,7 +4856,13 @@ class StudioApp:
                 def progress(task: dict[str, object]) -> None:
                     self.bus.put(("comic_scene_progress", (index, str(task.get("progress", "")), str(task.get("id", "")))))
 
-                result = client.generate_image(prompt, size=resolution, optimize_mode=optimize_mode, progress=progress)
+                result = client.generate_image(
+                    prompt,
+                    size=resolution,
+                    aspect=str(self.state["comic"].get("aspect", "9:16")),
+                    optimize_mode=optimize_mode,
+                    progress=progress,
+                )
                 client.download_image(str(result["imageUrl"]), output)
                 self.bus.put(("comic_scene_done", (index, result, str(output))))
             except Exception as exc:
@@ -4365,8 +5166,20 @@ class StudioApp:
     def _comic_shot_preview_image(self, index: int, shot: dict[str, object]) -> ImageTk.PhotoImage:
         """Build a compact preview that stays inside the matching storyboard row."""
         width, height = 112, 142
-        preview = Image.new("RGB", (width, height), COMIC_INSET)
         path = Path(str(shot.get("local_path", "")))
+        if path.is_file():
+            try:
+                stat = path.stat()
+                cache_key = ("shot-tree", str(path.absolute()), stat.st_mtime_ns, stat.st_size, width, height)
+            except OSError:
+                cache_key = ("shot-tree-placeholder", width, height)
+        else:
+            cache_key = ("shot-tree-placeholder", width, height)
+        cached = self._cached_thumbnail_photo(cache_key)
+        if cached is not None:
+            self.comic_shot_preview_images[index] = cached
+            return cached
+        preview = Image.new("RGB", (width, height), COMIC_INSET)
         if path.is_file():
             try:
                 with Image.open(path) as source:
@@ -4383,9 +5196,71 @@ class StudioApp:
             draw.rounded_rectangle((25, 37, width - 26, height - 38), radius=9, outline="#9CB2B0", width=3)
             draw.ellipse((38, 50, 51, 63), fill="#9CB2B0")
             draw.line((31, height - 49, 52, height - 70, 65, height - 57, 78, height - 76, width - 31, height - 49), fill="#9CB2B0", width=4, joint="curve")
-        image = ImageTk.PhotoImage(preview)
+        image = self._remember_thumbnail_photo(cache_key, ImageTk.PhotoImage(preview))
         self.comic_shot_preview_images[index] = image
         return image
+
+    @staticmethod
+    def _comic_shot_preview_signature(shot: dict[str, object]) -> tuple[object, ...]:
+        path = Path(str(shot.get("local_path", "")))
+        if not path.is_file():
+            return ("", 0, 0)
+        try:
+            stat = path.stat()
+            return (str(path.absolute()), stat.st_mtime_ns, stat.st_size)
+        except OSError:
+            return (str(path), 0, 0)
+
+    def _schedule_visible_comic_shot_previews(self) -> None:
+        if not self.comic_shot_tree_with_previews or not self.comic_shot_tree:
+            return
+        if self.comic_shot_preview_after_id is not None:
+            return
+
+        def load() -> None:
+            self.comic_shot_preview_after_id = None
+            self._load_visible_comic_shot_previews()
+
+        try:
+            self.comic_shot_preview_after_id = self.root.after_idle(load)
+        except TclError:
+            self.comic_shot_preview_after_id = None
+
+    def _load_visible_comic_shot_previews(self) -> None:
+        self.comic_shot_preview_after_id = None
+        tree = self.comic_shot_tree
+        if not self.comic_shot_tree_with_previews or not tree:
+            return
+        try:
+            items = tree.get_children()
+            first, last = tree.yview()
+        except TclError:
+            return
+        if not items:
+            return
+        start = max(0, int(first * len(items)) - 2)
+        end = min(len(items), max(start + 1, int(last * len(items) + 0.999) + 2))
+        shots = self.state["comic"].get("shots", [])
+        pending: list[tuple[str, int, dict[str, object], tuple[object, ...]]] = []
+        for item in items[start:end]:
+            index = int(item)
+            if not (0 <= index < len(shots)):
+                continue
+            shot = shots[index]
+            signature = self._comic_shot_preview_signature(shot)
+            if self.comic_shot_loaded_preview_signatures.get(index) != signature:
+                pending.append((item, index, shot, signature))
+        for item, index, shot, signature in pending[:3]:
+            try:
+                tree.item(item, image=self._comic_shot_preview_image(index, shot))
+                self.comic_shot_loaded_preview_signatures[index] = signature
+            except TclError:
+                return
+        if len(pending) > 3:
+            try:
+                self.comic_shot_preview_after_id = self.root.after(12, self._load_visible_comic_shot_previews)
+            except TclError:
+                self.comic_shot_preview_after_id = None
 
     def _update_comic_shot_tree_row(self, index: int) -> None:
         if self.comic_storyboard_body:
@@ -4410,8 +5285,11 @@ class StudioApp:
             "tags": tuple(tags),
         }
         if self.comic_shot_tree_with_previews:
-            options["image"] = self._comic_shot_preview_image(index, shot)
+            options["image"] = self._comic_shot_preview_image(-1, {})
+            self.comic_shot_loaded_preview_signatures.pop(index, None)
         self.comic_shot_tree.item(str(index), **options)
+        if self.comic_shot_tree_with_previews:
+            self._schedule_visible_comic_shot_previews()
 
     def _refresh_comic_shot_tree(self, selected: int | None = None) -> None:
         if self.comic_storyboard_body:
@@ -4420,6 +5298,7 @@ class StudioApp:
         if not self.comic_shot_tree:
             return
         self.comic_shot_preview_images = {}
+        self.comic_shot_loaded_preview_signatures = {}
         for item in self.comic_shot_tree.get_children():
             self.comic_shot_tree.delete(item)
         shots = self.state["comic"]["shots"]
@@ -4441,7 +5320,7 @@ class StudioApp:
                 "tags": tuple(tags),
             }
             if self.comic_shot_tree_with_previews:
-                options["image"] = self._comic_shot_preview_image(index, shot)
+                options["image"] = self._comic_shot_preview_image(-1, {})
             self.comic_shot_tree.insert("", END, iid=str(index), **options)
         done = sum(1 for shot in shots if shot.get("local_path"))
         if self.comic_step == 3:
@@ -4459,6 +5338,8 @@ class StudioApp:
                 self.comic_shot_prompt_editor.delete("1.0", END)
             if self.comic_generation_detail_label:
                 self.comic_generation_detail_label.configure(text="暂无分镜。请返回上一步分析或拆分小说。")
+        if self.comic_shot_tree_with_previews:
+            self._schedule_visible_comic_shot_previews()
 
     def _load_comic_shot(self, index: int) -> None:
         shots = self.state["comic"]["shots"]
@@ -4875,7 +5756,14 @@ class StudioApp:
                     def progress(task: dict[str, object], shot_index: int = index) -> None:
                         self.bus.put(("comic_shot_progress", (shot_index, str(task.get("progress", "")), str(task.get("id", "")))))
 
-                    result = client.generate_image(prompt, images=references, size=resolution, optimize_mode=optimize_mode, progress=progress)
+                    result = client.generate_image(
+                        prompt,
+                        images=references,
+                        size=resolution,
+                        aspect=aspect,
+                        optimize_mode=optimize_mode,
+                        progress=progress,
+                    )
                     client.download_image(str(result["imageUrl"]), destination)
                     self.bus.put(("comic_shot_done", (index, result, str(destination), prompt)))
                     completed += 1
@@ -5369,6 +6257,89 @@ class StudioApp:
             self.is_busy = False
             self._set_comic_api_status("● 连接失败", ERROR)
             messagebox.showerror("火山方舟连接失败", str(payload))
+        elif event == "comic_cover_item_started":
+            position, total, aspect, ordinal, final_prompt = payload
+            cover = self._comic_cover_record()
+            item = self._comic_cover_image_record(aspect, ordinal)
+            item.update({"status": "提交中", "progress": "0%", "error": "", "final_prompt": final_prompt})
+            cover.update({"status": "生成中", "progress": f"{position - 1}/{total}", "error": ""})
+            self.comic_status.configure(text=f"正在生成封面 {position}/{total}：{aspect} 第 {ordinal} 张", fg=ACCENT_DARK)
+            self._refresh_comic_cover_widgets()
+        elif event == "comic_cover_progress":
+            position, total, aspect, ordinal, progress, task_id = payload
+            cover = self._comic_cover_record()
+            item = self._comic_cover_image_record(aspect, ordinal)
+            item.update({"status": "生成中", "progress": progress or "排队中"})
+            if task_id:
+                item["task_id"] = task_id
+                cover["task_id"] = task_id
+            item_percent = self._percent_value(progress)
+            overall_percent = ((position - 1) + item_percent / 100) / total * 100
+            cover["progress"] = f"{overall_percent:.0f}%"
+            self.comic_progress["value"] = overall_percent
+            self.comic_status.configure(
+                text=f"正在生成封面 {position}/{total}：{aspect} 第 {ordinal} 张 · {progress or '排队中'}",
+                fg=ACCENT_DARK,
+            )
+            self._refresh_comic_cover_widgets()
+        elif event == "comic_cover_item_done":
+            aspect, ordinal, result, local_path, final_prompt = payload
+            cover = self._comic_cover_record()
+            item = self._comic_cover_image_record(aspect, ordinal)
+            item.update(
+                {
+                    "task_id": str(result.get("id", "")),
+                    "image_url": str(result.get("imageUrl", "")),
+                    "local_path": local_path,
+                    "status": "已完成",
+                    "progress": "100%",
+                    "error": "",
+                    "final_prompt": final_prompt,
+                    "image_model": str(result.get("model", "")),
+                }
+            )
+            if (aspect, ordinal) == COMIC_COVER_OUTPUT_PLAN[0] or not str(cover.get("local_path", "")):
+                cover.update(
+                    {
+                        "task_id": item["task_id"],
+                        "image_url": item["image_url"],
+                        "local_path": local_path,
+                        "final_prompt": final_prompt,
+                        "image_model": item["image_model"],
+                    }
+                )
+            self.store.save(self.state)
+            self._refresh_comic_cover_widgets()
+            self._refresh_comic_overview()
+        elif event == "comic_cover_item_error":
+            aspect, ordinal, error = payload
+            cover = self._comic_cover_record()
+            item = self._comic_cover_image_record(aspect, ordinal)
+            item.update({"status": "失败，可重试", "progress": "0%", "error": error})
+            cover["error"] = error
+            self.store.save(self.state)
+            self._refresh_comic_cover_widgets()
+        elif event == "comic_cover_batch_done":
+            completed, failed, total = payload
+            cover = self._comic_cover_record()
+            self.is_busy = False
+            if completed == total:
+                cover.update({"status": "已完成", "progress": "100%", "error": ""})
+                self.comic_progress["value"] = 100
+                self.comic_status.configure(text=f"四张项目封面已全部生成：{cover.get('title', '漫画推文')}", fg=ACCENT_DARK)
+            elif completed:
+                cover.update({"status": "部分完成", "progress": f"{completed}/{total}"})
+                self.comic_progress["value"] = completed / total * 100
+                self.comic_status.configure(text=f"封面已生成 {completed}/{total} 张，{failed} 张失败", fg=ERROR)
+            else:
+                cover.update({"status": "生成失败", "progress": "0%"})
+                self.comic_progress["value"] = 0
+                self.comic_status.configure(text="四张封面均生成失败，可重新生成", fg=ERROR)
+            self.store.save(self.state)
+            self._refresh_comic_cover_widgets()
+            self._refresh_comic_overview()
+            if failed:
+                messagebox.showwarning("封面生成未全部完成", f"已生成 {completed}/{total} 张，失败 {failed} 张。可再次点击“生成 / 重绘四张封面”重试。")
         elif event == "comic_character_progress":
             index, progress, task_id = payload
             character = self.state["comic"]["characters"][index]
@@ -5901,6 +6872,7 @@ class StudioApp:
                     delete_api_key("ark")
             except SecretStoreError:
                 pass
+        self._cancel_scheduled_state_save()
         self.store.save(self.state)
         self.store.release_instance_lock()
         self.root.destroy()

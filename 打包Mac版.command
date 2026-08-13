@@ -60,7 +60,7 @@ python -m PyInstaller \
   --clean \
   --distpath "dist-macos" \
   --workpath "build-macos" \
-  "解压创作工坊-mac.spec"
+  "漫画推文-mac.spec"
 
 APP_PATH="$SCRIPT_DIR/dist-macos/漫画推文-v1.1.app"
 echo "[5/7] 验证应用资源"

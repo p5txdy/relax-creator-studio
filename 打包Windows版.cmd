@@ -2,7 +2,7 @@
 setlocal
 chcp 65001 >nul
 cd /d "%~dp0"
-python -m pip install --disable-pip-version-check --upgrade "pyinstaller==6.19.0"
+python -m pip install --disable-pip-version-check --upgrade -r requirements-windows.txt
 if errorlevel 1 exit /b 1
 if not exist ".\vendor\pymediainfo\__init__.py" (
   python -m pip install --disable-pip-version-check --upgrade --target ".\vendor" "pymediainfo==7.0.1"
@@ -20,9 +20,9 @@ python -m PyInstaller --noconfirm --clean --windowed --onefile --paths ".\vendor
 if errorlevel 1 (
   echo.
   echo 打包失败，请检查上面的错误信息。
-  pause
+  if not defined CI pause
   exit /b 1
 )
 echo.
 echo 打包完成：%CD%\dist\漫画推文-v1.1.exe
-pause
+if not defined CI pause
