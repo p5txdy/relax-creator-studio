@@ -103,7 +103,7 @@ from core.novel_engine import (
     chapter_records,
 )
 from core.secret_store import SecretStoreError, delete_api_key, load_api_key, save_api_key
-from core.storage import StateStore, new_comic_project
+from core.storage import StateStore, new_asset_library, new_comic_project
 from core.video_engine import (
     find_executable,
     probe_duration,
@@ -710,7 +710,7 @@ class StudioApp:
         footer = Frame(self.sidebar, bg=SIDEBAR)
         footer.pack(side="bottom", fill=X, padx=24, pady=24)
         Label(footer, text=f"版本 {APP_VERSION}", bg=SIDEBAR, fg=SIDEBAR_MUTED, font=("Segoe UI", 8)).pack(anchor="w", pady=(0, 6))
-        Label(footer, text="多项目 · 共享角色库", bg=SIDEBAR, fg=SIDEBAR_MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w")
+        Label(footer, text="多项目 · 多人物场景项", bg=SIDEBAR, fg=SIDEBAR_MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w")
         self.tool_status = Label(footer, text="正在检查工具…", bg=SIDEBAR, fg=WARM, font=("Microsoft YaHei UI", 9))
         self.tool_status.pack(anchor="w", pady=(6, 0))
         self._refresh_tool_status()
@@ -944,14 +944,20 @@ class StudioApp:
         self.navigate_highlight("dashboard")
         self._page_header(
             "漫画推文项目",
-            "每条推文使用独立项目保存小说、场景、分镜、图片和成片；已定妆角色在所有项目间共享。",
-            [("AI 小说改文", lambda: self.navigate("novel"), "ghost"), ("+ 新建推文项目", self.create_comic_project_dialog, "accent")],
+            "每条推文独立保存小说、分镜、图片和成片；已确认的人物与场景可跨项目共享。",
+            [
+                ("AI 小说改文", lambda: self.navigate("novel"), "ghost"),
+                ("管理 / 删除人物场景项", self.open_asset_library_manager, "danger"),
+                ("+ 新建推文项目", self.create_comic_project_dialog, "accent"),
+            ],
         )
 
         body = Frame(self.main, bg=BG)
         body.pack(fill=BOTH, expand=True, padx=34, pady=(2, 28))
         projects = [item for item in self.state.get("projects", []) if isinstance(item, dict)]
-        shared_characters = [item for item in self.state.get("shared_characters", []) if isinstance(item, dict)]
+        libraries = [item for item in self.state.get("asset_libraries", []) if isinstance(item, dict)]
+        character_count = sum(len(item.get("characters", [])) for item in libraries)
+        scene_count = sum(len(item.get("scenes", [])) for item in libraries)
 
         summary_outer = self._card(body, bg=SIDEBAR, padx=26, pady=20)
         summary_outer.pack(fill=X)
@@ -959,10 +965,8 @@ class StudioApp:
         summary_text = Frame(summary, bg=SIDEBAR)
         summary_text.pack(side=LEFT, fill=X, expand=True)
         Label(summary_text, text="PROJECT LIBRARY · LOCAL WORKSPACE", bg=SIDEBAR, fg=ACCENT, font=("Segoe UI", 8, "bold")).pack(anchor="w")
-        Label(summary_text, text=f"{len(projects)} 个推文项目  ·  {len(shared_characters)} 个共享角色", bg=SIDEBAR, fg="white", font=("Microsoft YaHei UI", 17, "bold")).pack(anchor="w", pady=(5, 0))
-        Label(summary_text, text="创建项目后再导入小说；切换项目不会清空其他项目，也不会复制角色定妆。", bg=SIDEBAR, fg=SIDEBAR_MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w", pady=(5, 0))
-        self._button(summary, "建立新项目  →", self.create_comic_project_dialog, kind="accent").pack(side=RIGHT, padx=(18, 0))
-
+        Label(summary_text, text=f"{len(projects)} 个推文项目  ·  {len(libraries)} 个人物场景项  ·  {character_count} 人物 / {scene_count} 场景", bg=SIDEBAR, fg="white", font=("Microsoft YaHei UI", 17, "bold")).pack(anchor="w", pady=(5, 0))
+        Label(summary_text, text="每个推文项目关联一个人物场景项；同项任务自动共用人物、场景与参考图。", bg=SIDEBAR, fg=SIDEBAR_MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w", pady=(5, 0))
         list_outer = self._card(body, padx=22, pady=18)
         list_outer.pack(fill=BOTH, expand=True, pady=(16, 0))
         listing = list_outer.winfo_children()[0]
@@ -988,7 +992,9 @@ class StudioApp:
                 images = sum(1 for shot in shots if Path(str(shot.get("local_path", ""))).is_file())
                 draft_ready = Path(str(project.get("jianying_draft_path", ""))).is_dir()
                 progress = "尚未导入小说" if not str(project.get("source_text", "")).strip() else ("剪映草稿已完成" if draft_ready else f"分镜图片 {images}/{len(shots)}")
-                assets = f"{len(project.get('scenes', []))} 场景  ·  {len(shots)} 分镜"
+                library = next((item for item in libraries if str(item.get("library_id", "")) == str(project.get("asset_library_id", ""))), None)
+                library_name = str(library.get("name", "未关联")) if library else "未关联"
+                assets = f"{library_name}  ·  {len(shots)} 分镜"
                 updated = str(project.get("updated_at", "")).replace("T", " ")[:16] or "—"
                 project_id = str(project.get("project_id", ""))
                 self.project_tree.insert("", END, iid=project_id, values=(project.get("project_name", "未命名项目"), progress, assets, updated))
@@ -1023,19 +1029,41 @@ class StudioApp:
             return
         dialog = Toplevel(self.root)
         dialog.title("新建漫画推文项目")
-        dialog.geometry("560x410")
-        dialog.resizable(False, False)
+        dialog.geometry("620x670")
+        dialog.minsize(580, 620)
+        dialog.resizable(True, True)
         dialog.configure(bg=BG)
         dialog.transient(self.root)
         dialog.grab_set()
-        Label(dialog, text="建立新推文项目", bg=BG, fg=INK, font=("Microsoft YaHei UI", 19, "bold")).pack(anchor="w", padx=28, pady=(26, 5))
-        Label(dialog, text="小说、场景、分镜和成片按项目隔离；共享角色可以在所有项目中直接调用。", bg=BG, fg=MUTED, wraplength=500, justify=LEFT, font=("Microsoft YaHei UI", 9)).pack(anchor="w", padx=28)
-        card_outer = self._card(dialog, padx=20, pady=18)
-        card_outer.pack(fill=X, padx=28, pady=20)
+
+        # Reserve the action bar before laying out the form. On Windows with
+        # 125%/150% display scaling the widgets request more vertical space;
+        # packing this bar at the bottom keeps the confirmation action visible.
+        actions = Frame(dialog, bg=BG)
+        actions.pack(side="bottom", fill=X, padx=28, pady=(14, 24))
+
+        body = Frame(dialog, bg=BG)
+        body.pack(fill=BOTH, expand=True)
+        Label(body, text="建立新推文项目", bg=BG, fg=INK, font=("Microsoft YaHei UI", 19, "bold")).pack(anchor="w", padx=28, pady=(26, 5))
+        Label(body, text="先选择已有的人物场景项，或新建一个项；项目会自动带出并持续同步其中的人物和场景。", bg=BG, fg=MUTED, wraplength=550, justify=LEFT, font=("Microsoft YaHei UI", 9)).pack(anchor="w", padx=28)
+        card_outer = self._card(body, padx=20, pady=18)
+        card_outer.pack(fill=X, padx=28, pady=(20, 0))
         card = card_outer.winfo_children()[0]
         name_var = StringVar(value=f"漫画推文 {len(self.state.get('projects', [])) + 1}")
         style_var = StringVar(value=COMIC_STYLE_PRESETS[0])
         aspect_var = StringVar(value="9:16")
+        libraries = [item for item in self.state.get("asset_libraries", []) if isinstance(item, dict)]
+        if not libraries:
+            library = new_asset_library("默认人物场景项")
+            self.state.setdefault("asset_libraries", []).append(library)
+            libraries = [library]
+        library_names = [str(item.get("name", "未命名人物场景项")) for item in libraries]
+        new_library_choice = "＋ 新建空白人物场景项（推荐）"
+        library_choice_var = StringVar(value=new_library_choice)
+        library_number = 1
+        while f"人物场景项 {library_number}" in library_names:
+            library_number += 1
+        new_library_var = StringVar(value=f"人物场景项 {library_number}")
         self._field_label(card, "项目名称").pack(anchor="w", pady=(0, 5))
         name_entry = self._entry(card, name_var)
         name_entry.pack(fill=X, ipady=7)
@@ -1043,6 +1071,35 @@ class StudioApp:
         RoundedCombobox(card, textvariable=style_var, values=COMIC_STYLE_PRESETS).pack(fill=X)
         self._field_label(card, "画幅").pack(anchor="w", pady=(13, 5))
         RoundedCombobox(card, textvariable=aspect_var, values=["9:16", "4:5", "1:1", "16:9"], state="readonly", width=10).pack(anchor="w")
+        self._field_label(card, "人物场景项").pack(anchor="w", pady=(13, 5))
+        library_box = RoundedCombobox(card, textvariable=library_choice_var, values=[new_library_choice] + library_names, state="readonly")
+        library_box.pack(fill=X)
+        library_hint = Label(
+            card,
+            text="默认创建空白项，不会显示其他项目的人物、场景或参考图。只有主动选择已有项时才共享素材。",
+            bg=SURFACE,
+            fg=ACCENT_DARK,
+            wraplength=500,
+            justify=LEFT,
+            font=("Microsoft YaHei UI", 8),
+        )
+        library_hint.pack(anchor="w", pady=(5, 0))
+        new_library_row = Frame(card, bg=SURFACE)
+        new_library_row.pack(fill=X)
+        self._field_label(new_library_row, "新项名称").pack(anchor="w", pady=(10, 5))
+        new_library_entry = self._entry(new_library_row, new_library_var)
+        new_library_entry.pack(fill=X, ipady=6)
+
+        def update_library_mode(_event=None) -> None:
+            if library_choice_var.get() == new_library_choice:
+                new_library_row.pack(fill=X)
+                library_hint.configure(text="将建立一个完全空白的人物场景项，不会带入其他项目图片。", fg=ACCENT_DARK)
+                new_library_entry.focus_set()
+            else:
+                new_library_row.pack_forget()
+                library_hint.configure(text=f"将共享“{library_choice_var.get()}”中的全部人物、场景和参考图。", fg=WARM)
+
+        library_box.bind("<<ComboboxSelected>>", update_library_mode)
 
         def create() -> None:
             name = name_var.get().strip()
@@ -1053,7 +1110,38 @@ class StudioApp:
             project["art_style"] = style_var.get().strip() or COMIC_STYLE_PRESETS[0]
             project["aspect"] = aspect_var.get().strip() or "9:16"
             project["output_dir"] = str(self.store.base_dir / "comic_projects" / f"{project['project_id']}_{safe_filename(name)}")
-            project["characters"] = self.state.setdefault("shared_characters", [])
+            if library_choice_var.get() == new_library_choice:
+                library_name = new_library_var.get().strip()
+                if not library_name:
+                    messagebox.showinfo("需要项名称", "请填写新人物场景项的名称。", parent=dialog)
+                    return
+                if any(str(item.get("name", "")).strip() == library_name for item in libraries):
+                    messagebox.showinfo("名称已存在", "请换一个人物场景项名称，或直接选择已有项。", parent=dialog)
+                    return
+                reusable = next(
+                    (
+                        item
+                        for item in libraries
+                        if not item.get("characters")
+                        and not item.get("scenes")
+                        and not any(str(project_item.get("asset_library_id", "")) == str(item.get("library_id", "")) for project_item in self.state.get("projects", []) if isinstance(project_item, dict))
+                    ),
+                    None,
+                )
+                if reusable is not None:
+                    library = reusable
+                    library["name"] = library_name
+                    library["updated_at"] = datetime.now().isoformat(timespec="seconds")
+                else:
+                    library = new_asset_library(library_name)
+                    self.state.setdefault("asset_libraries", []).append(library)
+            else:
+                library = next((item for item in libraries if str(item.get("name", "")) == library_choice_var.get()), libraries[0])
+            project["asset_library_id"] = str(library["library_id"])
+            project["characters"] = library["characters"]
+            project["scenes"] = library["scenes"]
+            self.state["shared_characters"] = library["characters"]
+            self.state["shared_scenes"] = library["scenes"]
             self.state.setdefault("projects", []).append(project)
             self.state["active_project_id"] = project["project_id"]
             self.state["comic"] = project
@@ -1062,29 +1150,32 @@ class StudioApp:
             self.current_page = "comic"
             self.show_comic()
 
-        actions = Frame(dialog, bg=BG)
-        actions.pack(fill=X, padx=28)
         self._button(actions, "取消", dialog.destroy, kind="ghost").pack(side=LEFT)
         self._button(actions, "创建并进入  →", create, kind="accent").pack(side=RIGHT)
+        dialog.bind("<Return>", lambda _event: create())
+        dialog.bind("<Escape>", lambda _event: dialog.destroy())
         name_entry.focus_set()
         name_entry.selection_range(0, END)
+        dialog.update_idletasks()
+        width = min(max(600, dialog.winfo_reqwidth()), max(560, dialog.winfo_screenwidth() - 48))
+        height = min(max(670, dialog.winfo_reqheight()), max(620, dialog.winfo_screenheight() - 72))
+        root_x = self.root.winfo_rootx()
+        root_y = self.root.winfo_rooty()
+        x = max(0, root_x + (self.root.winfo_width() - width) // 2)
+        y = max(0, root_y + (self.root.winfo_height() - height) // 2)
+        dialog.geometry(f"{width}x{height}+{x}+{y}")
 
     def _activate_comic_project(self, project_id: str) -> bool:
         projects = self.state.get("projects", [])
         project = next((item for item in projects if str(item.get("project_id", "")) == project_id), None)
         if not isinstance(project, dict):
             return False
-        shared = self.state.setdefault("shared_characters", [])
-        known_names = {str(item.get("name", "")).strip() for item in shared if isinstance(item, dict)}
-        for character in list(project.get("characters", [])):
-            name = str(character.get("name", "")).strip() if isinstance(character, dict) else ""
-            if name and name not in known_names:
-                shared.append(dict(character))
-                known_names.add(name)
+        library = self._comic_asset_library(project)
         for item in projects:
-            if isinstance(item, dict):
-                item["characters"] = shared
-        project["characters"] = shared
+            if not isinstance(item, dict) or str(item.get("asset_library_id", "")) != str(library.get("library_id", "")):
+                continue
+            item["characters"] = library["characters"]
+            item["scenes"] = library["scenes"]
         self.state["active_project_id"] = project_id
         self.state["comic"] = project
         self.current_comic_character_index = None
@@ -1114,7 +1205,7 @@ class StudioApp:
         name = str(project.get("project_name", "未命名项目"))
         if not messagebox.askyesno(
             "删除推文项目",
-            f"确定从主页删除“{name}”吗？\n\n项目记录会删除，但共享角色和已经保存到本地的素材文件不会自动删除。",
+            f"确定从主页删除“{name}”吗？\n\n只删除任务记录；关联的人物场景项及其本地参考图不会自动删除。",
         ):
             return
         self.state["projects"] = [item for item in projects if str(item.get("project_id", "")) != project_id]
@@ -1123,13 +1214,16 @@ class StudioApp:
             if remaining:
                 next_project = remaining[0]
                 self.state["active_project_id"] = str(next_project.get("project_id", ""))
-                next_project["characters"] = self.state.setdefault("shared_characters", [])
                 self.state["comic"] = next_project
+                self._comic_asset_library(next_project)
             else:
                 self.state["active_project_id"] = ""
                 empty = new_comic_project("未命名漫画推文")
                 empty["project_id"] = ""
-                empty["characters"] = self.state.setdefault("shared_characters", [])
+                library = self._asset_libraries()[0]
+                empty["asset_library_id"] = str(library["library_id"])
+                empty["characters"] = library["characters"]
+                empty["scenes"] = library["scenes"]
                 self.state["comic"] = empty
         self.store.save(self.state)
         self.show_dashboard()
@@ -2074,11 +2168,318 @@ class StudioApp:
         messagebox.showinfo("导出完成", f"改写稿已保存到：\n{output}")
 
     # ----------------------------- Comic workbench -----------------------------
+    def _asset_libraries(self) -> list[dict[str, object]]:
+        libraries = [item for item in self.state.get("asset_libraries", []) if isinstance(item, dict)]
+        if not libraries:
+            library = new_asset_library("默认人物场景项")
+            self.state.setdefault("asset_libraries", []).append(library)
+            libraries = [library]
+        return libraries
+
+    def _unique_asset_library_name(self, base_name: str) -> str:
+        names = {str(item.get("name", "")).strip() for item in self._asset_libraries()}
+        if base_name not in names:
+            return base_name
+        index = 2
+        while f"{base_name} {index}" in names:
+            index += 1
+        return f"{base_name} {index}"
+
+    def _comic_asset_library(self, comic: dict[str, object] | None = None) -> dict[str, object]:
+        comic = comic or self.state["comic"]
+        libraries = self._asset_libraries()
+        library_id = str(comic.get("asset_library_id", ""))
+        library = next((item for item in libraries if str(item.get("library_id", "")) == library_id), libraries[0])
+        comic["asset_library_id"] = str(library["library_id"])
+        comic["characters"] = library.setdefault("characters", [])
+        comic["scenes"] = library.setdefault("scenes", [])
+        self.state["shared_characters"] = comic["characters"]
+        self.state["shared_scenes"] = comic["scenes"]
+        return library
+
+    def _link_comic_to_asset_library(self, comic: dict[str, object], library: dict[str, object]) -> None:
+        comic["asset_library_id"] = str(library["library_id"])
+        comic["characters"] = library.setdefault("characters", [])
+        comic["scenes"] = library.setdefault("scenes", [])
+        if comic is self.state.get("comic"):
+            self.state["shared_characters"] = comic["characters"]
+            self.state["shared_scenes"] = comic["scenes"]
+
+    def _change_active_project_library(self, _event=None) -> None:
+        name = self.comic_library_var.get().strip()
+        library = next((item for item in self._asset_libraries() if str(item.get("name", "")) == name), None)
+        if library is None:
+            return
+        comic = self.state["comic"]
+        current = self._comic_asset_library(comic)
+        if str(current.get("library_id", "")) == str(library.get("library_id", "")):
+            return
+        if not messagebox.askyesno(
+            "更换人物场景项",
+            f"确定将当前推文关联到“{library.get('name', '')}”吗？\n\n分镜原文仍保留；新项中不存在的角色或场景绑定会被清除，已出图片会标记为需要重新生成。原项内容不会删除。",
+        ):
+            self.comic_library_var.set(str(current.get("name", "")))
+            return
+        valid_characters = {str(item.get("name", "")) for item in library.get("characters", []) if isinstance(item, dict)}
+        valid_scenes = {str(item.get("name", "")) for item in library.get("scenes", []) if isinstance(item, dict)}
+        for shot in comic.get("shots", []):
+            old_characters = list(shot.get("characters", []))
+            old_scene = str(shot.get("scene", ""))
+            shot["characters"] = [name for name in old_characters if str(name) in valid_characters]
+            if old_scene not in valid_scenes:
+                shot["scene"] = ""
+            if shot["characters"] != old_characters or str(shot.get("scene", "")) != old_scene:
+                self._mark_comic_shot_stale(shot)
+        self._link_comic_to_asset_library(comic, library)
+        self._invalidate_comic_draft()
+        self.current_comic_character_index = None
+        self.current_comic_scene_index = None
+        self.store.save(self.state)
+        self.show_comic()
+
+    def create_asset_library_dialog(self, *, link_current: bool = True) -> None:
+        dialog = Toplevel(self.root)
+        dialog.title("新建人物场景项")
+        dialog.geometry("500x260")
+        dialog.resizable(False, False)
+        dialog.configure(bg=BG)
+        dialog.transient(self.root)
+        dialog.grab_set()
+        Label(dialog, text="新建人物场景项", bg=BG, fg=INK, font=("Microsoft YaHei UI", 17, "bold")).pack(anchor="w", padx=24, pady=(24, 5))
+        Label(dialog, text="适合按系列小说、账号或世界观归档人物与场景。", bg=BG, fg=MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w", padx=24)
+        name_var = StringVar(value=f"人物场景项 {len(self._asset_libraries()) + 1}")
+        card_outer = self._card(dialog, padx=16, pady=14)
+        card_outer.pack(fill=X, padx=24, pady=18)
+        card = card_outer.winfo_children()[0]
+        self._field_label(card, "项名称").pack(anchor="w", pady=(0, 5))
+        entry = self._entry(card, name_var)
+        entry.pack(fill=X, ipady=6)
+        actions = Frame(dialog, bg=BG)
+        actions.pack(fill=X, padx=24)
+
+        def create() -> None:
+            name = name_var.get().strip()
+            if not name:
+                messagebox.showinfo("需要名称", "请填写人物场景项名称。", parent=dialog)
+                return
+            if any(str(item.get("name", "")).strip() == name for item in self._asset_libraries()):
+                messagebox.showinfo("名称已存在", "请换一个人物场景项名称。", parent=dialog)
+                return
+            library = new_asset_library(name)
+            self.state.setdefault("asset_libraries", []).append(library)
+            if link_current and self.state.get("active_project_id"):
+                self._link_comic_to_asset_library(self.state["comic"], library)
+                if hasattr(self, "comic_library_var"):
+                    self.comic_library_var.set(name)
+            self.store.save(self.state)
+            dialog.destroy()
+            if link_current and self.state.get("active_project_id"):
+                self.current_comic_character_index = None
+                self.current_comic_scene_index = None
+                self.show_comic()
+            else:
+                self.show_dashboard()
+
+        self._button(actions, "取消", dialog.destroy, kind="ghost").pack(side=LEFT)
+        self._button(actions, "创建并关联" if link_current else "创建人物场景项", create, kind="accent").pack(side=RIGHT)
+        dialog.bind("<Return>", lambda _event: create())
+        entry.focus_set()
+        entry.selection_range(0, END)
+
+    def _delete_asset_library(self, library: dict[str, object], *, parent=None) -> bool:
+        library_id = str(library.get("library_id", ""))
+        library_name = str(library.get("name", "未命名人物场景项"))
+        characters = [item for item in library.get("characters", []) if isinstance(item, dict)]
+        scenes = [item for item in library.get("scenes", []) if isinstance(item, dict)]
+        linked_projects = [
+            item
+            for item in self.state.get("projects", [])
+            if isinstance(item, dict) and str(item.get("asset_library_id", "")) == library_id
+        ]
+        linked_note = (
+            f"\n\n该项仍关联 {len(linked_projects)} 个推文任务。删除后，这些任务会共同转入一个新的空白人物场景项；分镜原文保留，但人物和场景绑定会清除。"
+            if linked_projects
+            else ""
+        )
+        confirmed = messagebox.askyesno(
+            "永久删除人物场景项",
+            f"确定永久删除“{library_name}”吗？\n\n将删除 {len(characters)} 个人物、{len(scenes)} 个场景，以及它们的候选图和已确认参考图。此操作无法撤销。{linked_note}",
+            parent=parent,
+        )
+        if not confirmed:
+            return False
+
+        delete_errors: list[str] = []
+        for item in characters:
+            delete_errors.extend(self._delete_comic_asset_files(item, "characters"))
+        for item in scenes:
+            delete_errors.extend(self._delete_comic_asset_files(item, "scenes"))
+
+        replacement = None
+        if linked_projects:
+            replacement = new_asset_library(self._unique_asset_library_name(f"{library_name} · 空白项"))
+            self.state.setdefault("asset_libraries", []).append(replacement)
+            for project in linked_projects:
+                for shot in project.get("shots", []):
+                    had_binding = bool(shot.get("characters")) or bool(str(shot.get("scene", "")).strip())
+                    shot["characters"] = []
+                    shot["scene"] = ""
+                    if had_binding:
+                        self._mark_comic_shot_stale(shot)
+                cover = project.get("cover", {})
+                if isinstance(cover, dict):
+                    cover["character"] = ""
+                    cover["scene"] = ""
+                self._link_comic_to_asset_library(project, replacement)
+
+        self.state["asset_libraries"] = [
+            item for item in self.state.get("asset_libraries", []) if isinstance(item, dict) and str(item.get("library_id", "")) != library_id
+        ]
+        if not self.state["asset_libraries"]:
+            fallback = replacement or new_asset_library("默认人物场景项")
+            if replacement is None:
+                self.state["asset_libraries"].append(fallback)
+        else:
+            fallback = replacement or self.state["asset_libraries"][0]
+        if str(self.state.get("comic", {}).get("asset_library_id", "")) == library_id:
+            self._link_comic_to_asset_library(self.state["comic"], fallback)
+
+        library_dir = self.store.base_dir / "shared_assets" / "libraries" / library_id
+        for directory in (library_dir / "characters", library_dir / "scenes", library_dir):
+            try:
+                directory.rmdir()
+            except OSError:
+                pass
+        self.current_comic_character_index = None
+        self.current_comic_scene_index = None
+        self.store.save(self.state)
+        if delete_errors:
+            messagebox.showwarning(
+                "人物场景项已删除",
+                "项记录已经删除，但以下非标准路径或文件未能删除：\n" + "\n".join(delete_errors),
+                parent=parent,
+            )
+        return True
+
+    def delete_current_asset_library(self) -> None:
+        library = self._comic_asset_library()
+        if self._delete_asset_library(library):
+            self.show_comic()
+
+    def open_asset_library_manager(self) -> None:
+        dialog = Toplevel(self.root)
+        dialog.title("人物场景项管理")
+        dialog.geometry("820x560")
+        dialog.minsize(680, 460)
+        dialog.configure(bg=BG)
+        dialog.transient(self.root)
+        dialog.grab_set()
+
+        # Reserve the bottom action bar first. At 125%/150% Windows scaling,
+        # packing it after the expanding list can push every button below the
+        # visible dialog area.
+        actions = Frame(dialog, bg=BG)
+        actions.pack(side="bottom", fill=X, padx=24, pady=(12, 22))
+        content = Frame(dialog, bg=BG)
+        content.pack(fill=BOTH, expand=True)
+        Label(content, text="人物场景项管理", bg=BG, fg=INK, font=("Microsoft YaHei UI", 18, "bold")).pack(anchor="w", padx=24, pady=(24, 5))
+        Label(content, text="每个项同时保存人物、场景、提示词和参考图；关联任务数量会在删除前再次提示。", bg=BG, fg=MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w", padx=24)
+        tree_outer, tree_shell = self._rounded_widget_shell(content, bg=SURFACE)
+        tree_outer.pack(fill=BOTH, expand=True, padx=24, pady=18)
+        tree = ttk.Treeview(tree_shell, columns=("name", "assets", "projects"), show="headings", style="Studio.Treeview", selectmode="browse")
+        tree.heading("name", text="项名称")
+        tree.heading("assets", text="人物与场景")
+        tree.heading("projects", text="关联任务")
+        tree.column("name", width=330, anchor="w")
+        tree.column("assets", width=210, anchor="center")
+        tree.column("projects", width=130, anchor="center")
+        projects = [item for item in self.state.get("projects", []) if isinstance(item, dict)]
+        for library in self._asset_libraries():
+            library_id = str(library.get("library_id", ""))
+            linked_count = sum(1 for item in projects if str(item.get("asset_library_id", "")) == library_id)
+            tree.insert(
+                "",
+                END,
+                iid=library_id,
+                values=(library.get("name", "未命名人物场景项"), f"{len(library.get('characters', []))} 人物 · {len(library.get('scenes', []))} 场景", f"{linked_count} 个"),
+            )
+        self._pack_vertical_scroller(tree_shell, tree)
+        if tree.get_children():
+            tree.selection_set(tree.get_children()[0])
+
+        def create_new() -> None:
+            dialog.destroy()
+            self.create_asset_library_dialog(link_current=False)
+
+        def delete_selected() -> None:
+            selected = tree.selection()
+            if not selected:
+                messagebox.showinfo("请选择人物场景项", "请先选择要删除的项。", parent=dialog)
+                return
+            library = next((item for item in self._asset_libraries() if str(item.get("library_id", "")) == str(selected[0])), None)
+            if library is not None and self._delete_asset_library(library, parent=dialog):
+                dialog.destroy()
+                self.show_dashboard()
+
+        self._button(actions, "+ 新建项", create_new, kind="primary").pack(side=LEFT)
+        self._button(actions, "永久删除所选项", delete_selected, kind="danger").pack(side=LEFT, padx=(8, 0))
+        self._button(actions, "关闭", dialog.destroy, kind="ghost").pack(side=RIGHT)
+
+    def rename_asset_library_dialog(self) -> None:
+        library = self._comic_asset_library()
+        old_name = str(library.get("name", "未命名人物场景项"))
+        dialog = Toplevel(self.root)
+        dialog.title("重命名人物场景项")
+        dialog.geometry("500x260")
+        dialog.resizable(False, False)
+        dialog.configure(bg=BG)
+        dialog.transient(self.root)
+        dialog.grab_set()
+        Label(dialog, text="重命名人物场景项", bg=BG, fg=INK, font=("Microsoft YaHei UI", 17, "bold")).pack(anchor="w", padx=24, pady=(24, 5))
+        Label(dialog, text="名称修改后，所有关联此项的推文会自动显示新名称。", bg=BG, fg=MUTED, font=("Microsoft YaHei UI", 9)).pack(anchor="w", padx=24)
+        name_var = StringVar(value=old_name)
+        card_outer = self._card(dialog, padx=16, pady=14)
+        card_outer.pack(fill=X, padx=24, pady=18)
+        card = card_outer.winfo_children()[0]
+        self._field_label(card, "项名称").pack(anchor="w", pady=(0, 5))
+        entry = self._entry(card, name_var)
+        entry.pack(fill=X, ipady=6)
+        actions = Frame(dialog, bg=BG)
+        actions.pack(fill=X, padx=24)
+
+        def save() -> None:
+            name = name_var.get().strip()
+            if not name:
+                messagebox.showinfo("需要名称", "人物场景项名称不能为空。", parent=dialog)
+                return
+            if any(item is not library and str(item.get("name", "")).strip() == name for item in self._asset_libraries()):
+                messagebox.showinfo("名称已存在", "请换一个人物场景项名称。", parent=dialog)
+                return
+            library["name"] = name
+            library["updated_at"] = datetime.now().isoformat(timespec="seconds")
+            self.comic_library_var.set(name)
+            self.store.save(self.state)
+            dialog.destroy()
+            self.show_comic()
+
+        self._button(actions, "取消", dialog.destroy, kind="ghost").pack(side=LEFT)
+        self._button(actions, "保存名称", save, kind="accent").pack(side=RIGHT)
+        dialog.bind("<Return>", lambda _event: save())
+        dialog.bind("<Escape>", lambda _event: dialog.destroy())
+        entry.focus_set()
+        entry.selection_range(0, END)
+
+    def _asset_library_dir(self, kind: str) -> Path:
+        library = self._comic_asset_library()
+        return self.store.base_dir / "shared_assets" / "libraries" / str(library["library_id"]) / kind
+
     def show_comic(self) -> None:
         self._clear_main()
         self.navigate_highlight("comic")
         comic = self.state["comic"]
+        library = self._comic_asset_library(comic)
         self.comic_project_var = StringVar(value=comic["project_name"])
+        self.comic_library_var = StringVar(value=str(library.get("name", "未命名人物场景项")))
         self.comic_style_var = StringVar(value=comic["art_style"])
         self.comic_aspect_var = StringVar(value=comic["aspect"])
         self.comic_output_var = StringVar(value=comic.get("output_dir", ""))
@@ -2403,6 +2804,26 @@ class StudioApp:
         self._field_label(style, "统一画风（会写入所有人物与分镜提示词）").pack(anchor="w", pady=(0, 4))
         RoundedCombobox(style, textvariable=self.comic_style_var, values=COMIC_STYLE_PRESETS).pack(fill=X)
 
+        library_bar_outer = self._card(content, bg=COMIC_MINT, padx=14, pady=10)
+        library_bar_outer.pack(fill=X, pady=(14, 0))
+        library_bar = library_bar_outer.winfo_children()[0]
+        Label(library_bar, text="关联人物场景项", bg=COMIC_MINT, fg=ACCENT_DARK, font=("Microsoft YaHei UI", 9, "bold")).pack(side=LEFT)
+        library_names = [str(item.get("name", "未命名人物场景项")) for item in self._asset_libraries()]
+        library_combo = RoundedCombobox(library_bar, textvariable=self.comic_library_var, values=library_names, state="readonly", width=24)
+        library_combo.pack(side=LEFT, padx=(10, 8))
+        library_combo.bind("<<ComboboxSelected>>", self._change_active_project_library)
+        self._button(library_bar, "+ 新建项", self.create_asset_library_dialog, kind="ghost").pack(side=LEFT)
+        self._button(library_bar, "重命名", self.rename_asset_library_dialog, kind="ghost").pack(side=LEFT, padx=(7, 0))
+        self._button(library_bar, "删除当前项", self.delete_current_asset_library, kind="danger").pack(side=LEFT, padx=(7, 0))
+        current_library = self._comic_asset_library()
+        Label(
+            library_bar,
+            text=f"当前自动同步：{len(current_library.get('characters', []))} 个人物 · {len(current_library.get('scenes', []))} 个场景",
+            bg=COMIC_MINT,
+            fg=MUTED,
+            font=("Microsoft YaHei UI", 8),
+        ).pack(side=RIGHT)
+
         options_outer = self._card(content, bg=SURFACE_ALT, padx=14, pady=10)
         options_outer.pack(fill=X, pady=(14, 14))
         options = options_outer.winfo_children()[0]
@@ -2449,8 +2870,9 @@ class StudioApp:
         library_outer = self._card(shell, padx=16, pady=16)
         library_outer.grid(row=0, column=0, sticky="nsew", padx=(0, 12))
         library = library_outer.winfo_children()[0]
-        Label(library, text="共享角色资产", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 12, "bold")).pack(anchor="w")
-        Label(library, text="角色定妆可被所有推文项目调用。", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 8)).pack(anchor="w", pady=(3, 10))
+        library_name = str(self._comic_asset_library().get("name", "人物场景项"))
+        Label(library, text=f"{library_name} · 人物", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 12, "bold")).pack(anchor="w")
+        Label(library, text="所有关联此项的推文自动同步。", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 8)).pack(anchor="w", pady=(3, 10))
         character_list_outer, character_list_shell = self._rounded_widget_shell(library)
         character_list_outer.pack(fill=BOTH, expand=True)
         self.comic_character_list = Listbox(character_list_shell, exportselection=False, bg=COMIC_INSET, fg=INK, selectbackground=COMIC_MINT, selectforeground=ACCENT_DARK, relief="flat", highlightthickness=1, highlightbackground=BORDER, font=("Microsoft YaHei UI", 9), activestyle="none")
@@ -2468,7 +2890,7 @@ class StudioApp:
         editor_outer = self._card(shell, padx=24, pady=20)
         editor_outer.grid(row=0, column=1, sticky="nsew")
         editor = editor_outer.winfo_children()[0]
-        self._comic_section_title(editor, "02", "共享角色定妆", "人物参考图只保留角色本身和纯色背景，不生成场景；确认后会保存到公共角色库供所有项目使用。")
+        self._comic_section_title(editor, "02", "人物定妆", f"人物参考图只保留角色本身和纯色背景；确认后自动保存到“{library_name}”。")
         self.comic_character_preview_canvas, self.comic_character_preview_title = self._asset_preview_panel(
             editor,
             title="角色参考图",
@@ -2546,8 +2968,9 @@ class StudioApp:
         library_outer = self._card(shell, padx=16, pady=16)
         library_outer.grid(row=0, column=0, sticky="nsew", padx=(0, 12))
         library = library_outer.winfo_children()[0]
-        Label(library, text="场景资产", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 12, "bold")).pack(anchor="w")
-        Label(library, text="先固定环境，再进入分镜。", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 8)).pack(anchor="w", pady=(3, 10))
+        library_name = str(self._comic_asset_library().get("name", "人物场景项"))
+        Label(library, text=f"{library_name} · 场景", bg=SURFACE, fg=INK, font=("Microsoft YaHei UI", 12, "bold")).pack(anchor="w")
+        Label(library, text="所有关联此项的推文自动同步。", bg=SURFACE, fg=MUTED, font=("Microsoft YaHei UI", 8)).pack(anchor="w", pady=(3, 10))
         scene_list_outer, scene_list_shell = self._rounded_widget_shell(library)
         scene_list_outer.pack(fill=BOTH, expand=True)
         self.comic_scene_list = Listbox(scene_list_shell, exportselection=False, bg=COMIC_INSET, fg=INK, selectbackground=COMIC_MINT, selectforeground=ACCENT_DARK, relief="flat", highlightthickness=1, highlightbackground=BORDER, font=("Microsoft YaHei UI", 9), activestyle="none")
@@ -2565,7 +2988,7 @@ class StudioApp:
         editor_outer = self._card(shell, padx=24, pady=20)
         editor_outer.grid(row=0, column=1, sticky="nsew")
         editor = editor_outer.winfo_children()[0]
-        self._comic_section_title(editor, "03", "场景定景", "固定空间布局、建筑结构、家具和光线；场景自动沿用角色定妆画风，确认后会绑定到对应分镜。")
+        self._comic_section_title(editor, "03", "场景定景", f"固定空间布局、建筑结构、家具和光线；确认后自动保存到“{library_name}”。")
         self.comic_scene_preview_canvas, self.comic_scene_preview_title = self._asset_preview_panel(
             editor,
             title="场景参考图",
@@ -3854,7 +4277,10 @@ class StudioApp:
         return self.store.base_dir / "comic_projects" / safe_filename(project_name, "漫画推文")
 
     def _shared_character_asset_dir(self) -> Path:
-        return self.store.base_dir / "shared_assets" / "characters"
+        return self._asset_library_dir("characters")
+
+    def _shared_scene_asset_dir(self) -> Path:
+        return self._asset_library_dir("scenes")
 
     @staticmethod
     def _delete_comic_asset_files(item: dict[str, object], kind: str) -> list[str]:
@@ -3979,14 +4405,17 @@ class StudioApp:
         comic["video_output_path"] = self.comic_video_output_var.get().strip()
         comic["jianying_draft_path"] = self.comic_draft_output_var.get().strip()
         comic["updated_at"] = datetime.now().isoformat(timespec="seconds")
-        shared = self.state.setdefault("shared_characters", [])
-        if comic.get("characters") is not shared:
-            merged_shared = self._merge_imported_comic_assets([dict(item) for item in shared], [dict(item) for item in comic.get("characters", [])])
-            shared[:] = merged_shared
-            comic["characters"] = shared
+        library = self._comic_asset_library(comic)
+        if comic.get("characters") is not library["characters"]:
+            library["characters"][:] = self._merge_imported_comic_assets([dict(item) for item in library["characters"]], [dict(item) for item in comic.get("characters", [])])
+        if comic.get("scenes") is not library["scenes"]:
+            library["scenes"][:] = self._merge_imported_comic_assets([dict(item) for item in library["scenes"]], [dict(item) for item in comic.get("scenes", [])])
+        self._link_comic_to_asset_library(comic, library)
+        library["updated_at"] = datetime.now().isoformat(timespec="seconds")
         for project in self.state.get("projects", []):
-            if isinstance(project, dict):
-                project["characters"] = shared
+            if isinstance(project, dict) and str(project.get("asset_library_id", "")) == str(library.get("library_id", "")):
+                project["characters"] = library["characters"]
+                project["scenes"] = library["scenes"]
         settings = self.state["settings"]
         settings["remember_ark_api_key"] = self.remember_ark_api_key.get()
         settings.setdefault("ark_base_url", SEEDREAM_BASE_URL)
@@ -4090,24 +4519,24 @@ class StudioApp:
         comic = self.state["comic"]
         if (comic.get("characters") or comic.get("scenes")) and not messagebox.askyesno(
             "合并人物与场景资产",
-            "资产包将合并到当前项目；同名资产会更新为导入版本，原本的本地图片文件不会被自动删除。是否继续？",
+            f"资产包将合并到当前人物场景项“{self._comic_asset_library().get('name', '')}”；同名资产会更新为导入版本，原本的本地图片文件不会被自动删除。是否继续？",
         ):
             return
+        library = self._comic_asset_library(comic)
         try:
-            imported = import_comic_asset_pack(source, self._comic_output_dir())
+            imported = import_comic_asset_pack(source, self.store.base_dir / "shared_assets" / "libraries" / str(library["library_id"]))
         except ComicEngineError as exc:
             messagebox.showerror("资产包导入失败", str(exc))
             return
         imported_characters = [dict(item) for item in imported.get("characters", [])]
         imported_scenes = [dict(item) for item in imported.get("scenes", [])]
-        merged_characters = self._merge_imported_comic_assets([dict(item) for item in self.state.get("shared_characters", [])], imported_characters)
-        shared = self.state.setdefault("shared_characters", [])
-        shared[:] = merged_characters
-        comic["characters"] = shared
+        library["characters"][:] = self._merge_imported_comic_assets([dict(item) for item in library["characters"]], imported_characters)
+        library["scenes"][:] = self._merge_imported_comic_assets([dict(item) for item in library["scenes"]], imported_scenes)
+        self._link_comic_to_asset_library(comic, library)
         for project in self.state.get("projects", []):
-            if isinstance(project, dict):
-                project["characters"] = shared
-        comic["scenes"] = self._merge_imported_comic_assets([dict(item) for item in comic.get("scenes", [])], imported_scenes)
+            if isinstance(project, dict) and str(project.get("asset_library_id", "")) == str(library.get("library_id", "")):
+                project["characters"] = library["characters"]
+                project["scenes"] = library["scenes"]
         self.store.save(self.state)
         self._refresh_comic_character_list(0 if comic["characters"] else None)
         self._refresh_comic_scene_list(0 if comic["scenes"] else None)
@@ -4303,7 +4732,8 @@ class StudioApp:
             messagebox.showinfo("没有角色", "请先选择要删除的角色。")
             return
         name = str(characters[index].get("name", "该角色"))
-        if not messagebox.askyesno("永久删除共享角色", f"确定删除共享角色“{name}”吗？\n\n该角色会从所有推文项目中移除，候选图和固定参考图也会永久删除。此操作无法撤销。"):
+        library_name = str(self._comic_asset_library().get("name", "当前人物场景项"))
+        if not messagebox.askyesno("永久删除项内角色", f"确定从“{library_name}”删除角色“{name}”吗？\n\n该角色会从所有关联此项的推文中移除，候选图和固定参考图也会永久删除。此操作无法撤销。"):
             return
         delete_errors = self._delete_comic_asset_files(characters[index], "characters")
         characters.pop(index)
@@ -4311,7 +4741,9 @@ class StudioApp:
             if str(character.get("base_character", "")).strip() == name:
                 character["base_character"] = ""
         for project in self.state.get("projects", []):
-            for shot in project.get("shots", []) if isinstance(project, dict) else []:
+            if not isinstance(project, dict) or str(project.get("asset_library_id", "")) != str(self.state["comic"].get("asset_library_id", "")):
+                continue
+            for shot in project.get("shots", []):
                 shot["characters"] = [item for item in shot.get("characters", []) if item != name]
         self.current_comic_character_index = None
         self._refresh_comic_character_list(min(index, len(characters) - 1) if characters else None)
@@ -4350,7 +4782,9 @@ class StudioApp:
                     character["base_character"] = new_name
             replace_character_in_shots(self.state["comic"].get("shots", []), old_name, new_name)
             for project in self.state.get("projects", []):
-                for shot in project.get("shots", []) if isinstance(project, dict) else []:
+                if not isinstance(project, dict) or str(project.get("asset_library_id", "")) != str(self.state["comic"].get("asset_library_id", "")):
+                    continue
+                for shot in project.get("shots", []):
                     replace_character_in_shots([shot], old_name, new_name)
             self._refresh_comic_shot_tree(self.current_comic_shot_index)
         self._refresh_comic_character_base_choices(index)
@@ -4660,13 +5094,20 @@ class StudioApp:
             messagebox.showinfo("没有场景", "请先选择要删除的场景。")
             return
         name = str(scenes[index].get("name", "该场景"))
-        if not messagebox.askyesno("永久删除场景资产", f"确定删除“{name}”吗？\n\n该场景会从项目中移除，素材目录内的候选图和固定参考图也会永久删除，相关分镜的场景绑定会清空。此操作无法撤销。"):
+        library_name = str(self._comic_asset_library().get("name", "当前人物场景项"))
+        if not messagebox.askyesno("永久删除项内场景", f"确定从“{library_name}”删除场景“{name}”吗？\n\n该场景会从所有关联此项的推文中移除，候选图和固定参考图也会永久删除，相关分镜的场景绑定会清空。此操作无法撤销。"):
             return
         delete_errors = self._delete_comic_asset_files(scenes[index], "scenes")
         scenes.pop(index)
-        for shot in self.state["comic"]["shots"]:
+        for shot in self.state["comic"].get("shots", []):
             if str(shot.get("scene", "")) == name:
                 shot["scene"] = ""
+        for project in self.state.get("projects", []):
+            if not isinstance(project, dict) or str(project.get("asset_library_id", "")) != str(self.state["comic"].get("asset_library_id", "")):
+                continue
+            for shot in project.get("shots", []):
+                if str(shot.get("scene", "")) == name:
+                    shot["scene"] = ""
         self.current_comic_scene_index = None
         self._refresh_comic_scene_list(min(index, len(scenes) - 1) if scenes else None)
         self._refresh_comic_shot_tree(self.current_comic_shot_index)
@@ -4693,6 +5134,9 @@ class StudioApp:
         scenes[index]["prompt"] = self.comic_scene_prompt_editor.get("1.0", "end-1c").strip()
         if old_name and old_name != new_name:
             replace_scene_in_shots(self.state["comic"].get("shots", []), old_name, new_name)
+            for project in self.state.get("projects", []):
+                if isinstance(project, dict) and str(project.get("asset_library_id", "")) == str(self.state["comic"].get("asset_library_id", "")):
+                    replace_scene_in_shots(project.get("shots", []), old_name, new_name)
             self._refresh_comic_shot_tree(self.current_comic_shot_index)
 
     def _load_comic_scene(self, index: int) -> None:
@@ -4780,7 +5224,7 @@ class StudioApp:
             messagebox.showerror("图片格式不支持", "固定参考图仅支持 PNG、JPG、JPEG 或 WebP。")
             return
         scene = self.state["comic"]["scenes"][index]
-        destination = self._comic_output_dir() / "scenes" / f"{safe_filename(str(scene.get('name', '场景')))}_reference{Path(source).suffix.lower()}"
+        destination = self._shared_scene_asset_dir() / f"{safe_filename(str(scene.get('name', '场景')))}_reference{Path(source).suffix.lower()}"
         try:
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(source, destination)
@@ -4803,7 +5247,7 @@ class StudioApp:
         if not candidate.is_file():
             messagebox.showinfo("没有候选场景", "请先生成一张候选场景图，再确认保留。")
             return
-        reference = self._comic_output_dir() / "scenes" / f"{safe_filename(str(scene.get('name', '场景')))}_reference{candidate.suffix.lower()}"
+        reference = self._shared_scene_asset_dir() / f"{safe_filename(str(scene.get('name', '场景')))}_reference{candidate.suffix.lower()}"
         try:
             reference.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(candidate, reference)
@@ -4844,7 +5288,7 @@ class StudioApp:
             self.comic_scene_prompt_editor.insert("1.0", prompt)
         if not messagebox.askyesno("生成候选场景", "将使用 Doubao Seedream 5.0 Pro 生成一张无人场景定景图。确认保留后，才会用于后续镜头。是否继续？"):
             return
-        output = self._comic_output_dir() / "scenes" / f"{safe_filename(str(scene.get('name', '场景')))}_candidate.png"
+        output = self._shared_scene_asset_dir() / f"{safe_filename(str(scene.get('name', '场景')))}_candidate.png"
         resolution = self.comic_resolution_var.get()
         optimize_mode = "fast" if self.comic_optimize_var.get() == "极速模式" else "standard"
         self.is_busy = True
@@ -6412,16 +6856,16 @@ class StudioApp:
         elif event == "comic_analysis_done":
             result, note, generation_mode = payload
             comic = self.state["comic"]
+            library = self._comic_asset_library(comic)
             if generation_mode in {"characters", "all"}:
-                merged_characters = self._merge_comic_characters([dict(item) for item in self.state.get("shared_characters", [])], [dict(item) for item in result.get("characters", [])])
-                shared = self.state.setdefault("shared_characters", [])
-                shared[:] = merged_characters
-                comic["characters"] = shared
-                for project in self.state.get("projects", []):
-                    if isinstance(project, dict):
-                        project["characters"] = shared
+                library["characters"][:] = self._merge_comic_characters([dict(item) for item in library["characters"]], [dict(item) for item in result.get("characters", [])])
             if generation_mode in {"scenes", "all"}:
-                comic["scenes"] = self._merge_comic_scenes([dict(item) for item in comic.get("scenes", [])], [dict(item) for item in result.get("scenes", [])])
+                library["scenes"][:] = self._merge_comic_scenes([dict(item) for item in library["scenes"]], [dict(item) for item in result.get("scenes", [])])
+            self._link_comic_to_asset_library(comic, library)
+            for project in self.state.get("projects", []):
+                if isinstance(project, dict) and str(project.get("asset_library_id", "")) == str(library.get("library_id", "")):
+                    project["characters"] = library["characters"]
+                    project["scenes"] = library["scenes"]
             if generation_mode in {"shots", "all"}:
                 comic["shots"] = [dict(item) for item in result.get("shots", [])]
                 comic["video_output_path"] = ""

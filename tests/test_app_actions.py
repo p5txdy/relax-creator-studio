@@ -5,12 +5,12 @@ import tempfile
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
-from tkinter import Tk
+from tkinter import Tk, Toplevel
 
 from app import StudioApp
 from app import SEEDREAM_LITE_MODEL, SEEDREAM_PRO_MODEL, SHOT_IMAGE_MODEL_OPTIONS
 from app import RoundedButton, RoundedCombobox
-from core.storage import StateStore
+from core.storage import StateStore, new_asset_library, new_comic_project
 
 
 class BatchRedrawActionTests(unittest.TestCase):
@@ -128,6 +128,7 @@ class NovelComboboxTests(unittest.TestCase):
             finally:
                 root.destroy()
 
+
     def test_novel_header_keeps_prompt_preview_visible(self) -> None:
         studio = StudioApp.__new__(StudioApp)
         studio._clear_main = Mock()
@@ -180,6 +181,203 @@ class NovelComboboxTests(unittest.TestCase):
                     studio.store.release_instance_lock()
             finally:
                 root.destroy()
+
+
+class NewProjectDialogTests(unittest.TestCase):
+    def test_confirm_button_stays_inside_dialog_at_scaled_layout(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            root = Tk()
+            root.tk.call("tk", "scaling", 2.0)
+            root.geometry("1120x720-3000-3000")
+            studio = None
+            try:
+                with patch("app.StateStore", lambda: StateStore(base)):
+                    studio = StudioApp(root)
+                    root.update()
+                    existing_library = studio.state["asset_libraries"][0]
+                    existing_library["characters"].append({"name": "其他项目角色"})
+                    existing_library["scenes"].append({"name": "其他项目场景"})
+                    studio.create_comic_project_dialog()
+                    root.update()
+                    dialogs = [widget for widget in root.winfo_children() if isinstance(widget, Toplevel)]
+                    self.assertEqual(len(dialogs), 1)
+                    dialog = dialogs[0]
+                    buttons: list[RoundedButton] = []
+
+                    def collect(widget) -> None:
+                        for child in widget.winfo_children():
+                            if isinstance(child, RoundedButton):
+                                buttons.append(child)
+                            collect(child)
+
+                    collect(dialog)
+                    confirm = next(button for button in buttons if button.label_text.startswith("创建并进入"))
+                    self.assertTrue(confirm.winfo_ismapped())
+                    self.assertLessEqual(confirm.winfo_rooty() + confirm.winfo_height(), dialog.winfo_rooty() + dialog.winfo_height())
+                    self.assertTrue(dialog.bind("<Return>"))
+                    self.assertTrue(dialog.bind("<Escape>"))
+                    confirm._invoke()
+                    root.update_idletasks()
+                    created = studio.state["comic"]
+                    self.assertIs(created["characters"], studio.state["shared_characters"])
+                    self.assertIs(created["scenes"], studio.state["shared_scenes"])
+                    self.assertEqual(created["characters"], [])
+                    self.assertEqual(created["scenes"], [])
+                    self.assertEqual(len(studio.state["asset_libraries"]), 2)
+                    self.assertEqual(existing_library["characters"][0]["name"], "其他项目角色")
+                    if dialog.winfo_exists():
+                        dialog.destroy()
+            finally:
+                if studio is not None:
+                    studio.store.release_instance_lock()
+                root.destroy()
+
+
+class AssetLibraryDeletionTests(unittest.TestCase):
+    def test_dashboard_and_manager_keep_delete_actions_visible(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            root = Tk()
+            root.geometry("1180x760-3000-3000")
+            studio = None
+            try:
+                with patch("app.StateStore", lambda: StateStore(base)):
+                    studio = StudioApp(root)
+                    root.update()
+
+                    def button_labels(widget) -> list[str]:
+                        labels: list[str] = []
+                        for child in widget.winfo_children():
+                            if isinstance(child, RoundedButton):
+                                labels.append(child.label_text)
+                            labels.extend(button_labels(child))
+                        return labels
+
+                    dashboard_labels = button_labels(studio.main)
+                    self.assertIn("管理 / 删除人物场景项", dashboard_labels)
+                    self.assertNotIn("删除人物场景项", dashboard_labels)
+                    self.assertNotIn("建立新项目  →", dashboard_labels)
+
+                    studio.open_asset_library_manager()
+                    root.update()
+                    dialogs = [widget for widget in root.winfo_children() if isinstance(widget, Toplevel)]
+                    manager = next(dialog for dialog in dialogs if dialog.title() == "人物场景项管理")
+                    manager_buttons: list[RoundedButton] = []
+
+                    def collect_buttons(widget) -> None:
+                        for child in widget.winfo_children():
+                            if isinstance(child, RoundedButton):
+                                manager_buttons.append(child)
+                            collect_buttons(child)
+
+                    collect_buttons(manager)
+                    self.assertIn("永久删除所选项", [button.label_text for button in manager_buttons])
+                    for button in manager_buttons:
+                        self.assertTrue(button.winfo_ismapped())
+                        self.assertLessEqual(button.winfo_rooty() + button.winfo_height(), manager.winfo_rooty() + manager.winfo_height())
+                    manager.destroy()
+            finally:
+                if studio is not None:
+                    studio.store.release_instance_lock()
+                root.destroy()
+
+    def test_delete_linked_library_removes_assets_and_preserves_project_story(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            character_dir = base / "shared_assets" / "libraries" / "library-old" / "characters"
+            scene_dir = base / "shared_assets" / "libraries" / "library-old" / "scenes"
+            character_dir.mkdir(parents=True)
+            scene_dir.mkdir(parents=True)
+            character_reference = character_dir / "林川_reference.png"
+            character_candidate = character_dir / "林川_candidate.png"
+            scene_reference = scene_dir / "雨夜街道_reference.png"
+            for path in (character_reference, character_candidate, scene_reference):
+                path.write_bytes(b"image")
+
+            library = new_asset_library("都市系列")
+            library["library_id"] = "library-old"
+            library["characters"].append(
+                {
+                    "name": "林川",
+                    "local_path": str(character_reference),
+                    "candidate_path": str(character_candidate),
+                }
+            )
+            library["scenes"].append(
+                {
+                    "name": "雨夜街道",
+                    "local_path": str(scene_reference),
+                    "candidate_path": "",
+                }
+            )
+            project = new_comic_project("雨夜归来")
+            project["asset_library_id"] = library["library_id"]
+            project["characters"] = library["characters"]
+            project["scenes"] = library["scenes"]
+            project["cover"] = {"character": "林川", "scene": "雨夜街道"}
+            project["shots"] = [
+                {
+                    "source_text": "林川在雨夜推开那扇门。",
+                    "characters": ["林川"],
+                    "scene": "雨夜街道",
+                    "status": "已完成",
+                    "local_path": str(base / "shot.png"),
+                }
+            ]
+
+            studio = StudioApp.__new__(StudioApp)
+            studio.state = {
+                "asset_libraries": [library],
+                "projects": [project],
+                "active_project_id": project["project_id"],
+                "comic": project,
+                "shared_characters": library["characters"],
+                "shared_scenes": library["scenes"],
+            }
+            studio.store = SimpleNamespace(base_dir=base, save=Mock())
+            studio.current_comic_character_index = 0
+            studio.current_comic_scene_index = 0
+
+            with patch("app.messagebox.askyesno", return_value=True):
+                deleted = studio._delete_asset_library(library)
+
+            self.assertTrue(deleted)
+            self.assertFalse(character_reference.exists())
+            self.assertFalse(character_candidate.exists())
+            self.assertFalse(scene_reference.exists())
+            self.assertEqual(len(studio.state["asset_libraries"]), 1)
+            replacement = studio.state["asset_libraries"][0]
+            self.assertNotEqual(replacement["library_id"], "library-old")
+            self.assertEqual(replacement["characters"], [])
+            self.assertEqual(replacement["scenes"], [])
+            self.assertEqual(project["asset_library_id"], replacement["library_id"])
+            self.assertEqual(project["shots"][0]["source_text"], "林川在雨夜推开那扇门。")
+            self.assertEqual(project["shots"][0]["characters"], [])
+            self.assertEqual(project["shots"][0]["scene"], "")
+            self.assertEqual(project["shots"][0]["status"], "待重新生成")
+            self.assertEqual(project["cover"], {"character": "", "scene": ""})
+            self.assertIs(project["characters"], replacement["characters"])
+            self.assertIs(project["scenes"], replacement["scenes"])
+            studio.store.save.assert_called_once_with(studio.state)
+
+    def test_cancel_delete_keeps_library_and_files(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            library = new_asset_library("不能误删")
+            studio = StudioApp.__new__(StudioApp)
+            studio.state = {
+                "asset_libraries": [library],
+                "projects": [],
+                "active_project_id": "",
+                "comic": {"asset_library_id": library["library_id"]},
+            }
+            studio.store = SimpleNamespace(base_dir=base, save=Mock())
+            with patch("app.messagebox.askyesno", return_value=False):
+                deleted = studio._delete_asset_library(library)
+            self.assertFalse(deleted)
+            self.assertEqual(studio.state["asset_libraries"], [library])
+            studio.store.save.assert_not_called()
 
 
 if __name__ == "__main__":
