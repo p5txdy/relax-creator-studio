@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import shutil
 import sys
 import tempfile
@@ -22,6 +23,7 @@ COMIC_PROJECT_DEFAULT: dict[str, Any] = {
     "project_name": "未命名漫画推文",
     "created_at": "",
     "updated_at": "",
+    "asset_library_id": "",
     "source_path": "",
     "source_text": "",
     "art_style": "国风 3D 动漫，电影级光影，高细节",
@@ -89,8 +91,20 @@ def new_comic_project(name: str = "未命名漫画推文") -> dict[str, Any]:
     return project
 
 
+def new_asset_library(name: str = "默认人物场景项") -> dict[str, Any]:
+    now = datetime.now().isoformat(timespec="seconds")
+    return {
+        "library_id": uuid.uuid4().hex,
+        "name": name.strip() or "未命名人物场景项",
+        "created_at": now,
+        "updated_at": now,
+        "characters": [],
+        "scenes": [],
+    }
+
+
 DEFAULT_STATE: dict[str, Any] = {
-    "schema_version": 4,
+    "schema_version": 6,
     "settings": {
         "provider": "openai",
         "base_url": "https://api.openai.com/v1",
@@ -106,7 +120,10 @@ DEFAULT_STATE: dict[str, Any] = {
     },
     "projects": [],
     "active_project_id": "",
+    "asset_libraries": [],
+    # Compatibility aliases for the asset library linked to the active project.
     "shared_characters": [],
+    "shared_scenes": [],
     "comic": deepcopy(COMIC_PROJECT_DEFAULT),
     "novel": deepcopy(NOVEL_DEFAULT),
 }
@@ -119,6 +136,51 @@ def _merge(default: Any, saved: Any) -> Any:
             merged[key] = _merge(default[key], value) if key in default else value
         return merged
     return saved
+
+
+def _merge_named_asset(current: dict[str, Any], incoming: dict[str, Any]) -> dict[str, Any]:
+    """Merge duplicate shared assets without discarding an existing local reference."""
+    merged = dict(current)
+    for key, value in incoming.items():
+        if key not in merged or merged.get(key) in (None, "", []):
+            merged[key] = deepcopy(value)
+    for path_key in ("local_path", "candidate_path"):
+        current_path = Path(str(merged.get(path_key, "")).strip())
+        incoming_path = Path(str(incoming.get(path_key, "")).strip())
+        if incoming_path.is_file() and not current_path.is_file():
+            merged[path_key] = str(incoming_path)
+            if path_key == "local_path":
+                for key in ("task_id", "image_url", "status"):
+                    if incoming.get(key) not in (None, ""):
+                        merged[key] = incoming[key]
+            else:
+                for key in ("task_id", "candidate_image_url", "status"):
+                    if incoming.get(key) not in (None, ""):
+                        merged[key] = incoming[key]
+    return merged
+
+
+def _consolidate_named_assets(primary: object, collections: list[object]) -> list[dict[str, Any]]:
+    result: list[dict[str, Any]] = []
+    positions: dict[str, int] = {}
+    sources = [primary, *collections]
+    for source in sources:
+        if not isinstance(source, list):
+            continue
+        for item in source:
+            if not isinstance(item, dict):
+                continue
+            name = str(item.get("name", "")).strip()
+            if not name:
+                continue
+            record = dict(item)
+            if name in positions:
+                index = positions[name]
+                result[index] = _merge_named_asset(result[index], record)
+            else:
+                positions[name] = len(result)
+                result.append(record)
+    return result
 
 
 class StateStore:
@@ -219,32 +281,60 @@ class StateStore:
                     project["created_at"] = str(project.get("created_at", "")).strip() or now
                     project["updated_at"] = str(project.get("updated_at", "")).strip() or project["created_at"]
                     normalized_projects.append(project)
-                shared = state.get("shared_characters", [])
-                if not isinstance(shared, list):
-                    shared = []
-                by_name = {
-                    str(item.get("name", "")).strip(): dict(item)
-                    for item in shared
-                    if isinstance(item, dict) and str(item.get("name", "")).strip()
-                }
-                for project in normalized_projects:
-                    for character in project.get("characters", []):
-                        if not isinstance(character, dict):
+                raw_libraries = state.get("asset_libraries", [])
+                libraries: list[dict[str, Any]] = []
+                if isinstance(raw_libraries, list):
+                    for index, item in enumerate(raw_libraries, start=1):
+                        if not isinstance(item, dict):
                             continue
-                        name = str(character.get("name", "")).strip()
-                        if name and name not in by_name:
-                            by_name[name] = dict(character)
-                shared = list(by_name.values())
+                        library_id = str(item.get("library_id", "")).strip() or uuid.uuid4().hex
+                        libraries.append(
+                            {
+                                "library_id": library_id,
+                                "name": str(item.get("name", "")).strip() or f"人物场景项 {index}",
+                                "created_at": str(item.get("created_at", "")).strip() or datetime.now().isoformat(timespec="seconds"),
+                                "updated_at": str(item.get("updated_at", "")).strip() or datetime.now().isoformat(timespec="seconds"),
+                                "characters": _consolidate_named_assets(item.get("characters", []), []),
+                                "scenes": _consolidate_named_assets(item.get("scenes", []), []),
+                            }
+                        )
+                old_characters = _consolidate_named_assets(
+                    state.get("shared_characters", []),
+                    [project.get("characters", []) for project in normalized_projects],
+                )
+                old_scenes = _consolidate_named_assets(
+                    state.get("shared_scenes", []),
+                    [project.get("scenes", []) for project in normalized_projects],
+                )
+                if not libraries:
+                    default_library = new_asset_library("默认人物场景项")
+                    default_library["characters"] = old_characters
+                    default_library["scenes"] = old_scenes
+                    libraries.append(default_library)
+                elif old_characters or old_scenes:
+                    libraries[0]["characters"] = _consolidate_named_assets(libraries[0].get("characters", []), [old_characters])
+                    libraries[0]["scenes"] = _consolidate_named_assets(libraries[0].get("scenes", []), [old_scenes])
+                libraries_by_id = {str(item["library_id"]): item for item in libraries}
+                fallback_library = libraries[0]
                 active_id = str(state.get("active_project_id", "")).strip()
                 if active_id not in {str(item["project_id"]) for item in normalized_projects}:
                     active_id = str(normalized_projects[0]["project_id"]) if normalized_projects else ""
                 active = next((item for item in normalized_projects if str(item["project_id"]) == active_id), None)
                 for project in normalized_projects:
-                    project["characters"] = shared
+                    library = libraries_by_id.get(str(project.get("asset_library_id", "")).strip(), fallback_library)
+                    project["asset_library_id"] = str(library["library_id"])
+                    project["characters"] = library["characters"]
+                    project["scenes"] = library["scenes"]
+                active_library = libraries_by_id.get(str(active.get("asset_library_id", "")).strip(), fallback_library) if active else fallback_library
                 state["projects"] = normalized_projects
                 state["active_project_id"] = active_id
-                state["shared_characters"] = shared
-                state["comic"] = active if active is not None else _merge(COMIC_PROJECT_DEFAULT, {"characters": shared})
+                state["asset_libraries"] = libraries
+                state["shared_characters"] = active_library["characters"]
+                state["shared_scenes"] = active_library["scenes"]
+                state["comic"] = active if active is not None else _merge(
+                    COMIC_PROJECT_DEFAULT,
+                    {"asset_library_id": active_library["library_id"], "characters": active_library["characters"], "scenes": active_library["scenes"]},
+                )
                 return self._recover_local_assets(state)
         except (OSError, json.JSONDecodeError, TypeError):
             pass
@@ -259,10 +349,9 @@ class StateStore:
             if not path.is_file() or path.suffix.lower() not in {".png", ".jpg", ".jpeg", ".webp"}:
                 continue
             stem = path.stem
-            if stem.endswith("_reference"):
-                found.append((stem[: -len("_reference")], "reference", path))
-            elif stem.endswith("_candidate"):
-                found.append((stem[: -len("_candidate")], "candidate", path))
+            match = re.fullmatch(r"(.+?)_(reference|candidate|imported_reference(?:_\d+)?)", stem)
+            if match:
+                found.append((match.group(1), "candidate" if match.group(2) == "candidate" else "reference", path))
         return found
 
     @staticmethod
@@ -330,107 +419,144 @@ class StateStore:
         except OSError:
             return path
 
-    def _recover_local_assets(self, state: dict[str, Any]) -> dict[str, Any]:
-        shared = state.get("shared_characters", [])
-        if not isinstance(shared, list):
-            shared = []
-        by_name = {
-            str(item.get("name", "")).strip(): item
-            for item in shared
-            if isinstance(item, dict) and str(item.get("name", "")).strip()
-        }
-        character_dirs: list[Path] = []
-        for root in self._asset_roots():
-            character_dirs.append(root / "shared_assets" / "characters")
-            projects_root = root / "comic_projects"
-            if projects_root.is_dir():
-                character_dirs.extend(path for path in projects_root.glob("*/characters") if path.is_dir())
-        recovered_characters = 0
-        for directory in character_dirs:
-            for name, asset_type, path in self._asset_files(directory):
-                if not name:
-                    continue
-                path = self._localize_legacy_asset(path, self.base_dir / "shared_assets" / "characters")
-                record = by_name.get(name)
-                if record is None:
-                    record = self._recovered_asset_record(name, "character")
-                    shared.append(record)
-                    by_name[name] = record
-                    recovered_characters += 1
-                self._merge_recovered_file(record, asset_type, path, "character")
+    @staticmethod
+    def _copy_asset_to_shared(path: Path, destination_dir: Path) -> Path:
+        """Move the live reference to a project-independent folder by copying it."""
+        if not path.is_file():
+            return path
+        try:
+            if path.resolve().parent == destination_dir.resolve():
+                return path
+            destination_dir.mkdir(parents=True, exist_ok=True)
+            destination = destination_dir / path.name
+            if not destination.exists() or path.stat().st_mtime > destination.stat().st_mtime:
+                shutil.copy2(path, destination)
+            return destination
+        except OSError:
+            return path
 
-        projects = state.get("projects", [])
-        if not isinstance(projects, list):
-            projects = []
-        for project_index, project in enumerate(projects):
-            if not isinstance(project, dict):
-                continue
-            scenes = project.get("scenes", [])
-            if not isinstance(scenes, list):
-                scenes = []
-            for index, scene in enumerate(scenes, start=1):
-                if isinstance(scene, dict) and not str(scene.get("name", "")).strip():
-                    scene["name"] = f"场景 {index}"
-            scene_dirs: list[Path] = []
-            output_dir = str(project.get("output_dir", "")).strip()
-            if output_dir:
-                output_path = Path(output_dir)
-                scene_dirs.append(output_path / "scenes")
-                if self.legacy_base_dir is not None:
-                    try:
-                        relative_output = output_path.resolve().relative_to(self.legacy_base_dir.resolve())
-                    except (OSError, ValueError):
-                        pass
-                    else:
-                        localized_output = self.base_dir / relative_output
-                        try:
-                            if output_path.is_dir():
-                                shutil.copytree(output_path, localized_output, dirs_exist_ok=True)
-                            localized_output.mkdir(parents=True, exist_ok=True)
-                            project["output_dir"] = str(localized_output)
-                            scene_dirs.insert(0, localized_output / "scenes")
-                        except OSError:
-                            pass
-            if len(projects) == 1:
-                for root in self._asset_roots():
-                    projects_root = root / "comic_projects"
-                    if projects_root.is_dir():
-                        scene_dirs.extend(path for path in projects_root.glob("*/scenes") if path.is_dir())
-            scene_by_name = {
+    def _recover_local_assets(self, state: dict[str, Any]) -> dict[str, Any]:
+        libraries = [item for item in state.get("asset_libraries", []) if isinstance(item, dict)]
+        if not libraries:
+            library = new_asset_library("默认人物场景项")
+            library["characters"] = state.get("shared_characters", []) if isinstance(state.get("shared_characters"), list) else []
+            library["scenes"] = state.get("shared_scenes", []) if isinstance(state.get("shared_scenes"), list) else []
+            libraries = [library]
+        libraries_by_id = {str(item.get("library_id", "")): item for item in libraries}
+        projects = [item for item in state.get("projects", []) if isinstance(item, dict)]
+        fallback_library = libraries[0]
+
+        def recover_collection(library: dict[str, Any], kind: str, directories: list[Path]) -> list[dict[str, Any]]:
+            records = library.get(kind, [])
+            if not isinstance(records, list):
+                records = []
+            record_kind = "character" if kind == "characters" else "scene"
+            destination = self.base_dir / "shared_assets" / "libraries" / str(library["library_id"]) / kind
+            by_name = {
                 str(item.get("name", "")).strip(): item
-                for item in scenes
+                for item in records
                 if isinstance(item, dict) and str(item.get("name", "")).strip()
             }
-            for directory in scene_dirs:
+            by_path: dict[Path, dict[str, Any]] = {}
+            for record in records:
+                if not isinstance(record, dict):
+                    continue
+                for key, asset_type in (("local_path", "reference"), ("candidate_path", "candidate")):
+                    path = Path(str(record.get(key, "")).strip())
+                    if not path.is_file():
+                        continue
+                    path = self._copy_asset_to_shared(path, destination)
+                    record[key] = str(path)
+                    self._merge_recovered_file(record, asset_type, path, record_kind)
+                    try:
+                        by_path[path.resolve()] = record
+                    except OSError:
+                        by_path[path.absolute()] = record
+            seen_dirs: set[Path] = set()
+            for directory in [destination, *directories]:
+                try:
+                    resolved_dir = directory.resolve()
+                except OSError:
+                    resolved_dir = directory.absolute()
+                if resolved_dir in seen_dirs:
+                    continue
+                seen_dirs.add(resolved_dir)
                 for name, asset_type, path in self._asset_files(directory):
                     if not name:
                         continue
-                    path = self._localize_legacy_asset(
-                        path,
-                        self.base_dir / "comic_projects" / str(project.get("project_id", project_index + 1)) / "scenes",
-                    )
-                    record = scene_by_name.get(name)
+                    path = self._copy_asset_to_shared(path, destination)
+                    try:
+                        resolved_path = path.resolve()
+                    except OSError:
+                        resolved_path = path.absolute()
+                    record = by_path.get(resolved_path) or by_name.get(name)
                     if record is None:
-                        record = self._recovered_asset_record(name, "scene")
-                        scenes.append(record)
-                        scene_by_name[name] = record
-                    self._merge_recovered_file(record, asset_type, path, "scene")
-            project["scenes"] = scenes
-            project["characters"] = shared
+                        record = self._recovered_asset_record(name, record_kind)
+                        records.append(record)
+                        by_name[name] = record
+                    by_path[resolved_path] = record
+                    self._merge_recovered_file(record, asset_type, path, record_kind)
+            library[kind] = records
+            return records
 
-        state["shared_characters"] = shared
+        for project in projects:
+            output_dir = str(project.get("output_dir", "")).strip()
+            if output_dir and self.legacy_base_dir is not None:
+                output_path = Path(output_dir)
+                try:
+                    relative_output = output_path.resolve().relative_to(self.legacy_base_dir.resolve())
+                except (OSError, ValueError):
+                    pass
+                else:
+                    localized_output = self.base_dir / relative_output
+                    try:
+                        if output_path.is_dir():
+                            shutil.copytree(output_path, localized_output, dirs_exist_ok=True)
+                        localized_output.mkdir(parents=True, exist_ok=True)
+                        project["output_dir"] = str(localized_output)
+                    except OSError:
+                        pass
+
+        for library_index, library in enumerate(libraries):
+            library_id = str(library.get("library_id", ""))
+            linked_projects = [item for item in projects if str(item.get("asset_library_id", "")) == library_id]
+            character_dirs: list[Path] = []
+            scene_dirs: list[Path] = []
+            if library_index == 0:
+                for root in self._asset_roots():
+                    character_dirs.append(root / "shared_assets" / "characters")
+                    scene_dirs.append(root / "shared_assets" / "scenes")
+            for project in linked_projects:
+                output_dir = str(project.get("output_dir", "")).strip()
+                if output_dir:
+                    character_dirs.append(Path(output_dir) / "characters")
+                    scene_dirs.append(Path(output_dir) / "scenes")
+            recover_collection(library, "characters", character_dirs)
+            recover_collection(library, "scenes", scene_dirs)
+
+        for project in projects:
+            library = libraries_by_id.get(str(project.get("asset_library_id", "")), fallback_library)
+            project["asset_library_id"] = str(library["library_id"])
+            project["characters"] = library["characters"]
+            project["scenes"] = library["scenes"]
+
+        state["asset_libraries"] = libraries
         state["projects"] = projects
         active_id = str(state.get("active_project_id", "")).strip()
         active = next(
             (item for item in projects if isinstance(item, dict) and str(item.get("project_id", "")) == active_id),
             projects[0] if projects else None,
         )
+        active_library = libraries_by_id.get(str(active.get("asset_library_id", "")), fallback_library) if active else fallback_library
+        state["shared_characters"] = active_library["characters"]
+        state["shared_scenes"] = active_library["scenes"]
         if active is not None:
-            active["characters"] = shared
             state["active_project_id"] = str(active.get("project_id", ""))
             state["comic"] = active
         elif isinstance(state.get("comic"), dict):
-            state["comic"]["characters"] = shared
+            state["comic"]["asset_library_id"] = str(active_library["library_id"])
+            state["comic"]["characters"] = active_library["characters"]
+            state["comic"]["scenes"] = active_library["scenes"]
         return state
 
     def acquire_instance_lock(self) -> bool:
@@ -502,24 +628,45 @@ class StateStore:
 
     def save(self, state: dict[str, Any]) -> None:
         payload = deepcopy(state)
-        payload["schema_version"] = 4
+        payload["schema_version"] = 6
         settings = payload.get("settings", {})
         if isinstance(settings, dict):
             for key in list(settings):
                 if key == "api_key" or key.endswith("_api_key"):
                     settings.pop(key, None)
-        shared = payload.get("shared_characters", [])
-        if not isinstance(shared, list):
-            shared = []
-        payload["shared_characters"] = shared
         projects = payload.get("projects", [])
+        project_records = projects if isinstance(projects, list) else []
+        comic = payload.get("comic", {})
+        comic_record = comic if isinstance(comic, dict) else {}
+        libraries = [item for item in payload.get("asset_libraries", []) if isinstance(item, dict)]
+        if not libraries:
+            library = new_asset_library("默认人物场景项")
+            library["characters"] = _consolidate_named_assets(payload.get("shared_characters", []), [])
+            library["scenes"] = _consolidate_named_assets(payload.get("shared_scenes", []), [])
+            libraries = [library]
+        libraries_by_id = {str(item.get("library_id", "")): item for item in libraries}
+        fallback_library = libraries[0]
+        for project in project_records:
+            if not isinstance(project, dict):
+                continue
+            library = libraries_by_id.get(str(project.get("asset_library_id", "")), fallback_library)
+            project["asset_library_id"] = str(library["library_id"])
+            library["characters"] = _consolidate_named_assets(library.get("characters", []), [project.get("characters", [])])
+            library["scenes"] = _consolidate_named_assets(library.get("scenes", []), [project.get("scenes", [])])
+        active_library = libraries_by_id.get(str(comic_record.get("asset_library_id", "")), fallback_library)
+        active_library["characters"] = _consolidate_named_assets(active_library.get("characters", []), [comic_record.get("characters", [])])
+        active_library["scenes"] = _consolidate_named_assets(active_library.get("scenes", []), [comic_record.get("scenes", [])])
+        payload["asset_libraries"] = libraries
+        payload["shared_characters"] = []
+        payload["shared_scenes"] = []
         if isinstance(projects, list):
             for project in projects:
                 if isinstance(project, dict):
                     project["characters"] = []
-        comic = payload.get("comic", {})
+                    project["scenes"] = []
         if isinstance(comic, dict):
             comic["characters"] = []
+            comic["scenes"] = []
         try:
             self.base_dir.mkdir(parents=True, exist_ok=True)
             now = time.monotonic()

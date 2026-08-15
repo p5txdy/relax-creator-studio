@@ -81,7 +81,7 @@ jobs:
 
       - name: Build macOS application
         run: |
-          chmod +x 启动Mac开发版.command 打包Mac版.command
+          chmod +x 启动漫画推文-Mac.command 启动Mac开发版.command 打包Mac版.command
           zsh ./打包Mac版.command
 
       - name: Verify macOS package

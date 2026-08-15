@@ -72,7 +72,7 @@ from core.jianying_engine import (
     sanitize_draft_name,
     unique_draft_name,
 )
-from core.storage import DEFAULT_STATE, StateStore, new_comic_project
+from core.storage import DEFAULT_STATE, StateStore, new_asset_library, new_comic_project
 from core.secret_store import SecretStoreError, delete_api_key, load_api_key, save_api_key
 from core.video_engine import VideoClip, VideoProject, build_export_command, find_executable, fit_clips_to_duration
 
@@ -942,7 +942,7 @@ class StorageTests(unittest.TestCase):
             self.assertIn("novel", store.load())
             self.assertEqual(store.load()["novel"]["mode"], NOVEL_COMMENTARY_MODE)
 
-    def test_multiple_projects_share_one_character_library(self) -> None:
+    def test_multiple_projects_share_character_and_scene_libraries(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             store = StateStore(Path(temp))
             state = json.loads(json.dumps(DEFAULT_STATE))
@@ -951,6 +951,7 @@ class StorageTests(unittest.TestCase):
             state["projects"] = [first, second]
             state["active_project_id"] = second["project_id"]
             state["shared_characters"] = [{"name": "林川", "description": "黑发", "prompt": "林川正面全身定妆，纯色背景"}]
+            state["shared_scenes"] = [{"name": "雨夜街口", "description": "路灯与斑马线", "prompt": "无人物场景定景图"}]
             state["comic"] = second
             store.save(state)
             loaded = store.load()
@@ -958,8 +959,17 @@ class StorageTests(unittest.TestCase):
             self.assertEqual(loaded["comic"]["project_name"], "第二条推文")
             self.assertIs(loaded["comic"]["characters"], loaded["shared_characters"])
             self.assertIs(loaded["projects"][0]["characters"], loaded["shared_characters"])
+            self.assertIs(loaded["comic"]["scenes"], loaded["shared_scenes"])
+            self.assertIs(loaded["projects"][0]["scenes"], loaded["shared_scenes"])
+            self.assertIs(loaded["projects"][1]["scenes"], loaded["shared_scenes"])
             self.assertEqual(loaded["projects"][1]["characters"][0]["name"], "林川")
             self.assertEqual(loaded["shared_characters"][0]["prompt"], "林川正面全身定妆，纯色背景")
+            self.assertEqual(loaded["shared_scenes"][0]["name"], "雨夜街口")
+            payload = json.loads(store.path.read_text(encoding="utf-8"))
+            self.assertEqual(payload["schema_version"], 6)
+            self.assertEqual(len(payload["asset_libraries"]), 1)
+            self.assertEqual(payload["projects"][0]["characters"], [])
+            self.assertEqual(payload["projects"][0]["scenes"], [])
 
     def test_legacy_single_comic_is_migrated_to_project_and_shared_roles(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -1012,10 +1022,92 @@ class StorageTests(unittest.TestCase):
             role = next(item for item in loaded["shared_characters"] if item["name"] == "苏晚")
             scene = next(item for item in loaded["comic"]["scenes"] if item["name"] == "客厅")
             self.assertEqual(role["status"], "定妆已确认")
-            self.assertEqual(role["local_path"], str(role_reference))
-            self.assertEqual(role["candidate_path"], str(role_candidate))
+            library_root = base / "shared_assets" / "libraries" / loaded["asset_libraries"][0]["library_id"]
+            self.assertEqual(role["local_path"], str(library_root / "characters" / role_reference.name))
+            self.assertEqual(role["candidate_path"], str(library_root / "characters" / role_candidate.name))
             self.assertEqual(scene["status"], "定景已确认")
-            self.assertEqual(scene["local_path"], str(scene_reference))
+            shared_scene_reference = library_root / "scenes" / scene_reference.name
+            self.assertEqual(scene["local_path"], str(shared_scene_reference))
+            self.assertTrue(shared_scene_reference.is_file())
+            self.assertIs(loaded["comic"]["scenes"], loaded["shared_scenes"])
+
+    def test_project_scene_records_are_migrated_into_one_shared_library(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            store = StateStore(Path(temp))
+            state = json.loads(json.dumps(DEFAULT_STATE))
+            first = new_comic_project("第一条推文")
+            second = new_comic_project("第二条推文")
+            first["scenes"] = [{"name": "客厅", "description": "白色沙发", "prompt": "客厅定景"}]
+            second["scenes"] = [
+                {"name": "客厅", "description": "白色沙发", "prompt": "客厅定景"},
+                {"name": "公司前台", "description": "玻璃门", "prompt": "前台定景"},
+            ]
+            state["projects"] = [first, second]
+            state["active_project_id"] = first["project_id"]
+            state["comic"] = first
+            store.save(state)
+
+            loaded = store.load()
+            self.assertEqual([item["name"] for item in loaded["shared_scenes"]], ["客厅", "公司前台"])
+            self.assertIs(loaded["projects"][0]["scenes"], loaded["projects"][1]["scenes"])
+            loaded["projects"][0]["scenes"][0]["description"] = "共享修改"
+            self.assertEqual(loaded["projects"][1]["scenes"][0]["description"], "共享修改")
+
+    def test_different_asset_libraries_keep_characters_and_scenes_isolated(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            store = StateStore(Path(temp))
+            state = json.loads(json.dumps(DEFAULT_STATE))
+            city = new_asset_library("都市系列")
+            fantasy = new_asset_library("修仙系列")
+            city["characters"].append({"name": "林川", "description": "西装"})
+            city["scenes"].append({"name": "公司前台", "description": "玻璃门"})
+            fantasy["characters"].append({"name": "云霄", "description": "白袍"})
+            fantasy["scenes"].append({"name": "问道峰", "description": "云海"})
+            first = new_comic_project("都市任务一")
+            second = new_comic_project("都市任务二")
+            third = new_comic_project("修仙任务")
+            first["asset_library_id"] = city["library_id"]
+            second["asset_library_id"] = city["library_id"]
+            third["asset_library_id"] = fantasy["library_id"]
+            state["asset_libraries"] = [city, fantasy]
+            state["projects"] = [first, second, third]
+            state["active_project_id"] = first["project_id"]
+            state["comic"] = first
+            store.save(state)
+
+            loaded = store.load()
+            first_loaded, second_loaded, third_loaded = loaded["projects"]
+            self.assertIs(first_loaded["characters"], second_loaded["characters"])
+            self.assertIs(first_loaded["scenes"], second_loaded["scenes"])
+            self.assertIsNot(first_loaded["characters"], third_loaded["characters"])
+            self.assertIsNot(first_loaded["scenes"], third_loaded["scenes"])
+            first_loaded["characters"].append({"name": "苏晚"})
+            first_loaded["scenes"].append({"name": "林家客厅"})
+            self.assertEqual([item["name"] for item in second_loaded["characters"]], ["林川", "苏晚"])
+            self.assertEqual([item["name"] for item in second_loaded["scenes"]], ["公司前台", "林家客厅"])
+            self.assertEqual([item["name"] for item in third_loaded["characters"]], ["云霄"])
+            self.assertEqual([item["name"] for item in third_loaded["scenes"]], ["问道峰"])
+
+    def test_shared_scene_safe_filename_does_not_create_a_duplicate_record(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            project_dir = base / "comic_projects" / "项目" / "scenes"
+            project_dir.mkdir(parents=True)
+            reference = project_dir / "张_明家_reference.png"
+            reference.write_bytes(b"scene")
+            store = StateStore(base)
+            state = json.loads(json.dumps(DEFAULT_STATE))
+            project = new_comic_project("项目")
+            project["output_dir"] = str(project_dir.parent)
+            project["scenes"] = [{"name": "张 明家", "description": "旧宅", "local_path": str(reference), "status": "定景已确认"}]
+            state["projects"] = [project]
+            state["active_project_id"] = project["project_id"]
+            state["comic"] = project
+            store.save(state)
+
+            loaded = store.load()
+            self.assertEqual([item["name"] for item in loaded["shared_scenes"]], ["张 明家"])
+            self.assertTrue(Path(loaded["shared_scenes"][0]["local_path"]).is_file())
 
     def test_state_backups_and_single_instance_lock(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -1064,6 +1156,8 @@ class StorageTests(unittest.TestCase):
             scene = next(item for item in loaded["comic"]["scenes"] if item["name"] == "客厅")
             self.assertTrue(Path(role["local_path"]).is_relative_to(new_base))
             self.assertTrue(Path(scene["local_path"]).is_relative_to(new_base))
+            library_id = loaded["asset_libraries"][0]["library_id"]
+            self.assertEqual(Path(scene["local_path"]).parent, new_base / "shared_assets" / "libraries" / library_id / "scenes")
             self.assertTrue(Path(role["local_path"]).is_file())
             self.assertTrue(Path(scene["local_path"]).is_file())
 
